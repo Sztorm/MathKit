@@ -10,9 +10,9 @@ class Vector2ITests {
     @ParameterizedTest
     @MethodSource("vectors")
     fun vectorContentsAreValid(x: Int, y: Int) {
-        val v = Vector2I(x, y)
+        val vec = Vector2I(x, y)
 
-        assertTrue(v.x == x && v.y == y)
+        assertTrue(vec.x == x && vec.y == y)
     }
 
     companion object {
