@@ -35,7 +35,6 @@ kotlin {
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
-    
     sourceSets {
         val commonMain by getting
         val commonTest by getting {
@@ -44,7 +43,12 @@ kotlin {
             }
         }
         val jvmMain by getting
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+                implementation("org.junit.jupiter:junit-jupiter:5.9.2")
+                implementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
+            }
+        }
         val jsMain by getting
         val jsTest by getting
         val nativeMain by getting
