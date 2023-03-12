@@ -27,9 +27,9 @@ value class Flags32(val intValue: Int) {
 
     companion object {
         @JvmStatic
-        fun fromUInt(value: UInt) = Flags32(value.toInt())
+        inline fun fromUInt(value: UInt) = Flags32(value.toInt())
 
         @JvmStatic
-        fun fromInt(value: Int) = Flags32(value)
+        inline fun fromInt(value: Int) = Flags32(value)
     }
 }
