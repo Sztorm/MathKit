@@ -7,7 +7,7 @@ import kotlin.jvm.JvmStatic
 
 @JvmInline
 value class Flags64(val longValue: Long) {
-    inline val ulongValue: ULong
+    inline val uLongValue: ULong
         get() = longValue.toULong()
 
     inline operator fun get(index: Int): Boolean = ((longValue ushr index) and 1L) != 0L

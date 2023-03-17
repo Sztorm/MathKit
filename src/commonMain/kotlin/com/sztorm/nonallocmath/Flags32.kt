@@ -7,7 +7,7 @@ import kotlin.jvm.JvmStatic
 
 @JvmInline
 value class Flags32(val intValue: Int) {
-    inline val uintValue: UInt
+    inline val uIntValue: UInt
         get() = intValue.toUInt()
 
     inline operator fun get(index: Int): Boolean = ((intValue ushr index) and 1) != 0
