@@ -9,16 +9,8 @@ class ComplexFTests {
 
     @ParameterizedTest
     @MethodSource("complices")
-    fun complexContentsAreValid(real: Float, imaginary: Float) {
-        val complex = ComplexF(real, imaginary)
-
-        // Comparing anything with NaN always returns false. To compare exact contents we need to
-        // compare bits.
-        assertTrue(
-            complex.real.toRawBits() == real.toRawBits() &&
-                    complex.imaginary.toRawBits() == imaginary.toRawBits()
-        )
-    }
+    fun complexContentsAreValid(real: Float, imaginary: Float) =
+        assertTrue(equalsBitwise(ComplexF(real, imaginary), real, imaginary))
 
     companion object {
         @JvmStatic
