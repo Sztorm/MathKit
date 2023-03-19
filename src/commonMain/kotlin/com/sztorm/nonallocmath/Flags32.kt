@@ -26,6 +26,9 @@ value class Flags32(val intValue: Int) {
     inline fun hasAny(flags: Flags32) = (intValue and flags.intValue) != 0
 
     companion object {
+        const val SIZE_BYTES: Int = 4
+        const val SIZE_BITS: Int = 32
+
         @JvmStatic
         inline fun fromUInt(value: UInt) = Flags32(value.toInt())
 

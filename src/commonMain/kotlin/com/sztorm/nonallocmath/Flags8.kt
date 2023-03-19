@@ -31,6 +31,9 @@ value class Flags8(val byteValue: Byte) {
     inline fun hasAny(flags: Flags8) = (byteValue.toInt() and flags.byteValue.toInt()) != 0
 
     companion object {
+        const val SIZE_BYTES: Int = 1
+        const val SIZE_BITS: Int = 8
+
         @JvmStatic
         inline fun fromUByte(value: UByte) = Flags8(value.toByte())
 

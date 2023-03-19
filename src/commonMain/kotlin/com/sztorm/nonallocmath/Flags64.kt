@@ -27,6 +27,9 @@ value class Flags64(val longValue: Long) {
     inline fun hasAny(flags: Flags64) = (longValue and flags.longValue) != 0L
 
     companion object {
+        const val SIZE_BYTES: Int = 8
+        const val SIZE_BITS: Int = 64
+
         @JvmStatic
         inline fun fromULong(value: ULong) = Flags64(value.toLong())
 

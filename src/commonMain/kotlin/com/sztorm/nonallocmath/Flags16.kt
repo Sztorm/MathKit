@@ -31,6 +31,9 @@ value class Flags16(val shortValue: Short) {
     inline fun hasAny(flags: Flags16) = (shortValue.toInt() and flags.shortValue.toInt()) != 0
 
     companion object {
+        const val SIZE_BYTES: Int = 2
+        const val SIZE_BITS: Int = 16
+
         @JvmStatic
         inline fun fromUShort(value: UShort) = Flags16(value.toShort())
 
