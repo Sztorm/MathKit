@@ -54,15 +54,9 @@ value class Vector2F private constructor(private val data: Long) {
         get() {
             val magnitude = this.magnitude
 
-            return if (magnitude > 0.00001) this / magnitude
+            return if (magnitude > 0.00001f) this / magnitude
             else ZERO
         }
-
-    inline operator fun component1(): Float = x
-
-    inline operator fun component2(): Float = y
-
-    inline infix fun dot(other: Vector2F): Float = x * other.x + y * other.y
 
     inline fun squaredDistanceTo(other: Vector2F): Float {
         val dX = other.x - this.x
@@ -82,6 +76,12 @@ value class Vector2F private constructor(private val data: Long) {
 
     inline fun isApproximately(other: Vector2F, epsilon: Float = 0.00001f): Boolean =
         x.isApproximately(other.x, epsilon) && y.isApproximately(other.y, epsilon)
+
+    inline infix fun dot(other: Vector2F): Float = x * other.x + y * other.y
+
+    inline operator fun component1(): Float = x
+
+    inline operator fun component2(): Float = y
 
     inline operator fun get(index: Int): Float = when (index) {
         0 -> x
@@ -104,6 +104,17 @@ value class Vector2F private constructor(private val data: Long) {
     inline operator fun div(other: Vector2F) = Vector2F(x / other.x, y / other.y)
 
     inline operator fun div(other: Float) = Vector2F(x / other, y / other)
+
+    /**
+     * Converts this [Vector2F] value to [Vector2I].
+     *
+     * For each component:
+     *
+     * The fractional part, if any, is rounded down towards zero. Returns zero if this [Float]
+     * value is NaN, [Int.MIN_VALUE] if it's less than [Int.MIN_VALUE], [Int.MAX_VALUE] if it's
+     * bigger than [Int.MAX_VALUE].
+     */
+    inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 
     companion object {
         const val SIZE_BYTES: Int = 8
