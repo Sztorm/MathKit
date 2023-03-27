@@ -1,8 +1,8 @@
 package nonallocmath
 
 import com.sztorm.nonallocmath.Vector2F
-import com.sztorm.nonallocmath.Vector2F.Companion.times
 import com.sztorm.nonallocmath.isApproximately
+import com.sztorm.nonallocmath.times
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.*
 import org.junit.jupiter.params.provider.*
@@ -174,11 +174,10 @@ class Vector2FTests {
             equalsBitwise(
                 Vector2F(x, y) * scalar,
                 x * scalar, y * scalar
-            ) &&
-                    equalsBitwise(
-                        scalar * Vector2F(x, y),
-                        x * scalar, y * scalar
-                    )
+            ) && equalsBitwise(
+                scalar * Vector2F(x, y),
+                x * scalar, y * scalar
+            )
         )
 
     @ParameterizedTest
@@ -202,6 +201,14 @@ class Vector2FTests {
         )
 
     companion object {
+        /**
+         * Compares vector with two floats bitwise. Useful when comparing NaNs.
+         */
+        @JvmStatic
+        fun equalsBitwise(vec: Vector2F, x: Float, y: Float) =
+            vec.x.toRawBits() == x.toRawBits() &&
+                    vec.y.toRawBits() == y.toRawBits()
+
         @JvmStatic
         fun vectors(): List<Arguments> = listOf(
             Arguments.of(2f, 4f),

@@ -8,6 +8,8 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
+inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
+
 @JvmInline
 value class Vector2F private constructor(private val data: Long) {
 
@@ -135,9 +137,6 @@ value class Vector2F private constructor(private val data: Long) {
         /** Value of (-∞, -∞) **/
         inline val NEGATIVE_INFINITY
             @JvmStatic get() = Vector2F(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY)
-
-        @JvmStatic
-        inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
 
         @JvmStatic
         inline fun lerp(a: Vector2F, b: Vector2F, t: Float) =

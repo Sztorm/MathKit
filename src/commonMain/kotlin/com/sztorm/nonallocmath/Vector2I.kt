@@ -8,6 +8,8 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
+inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
+
 @JvmInline
 value class Vector2I private constructor(private val data: Long) {
 
@@ -97,9 +99,6 @@ value class Vector2I private constructor(private val data: Long) {
         /** Value of (1, 1) **/
         inline val ONE
             @JvmStatic get() = Vector2I(1, 1)
-
-        @JvmStatic
-        inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
 
         @JvmStatic
         inline fun max(a: Vector2I, b: Vector2I) = Vector2I(max(a.x, b.x), max(a.y, b.y))

@@ -1,8 +1,8 @@
 package nonallocmath
 
 import com.sztorm.nonallocmath.Vector2I
-import com.sztorm.nonallocmath.Vector2I.Companion.times
 import com.sztorm.nonallocmath.isApproximately
+import com.sztorm.nonallocmath.times
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.*
 import org.junit.jupiter.params.provider.*
