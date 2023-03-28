@@ -98,8 +98,7 @@ class Vector2FTests {
                 a = Vector2F(0f, 10f),
                 b = Vector2F(10f, 20f),
                 t = Vector2F(0.5f, 0.1f)
-            )
-                .isApproximately(Vector2F(5f, 11f))
+            ).isApproximately(Vector2F(5f, 11f))
         )
 
     @Test
@@ -109,8 +108,7 @@ class Vector2FTests {
                 a = Vector2F(0f, 10f),
                 b = Vector2F(10f, 20f),
                 t = Vector2F(5f, 11f)
-            )
-                .isApproximately(Vector2F(0.5f, 0.1f))
+            ).isApproximately(Vector2F(0.5f, 0.1f))
         )
 
     @Test
@@ -139,64 +137,64 @@ class Vector2FTests {
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun plusOperatorAddsVectors(x1: Float, y1: Float, x2: Float, y2: Float) =
+    fun plusOperatorAddsVectors(a: Pair<Float, Float>, b: Pair<Float, Float>) =
         assertTrue(
             equalsBitwise(
-                Vector2F(x1, y1) + Vector2F(x2, y2),
-                x1 + x2, y1 + y2
+                Vector2F(a.first, a.second) + Vector2F(b.first, b.second),
+                a.first + b.first, a.second + b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun minusOperatorSubtractsVectors(x1: Float, y1: Float, x2: Float, y2: Float) =
+    fun minusOperatorSubtractsVectors(a: Pair<Float, Float>, b: Pair<Float, Float>) =
         assertTrue(
             equalsBitwise(
-                Vector2F(x1, y1) - Vector2F(x2, y2),
-                x1 - x2, y1 - y2
+                Vector2F(a.first, a.second) - Vector2F(b.first, b.second),
+                a.first - b.first, a.second - b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun timesOperatorMultipliesVectorsComponentwise(x1: Float, y1: Float, x2: Float, y2: Float) =
+    fun timesOperatorMultipliesVectorsComponentwise(a: Pair<Float, Float>, b: Pair<Float, Float>) =
         assertTrue(
             equalsBitwise(
-                Vector2F(x1, y1) * Vector2F(x2, y2),
-                x1 * x2, y1 * y2
+                Vector2F(a.first, a.second) * Vector2F(b.first, b.second),
+                a.first * b.first, a.second * b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorAndScalarArgs")
-    fun timesOperatorMultipliesVectorsByScalar(x: Float, y: Float, scalar: Float) =
+    fun timesOperatorMultipliesVectorsByScalar(a: Pair<Float, Float>, b: Float) =
         assertTrue(
             equalsBitwise(
-                Vector2F(x, y) * scalar,
-                x * scalar, y * scalar
+                Vector2F(a.first, a.second) * b,
+                a.first * b, a.second * b
             ) && equalsBitwise(
-                scalar * Vector2F(x, y),
-                x * scalar, y * scalar
+                b * Vector2F(a.first, a.second),
+                b * a.first, b * a.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun divOperatorDividesVectorsComponentwise(x1: Float, y1: Float, x2: Float, y2: Float) =
+    fun divOperatorDividesVectorsComponentwise(a: Pair<Float, Float>, b: Pair<Float, Float>) =
         assertTrue(
             equalsBitwise(
-                Vector2F(x1, y1) / Vector2F(x2, y2),
-                x1 / x2, y1 / y2
+                Vector2F(a.first, a.second) / Vector2F(b.first, b.second),
+                a.first / b.first, a.second / b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorAndScalarArgs")
-    fun divOperatorDividesVectorsByScalar(x: Float, y: Float, scalar: Float) =
+    fun divOperatorDividesVectorsByScalar(a: Pair<Float, Float>, b: Float) =
         assertTrue(
             equalsBitwise(
-                Vector2F(x, y) / scalar,
-                x / scalar, y / scalar
+                Vector2F(a.first, a.second) / b,
+                a.first / b, a.second / b
             )
         )
 
@@ -207,7 +205,7 @@ class Vector2FTests {
         @JvmStatic
         fun equalsBitwise(vec: Vector2F, x: Float, y: Float) =
             vec.x.toRawBits() == x.toRawBits() &&
-                    vec.y.toRawBits() == y.toRawBits()
+            vec.y.toRawBits() == y.toRawBits()
 
         @JvmStatic
         fun vectors(): List<Arguments> = listOf(
@@ -219,18 +217,18 @@ class Vector2FTests {
 
         @JvmStatic
         fun vectorAndScalarArgs(): List<Arguments> = listOf(
-            Arguments.of(2f, 4f, 3f),
-            Arguments.of(2f, Float.NaN, Float.NaN),
-            Arguments.of(Float.NEGATIVE_INFINITY, -1f, 5f),
-            Arguments.of(-1f, Float.NEGATIVE_INFINITY, 0.1f),
+            Arguments.of(Pair(2f, 4f), 3f),
+            Arguments.of(Pair(2f, Float.NaN), Float.NaN),
+            Arguments.of(Pair(Float.NEGATIVE_INFINITY, -1f), 5f),
+            Arguments.of(Pair(-1f, Float.NEGATIVE_INFINITY), 0.1f),
         )
 
         @JvmStatic
         fun vectorPairs(): List<Arguments> = listOf(
-            Arguments.of(2f, 4f, 3f, 1f),
-            Arguments.of(2f, Float.NaN, Float.NaN, 5f),
-            Arguments.of(Float.NEGATIVE_INFINITY, -1f, 5f, 6f),
-            Arguments.of(-1f, Float.NEGATIVE_INFINITY, 0.1f, Float.POSITIVE_INFINITY),
+            Arguments.of(Pair(2f, 4f), Pair(3f, 1f)),
+            Arguments.of(Pair(2f, Float.NaN), Pair(Float.NaN, 5f)),
+            Arguments.of(Pair(Float.NEGATIVE_INFINITY, -1f), Pair(5f, 6f)),
+            Arguments.of(Pair(-1f, Float.NEGATIVE_INFINITY), Pair(0.1f, Float.POSITIVE_INFINITY)),
         )
     }
 }

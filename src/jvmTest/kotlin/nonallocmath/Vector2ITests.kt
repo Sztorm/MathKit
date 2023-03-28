@@ -85,65 +85,64 @@ class Vector2ITests {
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun plusOperatorAddsVectors(x1: Int, y1: Int, x2: Int, y2: Int) =
+    fun plusOperatorAddsVectors(a: Pair<Int, Int>, b: Pair<Int, Int>) =
         assertTrue(
             equals(
-                Vector2I(x1, y1) + Vector2I(x2, y2),
-                x1 + x2, y1 + y2
+                Vector2I(a.first, a.second) + Vector2I(b.first, b.second),
+                a.first + b.first, a.second + b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun minusOperatorSubtractsVectors(x1: Int, y1: Int, x2: Int, y2: Int) =
+    fun minusOperatorSubtractsVectors(a: Pair<Int, Int>, b: Pair<Int, Int>) =
         assertTrue(
             equals(
-                Vector2I(x1, y1) - Vector2I(x2, y2),
-                x1 - x2, y1 - y2
+                Vector2I(a.first, a.second) - Vector2I(b.first, b.second),
+                a.first - b.first, a.second - b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun timesOperatorMultipliesVectorsComponentwise(x1: Int, y1: Int, x2: Int, y2: Int) =
+    fun timesOperatorMultipliesVectorsComponentwise(a: Pair<Int, Int>, b: Pair<Int, Int>) =
         assertTrue(
             equals(
-                Vector2I(x1, y1) * Vector2I(x2, y2),
-                x1 * x2, y1 * y2
+                Vector2I(a.first, a.second) * Vector2I(b.first, b.second),
+                a.first * b.first, a.second * b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorAndScalarArgs")
-    fun timesOperatorMultipliesVectorsByScalar(x: Int, y: Int, scalar: Int) =
+    fun timesOperatorMultipliesVectorsByScalar(a: Pair<Int, Int>, b: Int) =
         assertTrue(
             equals(
-                Vector2I(x, y) * scalar,
-                x * scalar, y * scalar
-            ) &&
-            equals(
-                scalar * Vector2I(x, y),
-                x * scalar, y * scalar
+                Vector2I(a.first, a.second) * b,
+                a.first * b, a.second * b
+            ) && equals(
+                b * Vector2I(a.first, a.second),
+                a.first * b, a.second * b
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun divOperatorDividesVectorsComponentwise(x1: Int, y1: Int, x2: Int, y2: Int) =
+    fun divOperatorDividesVectorsComponentwise(a: Pair<Int, Int>, b: Pair<Int, Int>) =
         assertTrue(
             equals(
-                Vector2I(x1, y1) / Vector2I(x2, y2),
-                x1 / x2, y1 / y2
+                Vector2I(a.first, a.second) / Vector2I(b.first, b.second),
+                a.first / b.first, a.second / b.second
             )
         )
 
     @ParameterizedTest
     @MethodSource("vectorAndScalarArgs")
-    fun divOperatorDividesVectorsByScalar(x: Int, y: Int, scalar: Int) =
+    fun divOperatorDividesVectorsByScalar(a: Pair<Int, Int>, b: Int) =
         assertTrue(
             equals(
-                Vector2I(x, y) / scalar,
-                x / scalar, y / scalar
+                Vector2I(a.first, a.second) / b,
+                a.first / b, a.second / b
             )
         )
 
@@ -160,16 +159,16 @@ class Vector2ITests {
 
         @JvmStatic
         fun vectorAndScalarArgs(): List<Arguments> = listOf(
-            Arguments.of(2, 4, 3),
-            Arguments.of(-2, 4, 1),
-            Arguments.of(Int.MIN_VALUE, 0, -2),
+            Arguments.of(Pair(2, 4), 3),
+            Arguments.of(Pair(-2, 4), 1),
+            Arguments.of(Pair(Int.MIN_VALUE, 0), -2),
         )
 
         @JvmStatic
         fun vectorPairs(): List<Arguments> = listOf(
-            Arguments.of(2, 4, 6, 8),
-            Arguments.of(-1, 4, 2, -3),
-            Arguments.of(Int.MIN_VALUE, Int.MAX_VALUE, Int.MAX_VALUE, Int.MIN_VALUE),
+            Arguments.of(Pair(2, 4), Pair(6, 8)),
+            Arguments.of(Pair(-1, 4), Pair(2, -3)),
+            Arguments.of(Pair(Int.MIN_VALUE, Int.MAX_VALUE), Pair(Int.MAX_VALUE, Int.MIN_VALUE)),
         )
     }
 }
