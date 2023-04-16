@@ -11,7 +11,7 @@ import kotlin.math.sqrt
 inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
 
 @JvmInline
-value class Vector2I private constructor(private val data: Long) {
+value class Vector2I internal constructor(internal val data: Long) {
 
     constructor(x: Int, y: Int) : this(data =
         (x.toLong() and 0xFFFFFFFFL) or
