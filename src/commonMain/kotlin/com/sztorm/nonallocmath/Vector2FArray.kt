@@ -1,11 +1,13 @@
 @file:Suppress(
     "ConvertTwoComparisonsToRangeCheck",
     "MemberVisibilityCanBePrivate",
+    "OVERRIDE_BY_INLINE",
     "ReplaceManualRangeWithIndicesCalls",
     "ReplaceRangeToWithUntil",
     "ReplaceSizeCheckWithIsNotEmpty",
     "ReplaceSizeZeroCheckWithIsEmpty",
-    "unused", "UseWithIndex", "OVERRIDE_BY_INLINE",
+    "unused",
+    "UseWithIndex",
 )
 
 package com.sztorm.nonallocmath
@@ -66,6 +68,15 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
         get() = data.size
 
     override fun contains(element: Vector2F): Boolean = data.contains(element.data)
+
+    override fun containsAll(elements: Collection<Vector2F>): Boolean {
+        for (v in elements) {
+            if (!contains(v)) {
+                return false
+            }
+        }
+        return true
+    }
 
     inline fun elementAt(index: Int): Vector2F = this[index]
 
@@ -198,12 +209,12 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
 
     fun drop(n: Int): List<Vector2F> {
         require(n >= 0) { "Requested element count $n is less than zero." }
-        return takeLast((size - n).coerceAtLeast(0))
+        return takeLastInternal((size - n).coerceAtLeast(0))
     }
 
     fun dropLast(n: Int): List<Vector2F> {
         require(n >= 0) { "Requested element count $n is less than zero." }
-        return take((size - n).coerceAtLeast(0))
+        return takeInternal((size - n).coerceAtLeast(0))
     }
 
     inline fun dropLastWhile(predicate: (Vector2F) -> Boolean): List<Vector2F> {
@@ -217,17 +228,26 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
 
     inline fun dropWhile(predicate: (Vector2F) -> Boolean): List<Vector2F> {
         var yielding = false
-        val list = ArrayList<Vector2F>()
+        var index = 0
 
         for (i in 0..lastIndex) {
             val item: Vector2F = this[i]
 
-            if (yielding) {
-                list.add(item)
-            } else if (!predicate(item)) {
-                list.add(item)
+            if (!predicate(item)) {
+                index = i
                 yielding = true
+                break
             }
+        }
+        if (!yielding) {
+            return emptyList()
+        }
+        val list = ArrayList<Vector2F>(size - index)
+
+        for (i in index..lastIndex) {
+            val item: Vector2F = this[i]
+
+            list.add(item)
         }
         return list
     }
@@ -237,7 +257,7 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
         else copyOfRange(indices.first, indices.last + 1).asList()
 
     fun slice(indices: Iterable<Int>): List<Vector2F> {
-        val size: Int = if (indices is Collection<Int>) this.size else 10
+        val size: Int = if (indices is Collection<Int>) indices.size else 10
 
         if (size == 0) {
             return emptyList()
@@ -264,32 +284,31 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
         if (indices.isEmpty()) Vector2FArray(0)
         else copyOfRange(indices.first, indices.last + 1)
 
-    fun take(n: Int): List<Vector2F> {
-        require(n >= 0) { "Requested element count $n is less than zero." }
-        return when {
-            n == 0 -> emptyList()
-            n >= size -> toList()
-            n == 1 -> listOf(this[0])
-            else -> {
-                var count = 0
-                val list = ArrayList<Vector2F>(n)
+    private inline fun takeInternal(n: Int): List<Vector2F> = when {
+        n == 0 -> emptyList()
+        n >= size -> toList()
+        n == 1 -> listOf(this[0])
+        else -> {
+            var count = 0
+            val list = ArrayList<Vector2F>(n)
 
-                for (item in this) {
-                    list.add(item)
+            for (item in this) {
+                list.add(item)
 
-                    if (++count == n) {
-                        break
-                    }
+                if (++count == n) {
+                    break
                 }
-                list
             }
+            list
         }
-
-
     }
 
-    fun takeLast(n: Int): List<Vector2F> {
+    fun take(n: Int): List<Vector2F> {
         require(n >= 0) { "Requested element count $n is less than zero." }
+        return takeInternal(n)
+    }
+
+    private inline fun takeLastInternal(n: Int): List<Vector2F> {
         if (n == 0) {
             return emptyList()
         }
@@ -307,6 +326,11 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
                 list
             }
         }
+    }
+
+    fun takeLast(n: Int): List<Vector2F> {
+        require(n >= 0) { "Requested element count $n is less than zero." }
+        return takeLastInternal(n)
     }
 
     inline fun takeLastWhile(predicate: (Vector2F) -> Boolean): List<Vector2F> {
@@ -548,15 +572,6 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
             sum += element
         }
         return sum
-    }
-
-    override fun containsAll(elements: Collection<Vector2F>): Boolean {
-        for (v in elements) {
-            if (!contains(v)) {
-                return false
-            }
-        }
-        return true
     }
 
     override fun iterator(): Vector2FIterator = Vector2FIteratorImpl(this)

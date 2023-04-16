@@ -139,14 +139,17 @@ value class Vector2F internal constructor(internal val data: Long) {
             @JvmStatic get() = Vector2F(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY)
 
         @JvmStatic
+        @Suppress("SpellCheckingInspection")
         inline fun lerp(a: Vector2F, b: Vector2F, t: Float) =
             Vector2F(Float.lerp(a.x, b.x, t), Float.lerp(a.y, b.y, t))
 
         @JvmStatic
+        @Suppress("SpellCheckingInspection")
         inline fun lerp(a: Vector2F, b: Vector2F, t: Vector2F) =
             Vector2F(Float.lerp(a.x, b.x, t.x), Float.lerp(a.y, b.y, t.y))
 
         @JvmStatic
+        @Suppress("SpellCheckingInspection")
         inline fun inverseLerp(a: Vector2F, b: Vector2F, t: Vector2F) =
             Vector2F(Float.inverseLerp(a.x, b.x, t.x), Float.inverseLerp(a.y, b.y, t.y))
 

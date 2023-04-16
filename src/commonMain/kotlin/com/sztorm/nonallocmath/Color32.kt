@@ -50,6 +50,7 @@ value class Color32 private constructor(private val data: Int) {
         const val SIZE_BITS: Int = 32
 
         @JvmStatic
+        @Suppress("SpellCheckingInspection")
         fun lerp(a: Color32, b: Color32, t: Float): Color32 {
             val ar: UByte = a.r
             val ag: UByte = a.g
