@@ -80,10 +80,27 @@ class Vector2FTests {
     fun coerceInReturnsCorrectValue() =
         assertTrue(
             Vector2F(3f, 4f)
-                .coerceIn(min = Vector2F(0f, 5f), max = Vector2F(2f, 10f))
+                .coerceIn(minimum = Vector2F(0f, 5f), maximum = Vector2F(2f, 10f))
                 .isApproximately(Vector2F(2f, 5f))
         )
 
+    @Test
+    fun coerceAtLeastReturnsCorrectValue() =
+        assertTrue(
+            Vector2F(3f, 4f)
+                .coerceAtLeast(minimum = Vector2F(0f, 5f))
+                .isApproximately(Vector2F(3f, 5f))
+        )
+
+    @Test
+    fun coerceAtMostReturnsCorrectValue() =
+        assertTrue(
+            Vector2F(3f, 4f)
+                .coerceAtMost(maximum = Vector2F(2f, 10f))
+                .isApproximately(Vector2F(2f, 4f))
+        )
+
+    @Suppress("SpellCheckingInspection")
     @Test
     fun lerpReturnsCorrectValue() =
         assertTrue(
@@ -91,6 +108,7 @@ class Vector2FTests {
                 .isApproximately(Vector2F(5f, 15f))
         )
 
+    @Suppress("SpellCheckingInspection")
     @Test
     fun lerpVector2ReturnsCorrectValue() =
         assertTrue(
@@ -101,6 +119,7 @@ class Vector2FTests {
             ).isApproximately(Vector2F(5f, 11f))
         )
 
+    @Suppress("SpellCheckingInspection")
     @Test
     fun inverseLerpInReturnsCorrectValue() =
         assertTrue(
@@ -157,7 +176,7 @@ class Vector2FTests {
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun timesOperatorMultipliesVectorsComponentwise(a: Pair<Float, Float>, b: Pair<Float, Float>) =
+    fun timesOperatorMultipliesVectorsComponentWise(a: Pair<Float, Float>, b: Pair<Float, Float>) =
         assertTrue(
             equalsBitwise(
                 Vector2F(a.first, a.second) * Vector2F(b.first, b.second),
@@ -180,7 +199,7 @@ class Vector2FTests {
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun divOperatorDividesVectorsComponentwise(a: Pair<Float, Float>, b: Pair<Float, Float>) =
+    fun divOperatorDividesVectorsComponentWise(a: Pair<Float, Float>, b: Pair<Float, Float>) =
         assertTrue(
             equalsBitwise(
                 Vector2F(a.first, a.second) / Vector2F(b.first, b.second),
@@ -205,7 +224,7 @@ class Vector2FTests {
         @JvmStatic
         fun equalsBitwise(vec: Vector2F, x: Float, y: Float) =
             vec.x.toRawBits() == x.toRawBits() &&
-            vec.y.toRawBits() == y.toRawBits()
+                    vec.y.toRawBits() == y.toRawBits()
 
         @JvmStatic
         fun vectors(): List<Arguments> = listOf(
