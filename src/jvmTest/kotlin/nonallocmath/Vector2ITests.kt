@@ -48,6 +48,22 @@ class Vector2ITests {
         assertTrue(Vector2I(3, 4).magnitude.isApproximately(5f))
 
     @Test
+    fun squaredDistanceToReturnsCorrectValue() =
+        assertTrue(
+            Vector2I(3, 4)
+                .squaredDistanceTo(Vector2I(0, 4))
+                .isApproximately(9f)
+        )
+
+    @Test
+    fun distanceToReturnsCorrectValue() =
+        assertTrue(
+            Vector2I(3, 4)
+                .distanceTo(Vector2I(0, 4))
+                .isApproximately(3f)
+        )
+
+    @Test
     fun dotReturnsCorrectValue() =
         assertTrue(Vector2I(3, 4).dot(Vector2I(0, 4)) == 16)
 
@@ -56,7 +72,21 @@ class Vector2ITests {
         assertEquals(
             expected = Vector2I(2, 5),
             actual = Vector2I(3, 4)
-                .coerceIn(min = Vector2I(0, 5), max = Vector2I(2, 10))
+                .coerceIn(minimum = Vector2I(0, 5), maximum = Vector2I(2, 10))
+        )
+
+    @Test
+    fun coerceAtLeastReturnsCorrectValue() =
+        assertEquals(
+            Vector2I(3, 4).coerceAtLeast(minimum = Vector2I(0, 5)),
+            Vector2I(3, 5)
+        )
+
+    @Test
+    fun coerceAtMostReturnsCorrectValue() =
+        assertEquals(
+            Vector2I(3, 4).coerceAtMost(maximum = Vector2I(2, 10)),
+            Vector2I(2, 4)
         )
 
     @Test
@@ -105,7 +135,7 @@ class Vector2ITests {
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun timesOperatorMultipliesVectorsComponentwise(a: Pair<Int, Int>, b: Pair<Int, Int>) =
+    fun timesOperatorMultipliesVectorsComponentWise(a: Pair<Int, Int>, b: Pair<Int, Int>) =
         assertTrue(
             equals(
                 Vector2I(a.first, a.second) * Vector2I(b.first, b.second),
@@ -128,7 +158,7 @@ class Vector2ITests {
 
     @ParameterizedTest
     @MethodSource("vectorPairs")
-    fun divOperatorDividesVectorsComponentwise(a: Pair<Int, Int>, b: Pair<Int, Int>) =
+    fun divOperatorDividesVectorsComponentWise(a: Pair<Int, Int>, b: Pair<Int, Int>) =
         assertTrue(
             equals(
                 Vector2I(a.first, a.second) / Vector2I(b.first, b.second),

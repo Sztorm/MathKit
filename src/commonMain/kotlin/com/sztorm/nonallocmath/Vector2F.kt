@@ -171,8 +171,8 @@ value class Vector2F internal constructor(internal val data: Long) {
      * For each component:
      *
      * The fractional part, if any, is rounded down towards zero. Returns zero if this [Float]
-     * value is NaN, [Int.MIN_VALUE] if it's less than [Int.MIN_VALUE], [Int.MAX_VALUE] if it's
-     * bigger than [Int.MAX_VALUE].
+     * component value is NaN, [Int.MIN_VALUE] if it's less than [Int.MIN_VALUE], [Int.MAX_VALUE]
+     * if it's bigger than [Int.MAX_VALUE].
      */
     inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 

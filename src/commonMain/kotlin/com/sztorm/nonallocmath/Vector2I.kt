@@ -8,39 +8,55 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
+/** Multiplies this vector by the scalar. **/
 inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
 
+/**
+ * Represents a vector of two 32-bit signed integers.
+ * On the JVM, non-nullable values of this type are represented as values of the primitive type
+ * `long`.
+ */
 @JvmInline
 value class Vector2I internal constructor(internal val data: Long) {
 
-    constructor(x: Int, y: Int) : this(data =
+    /** Constructs a new vector with given [x] and [y] components. **/
+    constructor(x: Int, y: Int) : this(
+        data =
         (x.toLong() and 0xFFFFFFFFL) or
-        (y.toLong() shl Int.SIZE_BITS))
+                (y.toLong() shl Int.SIZE_BITS)
+    )
 
+    /** First component of the vector. **/
     val x: Int
         get() = data.toInt()
 
+    /** Second component of the vector. **/
     val y: Int
         get() = (data ushr Int.SIZE_BITS).toInt()
 
+    /** Returns vector composed of two [x] components of this vector. **/
     inline val xx: Vector2I
         get() {
             val x = this.x
             return Vector2I(x, x)
         }
 
+    /** Returns vector composed of two [y] components of this vector. **/
     inline val yy: Vector2I
         get() {
             val y = this.y
             return Vector2I(y, y)
         }
 
+    /** Returns vector composed of [x] and [y] components respectively. **/
     inline val xy: Vector2I
         get() = this
 
+    /** Returns vector composed of [y] and [x] components respectively. **/
     inline val yx: Vector2I
         get() = Vector2I(y, x)
 
+    /** Returns squared magnitude of this vector. **/
     inline val squaredMagnitude: Float
         get() {
             val x = this.x.toFloat()
@@ -48,48 +64,105 @@ value class Vector2I internal constructor(internal val data: Long) {
             return x * x + y * y
         }
 
+    /** Returns magnitude (length) of this vector. **/
     inline val magnitude: Float
         get() = sqrt(squaredMagnitude)
 
-    inline fun coerceIn(min: Vector2I, max: Vector2I) =
-        Vector2I(x.coerceIn(min.x, max.x), y.coerceIn(min.y, max.y))
+    /** Returns squared distance from this vector to the [other]. **/
+    inline fun squaredDistanceTo(other: Vector2I): Float {
+        val dX = (other.x - this.x).toFloat()
+        val dY = (other.y - this.y).toFloat()
 
+        return dX * dX + dY * dY
+    }
+
+    /** Returns distance from this vector to the [other]. **/
+    inline fun distanceTo(other: Vector2I): Float = sqrt(squaredDistanceTo(other))
+
+    /**
+     * Returns vector composed of [x] and [y] components coerced to specified range of
+     * [minimum]..[maximum].
+     */
+    inline fun coerceIn(minimum: Vector2I, maximum: Vector2I) =
+        Vector2I(x.coerceIn(minimum.x, maximum.x), y.coerceIn(minimum.y, maximum.y))
+
+    /**
+     * Returns vector composed of [x] and [y] components that are not less than the specified
+     * [minimum] components.
+     */
+    inline fun coerceAtLeast(minimum: Vector2I) = Vector2I(max(x, minimum.x), max(y, minimum.y))
+
+    /**
+     * Returns vector composed of [x] and [y] components that are not greater than the specified
+     * [maximum] components.
+     */
+    inline fun coerceAtMost(maximum: Vector2I) = Vector2I(min(x, maximum.x), min(y, maximum.y))
+
+    /** Returns [String] in ([x],[y]) format. **/
     override fun toString(): String = StringBuilder(1 + 11 + 2 + 11 + 1)
         .append('(').append(x).append(", ").append(y).append(')')
         .toString()
 
+    /** Returns dot product of this and [other] vector. **/
     inline infix fun dot(other: Vector2I): Int = x * other.x + y * other.y
 
+    /** First component of the vector. **/
     inline operator fun component1(): Int = x
 
+    /** Second component of the vector. **/
     inline operator fun component2(): Int = y
 
+    /**
+     * Returns component specified by [index].
+     *
+     * @throws [IndexOutOfBoundsException] when [index] is out of range of 0..1.
+     */
     inline operator fun get(index: Int): Int = when (index) {
         0 -> x
         1 -> y
         else -> throw IndexOutOfBoundsException("Index of $index is out of bounds of 0..1")
     }
 
+    /** Returns this vector. **/
     inline operator fun unaryPlus() = this
 
+    /** Returns the negative of this vector. **/
     inline operator fun unaryMinus() = Vector2I(-x, -y)
 
+    /** Adds the other vector to this vector. **/
     inline operator fun plus(other: Vector2I) = Vector2I(x + other.x, y + other.y)
 
+    /** Subtracts the other vector from this vector. **/
     inline operator fun minus(other: Vector2I) = Vector2I(x - other.x, y - other.y)
 
+    /** Multiplies this vector by the other vector component-wise. **/
     inline operator fun times(other: Vector2I) = Vector2I(x * other.x, y * other.y)
 
+    /** Multiplies this vector by the scalar. **/
     inline operator fun times(other: Int) = Vector2I(x * other, y * other)
 
+    /** Divides this vector by the other vector component-wise. **/
     inline operator fun div(other: Vector2I) = Vector2I(x / other.x, y / other.y)
 
+    /** Divides this vector by the scalar. **/
     inline operator fun div(other: Int) = Vector2I(x / other, y / other)
 
+    /**
+     * Converts this [Vector2I] value to [Vector2F].
+     *
+     * For each component:
+     *
+     * The resulting value is the closest [Float] to this [Int] component value. In case when this
+     * [Int] component value is exactly between two [Float]s, the one with zero at least
+     * significant bit of mantissa is selected.
+     */
     inline fun toVector2F() = Vector2F(x.toFloat(), y.toFloat())
 
     companion object {
+        /** The number of bits used to represent an instance of [Vector2I] in a binary form. **/
         const val SIZE_BYTES: Int = 8
+
+        /** The number of bytes used to represent an instance of [Vector2I] in a binary form. **/
         const val SIZE_BITS: Int = 64
 
         /** Value of (0, 0) **/
@@ -100,9 +173,11 @@ value class Vector2I internal constructor(internal val data: Long) {
         inline val ONE
             @JvmStatic get() = Vector2I(1, 1)
 
+        /** Returns a vector that is made from the largest components of two vectors. **/
         @JvmStatic
         inline fun max(a: Vector2I, b: Vector2I) = Vector2I(max(a.x, b.x), max(a.y, b.y))
 
+        /** Returns a vector that is made from the smallest components of two vectors. **/
         @JvmStatic
         inline fun min(a: Vector2I, b: Vector2I) = Vector2I(min(a.x, b.x), min(a.y, b.y))
     }
