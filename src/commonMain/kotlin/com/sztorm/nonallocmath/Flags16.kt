@@ -53,6 +53,7 @@ value class Flags16(val shortValue: Short) {
     inline fun hasAny(flags: Flags16) = (shortValue.toInt() and flags.shortValue.toInt()) != 0
 
     companion object {
+
         /** The number of bits used to represent an instance of [Flags16] in a binary form. **/
         const val SIZE_BITS: Int = 16
 
