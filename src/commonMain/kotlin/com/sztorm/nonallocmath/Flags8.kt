@@ -39,9 +39,10 @@ value class Flags8(val byteValue: Byte) {
      * Returns a copy of this flags instance with the specified [flags] set to the particular
      * value.
      */
-    inline fun setting(flags: Flags8, to: Boolean) =
-        Flags8(((byteValue.toInt() and flags.byteValue.toInt().inv()) or
-                (-(if (to) 1 else 0) and flags.byteValue.toInt())).toByte())
+    inline fun setting(flags: Flags8, to: Boolean) = Flags8(
+        ((byteValue.toInt() and flags.byteValue.toInt().inv()) or
+                (-(if (to) 1 else 0) and flags.byteValue.toInt())).toByte()
+    )
 
     /** Returns a value indicating whether this flags instance has all the specified [flags]. **/
     inline fun hasAll(flags: Flags8) =

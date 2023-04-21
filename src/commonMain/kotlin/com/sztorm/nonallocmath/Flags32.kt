@@ -9,7 +9,7 @@ import kotlin.jvm.JvmStatic
  * Represents a collection of thirty-two bit flags.
  *
  * On the JVM, non-nullable values of this type are represented as values of the primitive type
- * `short`.
+ * `int`.
  *
  * @property intValue Returns 32-bit signed integer representation of this type.
  */

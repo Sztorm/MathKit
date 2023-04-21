@@ -39,9 +39,10 @@ value class Flags16(val shortValue: Short) {
      * Returns a copy of this flags instance with the specified [flags] set to the particular
      * value.
      */
-    inline fun setting(flags: Flags16, to: Boolean) =
-        Flags16(((shortValue.toInt() and flags.shortValue.toInt().inv()) or
-                (-(if (to) 1 else 0) and flags.shortValue.toInt())).toShort())
+    inline fun setting(flags: Flags16, to: Boolean) = Flags16(
+        ((shortValue.toInt() and flags.shortValue.toInt().inv()) or
+                (-(if (to) 1 else 0) and flags.shortValue.toInt())).toShort()
+    )
 
     /** Returns a value indicating whether this flags instance has all the specified [flags]. **/
     inline fun hasAll(flags: Flags16) =
