@@ -178,11 +178,12 @@ value class Vector2F internal constructor(internal val data: Long) {
     inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 
     companion object {
+
         /** The number of bits used to represent an instance of [Vector2F] in a binary form. **/
-        const val SIZE_BYTES: Int = 8
+        const val SIZE_BITS: Int = 64
 
         /** The number of bytes used to represent an instance of [Vector2F] in a binary form. **/
-        const val SIZE_BITS: Int = 64
+        const val SIZE_BYTES: Int = 8
 
         /** Value of (0, 0) **/
         inline val ZERO

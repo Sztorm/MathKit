@@ -233,10 +233,10 @@ value class ComplexF private constructor(private val data: Long) {
 
     companion object {
         /** The number of bits used to represent an instance of [ComplexF] in a binary form. **/
-        const val SIZE_BYTES: Int = 8
+        const val SIZE_BITS: Int = 64
 
         /** The number of bytes used to represent an instance of [ComplexF] in a binary form. **/
-        const val SIZE_BITS: Int = 64
+        const val SIZE_BYTES: Int = 8
 
         /** Value of 0 **/
         inline val ZERO
