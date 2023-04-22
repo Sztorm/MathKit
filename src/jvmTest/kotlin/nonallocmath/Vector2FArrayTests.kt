@@ -42,17 +42,6 @@ class Vector2FArrayTests {
     }
 
     @ParameterizedTest
-    @MethodSource("containsArgs")
-    fun containsReturnsCorrectValue(
-        array: Array<Vector2F>, element: Pair<Float, Float>, expected: Boolean
-    ) {
-        val actual: Boolean = array
-            .toVector2FArray().contains(Vector2F(element.first, element.second))
-
-        assertEquals(expected, actual)
-    }
-
-    @ParameterizedTest
     @MethodSource("containsAllArgs")
     fun containsAllReturnsCorrectValue(
         array: Array<Vector2F>, elements: Collection<Vector2F>, expected: Boolean
@@ -896,6 +885,17 @@ class Vector2FArrayTests {
     }
 
     @ParameterizedTest
+    @MethodSource("containsArgs")
+    fun containsReturnsCorrectValue(
+        array: Array<Vector2F>, element: Pair<Float, Float>, expected: Boolean
+    ) {
+        val actual: Boolean = array
+            .toVector2FArray().contains(Vector2F(element.first, element.second))
+
+        assertEquals(expected, actual)
+    }
+
+    @ParameterizedTest
     @MethodSource("iteratorArgs")
     fun iteratorReturnsCorrectValue(array: Array<Vector2F>, expected: Iterator<Vector2F>) {
         val actual = array.toVector2FArray().iterator()
@@ -1014,20 +1014,6 @@ class Vector2FArrayTests {
             Arguments.of(arrayOf(Vector2F(-3f, 5f), Vector2F(-1f, 7f))),
             Arguments.of(emptyArray<Vector2F>()),
         )
-
-        @JvmStatic
-        fun containsArgs(): List<Arguments> {
-            val array = arrayOf(
-                Vector2F(1f, 0f),
-                Vector2F(-5f, 8f),
-                Vector2F(2f, -9f),
-                Vector2F(3f, 4f)
-            )
-            return listOf(
-                Arguments.of(array, Pair(0f, 0f), false),
-                Arguments.of(array, Pair(3f, 4f), true),
-            )
-        }
 
         @JvmStatic
         fun containsAllArgs(): List<Arguments> {
@@ -2000,6 +1986,20 @@ class Vector2FArrayTests {
                     arrayOf(Vector2F(1f, 2f), Vector2F(-2f, -1f), Vector2F(10f, 10f)),
                     Pair(9f, 11f)
                 ),
+            )
+        }
+
+        @JvmStatic
+        fun containsArgs(): List<Arguments> {
+            val array = arrayOf(
+                Vector2F(1f, 0f),
+                Vector2F(-5f, 8f),
+                Vector2F(2f, -9f),
+                Vector2F(3f, 4f)
+            )
+            return listOf(
+                Arguments.of(array, Pair(0f, 0f), false),
+                Arguments.of(array, Pair(3f, 4f), true),
             )
         }
 

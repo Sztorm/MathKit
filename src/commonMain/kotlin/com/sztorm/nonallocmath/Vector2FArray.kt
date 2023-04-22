@@ -67,8 +67,6 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
     override val size: Int
         get() = data.size
 
-    override fun contains(element: Vector2F): Boolean = data.contains(element.data)
-
     override fun containsAll(elements: Collection<Vector2F>): Boolean {
         for (v in elements) {
             if (!contains(v)) {
@@ -574,7 +572,9 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
         return sum
     }
 
-    override fun iterator(): Vector2FIterator = Vector2FIteratorImpl(this)
+    override operator fun contains(element: Vector2F): Boolean = data.contains(element.data)
+
+    override operator fun iterator(): Vector2FIterator = Vector2FIteratorImpl(this)
 
     inline operator fun component1(): Vector2F = this[0]
 
@@ -629,13 +629,6 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
             }
         }
     }
-}
-
-abstract class Vector2FIterator : Iterator<Vector2F> {
-    final override fun next() = nextVector2F()
-
-    /** Returns the next value in the sequence without boxing. **/
-    abstract fun nextVector2F(): Vector2F
 }
 
 private class Vector2FIteratorImpl(private val array: Vector2FArray) : Vector2FIterator() {
