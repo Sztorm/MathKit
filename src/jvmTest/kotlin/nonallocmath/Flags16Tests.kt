@@ -97,7 +97,7 @@ class Flags16Tests {
     fun noneValueReturnsCorrectValue() {
         val none = Flags16.NONE
 
-        for (i in 0..15) {
+        for (i in 0..none.lastIndex) {
             assertFalse(none[i])
         }
     }
@@ -106,67 +106,45 @@ class Flags16Tests {
     fun allValueReturnsCorrectValue() {
         val all = Flags16.ALL
 
-        for (i in 0..15) {
+        for (i in 0..all.lastIndex) {
             assertTrue(all[i])
         }
     }
 
     companion object {
         @JvmStatic
-        fun containsAllArgs(): List<Arguments> {
-            return listOf(
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11100000_00001101u)),
-                    emptyList<Boolean>(),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11100000_00001101u)),
-                    listOf(true, false),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11100000_00001101u)),
-                    listOf(false, false),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11100000_00001101u)),
-                    listOf(true, true),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b00000000_00000000u)),
-                    listOf(true, false),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b00000000_00000000u)),
-                    listOf(false, false),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b00000000_00000000u)),
-                    listOf(true, true),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11111111_11111111u)),
-                    listOf(true, false),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11111111_11111111u)),
-                    listOf(false, false),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags16.fromUShort(0b11111111_11111111u)),
-                    listOf(true, true),
-                    true
-                ),
-            )
-        }
+        fun containsAllArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11100000_00001101u)), emptyList<Boolean>(), true
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11100000_00001101u)), listOf(true, false), true
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11100000_00001101u)), listOf(false, false), true
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11100000_00001101u)), listOf(true, true), true
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b00000000_00000000u)), listOf(true, false), false
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b00000000_00000000u)), listOf(false, false), true
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b00000000_00000000u)), listOf(true, true), false
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11111111_11111111u)), listOf(true, false), false
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11111111_11111111u)), listOf(false, false), false
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11111111_11111111u)), listOf(true, true), true
+            ),
+        )
 
         @JvmStatic
         fun addingArgs(): List<Arguments> = listOf(

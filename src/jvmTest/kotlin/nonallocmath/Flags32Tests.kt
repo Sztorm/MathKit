@@ -97,7 +97,7 @@ class Flags32Tests {
     fun noneValueReturnsCorrectValue() {
         val none = Flags32.NONE
 
-        for (i in 0..15) {
+        for (i in 0..none.lastIndex) {
             assertFalse(none[i])
         }
     }
@@ -106,67 +106,65 @@ class Flags32Tests {
     fun allValueReturnsCorrectValue() {
         val all = Flags32.ALL
 
-        for (i in 0..15) {
+        for (i in 0..all.lastIndex) {
             assertTrue(all[i])
         }
     }
 
     companion object {
         @JvmStatic
-        fun containsAllArgs(): List<Arguments> {
-            return listOf(
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
-                    emptyList<Boolean>(),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
-                    listOf(true, false),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
-                    listOf(false, false),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
-                    listOf(true, true),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u)),
-                    listOf(true, false),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u)),
-                    listOf(false, false),
-                    true
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u)),
-                    listOf(true, true),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u)),
-                    listOf(true, false),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u)),
-                    listOf(false, false),
-                    false
-                ),
-                Arguments.of(
-                    Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u)),
-                    listOf(true, true),
-                    true
-                ),
-            )
-        }
+        fun containsAllArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
+                emptyList<Boolean>(),
+                true
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
+                listOf(true, false),
+                true
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
+                listOf(false, false),
+                true
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)),
+                listOf(true, true),
+                true
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u)),
+                listOf(true, false),
+                false
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u)),
+                listOf(false, false),
+                true
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u)),
+                listOf(true, true),
+                false
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u)),
+                listOf(true, false),
+                false
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u)),
+                listOf(false, false),
+                false
+            ),
+            Arguments.of(
+                Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u)),
+                listOf(true, true),
+                true
+            ),
+        )
 
         @JvmStatic
         fun addingArgs(): List<Arguments> = listOf(

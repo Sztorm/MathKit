@@ -36,8 +36,8 @@ value class Flags16(val shortValue: Short) : Collection<Boolean> {
     override inline fun isEmpty() = false
 
     /**
-     * Returns a value indicating whether all [elements] in the specified collection are contained
-     * in this collection.
+     * Returns a value indicating whether all specified [elements] are contained in this
+     * collection.
      */
     override fun containsAll(elements: Collection<Boolean>): Boolean {
         val it = elements.iterator()

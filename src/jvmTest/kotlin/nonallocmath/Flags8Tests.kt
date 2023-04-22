@@ -97,7 +97,7 @@ class Flags8Tests {
     fun noneValueReturnsCorrectValue() {
         val none = Flags8.NONE
 
-        for (i in 0..7) {
+        for (i in 0..none.lastIndex) {
             assertFalse(none[i])
         }
     }
@@ -106,47 +106,45 @@ class Flags8Tests {
     fun allValueReturnsCorrectValue() {
         val all = Flags8.ALL
 
-        for (i in 0..7) {
+        for (i in 0..all.lastIndex) {
             assertTrue(all[i])
         }
     }
 
     companion object {
         @JvmStatic
-        fun containsAllArgs(): List<Arguments> {
-            return listOf(
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11100001u)), emptyList<Boolean>(), true
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11100001u)), listOf(true, false), true
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11100001u)), listOf(false, false), true
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11100001u)), listOf(true, true), true
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b00000000u)), listOf(true, false), false
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b00000000u)), listOf(false, false), true
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b00000000u)), listOf(true, true), false
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11111111u)), listOf(true, false), false
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11111111u)), listOf(false, false), false
-                ),
-                Arguments.of(
-                    Wrapper(Flags8.fromUByte(0b11111111u)), listOf(true, true), true
-                ),
-            )
-        }
+        fun containsAllArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11100001u)), emptyList<Boolean>(), true
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11100001u)), listOf(true, false), true
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11100001u)), listOf(false, false), true
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11100001u)), listOf(true, true), true
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b00000000u)), listOf(true, false), false
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b00000000u)), listOf(false, false), true
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b00000000u)), listOf(true, true), false
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11111111u)), listOf(true, false), false
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11111111u)), listOf(false, false), false
+            ),
+            Arguments.of(
+                Wrapper(Flags8.fromUByte(0b11111111u)), listOf(true, true), true
+            ),
+        )
 
         @JvmStatic
         fun addingArgs(): List<Arguments> = listOf(
