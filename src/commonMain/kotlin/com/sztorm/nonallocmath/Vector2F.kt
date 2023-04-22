@@ -116,8 +116,8 @@ value class Vector2F internal constructor(internal val data: Long) {
         .toString()
 
     /**
-     * Returns a value indicating whether this vector is approximately [other] vector given
-     * specified [epsilon] tolerance.
+     * Returns a value indicating whether this vector is approximately the [other] vector given
+     * the specified [epsilon] tolerance.
      */
     inline fun isApproximately(other: Vector2F, epsilon: Float = 0.00001f): Boolean =
         x.isApproximately(other.x, epsilon) && y.isApproximately(other.y, epsilon)
