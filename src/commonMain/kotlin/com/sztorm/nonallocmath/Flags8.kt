@@ -1,4 +1,8 @@
-@file:Suppress("unused")
+@file:Suppress(
+    "MemberVisibilityCanBePrivate",
+    "OVERRIDE_BY_INLINE",
+    "unused",
+)
 
 package com.sztorm.nonallocmath
 
@@ -14,14 +18,50 @@ import kotlin.jvm.JvmStatic
  * @property byteValue Returns 8-bit signed integer representation of this type.
  */
 @JvmInline
-value class Flags8(val byteValue: Byte) {
+value class Flags8(val byteValue: Byte) : Collection<Boolean> {
 
     /** Returns 8-bit unsigned integer representation of this type. **/
     inline val uByteValue: UByte
         get() = byteValue.toUByte()
 
-    /** Returns a value indicating whether the bit at [index] is set to 1.**/
-    inline operator fun get(index: Int): Boolean = ((byteValue.toInt() ushr index) and 1) != 0
+    /** Returns the number of flags, which is always 8 for all [Flags8] instances. **/
+    override inline val size: Int
+        get() = 8
+
+    /** Returns the last valid index for this collection. **/
+    inline val lastIndex: Int
+        get() = 7
+
+    /**
+     * Returns a value indicating whether flags collection is empty, which is always false for all
+     * [Flags8] instances.
+     */
+    override inline fun isEmpty() = false
+
+    /**
+     * Returns a value indicating whether all [elements] in the specified collection are contained
+     * in this collection.
+     */
+    override fun containsAll(elements: Collection<Boolean>): Boolean {
+        val it = elements.iterator()
+        // 0 -> elements collection is empty
+        // 1 -> all elements are false
+        // 2 -> all elements are true
+        // 3 -> elements contain true and false
+        var indicator = 0
+
+        while (it.hasNext() && indicator != 0b11) {
+            indicator =
+                if (it.next()) indicator or 0b10
+                else indicator or 0b01
+        }
+        return when(indicator) {
+            1 -> uByteValue != UByte.MAX_VALUE
+            2 -> byteValue.toInt() != 0
+            3 -> uByteValue != UByte.MAX_VALUE && byteValue.toInt() != 0
+            else -> true
+        }
+    }
 
     /** Returns a copy of this flags instance with the specified [flags] added. **/
     inline infix fun adding(flags: Flags8) =
@@ -51,6 +91,16 @@ value class Flags8(val byteValue: Byte) {
     /** Returns a value indicating whether this flags instance has any of the specified [flags]. **/
     inline fun hasAny(flags: Flags8) = (byteValue.toInt() and flags.byteValue.toInt()) != 0
 
+    /** Returns a value indicating whether [element] is contained in this collection. **/
+    override inline operator fun contains(element: Boolean): Boolean =
+        (element && this != NONE) || (!element && this != ALL)
+
+    /** Returns a value indicating whether the bit at [index] is set to 1.**/
+    inline operator fun get(index: Int): Boolean = ((byteValue.toInt() ushr index) and 1) != 0
+
+    /** Returns an iterator of this collection. **/
+    override operator fun iterator(): BooleanIterator = BooleanIteratorImpl(this)
+
     companion object {
 
         /** The number of bits used to represent an instance of [Flags8] in a binary form. **/
@@ -58,6 +108,14 @@ value class Flags8(val byteValue: Byte) {
 
         /** The number of bytes used to represent an instance of [Flags8] in a binary form. **/
         const val SIZE_BYTES: Int = 1
+
+        /** Flags whose none of the bits are set to 1. **/
+        inline val NONE
+            @JvmStatic get() = Flags8(0)
+
+        /** Flags whose all the bits are set to 1. **/
+        inline val ALL
+            @JvmStatic get() = fromUByte(0b11111111u)
 
         /** Creates a new [Flags8] instance using the specified unsigned 8-bit integer [value]. **/
         @JvmStatic
@@ -67,4 +125,14 @@ value class Flags8(val byteValue: Byte) {
         @JvmStatic
         inline fun fromByte(value: Byte) = Flags8(value)
     }
+}
+
+private class BooleanIteratorImpl(private val flags: Flags8) : BooleanIterator() {
+    private var index: Int = 0
+
+    override fun hasNext(): Boolean = index < flags.size
+
+    override fun nextBoolean(): Boolean =
+        if (!hasNext()) throw NoSuchElementException("$index")
+        else flags[index++]
 }
