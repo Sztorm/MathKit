@@ -52,7 +52,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
                 if (it.next()) indicator or 0b10
                 else indicator or 0b01
         }
-        return when(indicator) {
+        return when (indicator) {
             1 -> uByteValue != UByte.MAX_VALUE
             2 -> byteValue.toInt() != 0
             3 -> uByteValue != UByte.MAX_VALUE && byteValue.toInt() != 0
@@ -92,7 +92,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     override inline operator fun contains(element: Boolean): Boolean =
         (element && this != NONE) || (!element && this != ALL)
 
-    /** Returns a value indicating whether the bit at [index] is set to 1.**/
+    /** Returns a value indicating whether the bit at [index] is set to 1. **/
     inline operator fun get(index: Int): Boolean = ((byteValue.toInt() ushr index) and 1) != 0
 
     /** Returns an iterator of this collection. **/
@@ -112,7 +112,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
 
         /** Flags whose all the bits are set to 1. **/
         inline val ALL
-            @JvmStatic get() = fromUByte(0b11111111u)
+            @JvmStatic get() = fromUByte(UByte.MAX_VALUE)
 
         /** Creates a new [Flags8] instance using the specified unsigned 8-bit integer [value]. **/
         @JvmStatic

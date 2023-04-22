@@ -1,4 +1,8 @@
-@file:Suppress("unused")
+@file:Suppress(
+    "MemberVisibilityCanBePrivate",
+    "OVERRIDE_BY_INLINE",
+    "unused",
+)
 
 package com.sztorm.nonallocmath
 
@@ -14,14 +18,47 @@ import kotlin.jvm.JvmStatic
  * @property intValue Returns 32-bit signed integer representation of this type.
  */
 @JvmInline
-value class Flags32(val intValue: Int) {
+value class Flags32(val intValue: Int) : Collection<Boolean> {
 
     /** Returns 32-bit unsigned integer representation of this type. **/
     inline val uIntValue: UInt
         get() = intValue.toUInt()
 
-    /** Returns a value indicating whether the bit at [index] is set to 1.**/
-    inline operator fun get(index: Int): Boolean = ((intValue ushr index) and 1) != 0
+    /** Returns the number of flags, which is always 32. **/
+    override inline val size: Int
+        get() = 32
+
+    /** Returns the last valid index for this collection. **/
+    inline val lastIndex: Int
+        get() = 31
+
+    /** Returns a value indicating whether this collection is empty, which is always false. **/
+    override inline fun isEmpty() = false
+
+    /**
+     * Returns a value indicating whether all [elements] in the specified collection are contained
+     * in this collection.
+     */
+    override fun containsAll(elements: Collection<Boolean>): Boolean {
+        val it = elements.iterator()
+        // 0 -> elements collection is empty
+        // 1 -> all elements are false
+        // 2 -> all elements are true
+        // 3 -> elements contain true and false
+        var indicator = 0
+
+        while (it.hasNext() && indicator != 0b11) {
+            indicator =
+                if (it.next()) indicator or 0b10
+                else indicator or 0b01
+        }
+        return when (indicator) {
+            1 -> uIntValue != UInt.MAX_VALUE
+            2 -> intValue != 0
+            3 -> uIntValue != UInt.MAX_VALUE && intValue != 0
+            else -> true
+        }
+    }
 
     /** Returns a copy of this flags instance with the specified [flags] added. **/
     inline infix fun adding(flags: Flags32) = Flags32(intValue or flags.intValue)
@@ -47,6 +84,16 @@ value class Flags32(val intValue: Int) {
      */
     inline fun hasAny(flags: Flags32) = (intValue and flags.intValue) != 0
 
+    /** Returns a value indicating whether the [element] is contained in this collection. **/
+    override inline operator fun contains(element: Boolean): Boolean =
+        (element && this != NONE) || (!element && this != ALL)
+
+    /** Returns a value indicating whether the bit at [index] is set to 1. **/
+    inline operator fun get(index: Int): Boolean = ((intValue ushr index) and 1) != 0
+
+    /** Returns an iterator of this collection. **/
+    override operator fun iterator(): BooleanIterator = BooleanIteratorOfFlags32(this)
+
     companion object {
 
         /** The number of bits used to represent an instance of [Flags32] in a binary form. **/
@@ -54,6 +101,14 @@ value class Flags32(val intValue: Int) {
 
         /** The number of bytes used to represent an instance of [Flags32] in a binary form. **/
         const val SIZE_BYTES: Int = 4
+
+        /** Flags whose none of the bits are set to 1. **/
+        inline val NONE
+            @JvmStatic get() = Flags32(0)
+
+        /** Flags whose all the bits are set to 1. **/
+        inline val ALL
+            @JvmStatic get() = fromUInt(UInt.MAX_VALUE)
 
         /**
          * Creates a new [Flags32] instance using the specified unsigned 32-bit integer [value].
@@ -65,4 +120,14 @@ value class Flags32(val intValue: Int) {
         @JvmStatic
         inline fun fromInt(value: Int) = Flags32(value)
     }
+}
+
+private class BooleanIteratorOfFlags32(private val flags: Flags32) : BooleanIterator() {
+    private var index: Int = 0
+
+    override fun hasNext(): Boolean = index < flags.size
+
+    override fun nextBoolean(): Boolean =
+        if (!hasNext()) throw NoSuchElementException("$index")
+        else flags[index++]
 }
