@@ -1,6 +1,7 @@
 package nonallocmath
 
 import com.sztorm.nonallocmath.Color32
+import nonallocmath.utils.Wrapper
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.*
 import org.junit.jupiter.params.provider.*
@@ -9,29 +10,34 @@ import kotlin.test.*
 class Color32Tests {
     @ParameterizedTest
     @MethodSource("colors")
-    fun colorContentsAreValid(r: Byte, g: Byte, b: Byte, a: Byte) =
-        colorContentsAreValid(r.toUByte(), g.toUByte(), b.toUByte(), a.toUByte())
+    fun basicPropertiesAreValid(color: Wrapper<Color32>) {
+        val unwrappedColor: Color32 = color.value
+        val (r, g, b, a) = unwrappedColor
 
-    private fun colorContentsAreValid(r: UByte, g: UByte, b: UByte, a: UByte) =
-        assertTrue(equals(Color32(r, g, b, a), r, g, b, a))
+        assertEquals(unwrappedColor.r, r)
+        assertEquals(unwrappedColor.g, g)
+        assertEquals(unwrappedColor.b, b)
+        assertEquals(unwrappedColor.a, a)
+        assertEquals(unwrappedColor.r, unwrappedColor[0])
+        assertEquals(unwrappedColor.g, unwrappedColor[1])
+        assertEquals(unwrappedColor.b, unwrappedColor[2])
+        assertEquals(unwrappedColor.a, unwrappedColor[3])
+    }
 
     @ParameterizedTest
-    @MethodSource("colors")
-    fun basicColorPropertiesAreValid(r: UByte, g: UByte, b: UByte, a: UByte) {
-        val color = Color32(r, g, b, a)
-        val (r0, g0, b0, a0) = color
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(color: Wrapper<Color32>, expected: String) =
+        assertEquals(expected, color.value.toString())
 
-        assertTrue(
-            equals(color, r, g, b, a) &&
-                    color.r == color[0] &&
-                    color.g == color[1] &&
-                    color.b == color[2] &&
-                    color.a == color[3] &&
-                    color.r == r0 &&
-                    color.g == g0 &&
-                    color.b == b0 &&
-                    color.a == a0
-        )
+    @ParameterizedTest
+    @MethodSource("getArgs")
+    fun getReturnsCorrectValue(color: Wrapper<Color32>, expected: Collection<UByte>) {
+        val actual = emptyList<UByte>().toMutableList()
+
+        for (i in 0..3) {
+            actual.add(color.value[i])
+        }
+        assertContentEquals(expected, actual)
     }
 
     @Test
@@ -40,28 +46,77 @@ class Color32Tests {
         assertThrows<IndexOutOfBoundsException> { Color32(1u, 255u, 0u, 4u)[4] }
     }
 
-    @Test
-    fun lerpReturnsCorrectValue() =
-        assertEquals(
-            expected = Color32(127u, 6u, 0u, 24u),
-            actual = Color32.lerp(
-                a = Color32(0u, 3u, 0u, 0u),
-                b = Color32(255u, 9u, 0u, 48u),
-                t = 0.5f
-            )
-        )
+    @ParameterizedTest
+    @MethodSource("lerpArgs")
+    @Suppress("SpellCheckingInspection")
+    fun lerpReturnsCorrectValue(
+        a: Wrapper<Color32>, b: Wrapper<Color32>, t: Float, expected: Wrapper<Color32>
+    ) = assertEquals(expected.value, Color32.lerp(a.value, b.value, t))
 
     companion object {
         @JvmStatic
-        fun equals(color: Color32, r: UByte, g: UByte, b: UByte, a: UByte) =
-            color.r == r && color.g == g && color.b == b && color.a == a
+        fun colors(): List<Arguments> = listOf(
+            Arguments.of(Wrapper(Color32(255u, 255u, 255u, 255u))),
+            Arguments.of(Wrapper(Color32(0u, 255u, 0u, 255u))),
+            Arguments.of(Wrapper(Color32(255u, 0u, 255u, 0u))),
+            Arguments.of(Wrapper(Color32(127u, 255u, 255u, 127u))),
+        )
 
         @JvmStatic
-        fun colors(): List<Arguments> = listOf(
-            Arguments.of(255.toByte(), 255.toByte(), 255.toByte(), 255.toByte()),
-            Arguments.of(0.toByte(), 255.toByte(), 0.toByte(), 255.toByte()),
-            Arguments.of(255.toByte(), 0.toByte(), 255.toByte(), 0.toByte()),
-            Arguments.of(127.toByte(), 255.toByte(), 255.toByte(), 127.toByte()),
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Color32(255u, 255u, 255u, 255u)),
+                "Color32(r=255, g=255, b=255, a=255)"
+            ),
+            Arguments.of(
+                Wrapper(Color32(0u, 255u, 0u, 255u)),
+                "Color32(r=0, g=255, b=0, a=255)"
+            ),
+            Arguments.of(
+                Wrapper(Color32(255u, 0u, 255u, 0u)),
+                "Color32(r=255, g=0, b=255, a=0)"
+            ),
+            Arguments.of(
+                Wrapper(Color32(127u, 255u, 255u, 127u)),
+                "Color32(r=127, g=255, b=255, a=127)"
+            ),
+        )
+
+        @JvmStatic
+        fun getArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Color32(255u, 255u, 255u, 255u)),
+                listOf<UByte>(255u, 255u, 255u, 255u)
+            ),
+            Arguments.of(
+                Wrapper(Color32(0u, 255u, 0u, 255u)),
+                listOf<UByte>(0u, 255u, 0u, 255u)
+            ),
+            Arguments.of(
+                Wrapper(Color32(255u, 0u, 255u, 0u)),
+                listOf<UByte>(255u, 0u, 255u, 0u)
+            ),
+            Arguments.of(
+                Wrapper(Color32(127u, 255u, 255u, 127u)),
+                listOf<UByte>(127u, 255u, 255u, 127u)
+            ),
+        )
+
+        @Suppress("SpellCheckingInspection")
+        @JvmStatic
+        fun lerpArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Color32(0u, 3u, 0u, 0u)),
+                Wrapper(Color32(255u, 9u, 0u, 48u)),
+                0.5f,
+                Wrapper(Color32(127u, 6u, 0u, 24u)),
+            ),
+            Arguments.of(
+                Wrapper(Color32(180u, 90u, 45u, 255u)),
+                Wrapper(Color32(90u, 140u, 5u, 255u)),
+                0.333333f,
+                Wrapper(Color32(150u, 106u, 31u, 255u)),
+            ),
         )
     }
 }
