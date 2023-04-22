@@ -24,7 +24,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     inline val uByteValue: UByte
         get() = byteValue.toUByte()
 
-    /** Returns the number of flags, which is always 8 for all [Flags8] instances. **/
+    /** Returns the number of flags, which is always 8. **/
     override inline val size: Int
         get() = 8
 
@@ -32,10 +32,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     inline val lastIndex: Int
         get() = 7
 
-    /**
-     * Returns a value indicating whether flags collection is empty, which is always false for all
-     * [Flags8] instances.
-     */
+    /** Returns a value indicating whether this collection is empty, which is always false. **/
     override inline fun isEmpty() = false
 
     /**
@@ -91,7 +88,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     /** Returns a value indicating whether this flags instance has any of the specified [flags]. **/
     inline fun hasAny(flags: Flags8) = (byteValue.toInt() and flags.byteValue.toInt()) != 0
 
-    /** Returns a value indicating whether [element] is contained in this collection. **/
+    /** Returns a value indicating whether the [element] is contained in this collection. **/
     override inline operator fun contains(element: Boolean): Boolean =
         (element && this != NONE) || (!element && this != ALL)
 
@@ -99,7 +96,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     inline operator fun get(index: Int): Boolean = ((byteValue.toInt() ushr index) and 1) != 0
 
     /** Returns an iterator of this collection. **/
-    override operator fun iterator(): BooleanIterator = BooleanIteratorImpl(this)
+    override operator fun iterator(): BooleanIterator = BooleanIteratorOfFlags8(this)
 
     companion object {
 
@@ -127,7 +124,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     }
 }
 
-private class BooleanIteratorImpl(private val flags: Flags8) : BooleanIterator() {
+private class BooleanIteratorOfFlags8(private val flags: Flags8) : BooleanIterator() {
     private var index: Int = 0
 
     override fun hasNext(): Boolean = index < flags.size
