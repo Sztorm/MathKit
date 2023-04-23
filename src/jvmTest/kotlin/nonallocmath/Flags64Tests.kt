@@ -13,15 +13,12 @@ import kotlin.test.assertFalse
 
 class Flags64Tests {
 
-    @Test
-    fun basicPropertiesAreValid() {
-        val flags = Flags64.fromULong(
-            0b11110001_01100110_10101001_11100111_11100000_00001101_00000100_01000001uL
-        )
-
-        assertEquals(64, flags.size)
-        assertEquals(63, flags.lastIndex)
-        assertEquals(false, flags.isEmpty())
+    @ParameterizedTest
+    @MethodSource("flags")
+    fun basicPropertiesAreValid(flags: Wrapper<Flags64>) {
+        assertEquals(64, flags.value.size)
+        assertEquals(63, flags.value.lastIndex)
+        assertEquals(false, flags.value.isEmpty())
     }
 
     @ParameterizedTest
@@ -119,6 +116,38 @@ class Flags64Tests {
     }
 
     companion object {
+        @JvmStatic
+        fun flags(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b11110001_01100110_10101001_11100111_11100000_00001101_00000100_01000001uL
+                    )
+                )
+            ),
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b10100010_01010011_01110011_00111110_11110111_11111101_01111111_01111101uL
+                    )
+                )
+            ),
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL
+                    )
+                )
+            ),
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL
+                    )
+                )
+            ),
+        )
+
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
             Arguments.of(
