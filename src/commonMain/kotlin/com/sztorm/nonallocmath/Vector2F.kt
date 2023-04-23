@@ -110,9 +110,9 @@ value class Vector2F internal constructor(internal val data: Long) {
      */
     inline fun coerceAtMost(maximum: Vector2F) = Vector2F(min(x, maximum.x), min(y, maximum.y))
 
-    /** Returns a [String] representation of this vector in "([x],[y])" format. **/
-    override fun toString(): String = StringBuilder(1 + 16 + 2 + 16 + 1)
-        .append('(').append(x).append(", ").append(y).append(')')
+    /** Returns a [String] representation of this vector in "Vector2F(x=[x], y=[y])" format. **/
+    override fun toString(): String = StringBuilder(11 + 16 + 4 + 16 + 1)
+        .append("Vector2F(x=").append(x).append(", y=").append(y).append(')')
         .toString()
 
     /**
@@ -124,6 +124,17 @@ value class Vector2F internal constructor(internal val data: Long) {
 
     /** Returns the dot product of this and [other] vector. **/
     inline infix fun dot(other: Vector2F): Float = x * other.x + y * other.y
+
+    /**
+     * Converts this [Vector2F] value to [Vector2I].
+     *
+     * For each component:
+     *
+     * The fractional part, if any, is rounded down towards zero. Returns zero if this [Float]
+     * component value is NaN, [Int.MIN_VALUE] if it's less than [Int.MIN_VALUE], [Int.MAX_VALUE]
+     * if it's bigger than [Int.MAX_VALUE].
+     */
+    inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 
     /** First component of the vector. **/
     inline operator fun component1(): Float = x
@@ -165,17 +176,6 @@ value class Vector2F internal constructor(internal val data: Long) {
 
     /** Divides this vector by the [other] scalar. **/
     inline operator fun div(other: Float) = Vector2F(x / other, y / other)
-
-    /**
-     * Converts this [Vector2F] value to [Vector2I].
-     *
-     * For each component:
-     *
-     * The fractional part, if any, is rounded down towards zero. Returns zero if this [Float]
-     * component value is NaN, [Int.MIN_VALUE] if it's less than [Int.MIN_VALUE], [Int.MAX_VALUE]
-     * if it's bigger than [Int.MAX_VALUE].
-     */
-    inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 
     companion object {
 
