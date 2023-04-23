@@ -63,6 +63,11 @@ class Flags16Tests {
         assertEquals(expected, a.value.hasAny(b.value))
 
     @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(flags: Wrapper<Flags16>, expected: String) =
+        assertEquals(expected, flags.value.toString())
+
+    @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(flags: Wrapper<Flags16>, element: Boolean, expected: Boolean) =
         assertEquals(expected, flags.value.contains(element))
@@ -314,6 +319,26 @@ class Flags16Tests {
                 Wrapper(Flags16.fromUShort(0b11100000_00001101u)),
                 false,
             )
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11100000_00001101u)),
+                "Flags16(10110000 00000111)"
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11110111_11111101u)),
+                "Flags16(10111111 11101111)"
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b00000000_00000000u)),
+                "Flags16(00000000 00000000)"
+            ),
+            Arguments.of(
+                Wrapper(Flags16.fromUShort(0b11111111_11111111u)),
+                "Flags16(11111111 11111111)"
+            ),
         )
 
         @JvmStatic

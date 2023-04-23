@@ -65,6 +65,11 @@ class Flags64Tests {
         assertEquals(expected, a.value.hasAny(b.value))
 
     @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(flags: Wrapper<Flags64>, expected: String) =
+        assertEquals(expected, flags.value.toString())
+
+    @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(flags: Wrapper<Flags64>, element: Boolean, expected: Boolean) =
         assertEquals(expected, flags.value.contains(element))
@@ -672,6 +677,42 @@ class Flags64Tests {
                 ),
                 false,
             )
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b11110001_01100110_10101001_11100111_11100000_00001101_00000100_01000001uL
+                    )
+                ),
+                "Flags64(10000010 00100000 10110000 00000111 11100111 10010101 01100110 10001111)"
+            ),
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b10100010_01010011_01110011_00111110_11110111_11111101_01111111_01111101uL
+                    )
+                ),
+                "Flags64(10111110 11111110 10111111 11101111 01111100 11001110 11001010 01000101)"
+            ),
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL
+                    )
+                ),
+                "Flags64(00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000)"
+            ),
+            Arguments.of(
+                Wrapper(
+                    Flags64.fromULong(
+                        0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL
+                    )
+                ),
+                "Flags64(11111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111)"
+            ),
         )
 
         @JvmStatic

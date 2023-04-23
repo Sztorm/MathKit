@@ -85,8 +85,23 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
     inline fun hasAll(flags: Flags8) =
         (byteValue.toInt() and flags.byteValue.toInt()) == flags.byteValue.toInt()
 
-    /** Returns a value indicating whether this flags instance has any of the specified [flags]. **/
+    /**
+     * Returns a value indicating whether this flags instance has any of the specified [flags].
+     */
     inline fun hasAny(flags: Flags8) = (byteValue.toInt() and flags.byteValue.toInt()) != 0
+
+    /**
+     * Returns a [String] representation of this flags collection in "Flags8(00000000)" format.
+     */
+    override fun toString(): String {
+        val sb = StringBuilder(7 + 8 + 1)
+            .append("Flags8(")
+
+        for (i in 0..7) {
+            sb.append(if (this[i]) '1' else '0')
+        }
+        return sb.append(')').toString()
+    }
 
     /** Returns a value indicating whether the [element] is contained in this collection. **/
     override inline operator fun contains(element: Boolean): Boolean =

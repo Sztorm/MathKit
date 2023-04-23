@@ -85,6 +85,31 @@ value class Flags64(val longValue: Long) : Collection<Boolean> {
      */
     inline fun hasAny(flags: Flags64) = (longValue and flags.longValue) != 0L
 
+    private inline fun StringBuilder.appendFlags(from: Int, to: Int): StringBuilder {
+        for (i in from..to) {
+            this.append(if (this@Flags64[i]) '1' else '0')
+        }
+        return this
+    }
+
+    /**
+     * Returns a [String] representation of this flags collection in
+     * "Flags64(00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000)" format.
+     */
+    override fun toString(): String = StringBuilder(
+        8 + 8 * 8 + 7 * 1 + 1
+    )
+        .append("Flags64(")
+        .appendFlags(0, 7).append(' ')
+        .appendFlags(8, 15).append(' ')
+        .appendFlags(16, 23).append(' ')
+        .appendFlags(24, 31).append(' ')
+        .appendFlags(32, 39).append(' ')
+        .appendFlags(40, 47).append(' ')
+        .appendFlags(48, 55).append(' ')
+        .appendFlags(56, 63).append(')')
+        .toString()
+
     /** Returns a value indicating whether the [element] is contained in this collection. **/
     override inline operator fun contains(element: Boolean): Boolean =
         (element && this != NONE) || (!element && this != ALL)
