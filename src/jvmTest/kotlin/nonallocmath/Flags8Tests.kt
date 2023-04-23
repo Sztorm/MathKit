@@ -13,13 +13,12 @@ import kotlin.test.assertFalse
 
 class Flags8Tests {
 
-    @Test
-    fun basicPropertiesAreValid() {
-        val flags = Flags8.fromUByte(0b11100001u)
-
-        assertEquals(8, flags.size)
-        assertEquals(7, flags.lastIndex)
-        assertEquals(false, flags.isEmpty())
+    @ParameterizedTest
+    @MethodSource("flags")
+    fun basicPropertiesAreValid(flags: Wrapper<Flags8>) {
+        assertEquals(8, flags.value.size)
+        assertEquals(7, flags.value.lastIndex)
+        assertEquals(false, flags.value.isEmpty())
     }
 
     @ParameterizedTest
@@ -117,6 +116,14 @@ class Flags8Tests {
     }
 
     companion object {
+        @JvmStatic
+        fun flags(): List<Arguments> = listOf(
+            Arguments.of(Wrapper(Flags8.fromUByte(0b11100001u))),
+            Arguments.of(Wrapper(Flags8.fromUByte(0b10110111u))),
+            Arguments.of(Wrapper(Flags8.fromUByte(0b00000000u))),
+            Arguments.of(Wrapper(Flags8.fromUByte(0b11111111u))),
+        )
+
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
             Arguments.of(

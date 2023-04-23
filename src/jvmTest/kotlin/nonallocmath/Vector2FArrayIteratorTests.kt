@@ -1,7 +1,7 @@
 package nonallocmath
 
-import com.sztorm.nonallocmath.Vector2I
-import com.sztorm.nonallocmath.toVector2IArray
+import com.sztorm.nonallocmath.Vector2F
+import com.sztorm.nonallocmath.toVector2FArray
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -9,13 +9,13 @@ import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
-class Vector2IIteratorTests {
+class Vector2FArrayIteratorTests {
 
     @ParameterizedTest
     @MethodSource("nextArgs")
-    fun nextMutatesIteratorCorrectly(array: Array<Vector2I>, expected: List<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
-        val actual = emptyList<Vector2I>().toMutableList()
+    fun nextMutatesIteratorCorrectly(array: Array<Vector2F>, expected: List<Vector2F>) {
+        val iterator = array.toVector2FArray().iterator()
+        val actual = emptyList<Vector2F>().toMutableList()
 
         for (i in 0..array.lastIndex) {
             actual.add(iterator.next())
@@ -24,21 +24,21 @@ class Vector2IIteratorTests {
     }
 
     @ParameterizedTest
-    @MethodSource("nextVector2IArgs")
-    fun nextVector2IMutatesIteratorCorrectly(array: Array<Vector2I>, expected: List<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
-        val actual = emptyList<Vector2I>().toMutableList()
+    @MethodSource("nextVector2FArgs")
+    fun nextVector2FMutatesIteratorCorrectly(array: Array<Vector2F>, expected: List<Vector2F>) {
+        val iterator = array.toVector2FArray().iterator()
+        val actual = emptyList<Vector2F>().toMutableList()
 
         for (i in 0..array.lastIndex) {
-            actual.add(iterator.nextVector2I())
+            actual.add(iterator.nextVector2F())
         }
         assertContentEquals(expected, actual)
     }
 
     @ParameterizedTest
     @MethodSource("hasNextArgs")
-    fun hasNextReturnsCorrectValue(array: Array<Vector2I>, expected: List<Boolean>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun hasNextReturnsCorrectValue(array: Array<Vector2F>, expected: List<Boolean>) {
+        val iterator = array.toVector2FArray().iterator()
         val actual = emptyList<Boolean>().toMutableList()
 
         for (i in 0..array.lastIndex) {
@@ -51,8 +51,8 @@ class Vector2IIteratorTests {
 
     @ParameterizedTest
     @MethodSource("arrays")
-    fun nextThrowsWhenDoesNotHaveNextElement(array: Array<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun nextThrowsWhenDoesNotHaveNextElement(array: Array<Vector2F>) {
+        val iterator = array.toVector2FArray().iterator()
 
         for (i in 0..array.lastIndex) {
             iterator.next()
@@ -62,42 +62,42 @@ class Vector2IIteratorTests {
 
     @ParameterizedTest
     @MethodSource("arrays")
-    fun nextThrowsWhenDoesNotHaveNextVector2I(array: Array<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun nextThrowsWhenDoesNotHaveNextVector2F(array: Array<Vector2F>) {
+        val iterator = array.toVector2FArray().iterator()
 
         for (i in 0..array.lastIndex) {
-            iterator.nextVector2I()
+            iterator.nextVector2F()
         }
-        assertThrows<NoSuchElementException> { iterator.nextVector2I() }
+        assertThrows<NoSuchElementException> { iterator.nextVector2F() }
     }
 
     companion object {
         @JvmStatic
-        fun arrays(): List<Arguments> = Vector2IArrayTests.arrays()
+        fun arrays(): List<Arguments> = Vector2FArrayTests.arrays()
 
         @JvmStatic
         fun nextArgs(): List<Arguments> = listOf(
             Arguments.of(
-                emptyArray<Vector2I>(),
-                emptyList<Vector2I>(),
+                emptyArray<Vector2F>(),
+                emptyList<Vector2F>(),
             ),
             Arguments.of(
-                Array(4) { Vector2I(it, 0) },
-                List(4) { Vector2I(it, 0) },
+                Array(4) { Vector2F(it.toFloat(), 0f) },
+                List(4) { Vector2F(it.toFloat(), 0f) },
             ),
         )
 
         @JvmStatic
-        fun nextVector2IArgs(): List<Arguments> = nextArgs()
+        fun nextVector2FArgs(): List<Arguments> = nextArgs()
 
         @JvmStatic
         fun hasNextArgs(): List<Arguments> = listOf(
             Arguments.of(
-                emptyArray<Vector2I>(),
+                emptyArray<Vector2F>(),
                 emptyList<Boolean>(),
             ),
             Arguments.of(
-                Array(4) { Vector2I(it, 0) },
+                Array(4) { Vector2F(it.toFloat(), 0f) },
                 List(4) { true },
             ),
         )
