@@ -99,13 +99,25 @@ value class Vector2I internal constructor(internal val data: Long) {
      */
     inline fun coerceAtMost(maximum: Vector2I) = Vector2I(min(x, maximum.x), min(y, maximum.y))
 
-    /** Returns a [String] representation of this vector in "([x],[y])" format. **/
-    override fun toString(): String = StringBuilder(1 + 11 + 2 + 11 + 1)
-        .append('(').append(x).append(", ").append(y).append(')')
+    /** Returns the dot product of this and [other] vector. **/
+    inline infix fun dot(other: Vector2I): Long =
+        x.toLong() * other.x.toLong() + y.toLong() * other.y.toLong()
+
+    /** Returns a [String] representation of this vector in "Vector2I(x=[x], y=[y])" format. **/
+    override fun toString(): String = StringBuilder(11 + 11 + 4 + 11 + 1)
+        .append("Vector2I(x=").append(x).append(", y=").append(y).append(')')
         .toString()
 
-    /** Returns the dot product of this and [other] vector. **/
-    inline infix fun dot(other: Vector2I): Int = x * other.x + y * other.y
+    /**
+     * Converts this [Vector2I] value to [Vector2F].
+     *
+     * For each component:
+     *
+     * The resulting value is the closest [Float] to this [Int] component value. In case when this
+     * [Int] component value is exactly between two [Float]s, the one with zero at least
+     * significant bit of mantissa is selected.
+     */
+    inline fun toVector2F() = Vector2F(x.toFloat(), y.toFloat())
 
     /** First component of the vector. **/
     inline operator fun component1(): Int = x
@@ -147,17 +159,6 @@ value class Vector2I internal constructor(internal val data: Long) {
 
     /** Divides this vector by the [other] scalar. **/
     inline operator fun div(other: Int) = Vector2I(x / other, y / other)
-
-    /**
-     * Converts this [Vector2I] value to [Vector2F].
-     *
-     * For each component:
-     *
-     * The resulting value is the closest [Float] to this [Int] component value. In case when this
-     * [Int] component value is exactly between two [Float]s, the one with zero at least
-     * significant bit of mantissa is selected.
-     */
-    inline fun toVector2F() = Vector2F(x.toFloat(), y.toFloat())
 
     companion object {
 
