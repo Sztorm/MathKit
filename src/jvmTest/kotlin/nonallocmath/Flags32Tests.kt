@@ -13,13 +13,12 @@ import kotlin.test.assertFalse
 
 class Flags32Tests {
 
-    @Test
-    fun basicPropertiesAreValid() {
-        val flags = Flags32.fromUInt(0b11100000_00001101_00000100_01000001u)
-
-        assertEquals(32, flags.size)
-        assertEquals(31, flags.lastIndex)
-        assertEquals(false, flags.isEmpty())
+    @ParameterizedTest
+    @MethodSource("flags")
+    fun basicPropertiesAreValid(flags: Wrapper<Flags32>) {
+        assertEquals(32, flags.value.size)
+        assertEquals(31, flags.value.lastIndex)
+        assertEquals(false, flags.value.isEmpty())
     }
 
     @ParameterizedTest
@@ -117,6 +116,14 @@ class Flags32Tests {
     }
 
     companion object {
+        @JvmStatic
+        fun flags(): List<Arguments> = listOf(
+            Arguments.of(Wrapper(Flags32.fromUInt(0b11100000_00001101_00000100_01000001u))),
+            Arguments.of(Wrapper(Flags32.fromUInt(0b11110111_11111101_01111111_01111101u))),
+            Arguments.of(Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u))),
+            Arguments.of(Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u))),
+        )
+
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
             Arguments.of(
