@@ -54,9 +54,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("elementAtArgs")
     fun elementAtReturnsCorrectValue(
-        array: Array<Vector2I>, index: Int, exp: Pair<Int, Int>
+        array: Array<Vector2I>, index: Int, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().elementAt(index)
 
         assertEquals(expected, actual)
@@ -76,9 +76,9 @@ class Vector2IArrayTests {
         array: Array<Vector2I>,
         index: Int,
         defaultValue: (Int) -> Vector2I,
-        exp: Pair<Int, Int>
+        exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().elementAtOrElse(index, defaultValue)
 
         assertEquals(expected, actual)
@@ -89,9 +89,9 @@ class Vector2IArrayTests {
     fun elementAtOrNullReturnsCorrectValue(
         array: Array<Vector2I>,
         index: Int,
-        exp: Pair<Int, Int>?
+        exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().elementAtOrNull(index)
 
         assertEquals(expected, actual)
@@ -102,9 +102,9 @@ class Vector2IArrayTests {
     fun findReturnsCorrectValue(
         array: Array<Vector2I>,
         predicate: (Vector2I) -> Boolean,
-        exp: Pair<Int, Int>?
+        exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().find(predicate)
 
         assertEquals(expected, actual)
@@ -115,9 +115,9 @@ class Vector2IArrayTests {
     fun findLastReturnsCorrectValue(
         array: Array<Vector2I>,
         predicate: (Vector2I) -> Boolean,
-        exp: Pair<Int, Int>?
+        exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().findLast(predicate)
 
         assertEquals(expected, actual)
@@ -125,8 +125,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("firstArgs")
-    fun firstReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>) {
-        val expected = Vector2I(exp.first, exp.second)
+    fun firstReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>) {
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().first()
 
         assertEquals(expected, actual)
@@ -140,9 +140,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("firstPredicateArgs")
     fun firstReturnsCorrectValue(
-        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Pair<Int, Int>
+        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().first(predicate)
 
         assertEquals(expected, actual)
@@ -158,8 +158,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("firstOrNullArgs")
-    fun firstOrNullReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>?) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+    fun firstOrNullReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>?) {
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().firstOrNull()
 
         assertEquals(expected, actual)
@@ -168,9 +168,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("firstOrNullPredicateArgs")
     fun firstOrNullReturnsCorrectValue(
-        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Pair<Int, Int>?
+        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().firstOrNull(predicate)
 
         assertEquals(expected, actual)
@@ -182,9 +182,9 @@ class Vector2IArrayTests {
         array: Array<Vector2I>,
         index: Int,
         defaultValue: (Int) -> Vector2I,
-        exp: Pair<Int, Int>
+        exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().getOrElse(index, defaultValue)
 
         assertEquals(expected, actual)
@@ -193,9 +193,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("getOrNullArgs")
     fun getOrNullReturnsCorrectValue(
-        array: Array<Vector2I>, index: Int, exp: Pair<Int, Int>?
+        array: Array<Vector2I>, index: Int, exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().getOrNull(index)
 
         assertEquals(expected, actual)
@@ -204,9 +204,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("indexOfArgs")
     fun indexOfReturnsCorrectValue(
-        array: Array<Vector2I>, el: Pair<Int, Int>, expected: Int
+        array: Array<Vector2I>, el: Wrapper<Vector2I>, expected: Int
     ) {
-        val element = Vector2I(el.first, el.second)
+        val element: Vector2I = el.value
         val actual: Int = array.toVector2IArray().indexOf(element)
 
         assertEquals(expected, actual)
@@ -224,8 +224,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("lastArgs")
-    fun lastReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>) {
-        val expected = Vector2I(exp.first, exp.second)
+    fun lastReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>) {
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().last()
 
         assertEquals(expected, actual)
@@ -239,9 +239,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("lastPredicateArgs")
     fun lastReturnsCorrectValue(
-        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Pair<Int, Int>
+        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().last(predicate)
 
         assertEquals(expected, actual)
@@ -258,9 +258,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("lastIndexOfArgs")
     fun lastIndexOfReturnsCorrectValue(
-        array: Array<Vector2I>, el: Pair<Int, Int>, expected: Int
+        array: Array<Vector2I>, el: Wrapper<Vector2I>, expected: Int
     ) {
-        val element = Vector2I(el.first, el.second)
+        val element: Vector2I = el.value
         val actual: Int = array.toVector2IArray().lastIndexOf(element)
 
         assertEquals(expected, actual)
@@ -268,8 +268,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("lastOrNullArgs")
-    fun lastOrNullReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>?) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+    fun lastOrNullReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>?) {
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().lastOrNull()
 
         assertEquals(expected, actual)
@@ -278,9 +278,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("lastOrNullPredicateArgs")
     fun lastOrNullReturnsCorrectValue(
-        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Pair<Int, Int>?
+        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().lastOrNull(predicate)
 
         assertEquals(expected, actual)
@@ -289,9 +289,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("randomArgs")
     fun randomReturnsCorrectValue(
-        array: Array<Vector2I>, random: Random, exp: Pair<Int, Int>
+        array: Array<Vector2I>, random: Random, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().random(random)
 
         assertEquals(expected, actual)
@@ -306,9 +306,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("randomOrNullArgs")
     fun randomOrNullReturnsCorrectValue(
-        array: Array<Vector2I>, random: Random, exp: Pair<Int, Int>?
+        array: Array<Vector2I>, random: Random, exp: Wrapper<Vector2I>?
     ) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().randomOrNull(random)
 
         assertEquals(expected, actual)
@@ -316,8 +316,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("singleArgs")
-    fun singleReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>) {
-        val expected = Vector2I(exp.first, exp.second)
+    fun singleReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>) {
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().single()
 
         assertEquals(expected, actual)
@@ -336,9 +336,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("singlePredicateArgs")
     fun singleReturnsCorrectValue(
-        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Pair<Int, Int>
+        array: Array<Vector2I>, predicate: (Vector2I) -> Boolean, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().single(predicate)
 
         assertEquals(expected, actual)
@@ -356,8 +356,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("singleOrNullArgs")
-    fun singleOrNullReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>?) {
-        val expected: Vector2I? = exp?.let { Vector2I(exp.first, exp.second) }
+    fun singleOrNullReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>?) {
+        val expected: Vector2I? = exp?.let { exp.value }
         val actual: Vector2I? = array.toVector2IArray().singleOrNull()
 
         assertEquals(expected, actual)
@@ -724,12 +724,12 @@ class Vector2IArrayTests {
     @MethodSource("fillArgs")
     fun fillMutatesArrayCorrectly(
         array: Array<Vector2I>,
-        el: Pair<Int, Int>,
+        el: Wrapper<Vector2I>,
         fromIndex: Int,
         toIndex: Int,
         exp: Array<Vector2I>
     ) {
-        val element = Vector2I(el.first, el.second)
+        val element: Vector2I = el.value
         val expected = exp.toVector2IArray()
         val actual: Vector2IArray = array.toVector2IArray().apply {
             fill(element, fromIndex, toIndex)
@@ -741,12 +741,12 @@ class Vector2IArrayTests {
     @MethodSource("fillThrowsExceptionArgs")
     fun <T : Throwable> fillThrowsCorrectException(
         array: Array<Vector2I>,
-        el: Pair<Int, Int>,
+        el: Wrapper<Vector2I>,
         fromIndex: Int,
         toIndex: Int,
         expectedExceptionClass: Class<T>
     ) {
-        val element = Vector2I(el.first, el.second)
+        val element: Vector2I = el.value
 
         assertThrows(expectedExceptionClass) {
             array.toVector2IArray().fill(element, fromIndex, toIndex)
@@ -867,9 +867,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("sumOfVector2IArgs")
     fun sumOfReturnsCorrectValue(
-        array: Array<Vector2I>, selector: (Vector2I) -> Vector2I, exp: Pair<Int, Int>
+        array: Array<Vector2I>, selector: (Vector2I) -> Vector2I, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().sumOf(selector)
 
         assertEquals(expected, actual)
@@ -877,8 +877,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("sumArgs")
-    fun sumReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>) {
-        val expected = Vector2I(exp.first, exp.second)
+    fun sumReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>) {
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray().sum()
 
         assertEquals(expected, actual)
@@ -887,10 +887,10 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(
-        array: Array<Vector2I>, element: Pair<Int, Int>, expected: Boolean
+        array: Array<Vector2I>, element: Wrapper<Vector2I>, expected: Boolean
     ) {
         val actual: Boolean = array
-            .toVector2IArray().contains(Vector2I(element.first, element.second))
+            .toVector2IArray().contains(element.value)
 
         assertEquals(expected, actual)
     }
@@ -921,9 +921,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("getArgs")
     fun getReturnsCorrectValue(
-        array: Array<Vector2I>, index: Int, exp: Pair<Int, Int>
+        array: Array<Vector2I>, index: Int, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.toVector2IArray()[index]
 
         assertEquals(expected, actual)
@@ -932,11 +932,11 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesArrayCorrectly(
-        array: Array<Vector2I>, index: Int, value: Pair<Int, Int>, exp: Array<Vector2I>
+        array: Array<Vector2I>, index: Int, value: Wrapper<Vector2I>, exp: Array<Vector2I>
     ) {
         val expected = exp.toVector2IArray()
         val actual = array.toVector2IArray()
-        actual[index] = Vector2I(value.first, value.second)
+        actual[index] = value.value
 
         assertContentEquals(expected, actual)
     }
@@ -944,9 +944,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("arrayPlusVector2IArgs")
     fun arrayPlusVector2IReturnsCorrectValue(
-        array: Array<Vector2I>, el: Pair<Int, Int>, exp: Array<Vector2I>
+        array: Array<Vector2I>, el: Wrapper<Vector2I>, exp: Array<Vector2I>
     ) {
-        val element = Vector2I(el.first, el.second)
+        val element: Vector2I = el.value
         val expected = exp.toVector2IArray()
         val actual: Vector2IArray = array.toVector2IArray() + element
 
@@ -990,9 +990,9 @@ class Vector2IArrayTests {
     @ParameterizedTest
     @MethodSource("typedArraySumOfVector2IArgs")
     fun <T> typedArraySumOfReturnsCorrectValue(
-        array: Array<T>, selector: (T) -> Vector2I, exp: Pair<Int, Int>
+        array: Array<T>, selector: (T) -> Vector2I, exp: Wrapper<Vector2I>
     ) {
-        val expected = Vector2I(exp.first, exp.second)
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.sumOf(selector)
 
         assertEquals(expected, actual)
@@ -1000,8 +1000,8 @@ class Vector2IArrayTests {
 
     @ParameterizedTest
     @MethodSource("typedArraySumArgs")
-    fun typedArraySumReturnsCorrectValue(array: Array<Vector2I>, exp: Pair<Int, Int>) {
-        val expected = Vector2I(exp.first, exp.second)
+    fun typedArraySumReturnsCorrectValue(array: Array<Vector2I>, exp: Wrapper<Vector2I>) {
+        val expected: Vector2I = exp.value
         val actual: Vector2I = array.sum()
 
         assertEquals(expected, actual)
@@ -1047,8 +1047,8 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun firstArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(4, 5)),
-            Arguments.of(Array(2) { Vector2I(it, 0) }, Pair(0, 0)),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(4, 5))),
+            Arguments.of(Array(2) { Vector2I(it, 0) }, Wrapper(Vector2I(0, 0))),
         )
 
         @JvmStatic
@@ -1056,12 +1056,12 @@ class Vector2IArrayTests {
             Arguments.of(
                 arrayOf(Vector2I(4, 5), Vector2I(1, 2)),
                 { v: Vector2I -> v == Vector2I(1, 2) },
-                Pair(1, 2)
+                Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
                 Array(2) { Vector2I(it, 0) },
                 { v: Vector2I -> v.x >= 1 },
-                Pair(1, 0)
+                Wrapper(Vector2I(1, 0))
             ),
         )
 
@@ -1078,8 +1078,8 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun firstOrNullArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(4, 5)),
-            Arguments.of(Array(2) { Vector2I(it, 0) }, Pair(0, 0)),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(4, 5))),
+            Arguments.of(Array(2) { Vector2I(it, 0) }, Wrapper(Vector2I(0, 0))),
             Arguments.of(emptyArray<Vector2I>(), null),
         )
 
@@ -1088,12 +1088,12 @@ class Vector2IArrayTests {
             Arguments.of(
                 arrayOf(Vector2I(4, 5), Vector2I(1, 2)),
                 { v: Vector2I -> v == Vector2I(1, 2) },
-                Pair(1, 2)
+                Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
                 Array(2) { Vector2I(it, 0) },
                 { v: Vector2I -> v.x >= 1 },
-                Pair(1, 0)
+                Wrapper(Vector2I(1, 0))
             ),
             Arguments.of(
                 Array(2) { Vector2I(it, 0) },
@@ -1109,8 +1109,8 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun lastArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(1, 2)),
-            Arguments.of(Array(2) { Vector2I(it, 0) }, Pair(1, 0)),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(1, 2))),
+            Arguments.of(Array(2) { Vector2I(it, 0) }, Wrapper(Vector2I(1, 0))),
         )
 
         @JvmStatic
@@ -1118,12 +1118,12 @@ class Vector2IArrayTests {
             Arguments.of(
                 arrayOf(Vector2I(4, 5), Vector2I(1, 2)),
                 { v: Vector2I -> v == Vector2I(1, 2) },
-                Pair(1, 2)
+                Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
                 Array(2) { Vector2I(it, 0) },
                 { v: Vector2I -> v.x <= 1 },
-                Pair(1, 0)
+                Wrapper(Vector2I(1, 0))
             ),
         )
 
@@ -1140,8 +1140,8 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun lastOrNullArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(1, 2)),
-            Arguments.of(Array(2) { Vector2I(it, 0) }, Pair(1, 0)),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(1, 2))),
+            Arguments.of(Array(2) { Vector2I(it, 0) }, Wrapper(Vector2I(1, 0))),
             Arguments.of(emptyArray<Vector2I>(), null),
         )
 
@@ -1150,12 +1150,12 @@ class Vector2IArrayTests {
             Arguments.of(
                 arrayOf(Vector2I(4, 5), Vector2I(1, 2)),
                 { v: Vector2I -> v == Vector2I(1, 2) },
-                Pair(1, 2)
+                Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
                 Array(2) { Vector2I(it, 0) },
                 { v: Vector2I -> v.x <= 0 },
-                Pair(0, 0)
+                Wrapper(Vector2I(0, 0))
             ),
             Arguments.of(
                 Array(2) { Vector2I(it, 0) },
@@ -1171,10 +1171,10 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun indexOfArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(1, 2), 1),
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(4, 5)), Pair(4, 5), 0),
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(7, 4), -1),
-            Arguments.of(emptyArray<Vector2I>(), Pair(7, 4), -1),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(1, 2)), 1),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(4, 5)), Wrapper(Vector2I(4, 5)), 0),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(7, 4)), -1),
+            Arguments.of(emptyArray<Vector2I>(), Wrapper(Vector2I(7, 4)), -1),
         )
 
         @JvmStatic
@@ -1198,10 +1198,10 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun lastIndexOfArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(1, 2), 1),
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(4, 5)), Pair(4, 5), 1),
-            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Pair(7, 4), -1),
-            Arguments.of(emptyArray<Vector2I>(), Pair(7, 4), -1),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(1, 2)), 1),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(4, 5)), Wrapper(Vector2I(4, 5)), 1),
+            Arguments.of(arrayOf(Vector2I(4, 5), Vector2I(1, 2)), Wrapper(Vector2I(7, 4)), -1),
+            Arguments.of(emptyArray<Vector2I>(), Wrapper(Vector2I(7, 4)), -1),
         )
 
         @JvmStatic
@@ -1209,8 +1209,8 @@ class Vector2IArrayTests {
             val array = Array(10) { Vector2I(it, 0) }
             val seeds = intArrayOf(1234, 5678)
             val expectedVals = arrayOf(
-                array.random(Random(seeds[0])).let { Pair(it.x, it.y) },
-                array.random(Random(seeds[1])).let { Pair(it.x, it.y) },
+                array.random(Random(seeds[0])).let { Wrapper(Vector2I(it.x, it.y)) },
+                array.random(Random(seeds[1])).let { Wrapper(Vector2I(it.x, it.y)) },
             )
             return listOf(
                 Arguments.of(array, Random(seeds[0]), expectedVals[0]),
@@ -1223,8 +1223,8 @@ class Vector2IArrayTests {
             val array = Array(10) { Vector2I(it, 0) }
             val seeds = intArrayOf(1234, 5678)
             val expectedVals = arrayOf(
-                array.random(Random(seeds[0])).let { Pair(it.x, it.y) },
-                array.random(Random(seeds[1])).let { Pair(it.x, it.y) },
+                array.random(Random(seeds[0])).let { Wrapper(Vector2I(it.x, it.y)) },
+                array.random(Random(seeds[1])).let { Wrapper(Vector2I(it.x, it.y)) },
             )
             return listOf(
                 Arguments.of(array, Random(seeds[0]), expectedVals[0]),
@@ -1235,8 +1235,8 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun singleArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(1, 2)), Pair(1, 2)),
-            Arguments.of(arrayOf(Vector2I.ZERO), Pair(0, 0)),
+            Arguments.of(arrayOf(Vector2I(1, 2)), Wrapper(Vector2I(1, 2))),
+            Arguments.of(arrayOf(Vector2I.ZERO), Wrapper(Vector2I(0, 0))),
         )
 
         @JvmStatic
@@ -1250,12 +1250,12 @@ class Vector2IArrayTests {
             Arguments.of(
                 Array(size = 3) { Vector2I(it, 0) },
                 { v: Vector2I -> v == Vector2I(1, 0) },
-                Pair(1, 0)
+                Wrapper(Vector2I(1, 0))
             ),
             Arguments.of(
                 Array(size = 3) { Vector2I(it, 0) },
                 { v: Vector2I -> v.x == 1 },
-                Pair(1, 0)
+                Wrapper(Vector2I(1, 0))
             ),
         )
 
@@ -1275,8 +1275,8 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun singleOrNullArgs(): List<Arguments> = listOf(
-            Arguments.of(arrayOf(Vector2I(1, 2)), Pair(1, 2)),
-            Arguments.of(arrayOf(Vector2I.ZERO), Pair(0, 0)),
+            Arguments.of(arrayOf(Vector2I(1, 2)), Wrapper(Vector2I(1, 2))),
+            Arguments.of(arrayOf(Vector2I.ZERO), Wrapper(Vector2I(0, 0))),
             Arguments.of(emptyArray<Vector2I>(), null),
             Arguments.of(Array(size = 2) { Vector2I.ZERO }, null),
         )
@@ -1814,25 +1814,25 @@ class Vector2IArrayTests {
         fun fillArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 0, 4,
                 Array(4) { Vector2I(1, 2) }
             ),
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 1, 3,
                 arrayOf(Vector2I.ZERO, Vector2I(1, 2), Vector2I(1, 2), Vector2I.ZERO)
             ),
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 0, 0,
                 Array(4) { Vector2I.ZERO }
             ),
             Arguments.of(
                 emptyArray<Vector2I>(),
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 0, 0,
                 emptyArray<Vector2I>(),
             ),
@@ -1842,19 +1842,19 @@ class Vector2IArrayTests {
         fun fillThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 0, 5,
                 IndexOutOfBoundsException::class.java
             ),
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 -1, 4,
                 IndexOutOfBoundsException::class.java
             ),
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
-                Pair(1, 2),
+                Wrapper(Vector2I(1, 2)),
                 2, 1,
                 IllegalArgumentException::class.java
             ),
@@ -1963,17 +1963,16 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfVector2IArgs(): List<Arguments> {
-            val array = arrayOf(
-                Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
-            )
+            val array = arrayOf(Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10))
+
             return listOf(
                 Arguments.of(
-                    array, { v: Vector2I -> v }, Pair(9, 11)
+                    array, { v: Vector2I -> v }, Wrapper(Vector2I(9, 11))
                 ),
                 Arguments.of(
                     array,
                     { v: Vector2I -> Vector2I(v.x.absoluteValue, v.y.absoluteValue) },
-                    Pair(13, 13)
+                    Wrapper(Vector2I(13, 13))
                 ),
             )
         }
@@ -1981,10 +1980,12 @@ class Vector2IArrayTests {
         @JvmStatic
         fun sumArgs(): List<Arguments> {
             return listOf(
-                Arguments.of(emptyArray<Vector2I>(), Pair(0, 0)),
+                Arguments.of(
+                    emptyArray<Vector2I>(), Wrapper(Vector2I(0, 0))
+                ),
                 Arguments.of(
                     arrayOf(Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)),
-                    Pair(9, 11)
+                    Wrapper(Vector2I(9, 11))
                 ),
             )
         }
@@ -1998,8 +1999,8 @@ class Vector2IArrayTests {
                 Vector2I(3, 4)
             )
             return listOf(
-                Arguments.of(array, Pair(0, 0), false),
-                Arguments.of(array, Pair(3, 4), true),
+                Arguments.of(array, Wrapper(Vector2I(0, 0)), false),
+                Arguments.of(array, Wrapper(Vector2I(3, 4)), true),
             )
         }
 
@@ -2022,8 +2023,8 @@ class Vector2IArrayTests {
                 Vector2I(3, 4),
             )
             return listOf(
-                Arguments.of(array, 0, Pair(1, 0)),
-                Arguments.of(array, 3, Pair(3, 4)),
+                Arguments.of(array, 0, Wrapper(Vector2I(1, 0))),
+                Arguments.of(array, 3, Wrapper(Vector2I(3, 4))),
             )
         }
 
@@ -2036,13 +2037,13 @@ class Vector2IArrayTests {
             )
             return listOf(
                 Arguments.of(
-                    array, 0, { i: Int -> Vector2I(i, i) }, Pair(1, 0)
+                    array, 0, { i: Int -> Vector2I(i, i) }, Wrapper(Vector2I(1, 0))
                 ),
                 Arguments.of(
-                    array, -1, { i: Int -> Vector2I(i, i) }, Pair(-1, -1)
+                    array, -1, { i: Int -> Vector2I(i, i) }, Wrapper(Vector2I(-1, -1))
                 ),
                 Arguments.of(
-                    array, 3, { i: Int -> Vector2I(i, i) }, Pair(3, 3)
+                    array, 3, { i: Int -> Vector2I(i, i) }, Wrapper(Vector2I(3, 3))
                 ),
             )
         }
@@ -2055,7 +2056,7 @@ class Vector2IArrayTests {
                 Vector2I(3, 4),
             )
             return listOf(
-                Arguments.of(array, 0, Pair(1, 0)),
+                Arguments.of(array, 0, Wrapper(Vector2I(1, 0))),
                 Arguments.of(array, -1, null),
                 Arguments.of(array, 3, null),
             )
@@ -2066,13 +2067,13 @@ class Vector2IArrayTests {
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
                 0,
-                Pair(1, 0),
+                Wrapper(Vector2I(1, 0)),
                 arrayOf(Vector2I(1, 0), Vector2I.ZERO, Vector2I.ZERO, Vector2I.ZERO),
             ),
             Arguments.of(
                 Array(4) { Vector2I.ZERO },
                 3,
-                Pair(3, 4),
+                Wrapper(Vector2I(3, 4)),
                 arrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I.ZERO, Vector2I(3, 4))
             ),
         )
@@ -2080,11 +2081,11 @@ class Vector2IArrayTests {
         @JvmStatic
         fun arrayPlusVector2IArgs(): List<Arguments> = listOf(
             Arguments.of(
-                emptyArray<Vector2I>(), Pair(1, 0), arrayOf(Vector2I(1, 0))
+                emptyArray<Vector2I>(), Wrapper(Vector2I(1, 0)), arrayOf(Vector2I(1, 0))
             ),
             Arguments.of(
                 arrayOf(Vector2I(1, 0), Vector2I(2, 0)),
-                Pair(3, 0),
+                Wrapper(Vector2I(3, 0)),
                 arrayOf(Vector2I(1, 0), Vector2I(2, 0), Vector2I(3, 0)),
             ),
         )
