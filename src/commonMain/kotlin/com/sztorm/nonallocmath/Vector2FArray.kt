@@ -56,7 +56,7 @@ fun Array<out Vector2F>.sum(): Vector2F {
  * When targeting the JVM, instances of this class are represented as `long[]`.
  */
 @JvmInline
-value class Vector2FArray private constructor(internal val data: LongArray) : Collection<Vector2F> {
+value class Vector2FArray private constructor(private val data: LongArray) : Collection<Vector2F> {
 
     /** Creates a new array of the specified [size], with all elements initialized to zero. **/
     constructor(size: Int) : this(LongArray(size))
@@ -633,7 +633,7 @@ value class Vector2FArray private constructor(internal val data: LongArray) : Co
      * @param startIndex the beginning (inclusive) of the subrange to copy, 0 by default.
      * @param endIndex the end (exclusive) of the subrange to copy, size of this array by default.
      * @exception IndexOutOfBoundsException or [IllegalArgumentException] when [startIndex] or
-     * [endIndex] is out of range of this array indices or when startIndex > endIndex.
+     * [endIndex] is out of range of this array indices or when `startIndex > endIndex`.
      * @exception IndexOutOfBoundsException when the subrange doesn't fit into the [destination]
      * array starting at the specified [destinationOffset], or when that index is out of the
      * [destination] array indices range.
