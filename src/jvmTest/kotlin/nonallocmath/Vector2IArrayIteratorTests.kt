@@ -1,7 +1,9 @@
 package nonallocmath
 
 import com.sztorm.nonallocmath.Vector2I
-import com.sztorm.nonallocmath.toVector2IArray
+import com.sztorm.nonallocmath.Vector2IArray
+import com.sztorm.nonallocmath.Vector2IIterator
+import nonallocmath.utils.Wrapper
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -13,11 +15,11 @@ class Vector2IArrayIteratorTests {
 
     @ParameterizedTest
     @MethodSource("nextArgs")
-    fun nextMutatesIteratorCorrectly(array: Array<Vector2I>, expected: List<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun nextMutatesIteratorCorrectly(array: Wrapper<Vector2IArray>, expected: List<Vector2I>) {
+        val iterator: Vector2IIterator = array.value.iterator()
         val actual = emptyList<Vector2I>().toMutableList()
 
-        for (i in 0..array.lastIndex) {
+        for (i in 0..array.value.lastIndex) {
             actual.add(iterator.next())
         }
         assertContentEquals(expected, actual)
@@ -25,11 +27,13 @@ class Vector2IArrayIteratorTests {
 
     @ParameterizedTest
     @MethodSource("nextVector2IArgs")
-    fun nextVector2IMutatesIteratorCorrectly(array: Array<Vector2I>, expected: List<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun nextVector2IMutatesIteratorCorrectly(
+        array: Wrapper<Vector2IArray>, expected: List<Vector2I>
+    ) {
+        val iterator: Vector2IIterator = array.value.iterator()
         val actual = emptyList<Vector2I>().toMutableList()
 
-        for (i in 0..array.lastIndex) {
+        for (i in 0..array.value.lastIndex) {
             actual.add(iterator.nextVector2I())
         }
         assertContentEquals(expected, actual)
@@ -37,11 +41,11 @@ class Vector2IArrayIteratorTests {
 
     @ParameterizedTest
     @MethodSource("hasNextArgs")
-    fun hasNextReturnsCorrectValue(array: Array<Vector2I>, expected: List<Boolean>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun hasNextReturnsCorrectValue(array: Wrapper<Vector2IArray>, expected: List<Boolean>) {
+        val iterator: Vector2IIterator = array.value.iterator()
         val actual = emptyList<Boolean>().toMutableList()
 
-        for (i in 0..array.lastIndex) {
+        for (i in 0..array.value.lastIndex) {
             actual.add(iterator.hasNext())
             iterator.next()
         }
@@ -51,10 +55,10 @@ class Vector2IArrayIteratorTests {
 
     @ParameterizedTest
     @MethodSource("arrays")
-    fun nextThrowsWhenDoesNotHaveNextElement(array: Array<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun nextThrowsWhenDoesNotHaveNextElement(array: Wrapper<Vector2IArray>) {
+        val iterator: Vector2IIterator = array.value.iterator()
 
-        for (i in 0..array.lastIndex) {
+        for (i in 0..array.value.lastIndex) {
             iterator.next()
         }
         assertThrows<NoSuchElementException> { iterator.next() }
@@ -62,10 +66,10 @@ class Vector2IArrayIteratorTests {
 
     @ParameterizedTest
     @MethodSource("arrays")
-    fun nextThrowsWhenDoesNotHaveNextVector2I(array: Array<Vector2I>) {
-        val iterator = array.toVector2IArray().iterator()
+    fun nextThrowsWhenDoesNotHaveNextVector2I(array: Wrapper<Vector2IArray>) {
+        val iterator: Vector2IIterator = array.value.iterator()
 
-        for (i in 0..array.lastIndex) {
+        for (i in 0..array.value.lastIndex) {
             iterator.nextVector2I()
         }
         assertThrows<NoSuchElementException> { iterator.nextVector2I() }
@@ -78,11 +82,11 @@ class Vector2IArrayIteratorTests {
         @JvmStatic
         fun nextArgs(): List<Arguments> = listOf(
             Arguments.of(
-                emptyArray<Vector2I>(),
+                Wrapper(Vector2IArray(0)),
                 emptyList<Vector2I>(),
             ),
             Arguments.of(
-                Array(4) { Vector2I(it, 0) },
+                Wrapper(Vector2IArray(4) { Vector2I(it, 0) }),
                 List(4) { Vector2I(it, 0) },
             ),
         )
@@ -93,11 +97,11 @@ class Vector2IArrayIteratorTests {
         @JvmStatic
         fun hasNextArgs(): List<Arguments> = listOf(
             Arguments.of(
-                emptyArray<Vector2I>(),
+                Wrapper(Vector2IArray(0)),
                 emptyList<Boolean>(),
             ),
             Arguments.of(
-                Array(4) { Vector2I(it, 0) },
+                Wrapper(Vector2IArray(4) { Vector2I(it, 0) }),
                 List(4) { true },
             ),
         )
