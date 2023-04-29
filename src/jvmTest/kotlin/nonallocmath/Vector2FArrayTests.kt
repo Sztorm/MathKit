@@ -1132,7 +1132,8 @@ class Vector2FArrayTests {
             Arguments.of(
                 Wrapper(Vector2FArray(0)),
                 { v: Vector2F -> Vector2F(min(v.x, v.y), max(v.x, v.y)) },
-                emptyList<Vector2F>()),
+                emptyList<Vector2F>()
+            ),
         )
 
         @JvmStatic
@@ -1604,7 +1605,7 @@ class Vector2FArrayTests {
                 Wrapper(
                     arrayOf(Vector2F.ZERO, Vector2F.ZERO, Vector2F(2f, 1f)).toVector2FArray()
                 ),
-                { v: Vector2F -> v == Vector2F(2f, 1f)},
+                { v: Vector2F -> v == Vector2F(2f, 1f) },
                 false
             ),
             Arguments.of(
