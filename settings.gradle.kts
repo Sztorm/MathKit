@@ -1,3 +1,3 @@
 
-rootProject.name = "non-alloc-math"
+rootProject.name = "low-alloc-math"
 

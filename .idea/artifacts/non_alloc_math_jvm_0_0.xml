@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="non-alloc-math-jvm-0.0">
-    <output-path>$PROJECT_DIR$/build/libs</output-path>
-    <root id="archive" name="non-alloc-math-jvm-0.0.jar">
-      <element id="module-output" name="non-alloc-math.jvmMain" />
-    </root>
-  </artifact>
-</component>
