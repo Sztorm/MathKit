@@ -1,9 +1,10 @@
 plugins {
     kotlin("multiplatform") version "1.8.0"
+    id("org.jetbrains.dokka") version "1.8.10"
 }
 
 group = "com.sztorm"
-version = "0.0"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
