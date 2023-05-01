@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform") version "1.8.0"
     id("org.jetbrains.dokka") version "1.8.10"
+    id("maven-publish")
 }
 
 group = "com.sztorm"
