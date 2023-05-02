@@ -11,7 +11,33 @@ comparable performance; therefore, usage of the library is optimized for the Kot
 
 ## Installation
 
-Step 1. Add it in your root build.gradle at the end of repositories:
+<details>
+<summary>Gradle Kotlin</summary>
+
+Step 1. Add it in your root `build.gradle.kts` at the end of repositories:
+
+```kotlin
+allprojects {
+    repositories {
+        maven("https://jitpack.io")
+    }
+}
+```
+
+Step 2. Add the dependency
+
+```kotlin
+dependencies {
+    implementation("com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0")
+}
+```
+
+</details>
+
+<details>
+<summary>Gradle Groovy</summary>
+
+Step 1. Add it in your root `build.gradle` at the end of repositories:
 
 ```groovy
 allprojects {
@@ -28,6 +54,34 @@ dependencies {
     implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0'
 }
 ```
+
+</details>
+
+<details>
+<summary>Maven</summary>
+
+Step 1. Add it in your root `pom.xml` at the end of repositories:
+
+```maven
+<repositories>
+    <repository>
+    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+```
+
+Step 2. Add the dependency
+
+```maven
+<dependency>
+    <groupId>com.github.Sztorm</groupId>
+    <artifactId>KotlinLowAllocMath</artifactId>
+    <version>Tag</version>
+</dependency>
+```
+
+</details>
 
 ## Samples
 
