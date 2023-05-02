@@ -65,9 +65,9 @@ Step 1. Add it in your root `pom.xml` at the end of repositories:
 ```maven
 <repositories>
     <repository>
-    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
 </repositories>
 ```
 
