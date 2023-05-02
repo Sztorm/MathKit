@@ -1,5 +1,7 @@
 # low-alloc-math
 
+[![](https://jitpack.io/v/Sztorm/KotlinLowAllocMath.svg)](https://jitpack.io/#Sztorm/KotlinLowAllocMath)
+
 A collection of various math related types that have little to no GC memory allocation
 pressure. This library makes extensive use of Kotlin's
 [inline classes](https://kotlinlang.org/docs/inline-classes.html) to achieve primitive type
@@ -9,7 +11,23 @@ comparable performance; therefore, usage of the library is optimized for the Kot
 
 ## Installation
 
-Coming soon!
+Step 1. Add it in your root build.gradle at the end of repositories:
+
+```groovy
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Step 2. Add the dependency
+
+```groovy
+dependencies {
+    implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0'
+}
+```
 
 ## Samples
 
