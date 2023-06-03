@@ -32,6 +32,11 @@ class CircleTests {
     ) = assertTrue(expected.value.isApproximately(circle.closestPointTo(point.value)))
 
     @ParameterizedTest
+    @MethodSource("intersectsAnnulusArgs")
+    fun intersectsReturnsCorrectValue(circle: Circle, annulus: AnnulusShape, expected: Boolean) =
+        assertEquals(expected, circle.intersects(annulus))
+
+    @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
     fun intersectsReturnsCorrectValue(
         circle: Circle, otherCircle: CircleShape, expected: Boolean
@@ -41,6 +46,11 @@ class CircleTests {
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(circle: Circle, point: Wrapper<Vector2F>, expected: Boolean) =
         assertEquals(expected, circle.contains(point.value))
+
+    @ParameterizedTest
+    @MethodSource("containsAnnulusArgs")
+    fun containsReturnsCorrectValue(circle: Circle, annulus: AnnulusShape, expected: Boolean) =
+        assertEquals(expected, circle.contains(annulus))
 
     @ParameterizedTest
     @MethodSource("containsCircleArgs")
@@ -94,6 +104,30 @@ class CircleTests {
         )
 
         @JvmStatic
+        fun intersectsAnnulusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F(-2f, 2f), radius = 1.01f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                true
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(-2f, 2f), radius = 0.99f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                false
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(-6f, 2f), radius = 1.01f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                true
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(-6f, 2f), radius = 0.99f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                false
+            ),
+        )
+
+        @JvmStatic
         fun intersectsCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Circle(center = Vector2F(-4f, 4f), radius = 4f),
@@ -125,6 +159,30 @@ class CircleTests {
             Arguments.of(
                 Circle(center = Vector2F.ZERO, radius = 4f),
                 Wrapper(Vector2F(4.01f, 0f)),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun containsAnnulusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F.ZERO, radius = 4f),
+                Annulus(center = Vector2F.ZERO, outerRadius = 3.99f, innerRadius = 2f),
+                true
+            ),
+            Arguments.of(
+                Circle(center = Vector2F.ZERO, radius = 4f),
+                Annulus(center = Vector2F.ZERO, outerRadius = 4.01f, innerRadius = 2f),
+                false
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Annulus(center = Vector2F(4f, 0f), outerRadius = 1.99f, innerRadius = 1f),
+                true
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Annulus(center = Vector2F(4f, 0f), outerRadius = 2.01f, innerRadius = 1f),
                 false
             ),
         )

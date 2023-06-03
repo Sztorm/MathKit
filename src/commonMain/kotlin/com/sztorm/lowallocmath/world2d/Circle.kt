@@ -37,10 +37,21 @@ data class Circle(
         else point
     }
 
+    inline fun <reified TAnnulus : AnnulusShape> intersects(annulus: TAnnulus): Boolean {
+        val distance: Float = center.distanceTo(annulus.center)
+        val radius: Float = radius
+
+        return (distance >= (annulus.innerRadius - radius)) &&
+               (distance <= (annulus.outerRadius + radius))
+    }
+
     inline fun <reified TCircle : CircleShape> intersects(circle: TCircle): Boolean =
         center.distanceTo(circle.center) <= radius + circle.radius
 
     operator fun contains(point: Vector2F): Boolean = center.distanceTo(point) <= radius
+
+    inline operator fun <reified TAnnulus : AnnulusShape> contains(annulus: TAnnulus): Boolean =
+        center.distanceTo(annulus.center) <= radius - annulus.outerRadius
 
     inline operator fun <reified TCircle : CircleShape> contains(circle: TCircle): Boolean =
         center.distanceTo(circle.center) <= radius - circle.radius
