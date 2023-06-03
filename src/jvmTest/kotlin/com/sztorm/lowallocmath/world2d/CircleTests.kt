@@ -33,8 +33,9 @@ class CircleTests {
 
     @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
-    fun intersectsReturnsCorrectValue(circle: Circle, otherCircle: Circle, expected: Boolean) =
-        assertEquals(expected, circle.intersects(otherCircle))
+    fun intersectsReturnsCorrectValue(
+        circle: Circle, otherCircle: CircleShape, expected: Boolean
+    ) = assertEquals(expected, circle.intersects(otherCircle))
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
@@ -43,7 +44,7 @@ class CircleTests {
 
     @ParameterizedTest
     @MethodSource("containsCircleArgs")
-    fun containsReturnsCorrectValue(circle: Circle, otherCircle: Circle, expected: Boolean) =
+    fun containsReturnsCorrectValue(circle: Circle, otherCircle: CircleShape, expected: Boolean) =
         assertEquals(expected, circle.contains(otherCircle))
 
     companion object {
@@ -106,7 +107,7 @@ class CircleTests {
             ),
             Arguments.of(
                 Circle(center = Vector2F(-4f, 4f), radius = 4f),
-                Circle(center = Vector2F(4f, 4f), radius = 4f),
+                Circle(center = Vector2F(3.99f, 4f), radius = 4f),
                 true
             ),
         )
@@ -117,11 +118,13 @@ class CircleTests {
                 Circle(center = Vector2F.ZERO, radius = 4f), Wrapper(Vector2F.ZERO), true
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, radius = 4f), Wrapper(Vector2F(4f, 0f)), true
+                Circle(center = Vector2F.ZERO, radius = 4f),
+                Wrapper(Vector2F(3.99f, 0f)),
+                true
             ),
             Arguments.of(
                 Circle(center = Vector2F.ZERO, radius = 4f),
-                Wrapper(Vector2F(4.1f, 0f)),
+                Wrapper(Vector2F(4.01f, 0f)),
                 false
             ),
         )
@@ -130,17 +133,22 @@ class CircleTests {
         fun containsCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Circle(center = Vector2F.ZERO, radius = 4f),
-                Circle(center = Vector2F.ZERO, radius = 3.9f),
+                Circle(center = Vector2F.ZERO, radius = 3.99f),
+                true
+            ),
+            Arguments.of(
+                Circle(center = Vector2F.ZERO, radius = 4f),
+                Circle(center = Vector2F.ZERO, radius = 4.01f),
+                false
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Circle(center = Vector2F(4f, 0f), radius = 1.99f),
                 true
             ),
             Arguments.of(
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
-                Circle(center = Vector2F(4f, 0f), radius = 2f),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
-                Circle(center = Vector2F(4f, 0f), radius = 2.1f),
+                Circle(center = Vector2F(4f, 0f), radius = 2.01f),
                 false
             ),
         )

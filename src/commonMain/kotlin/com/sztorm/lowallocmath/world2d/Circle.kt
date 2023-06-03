@@ -20,7 +20,7 @@ data class Circle(
     override val perimeter: Float
         inline get() = 2f * PI.toFloat() * radius
 
-    val diameter: Float
+    override val diameter: Float
         inline get() = 2f * radius
 
     fun closestPointTo(point: Vector2F): Vector2F {
@@ -37,11 +37,11 @@ data class Circle(
         else point
     }
 
-    fun intersects(circle: Circle): Boolean =
+    inline fun <reified TCircle : CircleShape> intersects(circle: TCircle): Boolean =
         center.distanceTo(circle.center) <= radius + circle.radius
 
     operator fun contains(point: Vector2F): Boolean = center.distanceTo(point) <= radius
 
-    operator fun contains(circle: Circle): Boolean =
+    inline operator fun <reified TCircle : CircleShape> contains(circle: TCircle): Boolean =
         center.distanceTo(circle.center) <= radius - circle.radius
 }

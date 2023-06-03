@@ -12,4 +12,7 @@ interface CircleShape : Shape {
 
     override val perimeter: Float
         get() = 2f * PI.toFloat() * radius
+
+    val diameter: Float
+        get() = 2f * radius
 }
