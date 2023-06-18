@@ -31,7 +31,9 @@ value class AngleF(val radians: Float) {
 
     /** Returns an angle that is coterminal to this angle and is in [0°, 360°) range. **/
     fun getMinimalPositiveCoterminal() =
-        AngleF((radians + (2.0 * PI).toFloat()) % (2.0 * PI).toFloat())
+        AngleF(
+            ((radians % (2.0 * PI).toFloat()) + (2.0 * PI).toFloat()) % (2.0 * PI).toFloat()
+        )
 
     /**
      * Returns a value indicating whether this angle is approximately [other] angle given
