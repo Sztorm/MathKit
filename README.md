@@ -28,7 +28,7 @@ Step 2. Add the dependency
 
 ```kotlin
 dependencies {
-    implementation("com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0")
+    implementation("com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.1.0")
 }
 ```
 
@@ -51,7 +51,7 @@ Step 2. Add the dependency
 
 ```groovy
 dependencies {
-    implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0'
+    implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.1.0'
 }
 ```
 
@@ -77,7 +77,7 @@ Step 2. Add the dependency
 <dependency>
     <groupId>com.github.Sztorm</groupId>
     <artifactId>KotlinLowAllocMath</artifactId>
-    <version>Tag</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
@@ -108,8 +108,10 @@ import com.sztorm.lowallocmath.*
 val a = ComplexF(3f, 2f)
 val b = 3f + 2f.i
 val c = ComplexF.fromPolar(3.6055512f, 0.5880026f)
+val d = ComplexF.fromAngle(AngleF.fromDegrees(30f))
 
 println(c)           // 2.9999998 + 2.0i
+println(d)           // 2.9999998 + 2.0i
 println(a.magnitude) // 3.6055512
 println(a.phase)     // 0.5880026
 println(a + b)       // 6.0 + 4.0i

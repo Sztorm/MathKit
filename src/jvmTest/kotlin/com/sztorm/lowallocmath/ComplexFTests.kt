@@ -6,11 +6,10 @@ import org.junit.jupiter.params.provider.*
 import kotlin.test.*
 
 class ComplexFTests {
-
     @ParameterizedTest
     @MethodSource("complices")
-    fun basicPropertiesAreValid(wrappedValue: Wrapper<ComplexF>) {
-        val value: ComplexF = wrappedValue.value
+    fun basicPropertiesAreValid(complex: Wrapper<ComplexF>) {
+        val value: ComplexF = complex.value
         val (real, imaginary) = value
 
         assertEquals(value.real.toRawBits(), real.toRawBits())
@@ -19,23 +18,39 @@ class ComplexFTests {
 
     @ParameterizedTest
     @MethodSource("squaredMagnitudeArgs")
-    fun squaredMagnitudeReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Float) =
-        assertTrue(expected.isApproximately(wrappedValue.value.squaredMagnitude, epsilon = 0.001f))
+    fun squaredMagnitudeReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
+        assertTrue(expected.isApproximately(complex.value.squaredMagnitude, epsilon = 0.001f))
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
-    fun magnitudeReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Float) =
-        assertTrue(expected.isApproximately(wrappedValue.value.magnitude, epsilon = 0.001f))
+    fun magnitudeReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
+        assertTrue(expected.isApproximately(complex.value.magnitude, epsilon = 0.001f))
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
-    fun absoluteValueReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Float) =
-        assertTrue(expected.isApproximately(wrappedValue.value.absoluteValue, epsilon = 0.001f))
+    fun absoluteValueReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
+        assertTrue(expected.isApproximately(complex.value.absoluteValue, epsilon = 0.001f))
 
     @ParameterizedTest
     @MethodSource("phaseArgs")
-    fun phaseReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Float) =
-        assertTrue(expected.isApproximately(wrappedValue.value.phase, epsilon = 0.001f))
+    fun phaseReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
+        assertTrue(expected.isApproximately(complex.value.phase, epsilon = 0.001f))
+
+    @ParameterizedTest
+    @MethodSource("toVector2FArgs")
+    fun toVector2FReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<Vector2F>) =
+        assertEquals(expected.value, complex.value.toVector2F())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: String) =
+        assertEquals(expected, complex.value.toString())
+
+    @ParameterizedTest
+    @MethodSource("isApproximatelyArgs")
+    fun isApproximatelyReturnsCorrectValue(
+        complex: Wrapper<ComplexF>, other: Wrapper<ComplexF>, epsilon: Float, expected: Boolean
+    ) = assertEquals(expected, complex.value.isApproximately(other.value, epsilon))
 
     @ParameterizedTest
     @MethodSource("powComplexArgs")
@@ -63,85 +78,92 @@ class ComplexFTests {
         )
 
     @ParameterizedTest
+    @MethodSource("fromAngleArgs")
+    fun fromAngleReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Wrapper<ComplexF>) =
+        assertTrue(
+            expected.value.isApproximately(ComplexF.fromAngle(angle.value), epsilon = 0.001f)
+        )
+
+    @ParameterizedTest
     @MethodSource("magnitudeArgs")
-    fun absReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Float) =
-        assertTrue(expected.isApproximately(ComplexF.abs(wrappedValue.value), epsilon = 0.001f))
+    fun absReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
+        assertTrue(expected.isApproximately(ComplexF.abs(complex.value), epsilon = 0.001f))
 
     @ParameterizedTest
     @MethodSource("conjugateArgs")
     fun conjugateReturnsCorrectValue(
-        wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
+        complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertTrue(
-        expected.value.isApproximately(ComplexF.conjugate(wrappedValue.value), epsilon = 0.001f)
+        expected.value.isApproximately(ComplexF.conjugate(complex.value), epsilon = 0.001f)
     )
 
     @ParameterizedTest
     @MethodSource("expArgs")
-    fun expReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun expReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.exp(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.exp(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("cosArgs")
-    fun cosReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun cosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.cos(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.cos(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("sinArgs")
-    fun sinReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun sinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.sin(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.sin(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("tanArgs")
-    fun tanReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun tanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.tan(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.tan(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("coshArgs")
-    fun coshReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun coshReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.cosh(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.cosh(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("sinhArgs")
-    fun sinhReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun sinhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.sinh(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.sinh(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("tanhArgs")
-    fun tanhReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun tanhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.tanh(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.tanh(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("sqrtArgs")
-    fun sqrtReturnsCorrectValue(wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertTrue(
-            expected.value.isApproximately(ComplexF.sqrt(wrappedValue.value), epsilon = 0.001f)
+            expected.value.isApproximately(ComplexF.sqrt(complex.value), epsilon = 0.001f)
         )
 
     @ParameterizedTest
     @MethodSource("plusComplexArgs")
     fun unaryPlusOperatorReturnsCorrectValue(
-        wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertTrue(equalsBitwise(expected.value, +wrappedValue.value))
+        complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
+    ) = assertTrue(equalsBitwise(expected.value, +complex.value))
 
     @ParameterizedTest
     @MethodSource("minusComplexArgs")
     fun unaryMinusOperatorReturnsCorrectValue(
-        wrappedValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertTrue(equalsBitwise(expected.value, -wrappedValue.value))
+        complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
+    ) = assertTrue(equalsBitwise(expected.value, -complex.value))
 
     @ParameterizedTest
     @MethodSource("complexPlusComplexArgs")
@@ -250,6 +272,68 @@ class ComplexFTests {
         )
 
         @JvmStatic
+        fun toVector2FArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(3f, -4f)), Wrapper(Vector2F(3f, -4f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(-Float.MAX_VALUE, Float.MAX_VALUE)),
+                Wrapper(Vector2F(-Float.MAX_VALUE, Float.MAX_VALUE))
+            ),
+            Arguments.of(Wrapper(ComplexF.ZERO), Wrapper(Vector2F.ZERO)),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 4f)),
+                "${2f} + ${4f}i"
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(2f, -4f)),
+                "${2f} - ${4f}i"
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(-2f, 0f)),
+                "${-2f}"
+            ),
+        )
+
+        @JvmStatic
+        fun isApproximatelyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(3f, 4f)),
+                0f,
+                true
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(3.001f, 3.999f)),
+                0.01f,
+                true
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(3.000001f, 3.999999f)),
+                0.00001f,
+                true
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(3.04f, 3.95f)),
+                0.01f,
+                false
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(3.00004f, 3.99995f)),
+                0.00001f,
+                false
+            ),
+        )
+
+        @JvmStatic
         fun powComplexArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(-2f, 3f)),
@@ -301,6 +385,22 @@ class ComplexFTests {
             Arguments.of(
                 5f, -0.9273f,
                 Wrapper(ComplexF(3f, -4f))
+            ),
+        )
+
+        @JvmStatic
+        fun fromAngleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(45f)),
+                Wrapper(ComplexF(0.7071068f, 0.7071068f))
+            ),
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(-30f)),
+                Wrapper(ComplexF(0.8660254f, -0.5f))
+            ),
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(-390f)),
+                Wrapper(ComplexF(0.8660254f, -0.5f))
             ),
         )
 
