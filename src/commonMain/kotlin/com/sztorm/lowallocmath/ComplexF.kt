@@ -95,15 +95,20 @@ value class ComplexF private constructor(private val data: Long) {
     inline val phase: Float
         get() = atan2(imaginary, real)
 
+    /** Converts this [ComplexF] value to [Vector2F]. **/
+    fun toVector2F() = Vector2F(data)
+
     /** Returns a [String] representation of this vector in "[real] ± [imaginary]i" format. **/
-    override fun toString(): String = (
-            if (imaginary < 0)
-                StringBuilder(16 + 3 + 16 + 1)
-                    .append(real).append(" - ").append(imaginary.absoluteValue).append('i')
-            else
-                StringBuilder(16 + 3 + 16 + 1)
-                    .append(real).append(" + ").append(imaginary).append('i')
-            ).toString()
+    override fun toString(): String = (when {
+        imaginary == 0f -> StringBuilder(16)
+            .append(real)
+
+        imaginary < 0f -> StringBuilder(16 + 3 + 16 + 1)
+            .append(real).append(" - ").append(imaginary.absoluteValue).append('i')
+
+        else -> StringBuilder(16 + 3 + 16 + 1)
+            .append(real).append(" + ").append(imaginary).append('i')
+    }).toString()
 
     /**
      * Returns a value indicating whether this number is approximately [other] number given
@@ -111,7 +116,7 @@ value class ComplexF private constructor(private val data: Long) {
      */
     inline fun isApproximately(other: ComplexF, epsilon: Float = 0.00001f): Boolean =
         real.isApproximately(other.real, epsilon) &&
-        imaginary.isApproximately(other.imaginary, epsilon)
+                imaginary.isApproximately(other.imaginary, epsilon)
 
     /** Returns this complex number to the power of [x]. **/
     fun pow(x: ComplexF): ComplexF {
@@ -259,6 +264,10 @@ value class ComplexF private constructor(private val data: Long) {
         @JvmStatic
         inline fun fromPolar(magnitude: Float, phase: Float) =
             ComplexF(magnitude * cos(phase), magnitude * sin(phase))
+
+        /** Creates a new complex number using the specified [angle]. **/
+        @JvmStatic
+        inline fun fromAngle(angle: AngleF) = ComplexF(cos(angle.radians), sin(angle.radians))
 
         /** Returns the absolute value of the specified complex number. **/
         @JvmStatic
