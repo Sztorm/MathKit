@@ -28,7 +28,7 @@ Step 2. Add the dependency
 
 ```kotlin
 dependencies {
-    implementation("com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0")
+    implementation("com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.1.0")
 }
 ```
 
@@ -51,7 +51,7 @@ Step 2. Add the dependency
 
 ```groovy
 dependencies {
-    implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.0.0'
+    implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.1.0'
 }
 ```
 
@@ -77,7 +77,7 @@ Step 2. Add the dependency
 <dependency>
     <groupId>com.github.Sztorm</groupId>
     <artifactId>KotlinLowAllocMath</artifactId>
-    <version>Tag</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
