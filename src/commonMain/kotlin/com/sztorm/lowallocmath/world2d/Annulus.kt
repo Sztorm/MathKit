@@ -76,7 +76,7 @@ data class Annulus(
         val distance: Float = center.distanceTo(annulus.center)
         val otherAnnulusOuterRadius: Float = annulus.outerRadius
         val otherAnnulusInnerRadius: Float = annulus.innerRadius
-        val innerRadius: Float = innerRadius
+        val innerRadius: Float = this.innerRadius
 
         return (outerRadius >= (distance + otherAnnulusOuterRadius)) &&
                ((innerRadius <= (distance - otherAnnulusOuterRadius)) ||

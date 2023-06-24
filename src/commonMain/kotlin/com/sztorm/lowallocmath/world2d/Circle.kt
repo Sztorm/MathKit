@@ -39,7 +39,7 @@ data class Circle(
 
     inline fun <reified TAnnulus : AnnulusShape> intersects(annulus: TAnnulus): Boolean {
         val distance: Float = center.distanceTo(annulus.center)
-        val radius: Float = radius
+        val radius: Float = this.radius
 
         return (distance >= (annulus.innerRadius - radius)) &&
                (distance <= (annulus.outerRadius + radius))
