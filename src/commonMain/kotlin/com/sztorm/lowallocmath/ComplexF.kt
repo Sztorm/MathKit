@@ -2,6 +2,7 @@
 
 package com.sztorm.lowallocmath
 
+import com.sztorm.lowallocmath.Vector2F.Companion.ZERO
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
@@ -52,7 +53,6 @@ operator fun Float.div(other: ComplexF): ComplexF {
  */
 @JvmInline
 value class ComplexF private constructor(private val data: Long) {
-
     /** Constructs a new complex number using the specified [real] and [imaginary] parts. **/
     constructor(real: Float, imaginary: Float) : this(
         (real.toRawBits().toLong() and 0xFFFFFFFFL) or
@@ -94,6 +94,18 @@ value class ComplexF private constructor(private val data: Long) {
     /** Returns the phase of this complex number. **/
     inline val phase: Float
         get() = atan2(imaginary, real)
+
+    /**
+     * Returns a normalized copy of this complex number if this complex number [magnitude] is large
+     * enough to safely normalize. Else returns [ZERO].
+     */
+    inline val normalized: ComplexF
+        get() {
+            val magnitude: Float = this.magnitude
+
+            return if (magnitude > 0.00001f) this / magnitude
+            else ZERO
+        }
 
     /** Converts this [ComplexF] value to [Vector2F]. **/
     fun toVector2F() = Vector2F(data)
