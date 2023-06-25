@@ -32,11 +32,11 @@ data class Rectangle(
         pointD = center + (rotation * pD).toVector2F()
     }
 
-    override val area: Float
-        inline get() = width * height
+    override inline val area: Float
+        get() = width * height
 
-    override val perimeter: Float
-        inline get() {
+    override inline val perimeter: Float
+        get() {
             val w: Float = width
             val h: Float = height
 

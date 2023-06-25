@@ -1,35 +1,34 @@
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class CircleTests {
     @ParameterizedTest
     @MethodSource("areaArgs")
     fun areaReturnsCorrectValue(circle: Circle, expected: Float) =
-        assertTrue(expected.isApproximately(circle.area))
+        assertApproximation(expected, circle.area)
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
     fun perimeterReturnsCorrectValue(circle: Circle, expected: Float) =
-        assertTrue(expected.isApproximately(circle.perimeter))
+        assertApproximation(expected, circle.perimeter)
 
     @ParameterizedTest
     @MethodSource("diameterArgs")
     fun diameterReturnsCorrectValue(circle: Circle, expected: Float) =
-        assertTrue(expected.isApproximately(circle.diameter))
+        assertApproximation(expected, circle.diameter)
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         circle: Circle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(circle.closestPointTo(point.value)))
+    ) = assertApproximation(expected.value, circle.closestPointTo(point.value))
 
     @ParameterizedTest
     @MethodSource("intersectsAnnulusArgs")

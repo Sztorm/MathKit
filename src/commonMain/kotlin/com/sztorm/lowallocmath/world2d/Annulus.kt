@@ -16,14 +16,14 @@ data class Annulus(
     override inline val outerRadius: Float,
     override inline val innerRadius: Float
 ) : AnnulusShape {
-    override val annularRadius: Float
-        inline get() = outerRadius - innerRadius
+    override inline val annularRadius: Float
+        get() = outerRadius - innerRadius
 
-    override val area: Float
-        inline get() = PI.toFloat() * (outerRadius * outerRadius - innerRadius * innerRadius)
+    override inline val area: Float
+        get() = PI.toFloat() * (outerRadius * outerRadius - innerRadius * innerRadius)
 
-    override val perimeter: Float
-        inline get() = 2f * PI.toFloat() * (outerRadius + innerRadius)
+    override inline val perimeter: Float
+        get() = 2f * PI.toFloat() * (outerRadius + innerRadius)
 
     fun closestPointTo(point: Vector2F): Vector2F {
         val cx: Float = center.x

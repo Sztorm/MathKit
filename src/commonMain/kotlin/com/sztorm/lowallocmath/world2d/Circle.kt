@@ -14,14 +14,14 @@ data class Circle(
     override inline val center: Vector2F,
     override inline val radius: Float
 ) : CircleShape {
-    override val area: Float
-        inline get() = PI.toFloat() * radius * radius
+    override inline val area: Float
+        get() = PI.toFloat() * radius * radius
 
-    override val perimeter: Float
-        inline get() = 2f * PI.toFloat() * radius
+    override inline val perimeter: Float
+        get() = 2f * PI.toFloat() * radius
 
-    override val diameter: Float
-        inline get() = 2f * radius
+    override inline val diameter: Float
+        get() = 2f * radius
 
     fun closestPointTo(point: Vector2F): Vector2F {
         val cx: Float = center.x

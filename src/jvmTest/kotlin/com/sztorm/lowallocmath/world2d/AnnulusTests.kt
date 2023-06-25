@@ -1,35 +1,34 @@
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class AnnulusTests {
     @ParameterizedTest
     @MethodSource("annularRadiusArgs")
     fun annularRadiusReturnsCorrectValue(annulus: Annulus, expected: Float) =
-        assertTrue(expected.isApproximately(annulus.annularRadius))
+        assertApproximation(expected, annulus.annularRadius)
 
     @ParameterizedTest
     @MethodSource("areaArgs")
     fun areaReturnsCorrectValue(annulus: Annulus, expected: Float) =
-        assertTrue(expected.isApproximately(annulus.area))
+        assertApproximation(expected, annulus.area)
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
     fun perimeterReturnsCorrectValue(annulus: Annulus, expected: Float) =
-        assertTrue(expected.isApproximately(annulus.perimeter))
+        assertApproximation(expected, annulus.perimeter)
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         annulus: Annulus, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(annulus.closestPointTo(point.value)))
+    ) = assertApproximation(expected.value, annulus.closestPointTo(point.value))
 
     @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
