@@ -95,6 +95,10 @@ value class ComplexF private constructor(private val data: Long) {
     inline val phase: Float
         get() = atan2(imaginary, real)
 
+    /** Returns the phase of this complex number represented as angle. **/
+    inline val phaseAngle: AngleF
+        get() = AngleF(atan2(imaginary, real))
+
     /**
      * Returns a normalized copy of this complex number if this complex number [magnitude] is large
      * enough to safely normalize. Else returns [ZERO].

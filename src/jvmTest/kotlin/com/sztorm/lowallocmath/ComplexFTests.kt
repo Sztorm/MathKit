@@ -38,6 +38,13 @@ class ComplexFTests {
         assertApproximation(expected, complex.value.phase, tolerance = 0.001f)
 
     @ParameterizedTest
+    @MethodSource("phaseAngleArgs")
+    fun phaseAngleReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<AngleF>) =
+        assertApproximation(
+            expected.value, complex.value.phaseAngle, tolerance = AngleF.fromRadians(0.001f)
+        )
+
+    @ParameterizedTest
     @MethodSource("normalizedArgs")
     fun normalizedReturnsCorrectValue(vector: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, vector.value.normalized)
@@ -255,6 +262,19 @@ class ComplexFTests {
             Arguments.of(Wrapper(ComplexF(3f, 4f)), 0.9273f),
             Arguments.of(Wrapper(ComplexF(0f, 2f)), 1.5708f),
             Arguments.of(Wrapper(ComplexF(0f, 0f)), 0f),
+        )
+
+        @JvmStatic
+        fun phaseAngleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)), Wrapper(AngleF.fromRadians(0.9273f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0f, 2f)), Wrapper(AngleF.fromRadians(1.5708f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0f, 0f)), Wrapper(AngleF.fromRadians(0f))
+            ),
         )
 
         @JvmStatic
