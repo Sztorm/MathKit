@@ -45,10 +45,10 @@ data class RegularTriangle(
     override inline val interiorAngle: AngleF
         get() = AngleF((PI / 3.0).toFloat())
 
-    inline val inradius: Float
+    override inline val inradius: Float
         get() = 0.28867513f * sideLength
 
-    inline val circumradius: Float
+    override inline val circumradius: Float
         get() = 0.5773503f * sideLength
 
     fun closestPointTo(point: Vector2F): Vector2F {
