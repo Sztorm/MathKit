@@ -8,6 +8,7 @@ import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import kotlin.test.assertEquals
 
 class RegularTriangleTests {
     @ParameterizedTest
@@ -47,6 +48,18 @@ class RegularTriangleTests {
     @MethodSource("circumradiusArgs")
     fun circumradiusReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
         assertApproximation(expected, triangle.circumradius)
+
+    @ParameterizedTest
+    @MethodSource("closestPointToArgs")
+    fun closestPointToReturnsCorrectValue(
+        triangle: RegularTriangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, triangle.closestPointTo(point.value))
+
+    @ParameterizedTest
+    @MethodSource("containsVector2FArgs")
+    fun containsReturnsCorrectValue(
+        triangle: RegularTriangle, point: Wrapper<Vector2F>, expected: Boolean
+    ) = assertEquals(expected, triangle.contains(point.value))
 
     companion object {
         @JvmStatic
@@ -200,5 +213,145 @@ class RegularTriangleTests {
                 2.309401f
             ),
         )
+
+        @JvmStatic
+        fun closestPointToArgs(): List<Arguments> {
+            val pointA = Vector2F(5.464102f, -4f)
+            val pointB = Vector2F(2f, -2f)
+            val pointC = Vector2F(2f, -6f)
+            val center: Vector2F = (pointA + pointB + pointC) / 3f
+            val triangle = RegularTriangle(
+                center,
+                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
+                        ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
+                sideLength = pointA.distanceTo(pointB)
+            )
+            return listOf(
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(6f, -3.25f)),
+                    Wrapper(Vector2F(5.464102f, -4f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(5.5f, -3f)),
+                    Wrapper(Vector2F(5.058013f, -3.7655447f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(3.5f, -2f)),
+                    Wrapper(Vector2F(3.125f, -2.649519f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(2.1f, -1.5f)),
+                    Wrapper(Vector2F(2f, -2f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(1.5f, -1.75f)),
+                    Wrapper(Vector2F(2f, -2f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(1f, -2.75f)),
+                    Wrapper(Vector2F(2f, -2.75f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(1f, -4.5f)),
+                    Wrapper(Vector2F(2f, -4.5f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(1f, -6.25f)),
+                    Wrapper(Vector2F(2f, -6f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(2f, -7f)),
+                    Wrapper(Vector2F(2f, -6f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(3.5f, -6.5f)),
+                    Wrapper(Vector2F(2.9084935f, -5.475481f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(5f, -5.75f)),
+                    Wrapper(Vector2F(4.3582535f, -4.638462f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(6f, -4.5f)),
+                    Wrapper(Vector2F(5.464102f, -4f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(5.364102f, -4f)),
+                    Wrapper(Vector2F(5.364102f, -4f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(3.682051f, -3.0866027f)),
+                    Wrapper(Vector2F(3.682051f, -3.0866027f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(2.05f, -2.0866024f)),
+                    Wrapper(Vector2F(2.05f, -2.0866024f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(2.1f, -4f)),
+                    Wrapper(Vector2F(2.1f, -4f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(2.05f, -5.913398f)),
+                    Wrapper(Vector2F(2.05f, -5.913398f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(Vector2F(3.682051f, -4.9133973f)),
+                    Wrapper(Vector2F(3.682051f, -4.9133973f))
+                ),
+                Arguments.of(
+                    triangle,
+                    Wrapper(center),
+                    Wrapper(center)
+                ),
+            )
+        }
+
+        @JvmStatic
+        fun containsVector2FArgs(): List<Arguments> {
+            val pointA = Vector2F(5.464102f, -4f)
+            val pointB = Vector2F(2f, -2f)
+            val pointC = Vector2F(2f, -6f)
+            val center: Vector2F = (pointA + pointB + pointC) / 3f
+            val triangle = RegularTriangle(
+                center,
+                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
+                        ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
+                sideLength = pointA.distanceTo(pointB)
+            )
+            return listOf(
+                Arguments.of(triangle, Wrapper(Vector2F(5.364102f, -4f)), true),
+                Arguments.of(triangle, Wrapper(Vector2F(5.564102f, -4f)), false),
+                Arguments.of(triangle, Wrapper(Vector2F(3.682051f, -3.0866027f)), true),
+                Arguments.of(triangle, Wrapper(Vector2F(3.7820508f, -2.9133973f)), false),
+                Arguments.of(triangle, Wrapper(Vector2F(2.05f, -2.0866024f)), true),
+                Arguments.of(triangle, Wrapper(Vector2F(1.95f, -1.9133976f)), false),
+                Arguments.of(triangle, Wrapper(Vector2F(2.1f, -4f)), true),
+                Arguments.of(triangle, Wrapper(Vector2F(1.9f, -4f)), false),
+                Arguments.of(triangle, Wrapper(Vector2F(2.05f, -5.913398f)), true),
+                Arguments.of(triangle, Wrapper(Vector2F(1.95f, -6.086602f)), false),
+                Arguments.of(triangle, Wrapper(Vector2F(3.682051f, -4.9133973f)), true),
+                Arguments.of(triangle, Wrapper(Vector2F(3.7820508f, -5.0866027f)), false),
+                Arguments.of(triangle, Wrapper(center), true),
+            )
+        }
     }
 }
