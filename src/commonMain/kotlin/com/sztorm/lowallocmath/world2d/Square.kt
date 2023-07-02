@@ -10,6 +10,8 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.PI
+import kotlin.math.absoluteValue
+import kotlin.math.withSign
 
 data class Square(
     val center: Vector2F,
@@ -56,4 +58,29 @@ data class Square(
 
     override inline val circumradius: Float
         get() = 0.7071068f * sideLength
+
+    fun closestPointTo(point: Vector2F): Vector2F {
+        val halfSideLength: Float = sideLength * 0.5f
+        val center: Vector2F = this.center
+        val rotation: ComplexF = this.rotation
+        val p1 = ComplexF.conjugate(rotation) *
+                ComplexF(point.x - center.x, point.y - center.y)
+        val p1X: Float = p1.real
+        val p1Y: Float = p1.imaginary
+        val p2 = ComplexF(
+            if (p1X.absoluteValue > halfSideLength) halfSideLength.withSign(p1X) else p1X,
+            if (p1Y.absoluteValue > halfSideLength) halfSideLength.withSign(p1Y) else p1Y
+        )
+        return center + (rotation * p2).toVector2F()
+    }
+
+    operator fun contains(point: Vector2F): Boolean {
+        val halfSideLength: Float = sideLength * 0.5f
+        val center: Vector2F = this.center
+        val p1 = ComplexF.conjugate(rotation) *
+                ComplexF(point.x - center.x, point.y - center.y)
+
+        return (p1.real.absoluteValue <= halfSideLength) and
+                (p1.imaginary.absoluteValue <= halfSideLength)
+    }
 }
