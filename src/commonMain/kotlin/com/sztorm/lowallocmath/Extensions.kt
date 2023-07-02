@@ -10,14 +10,16 @@ import kotlin.math.max
  * specified [epsilon] tolerance.
  */
 inline fun Float.isApproximately(other: Float, epsilon: Float = 0.00001f) =
-    (this - other).absoluteValue <= epsilon * max(this.absoluteValue, other.absoluteValue)
+    (this - other).absoluteValue <=
+            max(epsilon, epsilon * max(this.absoluteValue, other.absoluteValue))
 
 /**
  * Returns a value indicating whether this value is approximately the [other] value given the
  * specified [epsilon] tolerance.
  */
 inline fun Double.isApproximately(other: Double, epsilon: Double = 0.0000000001) =
-    (this - other).absoluteValue <= epsilon * max(this.absoluteValue, other.absoluteValue)
+    (this - other).absoluteValue <=
+            max(epsilon, epsilon * max(this.absoluteValue, other.absoluteValue))
 
 /**
  * Returns a linearly interpolated value between [a] and [b].

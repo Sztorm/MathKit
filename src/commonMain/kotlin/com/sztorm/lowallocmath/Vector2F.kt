@@ -120,7 +120,7 @@ value class Vector2F internal constructor(internal val data: Long) {
      * the specified [epsilon] tolerance.
      */
     inline fun isApproximately(other: Vector2F, epsilon: Float = 0.00001f): Boolean =
-        x.isApproximately(other.x, epsilon) && y.isApproximately(other.y, epsilon)
+        x.isApproximately(other.x, epsilon) and y.isApproximately(other.y, epsilon)
 
     /** Returns the dot product of this and [other] vector. **/
     inline infix fun dot(other: Vector2F): Float = x * other.x + y * other.y

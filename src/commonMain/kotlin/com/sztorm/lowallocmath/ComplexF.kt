@@ -131,7 +131,7 @@ value class ComplexF private constructor(private val data: Long) {
      * specified [epsilon] tolerance.
      */
     inline fun isApproximately(other: ComplexF, epsilon: Float = 0.00001f): Boolean =
-        real.isApproximately(other.real, epsilon) &&
+        real.isApproximately(other.real, epsilon) and
                 imaginary.isApproximately(other.imaginary, epsilon)
 
     /** Returns this complex number to the power of [x]. **/
