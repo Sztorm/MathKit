@@ -27,6 +27,11 @@ class SquareTests {
     }
 
     @ParameterizedTest
+    @MethodSource("sideLengthArgs")
+    fun sideLengthReturnsCorrectValue(square: Square, expected: Float) =
+        assertApproximation(expected, square.sideLength)
+
+    @ParameterizedTest
     @MethodSource("widthArgs")
     fun widthReturnsCorrectValue(square: Square, expected: Float) =
         assertApproximation(expected, square.width)
@@ -47,9 +52,19 @@ class SquareTests {
         assertApproximation(expected, square.perimeter)
 
     @ParameterizedTest
+    @MethodSource("sideCountArgs")
+    fun sideCountReturnsCorrectValue(square: Square, expected: Int) =
+        assertEquals(expected, square.sideCount)
+
+    @ParameterizedTest
     @MethodSource("interiorAngleArgs")
     fun interiorAngleReturnsCorrectValue(square: Square, expected: Wrapper<AngleF>) =
         assertApproximation(expected.value, square.interiorAngle)
+
+    @ParameterizedTest
+    @MethodSource("exteriorAngleArgs")
+    fun exteriorAngleReturnsCorrectValue(square: Square, expected: Wrapper<AngleF>) =
+        assertApproximation(expected.value, square.exteriorAngle)
 
     @ParameterizedTest
     @MethodSource("inradiusArgs")
@@ -65,9 +80,7 @@ class SquareTests {
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         square: Square, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(
-        expected.value, square.closestPointTo(point.value), tolerance = 0.001f
-    )
+    ) = assertApproximation(expected.value, square.closestPointTo(point.value))
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
@@ -98,7 +111,7 @@ class SquareTests {
         )
 
         @JvmStatic
-        fun widthArgs(): List<Arguments> = listOf(
+        fun sideLengthArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 3f
             ),
@@ -121,7 +134,10 @@ class SquareTests {
         )
 
         @JvmStatic
-        fun heightArgs(): List<Arguments> = widthArgs()
+        fun widthArgs(): List<Arguments> = sideLengthArgs()
+
+        @JvmStatic
+        fun heightArgs(): List<Arguments> = sideLengthArgs()
 
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
@@ -170,6 +186,29 @@ class SquareTests {
         )
 
         @JvmStatic
+        fun sideCountArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 4
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    sideLength = 3f
+                ),
+                4
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                4
+            ),
+        )
+
+        @JvmStatic
         fun interiorAngleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f),
@@ -192,6 +231,9 @@ class SquareTests {
                 Wrapper(AngleF.fromDegrees(90f))
             ),
         )
+
+        @JvmStatic
+        fun exteriorAngleArgs(): List<Arguments> = interiorAngleArgs()
 
         @JvmStatic
         fun inradiusArgs(): List<Arguments> = listOf(
@@ -336,8 +378,8 @@ class SquareTests {
                 ),
                 Arguments.of(
                     square,
-                    Wrapper(Vector2F(x=4.7626696f, y=-0.017677665f)),
-                    Wrapper(Vector2F(x=4.732051f, y=0.0f))
+                    Wrapper(Vector2F(x = 4.7626696f, y = -0.017677665f)),
+                    Wrapper(Vector2F(x = 4.732051f, y = 0.0f))
                 ),
                 Arguments.of(
                     square,

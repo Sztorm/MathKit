@@ -42,8 +42,14 @@ data class RegularTriangle(
     override inline val perimeter: Float
         get() = 3f * sideLength
 
+    override inline val sideCount: Int
+        get() = 3
+
     override inline val interiorAngle: AngleF
         get() = AngleF((PI / 3.0).toFloat())
+
+    override inline val exteriorAngle: AngleF
+        get() = AngleF((2.0 / 3.0 * PI).toFloat())
 
     override inline val inradius: Float
         get() = 0.28867513f * sideLength

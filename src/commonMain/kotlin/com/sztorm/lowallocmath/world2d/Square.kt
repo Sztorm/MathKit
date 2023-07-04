@@ -50,8 +50,14 @@ data class Square(
     override inline val perimeter: Float
         get() = 4f * sideLength
 
+    override inline val sideCount: Int
+        get() = 4
+
     override inline val interiorAngle: AngleF
-        get() = AngleF((PI / 2.0).toFloat())
+        get() = AngleF((0.5 * PI).toFloat())
+
+    override inline val exteriorAngle: AngleF
+        get() = AngleF((0.5 * PI).toFloat())
 
     override inline val inradius: Float
         get() = 0.5f * sideLength

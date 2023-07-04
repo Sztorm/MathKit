@@ -25,6 +25,11 @@ class RegularTriangleTests {
     }
 
     @ParameterizedTest
+    @MethodSource("sideLengthArgs")
+    fun sideLengthReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
+        assertApproximation(expected, triangle.sideLength)
+
+    @ParameterizedTest
     @MethodSource("areaArgs")
     fun areaReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
         assertApproximation(expected, triangle.area)
@@ -35,9 +40,19 @@ class RegularTriangleTests {
         assertApproximation(expected, triangle.perimeter)
 
     @ParameterizedTest
+    @MethodSource("sideCountArgs")
+    fun sideCountReturnsCorrectValue(triangle: RegularTriangle, expected: Int) =
+        assertEquals(expected, triangle.sideCount)
+
+    @ParameterizedTest
     @MethodSource("interiorAngleArgs")
     fun interiorAngleReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<AngleF>) =
         assertApproximation(expected.value, triangle.interiorAngle)
+
+    @ParameterizedTest
+    @MethodSource("exteriorAngleArgs")
+    fun exteriorAngleReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<AngleF>) =
+        assertApproximation(expected.value, triangle.exteriorAngle)
 
     @ParameterizedTest
     @MethodSource("inradiusArgs")
@@ -81,6 +96,32 @@ class RegularTriangleTests {
                 Wrapper(Vector2F(5.464102f, -4f)),
                 Wrapper(Vector2F(2f, -2f)),
                 Wrapper(Vector2F(2f, -6f)),
+            ),
+        )
+
+        @JvmStatic
+        fun sideLengthArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                5.773503f
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                5.773503f
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                4f
             ),
         )
 
@@ -137,6 +178,32 @@ class RegularTriangleTests {
         )
 
         @JvmStatic
+        fun sideCountArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                3
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                3
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                3
+            ),
+        )
+
+        @JvmStatic
         fun interiorAngleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
@@ -159,6 +226,32 @@ class RegularTriangleTests {
                     sideLength = 4f
                 ),
                 Wrapper(AngleF.fromDegrees(60f))
+            ),
+        )
+
+        @JvmStatic
+        fun exteriorAngleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                Wrapper(AngleF.fromDegrees(120f))
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(AngleF.fromDegrees(120f))
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                Wrapper(AngleF.fromDegrees(120f))
             ),
         )
 
