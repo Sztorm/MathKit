@@ -1,13 +1,13 @@
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.*
 import org.junit.jupiter.params.provider.*
 import kotlin.test.*
 
 class Vector2FTests {
-
     @ParameterizedTest
     @MethodSource("vectors")
     fun basicPropertiesAreValid(vector: Wrapper<Vector2F>) {
@@ -27,29 +27,29 @@ class Vector2FTests {
     @ParameterizedTest
     @MethodSource("squaredMagnitudeArgs")
     fun squaredMagnitudeReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Float) =
-        assertTrue(expected.isApproximately(vector.value.squaredMagnitude))
+        assertApproximation(expected, vector.value.squaredMagnitude)
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
     fun magnitudeReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Float) =
-        assertTrue(expected.isApproximately(vector.value.magnitude))
+        assertApproximation(expected, vector.value.magnitude)
 
     @ParameterizedTest
     @MethodSource("normalizedArgs")
     fun normalizedReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<Vector2F>) =
-        assertTrue(expected.value.isApproximately(vector.value.normalized))
+        assertApproximation(expected.value, vector.value.normalized)
 
     @ParameterizedTest
     @MethodSource("squaredDistanceToArgs")
     fun squaredDistanceToReturnsCorrectValue(
         vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Float
-    ) = assertTrue(expected.isApproximately(vector.value.squaredDistanceTo(other.value)))
+    ) = assertApproximation(expected, vector.value.squaredDistanceTo(other.value))
 
     @ParameterizedTest
     @MethodSource("distanceToArgs")
     fun distanceToReturnsCorrectValue(
         vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Float
-    ) = assertTrue(expected.isApproximately(vector.value.distanceTo(other.value)))
+    ) = assertApproximation(expected, vector.value.distanceTo(other.value))
 
     @ParameterizedTest
     @MethodSource("coerceInArgs")
@@ -58,21 +58,19 @@ class Vector2FTests {
         minimum: Wrapper<Vector2F>,
         maximum: Wrapper<Vector2F>,
         expected: Wrapper<Vector2F>
-    ) = assertTrue(
-        expected.value.isApproximately(vector.value.coerceIn(minimum.value, maximum.value))
-    )
+    ) = assertApproximation(expected.value, vector.value.coerceIn(minimum.value, maximum.value))
 
     @ParameterizedTest
     @MethodSource("coerceAtLeastArgs")
     fun coerceAtLeastReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value.coerceAtLeast(b.value)))
+    ) = assertApproximation(expected.value, a.value.coerceAtLeast(b.value))
 
     @ParameterizedTest
     @MethodSource("coerceAtMostArgs")
     fun coerceAtMostReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value.coerceAtMost(b.value)))
+    ) = assertApproximation(expected.value, a.value.coerceAtMost(b.value))
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
@@ -88,12 +86,17 @@ class Vector2FTests {
     @ParameterizedTest
     @MethodSource("dotArgs")
     fun dotReturnsCorrectValue(a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Float) =
-        assertTrue(expected.isApproximately(a.value dot b.value))
+        assertApproximation(expected, a.value dot b.value)
 
     @ParameterizedTest
     @MethodSource("toVector2IArgs")
     fun toVector2IReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<Vector2I>) =
         assertEquals(expected.value, vector.value.toVector2I())
+
+    @ParameterizedTest
+    @MethodSource("toComplexFArgs")
+    fun toComplexFReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<ComplexF>) =
+        assertEquals(expected.value, vector.value.toComplexF())
 
     @ParameterizedTest
     @MethodSource("getArgs")
@@ -124,50 +127,50 @@ class Vector2FTests {
     @MethodSource("vectorPlusVectorArgs")
     fun vectorPlusVectorReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value + b.value))
+    ) = assertApproximation(expected.value, a.value + b.value)
 
     @ParameterizedTest
     @MethodSource("vectorMinusVectorArgs")
     fun vectorMinusVectorReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value - b.value))
+    ) = assertApproximation(expected.value, a.value - b.value)
 
     @ParameterizedTest
     @MethodSource("vectorTimesVectorArgs")
     fun vectorTimesVectorReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value * b.value))
+    ) = assertApproximation(expected.value, a.value * b.value)
 
     @ParameterizedTest
     @MethodSource("vectorTimesFloatArgs")
     fun vectorTimesFloatReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Float, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value * b))
+    ) = assertApproximation(expected.value, a.value * b)
 
     @ParameterizedTest
     @MethodSource("floatTimesVectorArgs")
     fun floatTimesVectorReturnCorrectValue(
         a: Float, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a * b.value))
+    ) = assertApproximation(expected.value, a * b.value)
 
     @ParameterizedTest
     @MethodSource("vectorDivVectorArgs")
     fun vectorDivVectorReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value / b.value))
+    ) = assertApproximation(expected.value, a.value / b.value)
 
     @ParameterizedTest
     @MethodSource("vectorDivFloatArgs")
     fun vectorDivFloatReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Float, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(a.value / b))
+    ) = assertApproximation(expected.value, a.value / b)
 
     @Suppress("SpellCheckingInspection")
     @ParameterizedTest
     @MethodSource("lerpArgs")
     fun lerpReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, t: Float, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(Vector2F.lerp(a.value, b.value, t)))
+    ) = assertApproximation(expected.value, Vector2F.lerp(a.value, b.value, t))
 
     @Suppress("SpellCheckingInspection")
     @ParameterizedTest
@@ -177,7 +180,7 @@ class Vector2FTests {
         b: Wrapper<Vector2F>,
         t: Wrapper<Vector2F>,
         expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(Vector2F.lerp(a.value, b.value, t.value)))
+    ) = assertApproximation(expected.value, Vector2F.lerp(a.value, b.value, t.value))
 
     @Suppress("SpellCheckingInspection")
     @ParameterizedTest
@@ -187,19 +190,19 @@ class Vector2FTests {
         b: Wrapper<Vector2F>,
         t: Wrapper<Vector2F>,
         expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(Vector2F.inverseLerp(a.value, b.value, t.value)))
+    ) = assertApproximation(expected.value, Vector2F.inverseLerp(a.value, b.value, t.value))
 
     @ParameterizedTest
     @MethodSource("maxArgs")
     fun maxReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(Vector2F.max(a.value, b.value)))
+    ) = assertApproximation(expected.value, Vector2F.max(a.value, b.value))
 
     @ParameterizedTest
     @MethodSource("minArgs")
     fun minReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertTrue(expected.value.isApproximately(Vector2F.min(a.value, b.value)))
+    ) = assertApproximation(expected.value, Vector2F.min(a.value, b.value))
 
     companion object {
         /** Compares vectors bitwise. Useful when comparing NaNs. **/
@@ -367,6 +370,18 @@ class Vector2FTests {
             Arguments.of(
                 Wrapper(Vector2F.ZERO), Wrapper(Vector2I.ZERO)
             ),
+        )
+
+        @JvmStatic
+        fun toComplexFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(3f, -4f)), Wrapper(ComplexF(3f, -4f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-Float.MAX_VALUE, Float.MAX_VALUE)),
+                Wrapper(ComplexF(-Float.MAX_VALUE, Float.MAX_VALUE))
+            ),
+            Arguments.of(Wrapper(Vector2F.ZERO), Wrapper(ComplexF.ZERO)),
         )
 
         @JvmStatic

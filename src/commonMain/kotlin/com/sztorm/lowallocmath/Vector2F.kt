@@ -136,6 +136,12 @@ value class Vector2F internal constructor(internal val data: Long) {
      */
     inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 
+    /**
+     * Converts this [Vector2F] value to [ComplexF], where [x] and [y] represents the real and
+     * imaginary parts of a complex number.
+     */
+    fun toComplexF() = ComplexF(data)
+
     /** First component of the vector. **/
     inline operator fun component1(): Float = x
 

@@ -52,7 +52,7 @@ operator fun Float.div(other: ComplexF): ComplexF {
  * `long`.
  */
 @JvmInline
-value class ComplexF private constructor(private val data: Long) {
+value class ComplexF internal constructor(internal val data: Long) {
     /** Constructs a new complex number using the specified [real] and [imaginary] parts. **/
     constructor(real: Float, imaginary: Float) : this(
         (real.toRawBits().toLong() and 0xFFFFFFFFL) or
