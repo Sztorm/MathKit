@@ -83,6 +83,18 @@ class RegularPolygonTests {
         assertApproximation(expected, polygon.circumradius)
 
     @ParameterizedTest
+    @MethodSource("closestPointToArgs")
+    fun closestPointToReturnsCorrectValue(
+        polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, polygon.closestPointTo(point.value))
+
+    @ParameterizedTest
+    @MethodSource("containsVector2FArgs")
+    fun containsReturnsCorrectValue(
+        polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Boolean
+    ) = assertEquals(expected, polygon.contains(point.value))
+
+    @ParameterizedTest
     @MethodSource("copyArgs")
     fun copyReturnsCorrectValue(
         polygon: RegularPolygon,
@@ -787,6 +799,702 @@ class RegularPolygonTests {
                 2f
             ),
         )
+
+        @JvmStatic
+        fun closestPointToArgs(): List<Arguments> {
+            val decagon = RegularPolygon(
+                Vector2F(14f, 1f),
+                ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                sideLength = 2f,
+                sideCount = 10
+            )
+            val heptagon = RegularPolygon(
+                Vector2F(0f, 8f),
+                ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                sideLength = 3f,
+                sideCount = 7
+            )
+            val digon = RegularPolygon(
+                Vector2F(10f, 6.5f),
+                ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                sideLength = 4f,
+                sideCount = 2
+            )
+            val decagonArgs = listOf(
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.912462f, 1f)),
+                    Wrapper(Vector2F(16.912462f, 1f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(17.559675f, 1f)),
+                    Wrapper(Vector2F(17.236069f, 1f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.634346f, 1.8559508f)),
+                    Wrapper(Vector2F(16.634346f, 1.8559508f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(17.219757f, 2.0461621f)),
+                    Wrapper(Vector2F(16.927052f, 1.9510565f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.356232f, 2.7119017f)),
+                    Wrapper(Vector2F(16.356232f, 2.7119017f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.879837f, 3.0923243f)),
+                    Wrapper(Vector2F(16.618034f, 2.902113f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(15.628116f, 3.2409084f)),
+                    Wrapper(Vector2F(15.628116f, 3.2409084f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(15.989919f, 3.738888f)),
+                    Wrapper(Vector2F(15.809017f, 3.4898982f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14.9f, 3.769915f)),
+                    Wrapper(Vector2F(14.9f, 3.769915f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(15.1f, 4.385452f)),
+                    Wrapper(Vector2F(15.0f, 4.0776834f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14.0f, 3.769915f)),
+                    Wrapper(Vector2F(14.0f, 3.769915f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14.0f, 4.385452f)),
+                    Wrapper(Vector2F(14.0f, 4.0776834f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(13.1f, 3.769915f)),
+                    Wrapper(Vector2F(13.1f, 3.769915f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12.9f, 4.385452f)),
+                    Wrapper(Vector2F(13.0f, 4.0776834f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12.371884f, 3.2409084f)),
+                    Wrapper(Vector2F(12.371884f, 3.2409084f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12.010081f, 3.738888f)),
+                    Wrapper(Vector2F(12.190983f, 3.4898982f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.64377f, 2.7119017f)),
+                    Wrapper(Vector2F(11.64377f, 2.7119017f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.120163f, 3.0923243f)),
+                    Wrapper(Vector2F(11.381967f, 2.902113f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.365654f, 1.8559508f)),
+                    Wrapper(Vector2F(11.365654f, 1.8559508f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(10.780245f, 2.0461621f)),
+                    Wrapper(Vector2F(11.072949f, 1.9510565f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.08754f, 1f)),
+                    Wrapper(Vector2F(11.08754f, 1f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(10.440325f, 1f)),
+                    Wrapper(Vector2F(10.763932f, 1f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.365654f, 0.14404923f)),
+                    Wrapper(Vector2F(11.365654f, 0.14404923f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(10.780243f, -0.04616213f)),
+                    Wrapper(Vector2F(11.072948f, 0.04894358f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.643769f, -0.71190166f)),
+                    Wrapper(Vector2F(11.643769f, -0.71190166f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(11.120162f, -1.0923243f)),
+                    Wrapper(Vector2F(11.381966f, -0.90211296f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12.371884f, -1.2409084f)),
+                    Wrapper(Vector2F(12.371884f, -1.2409084f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12.010081f, -1.738888f)),
+                    Wrapper(Vector2F(12.190983f, -1.4898982f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(13.1f, -1.7699151f)),
+                    Wrapper(Vector2F(13.1f, -1.7699151f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12.9f, -2.3854518f)),
+                    Wrapper(Vector2F(13.0f, -2.0776834f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14.0f, -1.7699151f)),
+                    Wrapper(Vector2F(14.0f, -1.7699151f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14.0f, -2.3854518f)),
+                    Wrapper(Vector2F(14.0f, -2.0776834f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14.9f, -1.7699151f)),
+                    Wrapper(Vector2F(14.9f, -1.7699151f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(15.1f, -2.3854518f)),
+                    Wrapper(Vector2F(15.0f, -2.0776834f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(15.628116f, -1.2409084f)),
+                    Wrapper(Vector2F(15.628116f, -1.2409084f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(15.989919f, -1.738888f)),
+                    Wrapper(Vector2F(15.809017f, -1.4898982f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.356232f, -0.71190166f)),
+                    Wrapper(Vector2F(16.356232f, -0.71190166f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.879837f, -1.0923243f)),
+                    Wrapper(Vector2F(16.618034f, -0.90211296f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16.634346f, 0.14404911f)),
+                    Wrapper(Vector2F(16.634346f, 0.14404911f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(17.219757f, -0.046162248f)),
+                    Wrapper(Vector2F(16.927052f, 0.04894346f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14f, 1f)),
+                    Wrapper(Vector2F(14f, 1f)),
+                ),
+            )
+            val heptagonArgs = listOf(
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-2.6945794f, 6.4442835f)),
+                    Wrapper(Vector2F(-2.6945794f, 6.4442835f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-3.2933748f, 6.098569f)),
+                    Wrapper(Vector2F(-2.993977f, 6.271426f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-1.579157f, 5.6838017f)),
+                    Wrapper(Vector2F(-1.579157f, 5.6838017f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-1.9300808f, 5.1690903f)),
+                    Wrapper(Vector2F(-1.7546189f, 5.426446f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-0.46373463f, 4.92332f)),
+                    Wrapper(Vector2F(-0.46373463f, 4.92332f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-0.56678677f, 4.2396126f)),
+                    Wrapper(Vector2F(-0.5152607f, 4.581466f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(0.8262886f, 5.3212395f)),
+                    Wrapper(Vector2F(0.8262886f, 5.3212395f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(1.0099083f, 4.72596f)),
+                    Wrapper(Vector2F(0.91809845f, 5.0235996f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2.1163118f, 5.719159f)),
+                    Wrapper(Vector2F(2.1163118f, 5.719159f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2.5866034f, 5.212306f)),
+                    Wrapper(Vector2F(2.3514576f, 5.4657326f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2.6095219f, 6.9758387f)),
+                    Wrapper(Vector2F(2.6095219f, 6.9758387f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(3.189416f, 6.748247f)),
+                    Wrapper(Vector2F(2.899469f, 6.862043f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(3.1027322f, 8.232518f)),
+                    Wrapper(Vector2F(3.1027322f, 8.232518f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(3.7922282f, 8.284188f)),
+                    Wrapper(Vector2F(3.4474802f, 8.258353f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2.4277322f, 9.401652f)),
+                    Wrapper(Vector2F(2.4277322f, 9.401652f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2.9672287f, 9.71313f)),
+                    Wrapper(Vector2F(2.6974804f, 9.557391f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(1.7527325f, 10.570786f)),
+                    Wrapper(Vector2F(1.7527325f, 10.570786f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2.1422288f, 11.142072f)),
+                    Wrapper(Vector2F(1.9474807f, 10.856429f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(0.41781092f, 10.771993f)),
+                    Wrapper(Vector2F(0.41781092f, 10.771993f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(0.5106578f, 11.387992f)),
+                    Wrapper(Vector2F(0.46423435f, 11.079992f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-0.91711074f, 10.9732f)),
+                    Wrapper(Vector2F(-0.91711074f, 10.9732f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-1.1209131f, 11.633911f)),
+                    Wrapper(Vector2F(-1.019012f, 11.3035555f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-1.9067309f, 10.054967f)),
+                    Wrapper(Vector2F(-1.9067309f, 10.054967f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-2.3304489f, 10.511626f)),
+                    Wrapper(Vector2F(-2.1185899f, 10.283297f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-2.8963506f, 9.136734f)),
+                    Wrapper(Vector2F(-2.8963506f, 9.136734f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-3.5399845f, 9.389341f)),
+                    Wrapper(Vector2F(-3.2181675f, 9.263038f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-2.795465f, 7.7905087f)),
+                    Wrapper(Vector2F(-2.795465f, 7.7905087f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-3.4166799f, 7.743955f)),
+                    Wrapper(Vector2F(-3.1060724f, 7.767232f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(Vector2F(0f, 8f))
+                ),
+            )
+            val digonArgs = listOf(
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(8.261333f, 6.034126f)),
+                    Wrapper(Vector2F(8.261333f, 6.034126f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(7.8749638f, 5.930598f)),
+                    Wrapper(Vector2F(8.068149f, 5.982362f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(11.738667f, 6.965874f)),
+                    Wrapper(Vector2F(11.738667f, 6.965874f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(12.125036f, 7.069402f)),
+                    Wrapper(Vector2F(11.931851f, 7.017638f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(9.059956f, 6.1445885f)),
+                    Wrapper(Vector2F(9.034074f, 6.241181f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(9.008192f, 6.3377733f)),
+                    Wrapper(Vector2F(9.034074f, 6.241181f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(10.940044f, 6.8554115f)),
+                    Wrapper(Vector2F(10.965926f, 6.758819f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(10.991808f, 6.6622267f)),
+                    Wrapper(Vector2F(10.965926f, 6.758819f))
+                ),
+                Arguments.of(
+                    digon,
+                    Wrapper(Vector2F(10f, 6.5f)),
+                    Wrapper(Vector2F(10f, 6.5f))
+                ),
+            )
+            return decagonArgs + heptagonArgs + digonArgs
+        }
+
+        @JvmStatic
+        fun containsVector2FArgs(): List<Arguments> {
+            val decagon = RegularPolygon(
+                Vector2F(14f, 1f),
+                ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                sideLength = 2f,
+                sideCount = 10
+            )
+            val heptagon = RegularPolygon(
+                Vector2F(0f, 8f),
+                ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                sideLength = 3f,
+                sideCount = 7
+            )
+            val digon = RegularPolygon(
+                Vector2F(10f, 6.5f),
+                ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                sideLength = 4f,
+                sideCount = 2
+            )
+            val decagonArgs = listOf(
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.912462f, 1f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(17.559675f, 1f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.634346f, 1.8559508f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(17.219757f, 2.0461621f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.356232f, 2.7119017f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.879837f, 3.0923243f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(15.628116f, 3.2409084f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(15.989919f, 3.738888f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14.9f, 3.769915f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(15.1f, 4.385452f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14.0f, 3.769915f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14.0f, 4.385452f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(13.1f, 3.769915f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12.9f, 4.385452f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12.371884f, 3.2409084f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12.010081f, 3.738888f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.64377f, 2.7119017f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.120163f, 3.0923243f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.365654f, 1.8559508f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(10.780245f, 2.0461621f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.08754f, 1f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(10.440325f, 1f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.365654f, 0.14404923f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(10.780243f, -0.04616213f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.643769f, -0.71190166f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(11.120162f, -1.0923243f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12.371884f, -1.2409084f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12.010081f, -1.738888f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(13.1f, -1.7699151f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12.9f, -2.3854518f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14.0f, -1.7699151f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14.0f, -2.3854518f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14.9f, -1.7699151f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(15.1f, -2.3854518f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(15.628116f, -1.2409084f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(15.989919f, -1.738888f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.356232f, -0.71190166f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.879837f, -1.0923243f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16.634346f, 0.14404911f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(17.219757f, -0.046162248f)), false
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14f, 1f)), true
+                ),
+            )
+            val heptagonArgs = listOf(
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2.6945794f, 6.4442835f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-3.2933748f, 6.098569f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-1.579157f, 5.6838017f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-1.9300808f, 5.1690903f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-0.46373463f, 4.92332f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-0.56678677f, 4.2396126f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(0.8262886f, 5.3212395f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(1.0099083f, 4.72596f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2.1163118f, 5.719159f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2.5866034f, 5.212306f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2.6095219f, 6.9758387f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(3.189416f, 6.748247f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(3.1027322f, 8.232518f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(3.7922282f, 8.284188f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2.4277322f, 9.401652f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2.9672287f, 9.71313f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(1.7527325f, 10.570786f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2.1422288f, 11.142072f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(0.41781092f, 10.771993f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(0.5106578f, 11.387992f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-0.91711074f, 10.9732f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-1.1209131f, 11.633911f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-1.9067309f, 10.054967f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2.3304489f, 10.511626f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2.8963506f, 9.136734f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-3.5399845f, 9.389341f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2.795465f, 7.7905087f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-3.4166799f, 7.743955f)), false
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(0f, 8f)), true
+                ),
+            )
+            val digonArgs = listOf(
+                Arguments.of(
+                    digon, Wrapper(Vector2F(8.261333f, 6.034126f)), true
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(7.8749638f, 5.930598f)), false
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(11.738667f, 6.965874f)), true
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(12.125036f, 7.069402f)), false
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(9.059956f, 6.1445885f)), false
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(9.008192f, 6.3377733f)), false
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(9.034074f, 6.241181f)), true
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(10.940044f, 6.8554115f)), false
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(10.991808f, 6.6622267f)), false
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(10.965926f, 6.758819f)), true
+                ),
+                Arguments.of(
+                    digon, Wrapper(Vector2F(10f, 6.5f)), true
+                ),
+            )
+            return decagonArgs + heptagonArgs + digonArgs
+        }
 
         @JvmStatic
         fun copyArgs(): List<Arguments> = listOf(
