@@ -22,10 +22,14 @@ data class Rectangle(
     override val pointD: Vector2F
 
     init {
-        val pA = ComplexF(width, height) * 0.5f
-        val pB = ComplexF(-pA.real, pA.imaginary)
-        val pC = ComplexF(-pA.real, -pA.imaginary)
-        val pD = ComplexF(pA.real, -pA.imaginary)
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val center: Vector2F = this.center
+        val rotation: ComplexF = this.rotation
+        val pA = ComplexF(halfWidth, halfHeight)
+        val pB = ComplexF(-halfWidth, halfHeight)
+        val pC = ComplexF(-halfWidth, -halfHeight)
+        val pD = ComplexF(halfWidth, -halfHeight)
         pointA = center + (rotation * pA).toVector2F()
         pointB = center + (rotation * pB).toVector2F()
         pointC = center + (rotation * pC).toVector2F()
@@ -46,6 +50,8 @@ data class Rectangle(
     fun closestPointTo(point: Vector2F): Vector2F {
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
+        val center: Vector2F = this.center
+        val rotation: ComplexF = this.rotation
         val p1 = ComplexF.conjugate(rotation) *
                 ComplexF(point.x - center.x, point.y - center.y)
         val p1X: Float = p1.real
@@ -60,6 +66,7 @@ data class Rectangle(
     operator fun contains(point: Vector2F): Boolean {
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
+        val center: Vector2F = this.center
         val p1 = ComplexF.conjugate(rotation) *
                 ComplexF(point.x - center.x, point.y - center.y)
 

@@ -41,7 +41,7 @@ data class Circle(
         val distance: Float = center.distanceTo(annulus.center)
         val radius: Float = this.radius
 
-        return (distance >= (annulus.innerRadius - radius)) &&
+        return (distance >= (annulus.innerRadius - radius)) and
                (distance <= (annulus.outerRadius + radius))
     }
 
