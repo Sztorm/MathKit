@@ -26,14 +26,12 @@ data class Circle(
     fun closestPointTo(point: Vector2F): Vector2F {
         val cx: Float = center.x
         val cy: Float = center.y
-        val dx: Float = cx - point.x
-        val dy: Float = cy - point.y
+        val dx: Float = point.x - cx
+        val dy: Float = point.y - cy
         val distance: Float = sqrt(dx * dx + dy * dy)
+        val t = radius / distance
 
-        return if (distance > radius) Vector2F(
-            cx - (dx / distance) * radius,
-            cy - (dy / distance) * radius
-        )
+        return if (distance > radius) Vector2F(cx + dx * t, cy + dy * t)
         else point
     }
 
@@ -42,7 +40,7 @@ data class Circle(
         val radius: Float = this.radius
 
         return (distance >= (annulus.innerRadius - radius)) and
-               (distance <= (annulus.outerRadius + radius))
+                (distance <= (annulus.outerRadius + radius))
     }
 
     inline fun <reified TCircle : CircleShape> intersects(circle: TCircle): Boolean =

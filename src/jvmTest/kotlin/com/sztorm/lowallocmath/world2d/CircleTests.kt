@@ -97,6 +97,11 @@ class CircleTests {
             ),
             Arguments.of(
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Wrapper(Vector2F(6f, -4f)),
+                Wrapper(Vector2F(4.828429f, -2.828429f))
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
                 Wrapper(Vector2F(0f, 2f)),
                 Wrapper(Vector2F(0f, 2f))
             ),
