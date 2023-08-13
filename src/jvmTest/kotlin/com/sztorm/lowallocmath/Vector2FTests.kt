@@ -99,6 +99,12 @@ class Vector2FTests {
         assertEquals(expected.value, vector.value.toComplexF())
 
     @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        vector: Wrapper<Vector2F>, x: Float, y: Float, expected: Wrapper<Vector2F>
+    ) = assertEquals(expected.value, vector.value.copy(x, y))
+
+    @ParameterizedTest
     @MethodSource("getArgs")
     fun getReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Collection<Float>) {
         val actual: List<Float> = listOf(vector.value[0], vector.value[1])
@@ -382,6 +388,28 @@ class Vector2FTests {
                 Wrapper(ComplexF(-Float.MAX_VALUE, Float.MAX_VALUE))
             ),
             Arguments.of(Wrapper(Vector2F.ZERO), Wrapper(ComplexF.ZERO)),
+        )
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)),
+                2f,
+                4f,
+                Wrapper(Vector2F(2f, 4f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)),
+                1f,
+                4f,
+                Wrapper(Vector2F(1f, 4f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)),
+                6f,
+                -2f,
+                Wrapper(Vector2F(6f, -2f))
+            ),
         )
 
         @JvmStatic

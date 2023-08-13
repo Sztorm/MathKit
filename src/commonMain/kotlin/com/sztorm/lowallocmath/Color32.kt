@@ -13,7 +13,6 @@ import kotlin.jvm.JvmStatic
  */
 @JvmInline
 value class Color32 private constructor(private val data: Int) {
-
     /** Constructs a new [Color32] instance with given [r], [g], [b], [a] components. **/
     constructor(r: UByte, g: UByte, b: UByte, a: UByte) : this(
         data =
@@ -47,6 +46,10 @@ value class Color32 private constructor(private val data: Int) {
         .append(", a=").append(a)
         .append(')')
         .toString()
+
+    /** Returns a copy of this instance with specified properties altered. **/
+    inline fun copy(r: UByte = this.r, g: UByte = this.g, b: UByte = this.b, a: UByte = this.a) =
+        Color32(r, g, b, a)
 
     /** Red component of the color. **/
     inline operator fun component1(): UByte = r

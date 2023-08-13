@@ -10,7 +10,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class Vector2ITests {
-
     @ParameterizedTest
     @MethodSource("vectors")
     fun basicPropertiesAreValid(vector: Wrapper<Vector2I>) {
@@ -84,6 +83,12 @@ class Vector2ITests {
     @MethodSource("toVector2FArg")
     fun toVector2FReturnsCorrectValue(vector: Wrapper<Vector2I>, expected: Wrapper<Vector2F>) =
         assertTrue(expected.value.isApproximately(vector.value.toVector2F()))
+
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        vector: Wrapper<Vector2I>, x: Int, y: Int, expected: Wrapper<Vector2I>
+    ) = assertEquals(expected.value, vector.value.copy(x, y))
 
     @ParameterizedTest
     @MethodSource("getArgs")
@@ -279,6 +284,28 @@ class Vector2ITests {
             ),
             Arguments.of(
                 Wrapper(Vector2I.ZERO), Wrapper(Vector2F.ZERO)
+            ),
+        )
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2I(2, 4)),
+                2,
+                4,
+                Wrapper(Vector2I(2, 4))
+            ),
+            Arguments.of(
+                Wrapper(Vector2I(2, 4)),
+                1,
+                4,
+                Wrapper(Vector2I(1, 4))
+            ),
+            Arguments.of(
+                Wrapper(Vector2I(2, 4)),
+                6,
+                -2,
+                Wrapper(Vector2I(6, -2))
             ),
         )
 

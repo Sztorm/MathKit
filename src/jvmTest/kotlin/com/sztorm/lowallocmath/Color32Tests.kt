@@ -29,6 +29,17 @@ class Color32Tests {
         assertEquals(expected, color.value.toString())
 
     @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        color: Wrapper<Color32>,
+        r: Wrapper<UByte>,
+        g: Wrapper<UByte>,
+        b: Wrapper<UByte>,
+        a: Wrapper<UByte>,
+        expected: Wrapper<Color32>
+    ) = assertEquals(expected.value, color.value.copy(r.value, g.value, b.value, a.value))
+
+    @ParameterizedTest
     @MethodSource("getArgs")
     fun getReturnsCorrectValue(color: Wrapper<Color32>, expected: Collection<UByte>) {
         val actual = emptyList<UByte>().toMutableList()
@@ -78,6 +89,34 @@ class Color32Tests {
             Arguments.of(
                 Wrapper(Color32(127u, 255u, 255u, 127u)),
                 "Color32(r=127, g=255, b=255, a=127)"
+            ),
+        )
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Color32(127u, 255u, 58u, 244u)),
+                Wrapper(127u.toUByte()),
+                Wrapper(255u.toUByte()),
+                Wrapper(58u.toUByte()),
+                Wrapper(244u.toUByte()),
+                Wrapper(Color32(127u, 255u, 58u, 244u)),
+            ),
+            Arguments.of(
+                Wrapper(Color32(127u, 255u, 58u, 244u)),
+                Wrapper(127u.toUByte()),
+                Wrapper(3u.toUByte()),
+                Wrapper(58u.toUByte()),
+                Wrapper(199u.toUByte()),
+                Wrapper(Color32(127u, 3u, 58u, 199u)),
+            ),
+            Arguments.of(
+                Wrapper(Color32(127u, 255u, 58u, 244u)),
+                Wrapper(1u.toUByte()),
+                Wrapper(2u.toUByte()),
+                Wrapper(3u.toUByte()),
+                Wrapper(4u.toUByte()),
+                Wrapper(Color32(1u, 2u, 3u, 4u)),
             ),
         )
 

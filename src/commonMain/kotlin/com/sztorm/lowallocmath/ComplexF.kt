@@ -190,6 +190,10 @@ value class ComplexF internal constructor(internal val data: Long) {
         return ComplexF(t * cos(rho), t * sin(rho))
     }
 
+    /** Returns a copy of this instance with specified properties altered. **/
+    inline fun copy(real: Float = this.real, imaginary: Float = this.imaginary) =
+        ComplexF(real, imaginary)
+
     /** Real part of the complex number. **/
     inline operator fun component1(): Float = real
 

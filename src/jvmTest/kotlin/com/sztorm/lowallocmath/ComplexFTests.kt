@@ -84,6 +84,12 @@ class ComplexFTests {
     ) = assertApproximation(expected.value, a.value.pow(b), tolerance = 0.001f)
 
     @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        complex: Wrapper<ComplexF>, real: Float, imaginary: Float, expected: Wrapper<ComplexF>
+    ) = assertEquals(expected.value, complex.value.copy(real, imaginary))
+
+    @ParameterizedTest
     @MethodSource("fromPolarArgs")
     fun fromPolarReturnsCorrectValue(magnitude: Float, phase: Float, expected: Wrapper<ComplexF>) =
         assertApproximation(
@@ -395,6 +401,28 @@ class ComplexFTests {
             Arguments.of(
                 Wrapper(ComplexF(7f, -1f)), 0,
                 Wrapper(ComplexF(1f, 0f))
+            ),
+        )
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 4f)),
+                2f,
+                4f,
+                Wrapper(ComplexF(2f, 4f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(2f, 4f)),
+                1f,
+                4f,
+                Wrapper(ComplexF(1f, 4f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(2f, 4f)),
+                6f,
+                -2f,
+                Wrapper(ComplexF(6f, -2f))
             ),
         )
 

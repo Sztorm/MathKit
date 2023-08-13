@@ -19,7 +19,6 @@ inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this *
  */
 @JvmInline
 value class Vector2I internal constructor(internal val data: Long) {
-
     /** Constructs a new vector with given [x] and [y] components. **/
     constructor(x: Int, y: Int) : this(
         data =
@@ -118,6 +117,9 @@ value class Vector2I internal constructor(internal val data: Long) {
      * significant bit of mantissa is selected.
      */
     inline fun toVector2F() = Vector2F(x.toFloat(), y.toFloat())
+
+    /** Returns a copy of this instance with specified properties altered. **/
+    inline fun copy(x: Int = this.x, y: Int = this.y) = Vector2I(x, y)
 
     /** First component of the vector. **/
     inline operator fun component1(): Int = x
