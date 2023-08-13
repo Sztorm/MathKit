@@ -128,19 +128,19 @@ value class AngleF(val radians: Float) : Comparable<AngleF> {
 
         /** An angle equal to `0` radians (`0°`). **/
         inline val ZERO
-            get() = AngleF(0f)
+            @JvmStatic get() = AngleF(0f)
 
         /** An angle equal to `π/2` radians (`90°`). **/
         inline val RIGHT
-            get() = AngleF((PI * 0.5).toFloat())
+            @JvmStatic get() = AngleF((PI * 0.5).toFloat())
 
         /** An angle equal to `π` radians (`180°`). **/
         inline val STRAIGHT
-            get() = AngleF(PI.toFloat())
+            @JvmStatic get() = AngleF(PI.toFloat())
 
         /** An angle equal to `2π` radians (`360°`). **/
         inline val FULL
-            get() = AngleF((2.0 * PI).toFloat())
+            @JvmStatic get() = AngleF((2.0 * PI).toFloat())
 
         /** Creates a new angle using the specified [degrees] value. **/
         @JvmStatic
