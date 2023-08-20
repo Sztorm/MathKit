@@ -16,7 +16,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class Vector2IArrayTests {
-
     @Test
     fun basicPropertiesAreValid() {
         val array = Vector2IArray(5) { Vector2I(it, -it) }
@@ -751,24 +750,6 @@ class Vector2IArrayTests {
 
         assertThrows<IndexOutOfBoundsException> { array[-1] }
         assertThrows<IndexOutOfBoundsException> { array[4] }
-    }
-
-    @ParameterizedTest
-    @MethodSource("iteratorArgs")
-    fun iteratorReturnsCorrectValue(
-        array: Wrapper<Vector2IArray>, expected: Iterator<Vector2I>
-    ) {
-        val unwrappedArray: Vector2IArray = array.value
-        val actual = unwrappedArray.iterator()
-
-        for (i in 0..unwrappedArray.lastIndex) {
-            assertEquals(expected.hasNext(), actual.hasNext())
-
-            if (expected.hasNext() && actual.hasNext()) {
-                assertEquals(expected.next(), actual.next())
-            }
-        }
-        assertEquals(expected.hasNext(), actual.hasNext())
     }
 
     @ParameterizedTest
@@ -2339,16 +2320,6 @@ class Vector2IArrayTests {
             return listOf(
                 Arguments.of(Wrapper(array), 0, Wrapper(Vector2I(1, 0))),
                 Arguments.of(Wrapper(array), 3, Wrapper(Vector2I(3, 4))),
-            )
-        }
-
-        @JvmStatic
-        fun iteratorArgs(): List<Arguments> {
-            val array = Vector2IArray(4) { Vector2I(it, 0) }
-
-            return listOf(
-                Arguments.of(Wrapper(array), array.iterator()),
-                Arguments.of(Wrapper(Vector2IArray(0)), Vector2IArray(0).iterator()),
             )
         }
 
