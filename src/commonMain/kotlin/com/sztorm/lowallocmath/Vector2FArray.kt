@@ -82,7 +82,6 @@ inline fun <T> Iterable<T>.sumOf(selector: (T) -> Vector2F): Vector2F {
  */
 @JvmInline
 value class Vector2FArray private constructor(private val data: LongArray) : Collection<Vector2F> {
-
     /** Creates a new array of the specified [size], with all elements initialized to zero. **/
     constructor(size: Int) : this(LongArray(size))
 
@@ -136,15 +135,11 @@ value class Vector2FArray private constructor(private val data: LongArray) : Col
         return false
     }
 
-    /** Returns a [List] that wraps the original array. **/
-    fun asList(): List<Vector2F> = object : AbstractList<Vector2F>(), RandomAccess {
-        override val size: Int get() = this@Vector2FArray.size
-        override fun isEmpty(): Boolean = this@Vector2FArray.isEmpty()
-        override fun contains(element: Vector2F): Boolean = this@Vector2FArray.contains(element)
-        override fun get(index: Int): Vector2F = this@Vector2FArray[index]
-        override fun indexOf(element: Vector2F): Int = this@Vector2FArray.indexOf(element)
-        override fun lastIndexOf(element: Vector2F): Int = this@Vector2FArray.lastIndexOf(element)
-    }
+    /** 
+     * Returns a [Vector2FList] that wraps this array. Changes in the original array are reflected
+     * in the returned list.
+     */
+    fun asList() = Vector2FList(this)
 
     /** Checks if all elements in the specified collection are contained in this array. **/
     override fun containsAll(elements: Collection<Vector2F>): Boolean {
@@ -1038,7 +1033,7 @@ value class Vector2FArray private constructor(private val data: LongArray) : Col
     operator fun get(index: Int) = Vector2F(data[index])
 
     /** Creates an iterator over the elements of the array. **/
-    override operator fun iterator(): Vector2FIterator = Vector2FIteratorImpl(this)
+    override operator fun iterator(): Vector2FIterator = IteratorImpl(this)
 
     /**
      * Returns an array containing all elements of the original array and then all elements of the
@@ -1086,27 +1081,15 @@ value class Vector2FArray private constructor(private val data: LongArray) : Col
             }
             return data
         }
-
-        @JvmStatic
-        private fun checkRangeIndexes(fromIndex: Int, toIndex: Int, size: Int) {
-            if (fromIndex < 0 || toIndex > size) {
-                throw IndexOutOfBoundsException(
-                    "fromIndex: $fromIndex, toIndex: $toIndex, size: $size"
-                )
-            }
-            if (fromIndex > toIndex) {
-                throw IllegalArgumentException("fromIndex: $fromIndex > toIndex: $toIndex")
-            }
-        }
     }
-}
 
-private class Vector2FIteratorImpl(private val array: Vector2FArray) : Vector2FIterator() {
-    private var index: Int = 0
+    private class IteratorImpl(private val array: Vector2FArray) : Vector2FIterator() {
+        private var index: Int = 0
 
-    override fun hasNext(): Boolean = index < array.size
+        override fun hasNext(): Boolean = index < array.size
 
-    override fun nextVector2F(): Vector2F =
-        if (!hasNext()) throw NoSuchElementException("$index")
-        else array[index++]
+        override fun nextVector2F(): Vector2F =
+            if (!hasNext()) throw NoSuchElementException("$index")
+            else array[index++]
+    }
 }

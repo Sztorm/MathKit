@@ -1,6 +1,5 @@
 package com.sztorm.lowallocmath
 
-
 /** An iterator over a [Vector2I] collection that supports indexed access. **/
 abstract class Vector2IListIterator : Vector2IIterator(), ListIterator<Vector2I> {
     final override fun previous() = previousVector2I()
