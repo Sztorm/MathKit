@@ -211,12 +211,16 @@ class RectangleTests {
                     rectangle, Wrapper(Vector2F(-1.6f, 4f)), false,
                 ),
                 Arguments.of(
-                    Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f),
+                    Rectangle(
+                        center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f
+                    ),
                     Wrapper(Vector2F(-1.9f, -0.9f)),
                     true,
                 ),
                 Arguments.of(
-                    Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f),
+                    Rectangle(
+                        center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f
+                    ),
                     Wrapper(Vector2F(-2.1f, -1f)),
                     false,
                 ),
