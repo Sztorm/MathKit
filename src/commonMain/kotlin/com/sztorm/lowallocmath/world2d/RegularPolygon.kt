@@ -80,7 +80,7 @@ class RegularPolygon(
         _points = points
     }
 
-    val points: List<Vector2F>
+    val points: Vector2FList
         get() = _points.asList()
 
     override val sideCount: Int
