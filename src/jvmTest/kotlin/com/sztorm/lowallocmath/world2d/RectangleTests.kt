@@ -48,6 +48,56 @@ class RectangleTests {
         rectangle: Rectangle, point: Wrapper<Vector2F>, expected: Boolean
     ) = assertEquals(expected, rectangle.contains(point.value))
 
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        rectangle: Rectangle,
+        center: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        expected: Rectangle
+    ) = assertEquals(expected, rectangle.copy(center.value, rotation.value, width, height))
+
+    @ParameterizedTest
+    @MethodSource("equalsArgs")
+    fun equalsReturnsCorrectValue(
+        rectangle: MutableRectangle, other: Any?, expected: Boolean
+    ) = assertEquals(expected, rectangle == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsMutableRectangleArgs")
+    fun equalsReturnsCorrectValue(
+        rectangle: MutableRectangle, other: MutableRectangle, expected: Boolean
+    ) = assertEquals(expected, rectangle == other)
+
+    @ParameterizedTest
+    @MethodSource("hashCodeArgs")
+    fun hashCodeReturnsCorrectValue(rectangle: MutableRectangle, other: MutableRectangle) =
+        assertEquals(rectangle.hashCode(), other.hashCode())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(rectangle: MutableRectangle, expected: String) =
+        assertEquals(expected, rectangle.toString())
+
+    @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        rectangle: MutableRectangle,
+        expectedComponent1: Wrapper<Vector2F>,
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float,
+        expectedComponent4: Float,
+    ) {
+        val (actualComponent1, actualComponent2, actualComponent3, actualComponent4) = rectangle
+
+        assertEquals(expectedComponent1.value, actualComponent1)
+        assertEquals(expectedComponent2.value, actualComponent2)
+        assertEquals(expectedComponent3, actualComponent3)
+        assertEquals(expectedComponent4, actualComponent4)
+    }
+
     companion object {
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
@@ -123,7 +173,12 @@ class RectangleTests {
                 12f
             ),
             Arguments.of(
-                Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 1.5f, height = 3f),
+                Rectangle(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    width = 1.5f,
+                    height = 3f
+                ),
                 9f
             ),
         )
@@ -246,5 +301,201 @@ class RectangleTests {
                 ),
             )
         }
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Wrapper(Vector2F(-2f, 4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                4f,
+                2f,
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Wrapper(Vector2F(-2.5f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                4f,
+                1f,
+                Rectangle(
+                    center = Vector2F(-2.5f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 1f
+                ),
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                1f,
+                3f,
+                Rectangle(
+                    center = Vector2F(0f, 8f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    width = 1f,
+                    height = 3f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun equalsArgs(): List<Arguments> = equalsMutableRectangleArgs() + listOf(
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsMutableRectangleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                true
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2.1f
+                ),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun hashCodeArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(0f, 8f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    width = 1f,
+                    height = 3f
+                ),
+                Rectangle(
+                    center = Vector2F(0f, 8f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    width = 1f,
+                    height = 3f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                "Rectangle(" +
+                        "center=${Vector2F(-2f, 4f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(45f))}, " +
+                        "width=${4f}, " +
+                        "height=${2f})"
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(0f, 8f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    width = 1f,
+                    height = 3f
+                ),
+                "Rectangle(" +
+                        "center=${Vector2F(0f, 8f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(30f))}, " +
+                        "width=${1f}, " +
+                        "height=${3f})"
+            ),
+        )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(-2f, 4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Wrapper(Vector2F(-2f, 4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                4f,
+                2f
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F(0f, 8f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    width = 1f,
+                    height = 3f
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                1f,
+                3f
+            ),
+        )
     }
 }

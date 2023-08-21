@@ -13,9 +13,16 @@ interface Rectangle : RectangleShape {
     val rotation: ComplexF
 
     fun closestPointTo(point: Vector2F): Vector2F
+
     operator fun contains(point: Vector2F): Boolean
+
+    fun copy(
+        center: Vector2F = this.center,
+        rotation: ComplexF = this.rotation,
+        width: Float = this.width,
+        height: Float = this.height
+    ): Rectangle
 }
 
 fun Rectangle(center: Vector2F, rotation: ComplexF, width: Float, height: Float): Rectangle =
     MutableRectangle(center, rotation, width, height)
-

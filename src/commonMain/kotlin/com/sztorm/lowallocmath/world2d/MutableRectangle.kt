@@ -90,4 +90,47 @@ class MutableRectangle(
 
         return (abs(p1.real) <= halfWidth) and (abs(p1.imaginary) <= halfHeight)
     }
+
+    override fun copy(
+        center: Vector2F,
+        rotation: ComplexF,
+        width: Float,
+        height: Float
+    ) = MutableRectangle(center, rotation, width, height)
+
+    override fun equals(other: Any?): Boolean = other is Rectangle &&
+            _center == other.center &&
+            _rotation == other.rotation &&
+            _width == other.width &&
+            _height == other.height
+
+    fun equals(other: MutableRectangle): Boolean =
+        _center == other._center &&
+                _rotation == other._rotation &&
+                _width == other._width &&
+                _height == other._height
+
+    override fun hashCode(): Int {
+        val centerHash: Int = _center.hashCode()
+        val rotationHash: Int = _rotation.hashCode()
+        val widthHash: Int = _width.hashCode()
+        val heightHash: Int = _height.hashCode()
+
+        return centerHash * 29791 + rotationHash * 961 + widthHash * 31 + heightHash
+    }
+
+    override fun toString() =
+        StringBuilder("Rectangle(center=").append(_center)
+            .append(", rotation=").append(_rotation)
+            .append(", width=").append(_width)
+            .append(", height=").append(_height).append(")")
+            .toString()
+
+    operator fun component1(): Vector2F = center
+
+    operator fun component2(): ComplexF = rotation
+
+    operator fun component3(): Float = _width
+
+    operator fun component4(): Float = _height
 }
