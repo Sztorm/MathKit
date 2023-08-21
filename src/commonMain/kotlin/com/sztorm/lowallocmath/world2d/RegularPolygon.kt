@@ -195,6 +195,12 @@ class RegularPolygon(
             sideLength == other.sideLength &&
             sideCount == other.sideCount
 
+    fun equals(other: RegularPolygon): Boolean =
+        center == other.center &&
+                rotation == other.rotation &&
+                sideLength == other.sideLength &&
+                sideCount == other.sideCount
+
     override fun hashCode(): Int {
         val centerHash: Int = center.hashCode()
         val rotationHash: Int = rotation.hashCode()

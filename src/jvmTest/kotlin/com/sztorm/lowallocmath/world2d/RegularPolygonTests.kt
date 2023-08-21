@@ -108,6 +108,12 @@ class RegularPolygonTests {
     @ParameterizedTest
     @MethodSource("equalsArgs")
     fun equalsReturnsCorrectValue(
+        polygon: RegularPolygon, other: Any?, expected: Boolean
+    ) = assertEquals(expected, polygon == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsRegularPolygonArgs")
+    fun equalsReturnsCorrectValue(
         polygon: RegularPolygon, other: RegularPolygon, expected: Boolean
     ) = assertEquals(expected, polygon == other)
 
@@ -1555,7 +1561,21 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = listOf(
+        fun equalsArgs(): List<Arguments> = equalsRegularPolygonArgs() + listOf(
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsRegularPolygonArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularPolygon(
                     Vector2F(0f, 8f),
