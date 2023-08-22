@@ -1,12 +1,10 @@
-@file:Suppress(
-    "MemberVisibilityCanBePrivate",
-    "unused"
-)
-
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+
+fun Rectangle(center: Vector2F, rotation: ComplexF, width: Float, height: Float): Rectangle =
+    MutableRectangle(center, rotation, width, height)
 
 interface Rectangle : RectangleShape {
     val center: Vector2F
@@ -22,7 +20,12 @@ interface Rectangle : RectangleShape {
         width: Float = this.width,
         height: Float = this.height
     ): Rectangle
-}
 
-fun Rectangle(center: Vector2F, rotation: ComplexF, width: Float, height: Float): Rectangle =
-    MutableRectangle(center, rotation, width, height)
+    operator fun component1(): Vector2F
+
+    operator fun component2(): ComplexF
+
+    operator fun component3(): Float
+
+    operator fun component4(): Float
+}

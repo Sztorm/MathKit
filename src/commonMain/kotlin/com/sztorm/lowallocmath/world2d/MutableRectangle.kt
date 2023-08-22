@@ -91,12 +91,8 @@ class MutableRectangle(
         return (abs(p1.real) <= halfWidth) and (abs(p1.imaginary) <= halfHeight)
     }
 
-    override fun copy(
-        center: Vector2F,
-        rotation: ComplexF,
-        width: Float,
-        height: Float
-    ) = MutableRectangle(center, rotation, width, height)
+    override fun copy(center: Vector2F, rotation: ComplexF, width: Float, height: Float) =
+        MutableRectangle(center, rotation, width, height)
 
     override fun equals(other: Any?): Boolean = other is Rectangle &&
             _center == other.center &&
@@ -126,11 +122,11 @@ class MutableRectangle(
             .append(", height=").append(_height).append(")")
             .toString()
 
-    operator fun component1(): Vector2F = center
+    override operator fun component1(): Vector2F = _center
 
-    operator fun component2(): ComplexF = rotation
+    override operator fun component2(): ComplexF = _rotation
 
-    operator fun component3(): Float = _width
+    override operator fun component3(): Float = _width
 
-    operator fun component4(): Float = _height
+    override operator fun component4(): Float = _height
 }

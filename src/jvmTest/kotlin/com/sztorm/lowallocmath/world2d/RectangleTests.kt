@@ -84,7 +84,7 @@ class RectangleTests {
     @ParameterizedTest
     @MethodSource("componentsArgs")
     fun componentsReturnCorrectValues(
-        rectangle: MutableRectangle,
+        rectangle: Rectangle,
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float,
