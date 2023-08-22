@@ -87,6 +87,53 @@ class SquareTests {
     fun containsReturnsCorrectValue(square: Square, point: Wrapper<Vector2F>, expected: Boolean) =
         assertEquals(expected, square.contains(point.value))
 
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        square: Square,
+        center: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        sideLength: Float,
+        expected: Square
+    ) = assertEquals(expected, square.copy(center.value, rotation.value, sideLength))
+
+    @ParameterizedTest
+    @MethodSource("equalsArgs")
+    fun equalsReturnsCorrectValue(
+        square: MutableSquare, other: Any?, expected: Boolean
+    ) = assertEquals(expected, square == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsMutableSquareArgs")
+    fun equalsReturnsCorrectValue(
+        square: MutableSquare, other: MutableSquare, expected: Boolean
+    ) = assertEquals(expected, square == other)
+
+    @ParameterizedTest
+    @MethodSource("hashCodeArgs")
+    fun hashCodeReturnsCorrectValue(square: MutableSquare, other: MutableSquare) =
+        assertEquals(square.hashCode(), other.hashCode())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(square: MutableSquare, expected: String) =
+        assertEquals(expected, square.toString())
+
+    @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        square: Square,
+        expectedComponent1: Wrapper<Vector2F>,
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float
+    ) {
+        val (actualComponent1, actualComponent2, actualComponent3) = square
+
+        assertEquals(expectedComponent1.value, actualComponent1)
+        assertEquals(expectedComponent2.value, actualComponent2)
+        assertEquals(expectedComponent3, actualComponent3)
+    }
+
     companion object {
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
@@ -438,5 +485,175 @@ class SquareTests {
                 Arguments.of(square, Wrapper(center), true),
             )
         }
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(3f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                4f,
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(8f, -2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                3f,
+                Square(
+                    center = Vector2F(8f, -2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 3f
+                ),
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(8f, -2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                3f,
+                Square(
+                    center = Vector2F(8f, -2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun equalsArgs(): List<Arguments> = equalsMutableSquareArgs() + listOf(
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsMutableSquareArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                true
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4.1f
+                ),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun hashCodeArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(8f, -2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+                Square(
+                    center = Vector2F(8f, -2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                "Square(" +
+                        "center=${Vector2F(3f, 1f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(60f))}, " +
+                        "sideLength=${4f})"
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(8f, -2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+                "Square(" +
+                        "center=${Vector2F(8f, -2f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-135f))}, " +
+                        "sideLength=${3f})"
+            ),
+        )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(3f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                4f,
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(8f, -2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+                Wrapper(Vector2F(8f, -2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                3f,
+            ),
+        )
     }
 }

@@ -88,7 +88,7 @@ class RectangleTests {
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float,
-        expectedComponent4: Float,
+        expectedComponent4: Float
     ) {
         val (actualComponent1, actualComponent2, actualComponent3, actualComponent4) = rectangle
 
