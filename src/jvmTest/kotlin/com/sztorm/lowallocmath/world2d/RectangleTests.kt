@@ -69,7 +69,7 @@ class RectangleTests {
     @MethodSource("equalsMutableRectangleArgs")
     fun equalsReturnsCorrectValue(
         rectangle: MutableRectangle, other: MutableRectangle, expected: Boolean
-    ) = assertEquals(expected, rectangle == other)
+    ) = assertEquals(expected, rectangle.equals(other))
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")

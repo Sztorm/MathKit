@@ -107,7 +107,7 @@ class SquareTests {
     @MethodSource("equalsMutableSquareArgs")
     fun equalsReturnsCorrectValue(
         square: MutableSquare, other: MutableSquare, expected: Boolean
-    ) = assertEquals(expected, square == other)
+    ) = assertEquals(expected, square.equals(other))
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
