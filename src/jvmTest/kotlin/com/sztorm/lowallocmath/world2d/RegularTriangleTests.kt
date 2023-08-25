@@ -76,6 +76,54 @@ class RegularTriangleTests {
         triangle: RegularTriangle, point: Wrapper<Vector2F>, expected: Boolean
     ) = assertEquals(expected, triangle.contains(point.value))
 
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        triangle: RegularTriangle,
+        center: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        sideLength: Float,
+        expected: RegularTriangle
+    ) = assertEquals(expected, triangle.copy(center.value, rotation.value, sideLength))
+
+    @ParameterizedTest
+    @MethodSource("equalsArgs")
+    fun equalsReturnsCorrectValue(
+        triangle: MutableRegularTriangle, other: Any?, expected: Boolean
+    ) = assertEquals(expected, triangle == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsMutableRegularTriangleArgs")
+    fun equalsReturnsCorrectValue(
+        triangle: MutableRegularTriangle, other: MutableRegularTriangle, expected: Boolean
+    ) = assertEquals(expected, triangle.equals(other))
+
+    @ParameterizedTest
+    @MethodSource("hashCodeArgs")
+    fun hashCodeReturnsCorrectValue(
+        triangle: MutableRegularTriangle, other: MutableRegularTriangle
+    ) = assertEquals(triangle.hashCode(), other.hashCode())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(triangle: MutableRegularTriangle, expected: String) =
+        assertEquals(expected, triangle.toString())
+
+    @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        triangle: RegularTriangle,
+        expectedComponent1: Wrapper<Vector2F>,
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float
+    ) {
+        val (actualComponent1, actualComponent2, actualComponent3) = triangle
+
+        assertEquals(expectedComponent1.value, actualComponent1)
+        assertEquals(expectedComponent2.value, actualComponent2)
+        assertEquals(expectedComponent3, actualComponent3)
+    }
+
     companion object {
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
@@ -446,5 +494,175 @@ class RegularTriangleTests {
                 Arguments.of(triangle, Wrapper(center), true),
             )
         }
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                5.773503f,
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                5.773503f,
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 5.773503f
+                ),
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(5f, 7f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                3f,
+                RegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun equalsArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsMutableRegularTriangleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                true
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                RegularTriangle(
+                    center = Vector2F(-4.1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun hashCodeArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+                RegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                "RegularTriangle(" +
+                        "center=${Vector2F(-4f, 2f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(30f))}, " +
+                        "sideLength=${5.773503f})"
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+                "RegularTriangle(" +
+                        "center=${Vector2F(5f, 7f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-40f))}, " +
+                        "sideLength=${3f})"
+            ),
+        )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                5.773503f,
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+                Wrapper(Vector2F(5f, 7f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                3f,
+            ),
+        )
     }
 }
