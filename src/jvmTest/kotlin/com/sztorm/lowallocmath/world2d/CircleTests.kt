@@ -56,6 +56,45 @@ class CircleTests {
     fun containsReturnsCorrectValue(circle: Circle, otherCircle: CircleShape, expected: Boolean) =
         assertEquals(expected, circle.contains(otherCircle))
 
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        circle: Circle, center: Wrapper<Vector2F>, radius: Float, expected: Circle
+    ) = assertEquals(expected, circle.copy(center.value, radius))
+
+    @ParameterizedTest
+    @MethodSource("equalsArgs")
+    fun equalsReturnsCorrectValue(
+        circle: MutableCircle, other: Any?, expected: Boolean
+    ) = assertEquals(expected, circle == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsMutableCircleArgs")
+    fun equalsReturnsCorrectValue(
+        circle: MutableCircle, other: MutableCircle, expected: Boolean
+    ) = assertEquals(expected, circle.equals(other))
+
+    @ParameterizedTest
+    @MethodSource("hashCodeArgs")
+    fun hashCodeReturnsCorrectValue(circle: MutableCircle, other: MutableCircle) =
+        assertEquals(circle.hashCode(), other.hashCode())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(circle: MutableCircle, expected: String) =
+        assertEquals(expected, circle.toString())
+
+    @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        circle: Circle, expectedComponent1: Wrapper<Vector2F>, expectedComponent2: Float
+    ) {
+        val (actualComponent1, actualComponent2) = circle
+
+        assertEquals(expectedComponent1.value, actualComponent1)
+        assertEquals(expectedComponent2, actualComponent2)
+    }
+
     companion object {
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
@@ -212,6 +251,93 @@ class CircleTests {
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
                 Circle(center = Vector2F(4f, 0f), radius = 2.01f),
                 false
+            ),
+        )
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Wrapper(Vector2F(2f, 0f)),
+                4f,
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Wrapper(Vector2F(2f, 0f)),
+                5f,
+                Circle(center = Vector2F(2f, 0f), radius = 5f),
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Wrapper(Vector2F(-1f, 7f)),
+                5f,
+                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+            ),
+        )
+
+        @JvmStatic
+        fun equalsArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsMutableCircleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                true
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Circle(center = Vector2F(2f, 0.1f), radius = 4f),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun hashCodeArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                "Circle(" +
+                        "center=${Vector2F(2f, 0f)}, " +
+                        "radius=${4f})"
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+                "Circle(" +
+                        "center=${Vector2F(-1f, 7f)}, " +
+                        "radius=${5f})"
+            ),
+        )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Wrapper(Vector2F(2f, 0f)),
+                4f,
+            ),
+            Arguments.of(
+                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+                Wrapper(Vector2F(-1f, 7f)),
+                5f,
             ),
         )
     }

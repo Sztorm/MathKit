@@ -1,56 +1,25 @@
-@file:Suppress(
-    "MemberVisibilityCanBePrivate",
-    "OVERRIDE_BY_INLINE",
-    "unused",
-)
-
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
-import kotlin.math.PI
-import kotlin.math.sqrt
 
-data class Circle(
-    override inline val center: Vector2F,
-    override inline val radius: Float
-) : CircleShape {
-    override inline val area: Float
-        get() = PI.toFloat() * radius * radius
+fun Circle(center: Vector2F, radius: Float): Circle = MutableCircle(center, radius)
 
-    override inline val perimeter: Float
-        get() = 2f * PI.toFloat() * radius
+interface Circle : CircleShape {
+    fun closestPointTo(point: Vector2F): Vector2F
 
-    override inline val diameter: Float
-        get() = 2f * radius
+    fun intersects(annulus: AnnulusShape): Boolean
 
-    fun closestPointTo(point: Vector2F): Vector2F {
-        val cx: Float = center.x
-        val cy: Float = center.y
-        val dx: Float = point.x - cx
-        val dy: Float = point.y - cy
-        val distance: Float = sqrt(dx * dx + dy * dy)
-        val t = radius / distance
+    fun intersects(circle: CircleShape): Boolean
 
-        return if (distance > radius) Vector2F(cx + dx * t, cy + dy * t)
-        else point
-    }
+    operator fun contains(point: Vector2F): Boolean
 
-    inline fun <reified TAnnulus : AnnulusShape> intersects(annulus: TAnnulus): Boolean {
-        val distance: Float = center.distanceTo(annulus.center)
-        val radius: Float = this.radius
+    operator fun contains(annulus: AnnulusShape): Boolean
 
-        return (distance >= (annulus.innerRadius - radius)) and
-                (distance <= (annulus.outerRadius + radius))
-    }
+    operator fun contains(circle: CircleShape): Boolean
 
-    inline fun <reified TCircle : CircleShape> intersects(circle: TCircle): Boolean =
-        center.distanceTo(circle.center) <= radius + circle.radius
+    fun copy(center: Vector2F = this.center, radius: Float = this.radius): Circle
 
-    operator fun contains(point: Vector2F): Boolean = center.distanceTo(point) <= radius
+    operator fun component1(): Vector2F
 
-    inline operator fun <reified TAnnulus : AnnulusShape> contains(annulus: TAnnulus): Boolean =
-        center.distanceTo(annulus.center) <= radius - annulus.outerRadius
-
-    inline operator fun <reified TCircle : CircleShape> contains(circle: TCircle): Boolean =
-        center.distanceTo(circle.center) <= radius - circle.radius
+    operator fun component2(): Float
 }
