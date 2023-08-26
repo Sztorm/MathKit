@@ -30,7 +30,7 @@ class MutableCircle(center: Vector2F, radius: Float) : Circle {
         val dx: Float = point.x - cx
         val dy: Float = point.y - cy
         val distance: Float = sqrt(dx * dx + dy * dy)
-        val t = radius / distance
+        val t: Float = radius / distance
 
         return if (distance > radius) Vector2F(cx + dx * t, cy + dy * t)
         else point

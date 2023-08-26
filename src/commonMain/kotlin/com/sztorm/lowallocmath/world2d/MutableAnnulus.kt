@@ -39,15 +39,17 @@ class MutableAnnulus(center: Vector2F, outerRadius: Float, innerRadius: Float) :
         val distance: Float = sqrt(dx * dx + dy * dy)
 
         return when {
-            distance < innerRadius -> Vector2F(
-                cx - (dx / distance) * innerRadius,
-                cy - (dy / distance) * innerRadius
-            )
+            distance < innerRadius -> {
+                val t: Float = innerRadius / distance
 
-            distance > outerRadius -> Vector2F(
-                cx - (dx / distance) * outerRadius,
-                cy - (dy / distance) * outerRadius
-            )
+                Vector2F(cx - dx * t, cy - dy * t)
+            }
+
+            distance > outerRadius -> {
+                val t: Float = outerRadius / distance
+
+                Vector2F(cx - dx * t, cy - dy * t)
+            }
 
             else -> point
         }
