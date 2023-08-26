@@ -60,6 +60,53 @@ class AnnulusTests {
         annulus: Annulus, otherAnnulus: AnnulusShape, expected: Boolean
     ) = assertEquals(expected, annulus.contains(otherAnnulus))
 
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        annulus: Annulus,
+        center: Wrapper<Vector2F>,
+        outerRadius: Float,
+        innerRadius: Float,
+        expected: Annulus
+    ) = assertEquals(expected, annulus.copy(center.value, outerRadius, innerRadius))
+
+    @ParameterizedTest
+    @MethodSource("equalsArgs")
+    fun equalsReturnsCorrectValue(
+        annulus: MutableAnnulus, other: Any?, expected: Boolean
+    ) = assertEquals(expected, annulus == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsMutableAnnulusArgs")
+    fun equalsReturnsCorrectValue(
+        annulus: MutableAnnulus, other: MutableAnnulus, expected: Boolean
+    ) = assertEquals(expected, annulus.equals(other))
+
+    @ParameterizedTest
+    @MethodSource("hashCodeArgs")
+    fun hashCodeReturnsCorrectValue(annulus: MutableAnnulus, other: MutableAnnulus) =
+        assertEquals(annulus.hashCode(), other.hashCode())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(annulus: MutableAnnulus, expected: String) =
+        assertEquals(expected, annulus.toString())
+
+    @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        annulus: Annulus,
+        expectedComponent1: Wrapper<Vector2F>,
+        expectedComponent2: Float,
+        expectedComponent3: Float
+    ) {
+        val (actualComponent1, actualComponent2, actualComponent3) = annulus
+
+        assertEquals(expectedComponent1.value, actualComponent1)
+        assertEquals(expectedComponent2, actualComponent2)
+        assertEquals(expectedComponent3, actualComponent3)
+    }
+
     companion object {
         @JvmStatic
         fun annularRadiusArgs(): List<Arguments> = listOf(
@@ -260,6 +307,100 @@ class AnnulusTests {
                 Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 Annulus(center = Vector2F(-1f, 2f), outerRadius = 3.99f, innerRadius = 1.99f),
                 false
+            ),
+        )
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Wrapper(Vector2F(-1f, 2f)),
+                4f,
+                2f,
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+            ),
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Wrapper(Vector2F(6f, 3f)),
+                4f,
+                1f,
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 4f, innerRadius = 1f),
+            ),
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Wrapper(Vector2F(6f, 3f)),
+                8f,
+                1f,
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+            ),
+        )
+
+        @JvmStatic
+        fun equalsArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsMutableAnnulusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                true
+            ),
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 3.9f, innerRadius = 2f),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun hashCodeArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+            ),
+            Arguments.of(
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                "Annulus(" +
+                        "center=${Vector2F(-1f, 2f)}, " +
+                        "outerRadius=${4f}, " +
+                        "innerRadius=${2f})"
+            ),
+            Arguments.of(
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                "Annulus(" +
+                        "center=${Vector2F(6f, 3f)}, " +
+                        "outerRadius=${8f}, " +
+                        "innerRadius=${1f})"
+            ),
+        )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Wrapper(Vector2F(-1f, 2f)),
+                4f,
+                2f,
+            ),
+            Arguments.of(
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                Wrapper(Vector2F(6f, 3f)),
+                8f,
+                1f,
             ),
         )
     }

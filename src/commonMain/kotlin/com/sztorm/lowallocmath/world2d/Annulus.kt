@@ -1,93 +1,32 @@
-@file:Suppress(
-    "ConvertTwoComparisonsToRangeCheck",
-    "MemberVisibilityCanBePrivate",
-    "OVERRIDE_BY_INLINE",
-    "unused",
-)
-
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
-import kotlin.math.PI
-import kotlin.math.sqrt
 
-data class Annulus(
-    override inline val center: Vector2F,
-    override inline val outerRadius: Float,
-    override inline val innerRadius: Float
-) : AnnulusShape {
-    override inline val annularRadius: Float
-        get() = outerRadius - innerRadius
+fun Annulus(center: Vector2F, outerRadius: Float, innerRadius: Float): Annulus =
+    MutableAnnulus(center, outerRadius, innerRadius)
 
-    override inline val area: Float
-        get() = PI.toFloat() * (outerRadius * outerRadius - innerRadius * innerRadius)
+interface Annulus : AnnulusShape {
+    fun closestPointTo(point: Vector2F): Vector2F
 
-    override inline val perimeter: Float
-        get() = 2f * PI.toFloat() * (outerRadius + innerRadius)
+    fun intersects(annulus: AnnulusShape): Boolean
 
-    fun closestPointTo(point: Vector2F): Vector2F {
-        val cx: Float = center.x
-        val cy: Float = center.y
-        val dx: Float = cx - point.x
-        val dy: Float = cy - point.y
-        val distance: Float = sqrt(dx * dx + dy * dy)
+    fun intersects(circle: CircleShape): Boolean
 
-        return when {
-            distance < innerRadius -> Vector2F(
-                cx - (dx / distance) * innerRadius,
-                cy - (dy / distance) * innerRadius
-            )
+    operator fun contains(point: Vector2F): Boolean
 
-            distance > outerRadius -> Vector2F(
-                cx - (dx / distance) * outerRadius,
-                cy - (dy / distance) * outerRadius
-            )
+    operator fun contains(annulus: AnnulusShape): Boolean
 
-            else -> point
-        }
-    }
+    operator fun contains(circle: CircleShape): Boolean
 
-    inline fun <reified TAnnulus : AnnulusShape> intersects(annulus: TAnnulus): Boolean {
-        val distance: Float = center.distanceTo(annulus.center)
-        val otherAnnulusOuterRadius: Float = annulus.outerRadius
-        val otherAnnulusInnerRadius: Float = annulus.innerRadius
-        val innerRadius: Float = innerRadius
+    fun copy(
+        center: Vector2F = this.center,
+        outerRadius: Float = this.outerRadius,
+        innerRadius: Float = this.innerRadius
+    ): Annulus
 
-        return (innerRadius <= (otherAnnulusOuterRadius + distance)) &&
-               (outerRadius >= (distance - otherAnnulusOuterRadius)) &&
-               (otherAnnulusInnerRadius <= (outerRadius + distance))
-    }
+    operator fun component1(): Vector2F
 
-    inline fun <reified TCircle : CircleShape> intersects(circle: TCircle): Boolean {
-        val distance: Float = center.distanceTo(circle.center)
-        val circleRadius: Float = circle.radius
+    operator fun component2(): Float
 
-        return (distance >= (innerRadius - circleRadius)) &&
-               (distance <= (outerRadius + circleRadius))
-    }
-
-    operator fun contains(point: Vector2F): Boolean {
-        val distance: Float = center.distanceTo(point)
-
-        return distance >= innerRadius && distance <= outerRadius
-    }
-
-    inline operator fun <reified TAnnulus : AnnulusShape> contains(annulus: TAnnulus): Boolean {
-        val distance: Float = center.distanceTo(annulus.center)
-        val otherAnnulusOuterRadius: Float = annulus.outerRadius
-        val otherAnnulusInnerRadius: Float = annulus.innerRadius
-        val innerRadius: Float = this.innerRadius
-
-        return (outerRadius >= (distance + otherAnnulusOuterRadius)) &&
-               ((innerRadius <= (distance - otherAnnulusOuterRadius)) ||
-               (innerRadius <= (distance + otherAnnulusInnerRadius)))
-    }
-
-    inline operator fun <reified TCircle : CircleShape> contains(circle: TCircle): Boolean {
-        val distance: Float = center.distanceTo(circle.center)
-        val circleRadius: Float = circle.radius
-
-        return (outerRadius >= (distance + circleRadius)) &&
-               (innerRadius <= (distance - circleRadius))
-    }
+    operator fun component3(): Float
 }
