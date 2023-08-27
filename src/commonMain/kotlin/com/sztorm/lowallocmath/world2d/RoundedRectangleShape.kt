@@ -1,7 +1,6 @@
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
-import kotlin.math.PI
 
 interface RoundedRectangleShape : Shape {
     val width: Float
@@ -19,19 +18,4 @@ interface RoundedRectangleShape : Shape {
     val cornerCenterB: Vector2F
     val cornerCenterC: Vector2F
     val cornerCenterD: Vector2F
-
-    override val area: Float
-        get() {
-            val radius: Float = this.cornerRadius
-            val squaredRadius: Float = radius * radius
-
-            return PI.toFloat() * squaredRadius + width * height - 4f * squaredRadius
-        }
-
-    override val perimeter: Float
-        get() {
-            val radius: Float = this.cornerRadius
-
-            return (2.0 * PI).toFloat() * radius + 2f * (width + height - 4f * radius)
-        }
 }

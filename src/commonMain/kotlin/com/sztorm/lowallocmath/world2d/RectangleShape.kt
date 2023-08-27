@@ -9,15 +9,4 @@ interface RectangleShape : Shape {
     val pointB: Vector2F
     val pointC: Vector2F
     val pointD: Vector2F
-
-    override val area: Float
-        get() = width * height
-
-    override val perimeter: Float
-        get() {
-            val w: Float = width
-            val h: Float = height
-
-            return w + w + h + h
-        }
 }
