@@ -61,7 +61,8 @@ class MutableCircle(center: Vector2F, radius: Float) : Circle {
             _center == other.center &&
             _radius == other.radius
 
-    fun equals(other: MutableCircle): Boolean = _center == other._center && _radius == other.radius
+    fun equals(other: MutableCircle): Boolean =
+        _center == other._center && _radius == other._radius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()
