@@ -14,7 +14,7 @@ class RoundedRectangleTests {
     @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
-        rectangle: RoundedRectangle,
+        rectangle: RoundedRectangleShape,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>,
@@ -44,12 +44,12 @@ class RoundedRectangleTests {
 
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+    fun areaReturnsCorrectValue(rectangle: RoundedRectangleShape, expected: Float) =
         assertApproximation(expected, rectangle.area)
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+    fun perimeterReturnsCorrectValue(rectangle: RoundedRectangleShape, expected: Float) =
         assertApproximation(expected, rectangle.perimeter)
 
     @ParameterizedTest
@@ -63,6 +63,68 @@ class RoundedRectangleTests {
     fun containsReturnsCorrectValue(
         rectangle: RoundedRectangle, point: Wrapper<Vector2F>, expected: Boolean
     ) = assertEquals(expected, rectangle.contains(point.value))
+
+    @ParameterizedTest
+    @MethodSource("copyArgs")
+    fun copyReturnsCorrectValue(
+        rectangle: RoundedRectangle,
+        center: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float,
+        expected: RoundedRectangle
+    ) = assertEquals(
+        expected, rectangle.copy(center.value, rotation.value, width, height, cornerRadius)
+    )
+
+    @ParameterizedTest
+    @MethodSource("equalsArgs")
+    fun equalsReturnsCorrectValue(
+        rectangle: MutableRoundedRectangle, other: Any?, expected: Boolean
+    ) = assertEquals(expected, rectangle == other)
+
+    @ParameterizedTest
+    @MethodSource("equalsMutableRoundedRectangleArgs")
+    fun equalsReturnsCorrectValue(
+        rectangle: MutableRoundedRectangle, other: MutableRoundedRectangle, expected: Boolean
+    ) = assertEquals(expected, rectangle.equals(other))
+
+    @ParameterizedTest
+    @MethodSource("hashCodeArgs")
+    fun hashCodeReturnsCorrectValue(
+        rectangle: MutableRoundedRectangle, other: MutableRoundedRectangle
+    ) = assertEquals(rectangle.hashCode(), other.hashCode())
+
+    @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(rectangle: MutableRoundedRectangle, expected: String) =
+        assertEquals(expected, rectangle.toString())
+
+    @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        rectangle: RoundedRectangle,
+        expectedComponent1: Wrapper<Vector2F>,
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float,
+        expectedComponent4: Float,
+        expectedComponent5: Float
+    ) {
+        val (
+            actualComponent1,
+            actualComponent2,
+            actualComponent3,
+            actualComponent4,
+            actualComponent5
+        ) = rectangle
+
+        assertEquals(expectedComponent1.value, actualComponent1)
+        assertEquals(expectedComponent2.value, actualComponent2)
+        assertEquals(expectedComponent3, actualComponent3)
+        assertEquals(expectedComponent4, actualComponent4)
+        assertEquals(expectedComponent5, actualComponent5)
+    }
 
     companion object {
         @JvmStatic
@@ -489,5 +551,227 @@ class RoundedRectangleTests {
                 ),
             )
         }
+
+        @JvmStatic
+        fun copyArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                Wrapper(Vector2F(-3f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                8f,
+                4f,
+                1f,
+                RoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                )
+            ),
+            Arguments.of(
+                RoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                Wrapper(Vector2F(-3f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                8f,
+                5f,
+                1.5f,
+                RoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 8f,
+                    height = 5f,
+                    cornerRadius = 1.5f
+                )
+            ),
+            Arguments.of(
+                RoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                Wrapper(Vector2F(6f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                3f,
+                5f,
+                1.5f,
+                RoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f,
+                    cornerRadius = 1.5f
+                )
+            )
+        )
+
+        @JvmStatic
+        fun equalsArgs(): List<Arguments> = equalsMutableRoundedRectangleArgs() + listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                null,
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun equalsMutableRoundedRectangleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60.1f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                false
+            ),
+        )
+
+        @JvmStatic
+        fun hashCodeArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                )
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f,
+                    cornerRadius = 1.5f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f,
+                    cornerRadius = 1.5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                "RoundedRectangle(" +
+                        "center=${Vector2F(-3f, -4f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-60f))}, " +
+                        "width=${8f}, " +
+                        "height=${4f}, " +
+                        "cornerRadius=${1f})"
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f,
+                    cornerRadius = 1.5f
+                ),
+                "RoundedRectangle(" +
+                        "center=${Vector2F(6f, -4f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(45f))}, " +
+                        "width=${3f}, " +
+                        "height=${5f}, " +
+                        "cornerRadius=${1.5f})"
+            ),
+        )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                Wrapper(Vector2F(-3f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                8f,
+                4f,
+                1f
+            ),
+            Arguments.of(
+                RoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f,
+                    cornerRadius = 1.5f
+                ),
+                Wrapper(Vector2F(6f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                3f,
+                5f,
+                1.5f
+            ),
+        )
     }
 }
