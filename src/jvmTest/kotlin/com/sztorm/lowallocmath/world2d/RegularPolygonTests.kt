@@ -108,23 +108,23 @@ class RegularPolygonTests {
     @ParameterizedTest
     @MethodSource("equalsArgs")
     fun equalsReturnsCorrectValue(
-        polygon: RegularPolygon, other: Any?, expected: Boolean
+        polygon: MutableRegularPolygon, other: Any?, expected: Boolean
     ) = assertEquals(expected, polygon == other)
 
     @ParameterizedTest
-    @MethodSource("equalsRegularPolygonArgs")
+    @MethodSource("equalsMutableRegularPolygonArgs")
     fun equalsReturnsCorrectValue(
-        polygon: RegularPolygon, other: RegularPolygon, expected: Boolean
+        polygon: MutableRegularPolygon, other: MutableRegularPolygon, expected: Boolean
     ) = assertEquals(expected, polygon.equals(other))
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
-    fun hashCodeReturnsCorrectValue(polygon: RegularPolygon, other: RegularPolygon) =
+    fun hashCodeReturnsCorrectValue(polygon: MutableRegularPolygon, other: MutableRegularPolygon) =
         assertEquals(polygon.hashCode(), other.hashCode())
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
-    fun toStringReturnsCorrectValue(polygon: RegularPolygon, expected: String) =
+    fun toStringReturnsCorrectValue(polygon: MutableRegularPolygon, expected: String) =
         assertEquals(expected, polygon.toString())
 
     @ParameterizedTest
@@ -1561,9 +1561,9 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsRegularPolygonArgs() + listOf(
+        fun equalsArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
@@ -1575,15 +1575,15 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun equalsRegularPolygonArgs(): List<Arguments> = listOf(
+        fun equalsMutableRegularPolygonArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
@@ -1592,13 +1592,13 @@ class RegularPolygonTests {
                 true
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120.1f)),
                     sideLength = 3f,
@@ -1607,13 +1607,13 @@ class RegularPolygonTests {
                 false
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
@@ -1622,13 +1622,13 @@ class RegularPolygonTests {
                 true
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
@@ -1641,13 +1641,13 @@ class RegularPolygonTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
@@ -1655,13 +1655,13 @@ class RegularPolygonTests {
                 )
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
@@ -1673,7 +1673,7 @@ class RegularPolygonTests {
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
@@ -1686,7 +1686,7 @@ class RegularPolygonTests {
                         "sideCount=${7})"
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(2f, -7.5f),
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
