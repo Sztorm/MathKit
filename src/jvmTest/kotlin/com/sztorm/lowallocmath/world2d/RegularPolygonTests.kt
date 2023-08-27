@@ -44,42 +44,42 @@ class RegularPolygonTests {
 
     @ParameterizedTest
     @MethodSource("sideLengthArgs")
-    fun sideLengthReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+    fun sideLengthReturnsCorrectValue(polygon: RegularShape, expected: Float) =
         assertApproximation(expected, polygon.sideLength)
 
     @ParameterizedTest
     @MethodSource("sideCountArgs")
-    fun sideCountReturnsCorrectValue(polygon: RegularPolygon, expected: Int) =
+    fun sideCountReturnsCorrectValue(polygon: RegularShape, expected: Int) =
         assertEquals(expected, polygon.sideCount)
 
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+    fun areaReturnsCorrectValue(polygon: RegularShape, expected: Float) =
         assertApproximation(expected, polygon.area)
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+    fun perimeterReturnsCorrectValue(polygon: RegularShape, expected: Float) =
         assertApproximation(expected, polygon.perimeter)
 
     @ParameterizedTest
     @MethodSource("interiorAngleArgs")
-    fun interiorAngleReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<AngleF>) =
+    fun interiorAngleReturnsCorrectValue(polygon: RegularShape, expected: Wrapper<AngleF>) =
         assertApproximation(expected.value, polygon.interiorAngle)
 
     @ParameterizedTest
     @MethodSource("exteriorAngleArgs")
-    fun exteriorAngleReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<AngleF>) =
+    fun exteriorAngleReturnsCorrectValue(polygon: RegularShape, expected: Wrapper<AngleF>) =
         assertApproximation(expected.value, polygon.exteriorAngle)
 
     @ParameterizedTest
     @MethodSource("inradiusArgs")
-    fun inradiusReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+    fun inradiusReturnsCorrectValue(polygon: RegularShape, expected: Float) =
         assertApproximation(expected, polygon.inradius)
 
     @ParameterizedTest
     @MethodSource("circumradiusArgs")
-    fun circumradiusReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+    fun circumradiusReturnsCorrectValue(polygon: RegularShape, expected: Float) =
         assertApproximation(expected, polygon.circumradius)
 
     @ParameterizedTest
@@ -115,7 +115,7 @@ class RegularPolygonTests {
     @MethodSource("equalsRegularPolygonArgs")
     fun equalsReturnsCorrectValue(
         polygon: RegularPolygon, other: RegularPolygon, expected: Boolean
-    ) = assertEquals(expected, polygon == other)
+    ) = assertEquals(expected, polygon.equals(other))
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
@@ -1030,7 +1030,7 @@ class RegularPolygonTests {
                 Arguments.of(
                     decagon,
                     Wrapper(Vector2F(14f, 1f)),
-                    Wrapper(Vector2F(14f, 1f)),
+                    Wrapper(Vector2F(14f, 1f))
                 ),
             )
             val heptagonArgs = listOf(
@@ -1520,7 +1520,7 @@ class RegularPolygonTests {
                     ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 5
-                ),
+                )
             ),
             Arguments.of(
                 RegularPolygon(
@@ -1538,7 +1538,7 @@ class RegularPolygonTests {
                     ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 3
-                ),
+                )
             ),
             Arguments.of(
                 RegularPolygon(
@@ -1556,7 +1556,7 @@ class RegularPolygonTests {
                     ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                     sideLength = 2f,
                     sideCount = 3
-                ),
+                )
             ),
         )
 
@@ -1652,7 +1652,7 @@ class RegularPolygonTests {
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
-                ),
+                )
             ),
             Arguments.of(
                 RegularPolygon(
@@ -1666,7 +1666,7 @@ class RegularPolygonTests {
                     ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
-                ),
+                )
             ),
         )
 

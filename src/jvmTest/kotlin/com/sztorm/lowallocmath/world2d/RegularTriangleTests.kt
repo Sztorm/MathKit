@@ -14,7 +14,7 @@ class RegularTriangleTests {
     @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
-        triangle: RegularTriangle,
+        triangle: TriangleShape,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>,
@@ -133,7 +133,7 @@ class RegularTriangleTests {
                 ),
                 Wrapper(Vector2F(0f, 3.3333333f)),
                 Wrapper(Vector2F(-2.886751f, -1.6666667f)),
-                Wrapper(Vector2F(2.886751f, -1.6666667f)),
+                Wrapper(Vector2F(2.886751f, -1.6666667f))
             ),
             Arguments.of(
                 RegularTriangle(
@@ -143,7 +143,7 @@ class RegularTriangleTests {
                 ),
                 Wrapper(Vector2F(5.464102f, -4f)),
                 Wrapper(Vector2F(2f, -2f)),
-                Wrapper(Vector2F(2f, -6f)),
+                Wrapper(Vector2F(2f, -6f))
             ),
         )
 
@@ -510,7 +510,7 @@ class RegularTriangleTests {
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
-                ),
+                )
             ),
             Arguments.of(
                 RegularTriangle(
@@ -525,7 +525,7 @@ class RegularTriangleTests {
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 5.773503f
-                ),
+                )
             ),
             Arguments.of(
                 RegularTriangle(
@@ -540,14 +540,14 @@ class RegularTriangleTests {
                     center = Vector2F(5f, 7f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
-                ),
+                )
             ),
         )
 
         @JvmStatic
         fun equalsArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
@@ -560,12 +560,12 @@ class RegularTriangleTests {
         @JvmStatic
         fun equalsMutableRegularTriangleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
@@ -573,12 +573,12 @@ class RegularTriangleTests {
                 true
             ),
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4.1f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
@@ -590,35 +590,35 @@ class RegularTriangleTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
-                ),
+                )
             ),
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(5f, 7f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
                 ),
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(5f, 7f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
-                ),
+                )
             ),
         )
 
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
@@ -629,7 +629,7 @@ class RegularTriangleTests {
                         "sideLength=${5.773503f})"
             ),
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(5f, 7f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
@@ -651,7 +651,7 @@ class RegularTriangleTests {
                 ),
                 Wrapper(Vector2F(-4f, 2f)),
                 Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
-                5.773503f,
+                5.773503f
             ),
             Arguments.of(
                 RegularTriangle(
@@ -661,7 +661,7 @@ class RegularTriangleTests {
                 ),
                 Wrapper(Vector2F(5f, 7f)),
                 Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
-                3f,
+                3f
             ),
         )
     }

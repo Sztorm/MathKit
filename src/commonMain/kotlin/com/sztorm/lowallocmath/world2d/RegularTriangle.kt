@@ -26,4 +26,3 @@ interface RegularTriangle : TriangleShape, RegularShape {
 
     operator fun component3(): Float
 }
-

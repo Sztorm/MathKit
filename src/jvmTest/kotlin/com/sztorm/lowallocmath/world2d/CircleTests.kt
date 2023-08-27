@@ -11,17 +11,17 @@ import kotlin.test.assertEquals
 class CircleTests {
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(circle: Circle, expected: Float) =
+    fun areaReturnsCorrectValue(circle: CircleShape, expected: Float) =
         assertApproximation(expected, circle.area)
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(circle: Circle, expected: Float) =
+    fun perimeterReturnsCorrectValue(circle: CircleShape, expected: Float) =
         assertApproximation(expected, circle.perimeter)
 
     @ParameterizedTest
     @MethodSource("diameterArgs")
-    fun diameterReturnsCorrectValue(circle: Circle, expected: Float) =
+    fun diameterReturnsCorrectValue(circle: CircleShape, expected: Float) =
         assertApproximation(expected, circle.diameter)
 
     @ParameterizedTest
@@ -260,26 +260,26 @@ class CircleTests {
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
                 Wrapper(Vector2F(2f, 0f)),
                 4f,
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                Circle(center = Vector2F(2f, 0f), radius = 4f)
             ),
             Arguments.of(
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
                 Wrapper(Vector2F(2f, 0f)),
                 5f,
-                Circle(center = Vector2F(2f, 0f), radius = 5f),
+                Circle(center = Vector2F(2f, 0f), radius = 5f)
             ),
             Arguments.of(
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
                 Wrapper(Vector2F(-1f, 7f)),
                 5f,
-                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+                Circle(center = Vector2F(-1f, 7f), radius = 5f)
             ),
         )
 
         @JvmStatic
         fun equalsArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f),
                 null,
                 false
             ),
@@ -288,13 +288,13 @@ class CircleTests {
         @JvmStatic
         fun equalsMutableCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
-                Circle(center = Vector2F(2f, 0.1f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0.1f), radius = 4f),
                 false
             ),
         )
@@ -302,25 +302,25 @@ class CircleTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f)
             ),
             Arguments.of(
-                Circle(center = Vector2F(-1f, 7f), radius = 5f),
-                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+                MutableCircle(center = Vector2F(-1f, 7f), radius = 5f),
+                MutableCircle(center = Vector2F(-1f, 7f), radius = 5f)
             ),
         )
 
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), radius = 4f),
+                MutableCircle(center = Vector2F(2f, 0f), radius = 4f),
                 "Circle(" +
                         "center=${Vector2F(2f, 0f)}, " +
                         "radius=${4f})"
             ),
             Arguments.of(
-                Circle(center = Vector2F(-1f, 7f), radius = 5f),
+                MutableCircle(center = Vector2F(-1f, 7f), radius = 5f),
                 "Circle(" +
                         "center=${Vector2F(-1f, 7f)}, " +
                         "radius=${5f})"
@@ -332,12 +332,12 @@ class CircleTests {
             Arguments.of(
                 Circle(center = Vector2F(2f, 0f), radius = 4f),
                 Wrapper(Vector2F(2f, 0f)),
-                4f,
+                4f
             ),
             Arguments.of(
                 Circle(center = Vector2F(-1f, 7f), radius = 5f),
                 Wrapper(Vector2F(-1f, 7f)),
-                5f,
+                5f
             ),
         )
     }

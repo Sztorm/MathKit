@@ -142,7 +142,7 @@ class SquareTests {
                 Wrapper(Vector2F(1.5f, 1.5f)),
                 Wrapper(Vector2F(-1.5f, 1.5f)),
                 Wrapper(Vector2F(-1.5f, -1.5f)),
-                Wrapper(Vector2F(1.5f, -1.5f)),
+                Wrapper(Vector2F(1.5f, -1.5f))
             ),
             Arguments.of(
                 Square(
@@ -153,7 +153,7 @@ class SquareTests {
                 Wrapper(Vector2F(2.267949f, 3.732051f)),
                 Wrapper(Vector2F(0.2679491f, 0.26794904f)),
                 Wrapper(Vector2F(3.732051f, -1.7320509f)),
-                Wrapper(Vector2F(5.732051f, 1.7320509f)),
+                Wrapper(Vector2F(5.732051f, 1.7320509f))
             ),
         )
 
@@ -501,7 +501,7 @@ class SquareTests {
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
-                ),
+                )
             ),
             Arguments.of(
                 Square(
@@ -516,7 +516,7 @@ class SquareTests {
                     center = Vector2F(8f, -2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 3f
-                ),
+                )
             ),
             Arguments.of(
                 Square(
@@ -531,14 +531,14 @@ class SquareTests {
                     center = Vector2F(8f, -2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
-                ),
+                )
             ),
         )
 
         @JvmStatic
         fun equalsArgs(): List<Arguments> = equalsMutableSquareArgs() + listOf(
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
@@ -551,12 +551,12 @@ class SquareTests {
         @JvmStatic
         fun equalsMutableSquareArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
@@ -564,12 +564,12 @@ class SquareTests {
                 true
             ),
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4.1f
@@ -581,35 +581,35 @@ class SquareTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
-                ),
+                )
             ),
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(8f, -2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
                 ),
-                Square(
+                MutableSquare(
                     center = Vector2F(8f, -2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
-                ),
+                )
             ),
         )
 
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
@@ -620,7 +620,7 @@ class SquareTests {
                         "sideLength=${4f})"
             ),
             Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(8f, -2f),
                     rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
@@ -642,7 +642,7 @@ class SquareTests {
                 ),
                 Wrapper(Vector2F(3f, 1f)),
                 Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
-                4f,
+                4f
             ),
             Arguments.of(
                 Square(
@@ -652,7 +652,7 @@ class SquareTests {
                 ),
                 Wrapper(Vector2F(8f, -2f)),
                 Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
-                3f,
+                3f
             ),
         )
     }

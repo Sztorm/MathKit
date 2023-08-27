@@ -11,17 +11,17 @@ import kotlin.test.assertEquals
 class AnnulusTests {
     @ParameterizedTest
     @MethodSource("annularRadiusArgs")
-    fun annularRadiusReturnsCorrectValue(annulus: Annulus, expected: Float) =
+    fun annularRadiusReturnsCorrectValue(annulus: AnnulusShape, expected: Float) =
         assertApproximation(expected, annulus.annularRadius)
 
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(annulus: Annulus, expected: Float) =
+    fun areaReturnsCorrectValue(annulus: AnnulusShape, expected: Float) =
         assertApproximation(expected, annulus.area)
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(annulus: Annulus, expected: Float) =
+    fun perimeterReturnsCorrectValue(annulus: AnnulusShape, expected: Float) =
         assertApproximation(expected, annulus.perimeter)
 
     @ParameterizedTest
@@ -317,28 +317,28 @@ class AnnulusTests {
                 Wrapper(Vector2F(-1f, 2f)),
                 4f,
                 2f,
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f)
             ),
             Arguments.of(
                 Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 Wrapper(Vector2F(6f, 3f)),
                 4f,
                 1f,
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 4f, innerRadius = 1f),
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 4f, innerRadius = 1f)
             ),
             Arguments.of(
                 Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 Wrapper(Vector2F(6f, 3f)),
                 8f,
                 1f,
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f)
             ),
         )
 
         @JvmStatic
         fun equalsArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 null,
                 false
             ),
@@ -347,13 +347,13 @@ class AnnulusTests {
         @JvmStatic
         fun equalsMutableAnnulusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 3.9f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 3.9f, innerRadius = 2f),
                 false
             ),
         )
@@ -361,31 +361,31 @@ class AnnulusTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f)
             ),
             Arguments.of(
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
-            ),
+                MutableAnnulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                MutableAnnulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f)
+            )
         )
 
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 "Annulus(" +
                         "center=${Vector2F(-1f, 2f)}, " +
                         "outerRadius=${4f}, " +
                         "innerRadius=${2f})"
             ),
             Arguments.of(
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                MutableAnnulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
                 "Annulus(" +
                         "center=${Vector2F(6f, 3f)}, " +
                         "outerRadius=${8f}, " +
                         "innerRadius=${1f})"
-            ),
+            )
         )
 
         @JvmStatic
@@ -394,13 +394,13 @@ class AnnulusTests {
                 Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
                 Wrapper(Vector2F(-1f, 2f)),
                 4f,
-                2f,
+                2f
             ),
             Arguments.of(
                 Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
                 Wrapper(Vector2F(6f, 3f)),
                 8f,
-                1f,
+                1f
             ),
         )
     }
