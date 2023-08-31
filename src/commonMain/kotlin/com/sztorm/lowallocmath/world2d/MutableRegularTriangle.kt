@@ -35,6 +35,18 @@ class MutableRegularTriangle(
     override val center: Vector2F
         get() = _center
 
+    override val centroid: Vector2F
+        get() = _center
+
+    override val orthocenter: Vector2F
+        get() = _center
+
+    override val incenter: Vector2F
+        get() = _center
+
+    override val circumcenter: Vector2F
+        get() = _center
+
     override val rotation: ComplexF
         get() = _rotation
 

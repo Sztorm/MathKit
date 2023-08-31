@@ -25,6 +25,26 @@ class RegularTriangleTests {
     }
 
     @ParameterizedTest
+    @MethodSource("centroidArgs")
+    fun centroidReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
+        assertApproximation(expected.value, triangle.centroid)
+
+    @ParameterizedTest
+    @MethodSource("orthocenterArgs")
+    fun orthocenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
+        assertApproximation(expected.value, triangle.orthocenter)
+
+    @ParameterizedTest
+    @MethodSource("incenterArgs")
+    fun incenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
+        assertApproximation(expected.value, triangle.incenter)
+
+    @ParameterizedTest
+    @MethodSource("circumcenterArgs")
+    fun circumcenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
+        assertApproximation(expected.value, triangle.circumcenter)
+
+    @ParameterizedTest
     @MethodSource("sideLengthArgs")
     fun sideLengthReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
         assertApproximation(expected, triangle.sideLength)
@@ -146,6 +166,33 @@ class RegularTriangleTests {
                 Wrapper(Vector2F(2f, -6f))
             ),
         )
+
+        @JvmStatic
+        fun centroidArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F.ZERO)
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(3.1547005f, -4f))
+            ),
+        )
+
+        @JvmStatic
+        fun orthocenterArgs(): List<Arguments> = centroidArgs()
+
+        @JvmStatic
+        fun incenterArgs(): List<Arguments> = centroidArgs()
+
+        @JvmStatic
+        fun circumcenterArgs(): List<Arguments> = centroidArgs()
 
         @JvmStatic
         fun sideLengthArgs(): List<Arguments> = listOf(
