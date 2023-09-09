@@ -13,11 +13,9 @@ class Vector2IIteratorTests {
     @ParameterizedTest
     @MethodSource("nextArgs")
     fun nextMutatesIteratorCorrectly(
-        collection: Collection<Vector2I>,
-        iteratorCreator: (Collection<Vector2I>) -> Vector2IIterator,
-        expected: List<Vector2I>
+        iteratorCreator: () -> Vector2IIterator, expected: List<Vector2I>
     ) {
-        val iterator: Vector2IIterator = iteratorCreator(collection)
+        val iterator: Vector2IIterator = iteratorCreator()
 
         for (v in expected) {
             assertEquals(v, iterator.next())
@@ -27,12 +25,11 @@ class Vector2IIteratorTests {
     @ParameterizedTest
     @MethodSource("nextExceptionArgs")
     fun nextThrowsWhenDoesNotHaveNextElement(
-        collection: Collection<Vector2I>,
-        iteratorCreator: (Collection<Vector2I>) -> Vector2IIterator
+        iteratorCreator: () -> Vector2IIterator, expectedIndices: IntRange
     ) {
-        val iterator: Vector2IIterator = iteratorCreator(collection)
+        val iterator: Vector2IIterator = iteratorCreator()
 
-        for (i in collection.indices) {
+        for (i in expectedIndices) {
             iterator.next()
         }
         assertThrows<NoSuchElementException> { iterator.next() }
@@ -41,11 +38,9 @@ class Vector2IIteratorTests {
     @ParameterizedTest
     @MethodSource("nextVector2IArgs")
     fun nextVector2IMutatesIteratorCorrectly(
-        collection: Collection<Vector2I>,
-        iteratorCreator: (Collection<Vector2I>) -> Vector2IIterator,
-        expected: List<Vector2I>
+        iteratorCreator: () -> Vector2IIterator, expected: List<Vector2I>
     ) {
-        val iterator: Vector2IIterator = iteratorCreator(collection)
+        val iterator: Vector2IIterator = iteratorCreator()
 
         for (v in expected) {
             assertEquals(v, iterator.nextVector2I())
@@ -55,12 +50,11 @@ class Vector2IIteratorTests {
     @ParameterizedTest
     @MethodSource("nextVector2IExceptionArgs")
     fun nextVector2IThrowsWhenDoesNotHaveNextElement(
-        collection: Collection<Vector2I>,
-        iteratorCreator: (Collection<Vector2I>) -> Vector2IIterator
+        iteratorCreator: () -> Vector2IIterator, expectedIndices: IntRange
     ) {
-        val iterator: Vector2IIterator = iteratorCreator(collection)
+        val iterator: Vector2IIterator = iteratorCreator()
 
-        for (i in collection.indices) {
+        for (i in expectedIndices) {
             iterator.nextVector2I()
         }
         assertThrows<NoSuchElementException> { iterator.nextVector2I() }
@@ -69,12 +63,11 @@ class Vector2IIteratorTests {
     @ParameterizedTest
     @MethodSource("hasNextArgs")
     fun hasNextReturnsCorrectValue(
-        collection: Collection<Vector2I>,
-        iteratorCreator: (Collection<Vector2I>) -> Vector2IIterator
+        iteratorCreator: () -> Vector2IIterator, expectedIndices: IntRange
     ) {
-        val iterator: Vector2IIterator = iteratorCreator(collection)
+        val iterator: Vector2IIterator = iteratorCreator()
 
-        for (i in collection.indices) {
+        for (i in expectedIndices) {
             assertTrue(iterator.hasNext())
             iterator.next()
         }
@@ -85,19 +78,22 @@ class Vector2IIteratorTests {
         @JvmStatic
         fun collections(): List<Arguments> =
             Vector2IArrayTests.arrays().map {
+                val array = (it.get()[0] as Wrapper<*>).value as Vector2IArray
+
                 Arguments.of(
-                    (it.get()[0] as Wrapper<*>).value as Vector2IArray,
-                    { array: Vector2IArray -> array.iterator() }
+                    { array.iterator() }, array.indices
                 )
             } + Vector2IListTests.lists().map {
+                val list = (it.get()[0] as Wrapper<*>).value as Vector2IList
+
                 Arguments.of(
-                    (it.get()[0] as Wrapper<*>).value as Vector2IList,
-                    { list: Vector2IList -> list.iterator() }
+                    { list.iterator() }, list.indices
                 )
             } + Vector2ISubListTests.subLists().map {
+                val subList = it.get()[0] as Vector2ISubList
+
                 Arguments.of(
-                    it.get()[0] as Vector2ISubList,
-                    { list: Vector2ISubList -> list.iterator() }
+                    { subList.iterator() }, subList.indices
                 )
             }
 
@@ -105,47 +101,51 @@ class Vector2IIteratorTests {
         fun nextArgs(): List<Arguments> {
             val arrayArgs = listOf(
                 Arguments.of(
-                    Vector2IArray(0),
-                    { array: Vector2IArray -> array.iterator() },
+                    { Vector2IArray(0).iterator() },
                     emptyList<Vector2I>(),
                 ),
                 Arguments.of(
-                    Vector2IArray(4) { Vector2I(it, 0) },
-                    { array: Vector2IArray -> array.iterator() },
+                    { Vector2IArray(4) { Vector2I(it, 0) }.iterator() },
                     List(4) { Vector2I(it, 0) },
                 ),
             )
             val listArgs = listOf(
                 Arguments.of(
-                    Vector2IArray(0).asList(),
-                    { list: Vector2IList -> list.iterator() },
+                    { Vector2IArray(0).asList().iterator() },
                     emptyList<Vector2I>(),
                 ),
                 Arguments.of(
-                    Vector2IArray(4) { Vector2I(it, 0) }.asList(),
-                    { list: Vector2IList -> list.iterator() },
+                    {
+                        Vector2IArray(4) { Vector2I(it, 0) }
+                            .asList().iterator()
+                    },
                     List(4) { Vector2I(it, 0) },
                 ),
             )
             val subListArgs = listOf(
                 Arguments.of(
-                    Vector2IArray(0).asList().subList(0, 0),
-                    { list: Vector2ISubList -> list.iterator() },
+                    { Vector2IArray(0).asList().subList(0, 0).iterator() },
                     emptyList<Vector2I>(),
                 ),
                 Arguments.of(
-                    Vector2IArray(4) { Vector2I(it, 0) }.asList().subList(0, 4),
-                    { list: Vector2ISubList -> list.iterator() },
+                    {
+                        Vector2IArray(4) { Vector2I(it, 0) }
+                            .asList().subList(0, 4).iterator()
+                    },
                     List(4) { Vector2I(it, 0) },
                 ),
                 Arguments.of(
-                    Vector2IArray(4) { Vector2I(it, 0) }.asList().subList(1, 4),
-                    { list: Vector2ISubList -> list.iterator() },
+                    {
+                        Vector2IArray(4) { Vector2I(it, 0) }
+                            .asList().subList(1, 4).iterator()
+                    },
                     List(4) { Vector2I(it, 0) }.subList(1, 4),
                 ),
                 Arguments.of(
-                    Vector2IArray(4) { Vector2I(it, 0) }.asList().subList(0, 2),
-                    { list: Vector2ISubList -> list.iterator() },
+                    {
+                        Vector2IArray(4) { Vector2I(it, 0) }
+                            .asList().subList(0, 2).iterator()
+                    },
                     List(4) { Vector2I(it, 0) }.subList(0, 2),
                 ),
             )
