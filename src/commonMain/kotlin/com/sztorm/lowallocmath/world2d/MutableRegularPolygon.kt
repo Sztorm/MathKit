@@ -188,6 +188,8 @@ class MutableRegularPolygon(
         return (p2X >= -halfSideLength) and (p2X <= halfSideLength) and (p2Y <= inradius)
     }
 
+    override fun pointIterator(): Vector2FIterator = _points.iterator()
+
     override fun copy(center: Vector2F, rotation: ComplexF, sideLength: Float, sideCount: Int) =
         MutableRegularPolygon(center, rotation, sideLength, sideCount)
 

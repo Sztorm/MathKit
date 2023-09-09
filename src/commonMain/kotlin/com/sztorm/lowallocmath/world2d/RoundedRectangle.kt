@@ -2,6 +2,7 @@ package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 
 fun RoundedRectangle(
     center: Vector2F, rotation: ComplexF, width: Float, height: Float, cornerRadius: Float
@@ -14,6 +15,10 @@ interface RoundedRectangle : RoundedRectangleShape {
     fun closestPointTo(point: Vector2F): Vector2F
 
     operator fun contains(point: Vector2F): Boolean
+
+    fun pointIterator(): Vector2FIterator
+
+    fun cornerCenterIterator(): Vector2FIterator
 
     fun copy(
         center: Vector2F = this.center,

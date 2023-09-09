@@ -1,6 +1,7 @@
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
 
 class MutableTriangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) : Triangle {
@@ -102,6 +103,8 @@ class MutableTriangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) : Tr
             return Vector2F(xDet * factor, yDet * factor)
         }
 
+    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
+
     override fun copy(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) =
         MutableTriangle(pointA, pointB, pointC)
 
@@ -134,4 +137,18 @@ class MutableTriangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) : Tr
     override operator fun component2(): Vector2F = _pointB
 
     override operator fun component3(): Vector2F = _pointC
+
+    private class PointIterator(
+        private val triangle: MutableTriangle,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 3
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> triangle._pointA
+            1 -> triangle._pointB
+            2 -> triangle._pointC
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
 }

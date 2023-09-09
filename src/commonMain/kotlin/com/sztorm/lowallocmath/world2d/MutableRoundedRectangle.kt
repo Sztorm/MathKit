@@ -2,6 +2,7 @@ package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.sqrt
@@ -199,6 +200,11 @@ class MutableRoundedRectangle(
                 (p1YAbs <= halfHeight)
     }
 
+    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
+
+    override fun cornerCenterIterator(): Vector2FIterator =
+        CornerCenterIterator(this, index = 0)
+
     override fun copy(
         center: Vector2F, rotation: ComplexF, width: Float, height: Float, cornerRadius: Float
     ) = MutableRoundedRectangle(center, rotation, width, height, cornerRadius)
@@ -248,4 +254,38 @@ class MutableRoundedRectangle(
     override operator fun component4(): Float = _height
 
     override operator fun component5(): Float = _cornerRadius
+
+    private class CornerCenterIterator(
+        private val rectangle: MutableRoundedRectangle,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 4
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> rectangle._cornerCenterA
+            1 -> rectangle._cornerCenterB
+            2 -> rectangle._cornerCenterC
+            3 -> rectangle._cornerCenterD
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
+
+    private class PointIterator(
+        private val rectangle: MutableRoundedRectangle,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 8
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> rectangle._pointA
+            1 -> rectangle._pointB
+            2 -> rectangle._pointC
+            3 -> rectangle._pointD
+            4 -> rectangle._pointE
+            5 -> rectangle._pointF
+            6 -> rectangle._pointG
+            7 -> rectangle._pointH
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
 }

@@ -5,6 +5,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.withSign
@@ -145,6 +146,8 @@ class MutableRegularTriangle(
         return (p1Y >= minusInradius) and (p1Y <= yAB) and (p1Y <= yAC)
     }
 
+    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
+
     override fun copy(center: Vector2F, rotation: ComplexF, sideLength: Float) =
         MutableRegularTriangle(center, rotation, sideLength)
 
@@ -177,4 +180,18 @@ class MutableRegularTriangle(
     override operator fun component2(): ComplexF = _rotation
 
     override operator fun component3(): Float = _sideLength
+
+    private class PointIterator(
+        private val triangle: MutableRegularTriangle,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 3
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> triangle._pointA
+            1 -> triangle._pointB
+            2 -> triangle._pointC
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
 }

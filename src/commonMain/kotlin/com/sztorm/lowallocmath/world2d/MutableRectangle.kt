@@ -2,6 +2,7 @@ package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
 import kotlin.math.withSign
 
@@ -91,6 +92,8 @@ class MutableRectangle(
         return (abs(p1.real) <= halfWidth) and (abs(p1.imaginary) <= halfHeight)
     }
 
+    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
+
     override fun copy(center: Vector2F, rotation: ComplexF, width: Float, height: Float) =
         MutableRectangle(center, rotation, width, height)
 
@@ -129,4 +132,19 @@ class MutableRectangle(
     override operator fun component3(): Float = _width
 
     override operator fun component4(): Float = _height
+
+    private class PointIterator(
+        private val rectangle: MutableRectangle,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 4
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> rectangle._pointA
+            1 -> rectangle._pointB
+            2 -> rectangle._pointC
+            3 -> rectangle._pointD
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
 }

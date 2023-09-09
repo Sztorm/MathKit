@@ -1,6 +1,7 @@
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.world2d.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -76,26 +77,72 @@ class Vector2FIteratorTests {
 
     companion object {
         @JvmStatic
-        fun collections(): List<Arguments> =
-            Vector2FArrayTests.arrays().map {
+        fun iteratorsAndIndices(): List<Arguments> {
+            val arrayArgs = Vector2FArrayTests.arrays().map {
                 val array = (it.get()[0] as Wrapper<*>).value as Vector2FArray
 
-                Arguments.of(
-                    { array.iterator() }, array.indices
-                )
-            } + Vector2FListTests.lists().map {
+                Arguments.of({ array.iterator() }, array.indices)
+            }
+            val listArgs = Vector2FListTests.lists().map {
                 val list = (it.get()[0] as Wrapper<*>).value as Vector2FList
 
-                Arguments.of(
-                    { list.iterator() }, list.indices
-                )
-            } + Vector2FSubListTests.subLists().map {
+                Arguments.of({ list.iterator() }, list.indices)
+            }
+            val subListArgs = Vector2FSubListTests.subLists().map {
                 val subList = it.get()[0] as Vector2FSubList
 
-                Arguments.of(
-                    { subList.iterator() }, subList.indices
-                )
+                Arguments.of({ subList.iterator() }, subList.indices)
             }
+            val lineSegmentArgs = LineSegmentTests.pointsArgs().map {
+                val lineSegment = it.get()[0] as LineSegment
+
+                Arguments.of({ lineSegment.pointIterator() }, 0..1)
+            }
+            val triangleArgs = TriangleTests.pointsArgs().map {
+                val triangle = it.get()[0] as Triangle
+
+                Arguments.of({ triangle.pointIterator() }, 0..2)
+            }
+            val regularTriangleArgs = RegularTriangleTests.pointsArgs().map {
+                val triangle = it.get()[0] as RegularTriangle
+
+                Arguments.of({ triangle.pointIterator() }, 0..2)
+            }
+            val rectangleArgs = RectangleTests.pointsArgs().map {
+                val rectangle = it.get()[0] as Rectangle
+
+                Arguments.of({ rectangle.pointIterator() }, 0..3)
+            }
+            val squareArgs = SquareTests.pointsArgs().map {
+                val square = it.get()[0] as Square
+
+                Arguments.of({ square.pointIterator() }, 0..3)
+            }
+            val roundedRectangleArgs = RoundedRectangleTests.pointsArgs().map {
+                val rectangle = it.get()[0] as RoundedRectangle
+
+                Arguments.of({ rectangle.pointIterator() }, 0..7)
+            } + RoundedRectangleTests.cornerCentersArgs().map {
+                val rectangle = it.get()[0] as RoundedRectangle
+
+                Arguments.of({ rectangle.cornerCenterIterator() }, 0..3)
+            }
+            val regularPolygonArgs = RegularPolygonTests.pointsArgs().map {
+                val polygon = it.get()[0] as RegularPolygon
+
+                Arguments.of({ polygon.pointIterator() }, 0..polygon.points.lastIndex)
+            }
+            return arrayArgs +
+                    listArgs +
+                    subListArgs +
+                    lineSegmentArgs +
+                    triangleArgs +
+                    regularTriangleArgs +
+                    rectangleArgs +
+                    squareArgs +
+                    roundedRectangleArgs +
+                    regularPolygonArgs
+        }
 
         @JvmStatic
         fun nextArgs(): List<Arguments> {
@@ -149,19 +196,87 @@ class Vector2FIteratorTests {
                     List(4) { Vector2F(it.toFloat(), 0f) }.subList(0, 2),
                 ),
             )
-            return arrayArgs + listArgs + subListArgs
+            val lineSegmentArgs = LineSegmentTests.pointsArgs().map {
+                val lineSegment = it.get()[0] as LineSegment
+                val points = listOf(lineSegment.pointA, lineSegment.pointB)
+
+                Arguments.of({ lineSegment.pointIterator() }, points)
+            }
+            val triangleArgs = TriangleTests.pointsArgs().map {
+                val triangle = it.get()[0] as Triangle
+                val points = listOf(triangle.pointA, triangle.pointB, triangle.pointC)
+
+                Arguments.of({ triangle.pointIterator() }, points)
+            }
+            val regularTriangleArgs = RegularTriangleTests.pointsArgs().map {
+                val triangle = it.get()[0] as RegularTriangle
+                val points = listOf(triangle.pointA, triangle.pointB, triangle.pointC)
+
+                Arguments.of({ triangle.pointIterator() }, points)
+            }
+            val rectangleArgs = RectangleTests.pointsArgs().map {
+                val rectangle = it.get()[0] as Rectangle
+                val points = listOf(
+                    rectangle.pointA, rectangle.pointB, rectangle.pointC, rectangle.pointD
+                )
+                Arguments.of({ rectangle.pointIterator() }, points)
+            }
+            val squareArgs = SquareTests.pointsArgs().map {
+                val square = it.get()[0] as Square
+                val points = listOf(square.pointA, square.pointB, square.pointC, square.pointD)
+
+                Arguments.of({ square.pointIterator() }, points)
+            }
+            val roundedRectangleArgs = RoundedRectangleTests.pointsArgs().map {
+                val rectangle = it.get()[0] as RoundedRectangle
+                val points = listOf(
+                    rectangle.pointA,
+                    rectangle.pointB,
+                    rectangle.pointC,
+                    rectangle.pointD,
+                    rectangle.pointE,
+                    rectangle.pointF,
+                    rectangle.pointG,
+                    rectangle.pointH,
+                )
+                Arguments.of({ rectangle.pointIterator() }, points)
+            } + RoundedRectangleTests.cornerCentersArgs().map {
+                val rectangle = it.get()[0] as RoundedRectangle
+                val cornerCenters = listOf(
+                    rectangle.cornerCenterA,
+                    rectangle.cornerCenterB,
+                    rectangle.cornerCenterC,
+                    rectangle.cornerCenterD
+                )
+                Arguments.of({ rectangle.cornerCenterIterator() }, cornerCenters)
+            }
+            val regularPolygonArgs = RegularPolygonTests.pointsArgs().map {
+                val polygon = it.get()[0] as RegularPolygon
+
+                Arguments.of({ polygon.pointIterator() }, polygon.points)
+            }
+            return arrayArgs +
+                    listArgs +
+                    subListArgs +
+                    lineSegmentArgs +
+                    triangleArgs +
+                    regularTriangleArgs +
+                    rectangleArgs +
+                    squareArgs +
+                    roundedRectangleArgs +
+                    regularPolygonArgs
         }
 
         @JvmStatic
-        fun nextExceptionArgs(): List<Arguments> = collections()
+        fun nextExceptionArgs(): List<Arguments> = iteratorsAndIndices()
 
         @JvmStatic
         fun nextVector2FArgs(): List<Arguments> = nextArgs()
 
         @JvmStatic
-        fun nextVector2FExceptionArgs(): List<Arguments> = collections()
+        fun nextVector2FExceptionArgs(): List<Arguments> = iteratorsAndIndices()
 
         @JvmStatic
-        fun hasNextArgs(): List<Arguments> = collections()
+        fun hasNextArgs(): List<Arguments> = iteratorsAndIndices()
     }
 }

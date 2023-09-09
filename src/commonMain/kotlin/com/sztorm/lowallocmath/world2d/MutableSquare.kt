@@ -5,6 +5,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.withSign
@@ -103,6 +104,8 @@ class MutableSquare(center: Vector2F, rotation: ComplexF, sideLength: Float) : S
                 (p1.imaginary.absoluteValue <= halfSideLength)
     }
 
+    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
+
     override fun copy(center: Vector2F, rotation: ComplexF, sideLength: Float) =
         MutableSquare(center, rotation, sideLength)
 
@@ -135,4 +138,19 @@ class MutableSquare(center: Vector2F, rotation: ComplexF, sideLength: Float) : S
     override operator fun component2(): ComplexF = _rotation
 
     override operator fun component3(): Float = _sideLength
+
+    private class PointIterator(
+        private val square: MutableSquare,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 4
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> square._pointA
+            1 -> square._pointB
+            2 -> square._pointC
+            3 -> square._pointD
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
 }

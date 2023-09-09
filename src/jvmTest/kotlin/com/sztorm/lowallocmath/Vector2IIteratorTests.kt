@@ -76,26 +76,30 @@ class Vector2IIteratorTests {
 
     companion object {
         @JvmStatic
-        fun collections(): List<Arguments> =
-            Vector2IArrayTests.arrays().map {
+        fun iteratorsAndIndices(): List<Arguments> {
+            val arrayArgs = Vector2IArrayTests.arrays().map {
                 val array = (it.get()[0] as Wrapper<*>).value as Vector2IArray
 
                 Arguments.of(
                     { array.iterator() }, array.indices
                 )
-            } + Vector2IListTests.lists().map {
+            }
+            val listArgs = Vector2IListTests.lists().map {
                 val list = (it.get()[0] as Wrapper<*>).value as Vector2IList
 
                 Arguments.of(
                     { list.iterator() }, list.indices
                 )
-            } + Vector2ISubListTests.subLists().map {
+            }
+            val subListArgs = Vector2ISubListTests.subLists().map {
                 val subList = it.get()[0] as Vector2ISubList
 
                 Arguments.of(
                     { subList.iterator() }, subList.indices
                 )
             }
+            return arrayArgs + listArgs + subListArgs
+        }
 
         @JvmStatic
         fun nextArgs(): List<Arguments> {
@@ -153,15 +157,15 @@ class Vector2IIteratorTests {
         }
 
         @JvmStatic
-        fun nextExceptionArgs(): List<Arguments> = collections()
+        fun nextExceptionArgs(): List<Arguments> = iteratorsAndIndices()
 
         @JvmStatic
         fun nextVector2IArgs(): List<Arguments> = nextArgs()
 
         @JvmStatic
-        fun nextVector2IExceptionArgs(): List<Arguments> = collections()
+        fun nextVector2IExceptionArgs(): List<Arguments> = iteratorsAndIndices()
 
         @JvmStatic
-        fun hasNextArgs(): List<Arguments> = collections()
+        fun hasNextArgs(): List<Arguments> = iteratorsAndIndices()
     }
 }

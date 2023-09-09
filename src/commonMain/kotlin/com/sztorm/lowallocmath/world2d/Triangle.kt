@@ -1,11 +1,14 @@
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.Vector2FIterator
 
 fun Triangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F): Triangle =
     MutableTriangle(pointA, pointB, pointC)
 
 interface Triangle : TriangleShape {
+    fun pointIterator(): Vector2FIterator
+
     fun copy(
         pointA: Vector2F = this.pointA,
         pointB: Vector2F = this.pointB,
