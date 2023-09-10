@@ -1,4 +1,4 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "unused")
+@file:Suppress("unused")
 
 package com.sztorm.lowallocmath
 
@@ -53,17 +53,33 @@ value class Vector2F internal constructor(internal val data: Long) {
     inline val yx: Vector2F
         get() = Vector2F(y, x)
 
-    /** Returns the squared magnitude of this vector. **/
-    inline val squaredMagnitude: Float
+    /** Returns the squared length of this vector. **/
+    inline val squaredLength: Float
         get() {
-            val x = this.x
-            val y = this.y
+            val x: Float = this.x
+            val y: Float = this.y
             return x * x + y * y
         }
 
-    /** Returns the magnitude (length) of this vector. **/
+    /** Returns the length of this vector. **/
+    inline val length: Float
+        get() = sqrt(squaredLength)
+
+    /**
+     * Returns the squared magnitude of this vector.
+     *
+     * This property is equal to [squaredLength].
+     */
+    inline val squaredMagnitude: Float
+        get() = squaredLength
+
+    /**
+     * Returns the magnitude of this vector.
+     *
+     * This property is equal to [length].
+     */
     inline val magnitude: Float
-        get() = sqrt(squaredMagnitude)
+        get() = length
 
     /**
      * Returns a normalized copy of this vector if this vector [magnitude] is large enough to

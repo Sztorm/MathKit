@@ -1,13 +1,12 @@
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import kotlin.test.assertContentEquals
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class Vector2ITests {
     @ParameterizedTest
@@ -25,6 +24,16 @@ class Vector2ITests {
         assertEquals(unwrappedVector.xx, Vector2I(x, x))
         assertEquals(unwrappedVector.yy, Vector2I(y, y))
     }
+
+    @ParameterizedTest
+    @MethodSource("squaredLengthArgs")
+    fun squaredLengthReturnsCorrectValue(vector: Wrapper<Vector2I>, expected: Float) =
+        assertApproximation(expected, vector.value.squaredLength)
+
+    @ParameterizedTest
+    @MethodSource("lengthArgs")
+    fun lengthReturnsCorrectValue(vector: Wrapper<Vector2I>, expected: Float) =
+        assertApproximation(expected, vector.value.length)
 
     @ParameterizedTest
     @MethodSource("squaredMagnitudeArgs")
@@ -179,18 +188,24 @@ class Vector2ITests {
         )
 
         @JvmStatic
-        fun squaredMagnitudeArgs(): List<Arguments> = listOf(
+        fun squaredLengthArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(Vector2I(3, 4)), 25),
             Arguments.of(Wrapper(Vector2I(1, -2)), 5),
             Arguments.of(Wrapper(Vector2I.ZERO), 0),
         )
 
         @JvmStatic
-        fun magnitudeArgs(): List<Arguments> = listOf(
+        fun lengthArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(Vector2I(3, 4)), 5f),
             Arguments.of(Wrapper(Vector2I(1, -2)), 2.236068f),
             Arguments.of(Wrapper(Vector2I.ZERO), 0f),
         )
+
+        @JvmStatic
+        fun squaredMagnitudeArgs(): List<Arguments> = squaredLengthArgs()
+
+        @JvmStatic
+        fun magnitudeArgs(): List<Arguments> = lengthArgs()
 
         @JvmStatic
         fun squaredDistanceToArgs(): List<Arguments> = listOf(

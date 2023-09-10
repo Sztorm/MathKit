@@ -25,6 +25,16 @@ class Vector2FTests {
     }
 
     @ParameterizedTest
+    @MethodSource("squaredLengthArgs")
+    fun squaredLengthReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Float) =
+        assertApproximation(expected, vector.value.squaredLength)
+
+    @ParameterizedTest
+    @MethodSource("lengthArgs")
+    fun lengthReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Float) =
+        assertApproximation(expected, vector.value.length)
+
+    @ParameterizedTest
     @MethodSource("squaredMagnitudeArgs")
     fun squaredMagnitudeReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Float) =
         assertApproximation(expected, vector.value.squaredMagnitude)
@@ -236,18 +246,24 @@ class Vector2FTests {
         )
 
         @JvmStatic
-        fun squaredMagnitudeArgs(): List<Arguments> = listOf(
+        fun squaredLengthArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(Vector2F(3f, 4f)), 25f),
             Arguments.of(Wrapper(Vector2F(1f, -2f)), 5f),
             Arguments.of(Wrapper(Vector2F.ZERO), 0f),
         )
 
         @JvmStatic
-        fun magnitudeArgs(): List<Arguments> = listOf(
+        fun lengthArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(Vector2F(3f, 4f)), 5f),
             Arguments.of(Wrapper(Vector2F(1f, -2f)), 2.236068f),
             Arguments.of(Wrapper(Vector2F.ZERO), 0f),
         )
+
+        @JvmStatic
+        fun squaredMagnitudeArgs(): List<Arguments> = squaredLengthArgs()
+
+        @JvmStatic
+        fun magnitudeArgs(): List<Arguments> = lengthArgs()
 
         @JvmStatic
         fun normalizedArgs(): List<Arguments> = listOf(
@@ -711,7 +727,7 @@ class Vector2FTests {
             )
             val b1 = Wrapper(Vector2F(3f, 2f))
             val b2 = Wrapper(Vector2F(3f, -3f))
-            val segmentBArgs =listOf(
+            val segmentBArgs = listOf(
                 Arguments.of(
                     b1, b2, Wrapper(Vector2F(3f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
                 ),
