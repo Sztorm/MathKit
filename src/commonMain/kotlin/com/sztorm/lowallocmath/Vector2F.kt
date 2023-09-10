@@ -4,9 +4,7 @@ package com.sztorm.lowallocmath
 
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /** Multiplies this vector by the [other] scalar. **/
 inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
@@ -186,7 +184,6 @@ value class Vector2F internal constructor(internal val data: Long) {
     inline operator fun div(other: Float) = Vector2F(x / other, y / other)
 
     companion object {
-
         /** The number of bits used to represent an instance of [Vector2F] in a binary form. **/
         const val SIZE_BITS: Int = 64
 
@@ -253,6 +250,28 @@ value class Vector2F internal constructor(internal val data: Long) {
         /** Returns a vector that is made from the smallest components of two vectors. **/
         @JvmStatic
         inline fun min(a: Vector2F, b: Vector2F) = Vector2F(min(a.x, b.x), min(a.y, b.y))
+
+        /**
+         * Returns the closest point to the [point] on a line segment composed of the [a] and [b]
+         * points.
+         */
+        @JvmStatic
+        fun closestPointOnLineSegment(a: Vector2F, b: Vector2F, point: Vector2F): Vector2F {
+            val ab: Vector2F = b - a
+            val epsilon = 0.00001f
+
+            if ((abs(ab.x) <= epsilon) and (abs(ab.y) <= epsilon)) {
+                return a
+            }
+            val ap: Vector2F = point - a
+            val t: Float = (ab dot ap) / (ab dot ab)
+            val tClamped: Float = when {
+                t < 0f -> 0f
+                t > 1f -> 1f
+                else -> t
+            }
+            return a + ab * tClamped
+        }
     }
 }
 

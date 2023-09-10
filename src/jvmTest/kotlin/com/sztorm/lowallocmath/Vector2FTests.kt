@@ -210,6 +210,17 @@ class Vector2FTests {
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
     ) = assertApproximation(expected.value, Vector2F.min(a.value, b.value))
 
+    @ParameterizedTest
+    @MethodSource("closestPointOnLineSegmentArgs")
+    fun closestPointOnLineSegmentReturnsCorrectValue(
+        a: Wrapper<Vector2F>,
+        b: Wrapper<Vector2F>,
+        point: Wrapper<Vector2F>,
+        expected: Wrapper<Vector2F>
+    ) = assertApproximation(
+        expected.value, Vector2F.closestPointOnLineSegment(a.value, b.value, point.value)
+    )
+
     companion object {
         /** Compares vectors bitwise. Useful when comparing NaNs. **/
         @JvmStatic
@@ -628,5 +639,251 @@ class Vector2FTests {
                 Wrapper(Vector2F(-3f, 0f))
             ),
         )
+
+        @JvmStatic
+        fun closestPointOnLineSegmentArgs(): List<Arguments> {
+            val a1 = Wrapper(Vector2F(-2f, 5f))
+            val a2 = Wrapper(Vector2F(2f, 5f))
+            val segmentAArgs = listOf(
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-1.9f, 5f)), Wrapper(Vector2F(-1.9f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-1.9f, 5.1f)), Wrapper(Vector2F(-1.9f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-1.9f, 4.9f)), Wrapper(Vector2F(-1.9f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, a1, a1
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-2f, 5.1f)), a1
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-2f, 4.9f)), a1
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-2.1f, 5f)), a1
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-2.1f, 5.1f)), a1
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(-2.1f, 4.9f)), a1
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(1.9f, 5f)), Wrapper(Vector2F(1.9f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(1.9f, 5.1f)), Wrapper(Vector2F(1.9f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(1.9f, 4.9f)), Wrapper(Vector2F(1.9f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, a2, a2
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(2f, 5.1f)), a2
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(2f, 4.9f)), a2
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(2.1f, 5f)), a2
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(2.1f, 5.1f)), a2
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(2.1f, 4.9f)), a2
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(0f, 5f)), Wrapper(Vector2F(0f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(0f, 5.1f)), Wrapper(Vector2F(0f, 5f))
+                ),
+                Arguments.of(
+                    a1, a2, Wrapper(Vector2F(0f, 4.9f)), Wrapper(Vector2F(0f, 5f))
+                ),
+            )
+            val b1 = Wrapper(Vector2F(3f, 2f))
+            val b2 = Wrapper(Vector2F(3f, -3f))
+            val segmentBArgs =listOf(
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
+                ),
+                Arguments.of(
+                    b1, b2, b1, b1
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, 2f)), b1
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, 2f)), b1
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3f, 2.1f)), b1
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, 2.1f)), b1
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, 2.1f)), b1
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3f, -2.9f)), Wrapper(Vector2F(3f, -2.9f))
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, -2.9f)), Wrapper(Vector2F(3f, -2.9f))
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, -2.9f)), Wrapper(Vector2F(3f, -2.9f))
+                ),
+                Arguments.of(
+                    b1, b2, b2, b2
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, -3f)), b2
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, -3f)), b2
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3f, -3.1f)), b2
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, -3.1f)), b2
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, -3.1f)), b2
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3f, -0.5f)), Wrapper(Vector2F(3f, -0.5f))
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(2.9f, -0.5f)), Wrapper(Vector2F(3f, -0.5f))
+                ),
+                Arguments.of(
+                    b1, b2, Wrapper(Vector2F(3.1f, -0.5f)), Wrapper(Vector2F(3f, -0.5f))
+                ),
+            )
+            val c1 = Wrapper(Vector2F(-4f, 3f))
+            val c2 = Wrapper(Vector2F(-2f, -1f))
+            val segmentCArgs = listOf(
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-2.134164f, -0.95527864f)),
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f))
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f)),
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f))
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-1.9552786f, -0.8658359f)),
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f))
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-2.0894427f, -1.0447214f)), c2
+                ),
+                Arguments.of(
+                    c1, c2, c2, c2
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-1.9105573f, -0.95527864f)), c2
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-2.0447214f, -1.1341641f)), c2
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-1.9552786f, -1.0894427f)), c2
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-1.8658359f, -1.0447214f)), c2
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-4.0447216f, 2.865836f)),
+                    Wrapper(Vector2F(-3.9552786f, 2.9105573f))
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-3.9552786f, 2.9105573f)),
+                    Wrapper(Vector2F(-3.9552786f, 2.9105573f))
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-3.865836f, 2.9552786f)),
+                    Wrapper(Vector2F(-3.9552786f, 2.9105573f))
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-4.0894427f, 2.9552786f)), c1
+                ),
+                Arguments.of(
+                    c1, c2, c1, c1
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-3.9105573f, 3.0447214f)), c1
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-4.134164f, 3.0447214f)), c1
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-4.0447216f, 3.0894427f)), c1
+                ),
+                Arguments.of(
+                    c1, c2, Wrapper(Vector2F(-3.9552786f, 3.134164f)), c1
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-3.0894427f, 0.95527864f)),
+                    Wrapper(Vector2F(-3.0f, 1.0f))
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-3.0f, 1.0f)),
+                    Wrapper(Vector2F(-3.0f, 1.0f))
+                ),
+                Arguments.of(
+                    c1,
+                    c2,
+                    Wrapper(Vector2F(-2.9105573f, 1.0447214f)),
+                    Wrapper(Vector2F(-3.0f, 1.0f))
+                ),
+            )
+            val d1 = Wrapper(Vector2F(4f, 4f))
+            val d2 = Wrapper(Vector2F(4.000001f, 4f))
+            val segmentDArgs = listOf(
+                Arguments.of(d1, d2, Wrapper(Vector2F(3.9f, 4f)), d1),
+                Arguments.of(d1, d2, d1, d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(4.1f, 4f)), d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(3.9f, 4.1f)), d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(4f, 4.1f)), d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(4.1f, 4.1f)), d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(3.9f, 3.9f)), d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(4f, 3.9f)), d1),
+                Arguments.of(d1, d2, Wrapper(Vector2F(4.1f, 3.9f)), d1),
+            )
+            return segmentAArgs + segmentBArgs + segmentCArgs + segmentDArgs
+        }
     }
 }
