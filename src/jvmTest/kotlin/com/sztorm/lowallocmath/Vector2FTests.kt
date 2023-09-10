@@ -898,6 +898,7 @@ class Vector2FTests {
                 Arguments.of(d1, d2, Wrapper(Vector2F(3.9f, 3.9f)), d1),
                 Arguments.of(d1, d2, Wrapper(Vector2F(4f, 3.9f)), d1),
                 Arguments.of(d1, d2, Wrapper(Vector2F(4.1f, 3.9f)), d1),
+                Arguments.of(d1, d2, d2, d2),
             )
             return segmentAArgs + segmentBArgs + segmentCArgs + segmentDArgs
         }

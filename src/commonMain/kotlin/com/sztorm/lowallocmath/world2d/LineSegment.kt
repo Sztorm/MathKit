@@ -12,6 +12,10 @@ interface LineSegment {
     val center: Vector2F
     val length: Float
 
+    fun closestPointTo(point: Vector2F): Vector2F
+
+    operator fun contains(point: Vector2F): Boolean
+
     fun pointIterator(): Vector2FIterator
 
     fun copy(pointA: Vector2F = this.pointA, pointB: Vector2F = this.pointB): LineSegment
