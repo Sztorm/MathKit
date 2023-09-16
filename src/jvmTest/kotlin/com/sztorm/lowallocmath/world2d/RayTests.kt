@@ -20,6 +20,17 @@ class RayTests {
         assertApproximation(expected.value, ray.direction)
 
     @ParameterizedTest
+    @MethodSource("closestPointToArgs")
+    fun closestPointToReturnsCorrectValue(
+        ray: Ray, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, ray.closestPointTo(point.value))
+
+    @ParameterizedTest
+    @MethodSource("containsVector2FArgs")
+    fun containsReturnsCorrectValue(ray: Ray, point: Wrapper<Vector2F>, expected: Boolean) =
+        assertEquals(expected, ray.contains(point.value))
+
+    @ParameterizedTest
     @MethodSource("copyArgs")
     fun copyReturnsCorrectValue(
         ray: Ray,
@@ -93,6 +104,286 @@ class RayTests {
                 Wrapper(Vector2F(1f, -1f).normalized)
             ),
         )
+
+        @JvmStatic
+        fun closestPointToArgs(): List<Arguments> {
+            val rayA = Ray(Vector2F(-2f, 5f), Vector2F(1f, 0f))
+            val rayAArgs = listOf(
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-2.1f, 5.1f)), Wrapper(rayA.origin)
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-2.1f, 5f)), Wrapper(rayA.origin)
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-2.1f, 4.9f)), Wrapper(rayA.origin)
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-2f, 5.1f)), Wrapper(rayA.origin)
+                ),
+                Arguments.of(
+                    rayA, Wrapper(rayA.origin), Wrapper(rayA.origin)
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-2f, 4.9f)), Wrapper(rayA.origin)
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-1.9f, 5.1f)), Wrapper(Vector2F(-1.9f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-1.9f, 5f)), Wrapper(Vector2F(-1.9f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(-1.9f, 4.9f)), Wrapper(Vector2F(-1.9f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(0f, 5.1f)), Wrapper(Vector2F(0f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(0f, 5f)), Wrapper(Vector2F(0f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(0f, 4.9f)), Wrapper(Vector2F(0f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(2f, 5.1f)), Wrapper(Vector2F(2f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(2f, 5f)), Wrapper(Vector2F(2f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(2f, 4.9f)), Wrapper(Vector2F(2f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(4f, 5.1f)), Wrapper(Vector2F(4f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(4f, 5f)), Wrapper(Vector2F(4f, 5f))
+                ),
+                Arguments.of(
+                    rayA, Wrapper(Vector2F(4f, 4.9f)), Wrapper(Vector2F(4f, 5f))
+                ),
+            )
+            val rayB = Ray(Vector2F(3f, 2f), Vector2F(0f, -1f))
+            val rayBArgs = listOf(
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(2.9f, 2.1f)), Wrapper(rayB.origin)
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3f, 2.1f)), Wrapper(rayB.origin)
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3.1f, 2.1f)), Wrapper(rayB.origin)
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(2.9f, 2f)), Wrapper(rayB.origin)
+                ),
+                Arguments.of(
+                    rayB, Wrapper(rayB.origin), Wrapper(rayB.origin)
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3.1f, 2f)), Wrapper(rayB.origin)
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(2.9f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3.1f, 1.9f)), Wrapper(Vector2F(3f, 1.9f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(2.9f, -0.5f)), Wrapper(Vector2F(3f, -0.5f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3f, -0.5f)), Wrapper(Vector2F(3f, -0.5f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3.1f, -0.5f)), Wrapper(Vector2F(3f, -0.5f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(2.9f, -3f)), Wrapper(Vector2F(3f, -3f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3f, -3f)), Wrapper(Vector2F(3f, -3f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3.1f, -3f)), Wrapper(Vector2F(3f, -3f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(2.9f, -5.5f)), Wrapper(Vector2F(3f, -5.5f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3f, -5.5f)), Wrapper(Vector2F(3f, -5.5f))
+                ),
+                Arguments.of(
+                    rayB, Wrapper(Vector2F(3.1f, -5.5f)), Wrapper(Vector2F(3f, -5.5f))
+                ),
+            )
+            val rayC = Ray(Vector2F(-2f, -1f), Vector2F(-0.4472136f, 0.8944272f))
+            val rayCArgs = listOf(
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-2.0447214f, -1.1341641f)),
+                    Wrapper(rayC.origin)
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-1.9552786f, -1.0894427f)),
+                    Wrapper(rayC.origin)
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-1.8658359f, -1.0447214f)),
+                    Wrapper(rayC.origin)
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-2.0894427f, -1.0447214f)),
+                    Wrapper(rayC.origin)
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(rayC.origin),
+                    Wrapper(rayC.origin)
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-1.9105573f, -0.95527864f)),
+                    Wrapper(rayC.origin)
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-2.134164f, -0.95527864f)),
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f)),
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-1.9552786f, -0.8658359f)),
+                    Wrapper(Vector2F(-2.0447214f, -0.91055727f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-3.0894427f, 0.95527864f)),
+                    Wrapper(Vector2F(-3f, 1f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-3f, 1f)),
+                    Wrapper(Vector2F(-3f, 1f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-2.9105573f, 1.0447214f)),
+                    Wrapper(Vector2F(-3f, 1f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-4.0894427f, 2.9552786f)),
+                    Wrapper(Vector2F(-4f, 3f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-4f, 3f)),
+                    Wrapper(Vector2F(-4f, 3f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-3.9105573f, 3.0447214f)),
+                    Wrapper(Vector2F(-4f, 3f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-5.0894427f, 4.9552784f)),
+                    Wrapper(Vector2F(-5f, 5f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-5f, 5f)),
+                    Wrapper(Vector2F(-5f, 5f))
+                ),
+                Arguments.of(
+                    rayC,
+                    Wrapper(Vector2F(-4.9105573f, 5.0447216f)),
+                    Wrapper(Vector2F(-5f, 5f))
+                ),
+            )
+            return rayAArgs + rayBArgs + rayCArgs
+        }
+
+        @JvmStatic
+        fun containsVector2FArgs(): List<Arguments> {
+            val rayA = Ray(Vector2F(-2f, 5f), Vector2F(1f, 0f))
+            val rayAArgs = listOf(
+                Arguments.of(rayA, Wrapper(Vector2F(-2.1f, 5.1f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(-2.1f, 5f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(-2.1f, 4.9f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(-2f, 5.1f)), false),
+                Arguments.of(rayA, Wrapper(rayA.origin), true),
+                Arguments.of(rayA, Wrapper(Vector2F(-2f, 4.9f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(-1.9f, 5.1f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(-1.9f, 5f)), true),
+                Arguments.of(rayA, Wrapper(Vector2F(-1.9f, 4.9f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(0f, 5.1f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(0f, 5f)), true),
+                Arguments.of(rayA, Wrapper(Vector2F(0f, 4.9f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(2f, 5.1f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(2f, 5f)), true),
+                Arguments.of(rayA, Wrapper(Vector2F(2f, 4.9f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(4f, 5.1f)), false),
+                Arguments.of(rayA, Wrapper(Vector2F(4f, 5f)), true),
+                Arguments.of(rayA, Wrapper(Vector2F(4f, 4.9f)), false),
+            )
+            val rayB = Ray(Vector2F(3f, 2f), Vector2F(0f, -1f))
+            val rayBArgs = listOf(
+                Arguments.of(rayB, Wrapper(Vector2F(2.9f, 2.1f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(3f, 2.1f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(3.1f, 2.1f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(2.9f, 2f)), false),
+                Arguments.of(rayB, Wrapper(rayB.origin), true),
+                Arguments.of(rayB, Wrapper(Vector2F(3.1f, 2f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(2.9f, 1.9f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(3f, 1.9f)), true),
+                Arguments.of(rayB, Wrapper(Vector2F(3.1f, 1.9f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(2.9f, -0.5f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(3f, -0.5f)), true),
+                Arguments.of(rayB, Wrapper(Vector2F(3.1f, -0.5f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(2.9f, -3f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(3f, -3f)), true),
+                Arguments.of(rayB, Wrapper(Vector2F(3.1f, -3f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(2.9f, -5.5f)), false),
+                Arguments.of(rayB, Wrapper(Vector2F(3f, -5.5f)), true),
+                Arguments.of(rayB, Wrapper(Vector2F(3.1f, -5.5f)), false),
+            )
+            val rayC = Ray(Vector2F(-2f, -1f), Vector2F(-0.4472136f, 0.8944272f))
+            val rayCArgs = listOf(
+                Arguments.of(rayC, Wrapper(Vector2F(-2.0447214f, -1.1341641f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-1.9552786f, -1.0894427f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-1.8658359f, -1.0447214f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-2.0894427f, -1.0447214f)), false),
+                Arguments.of(rayC, Wrapper(rayC.origin), true),
+                Arguments.of(rayC, Wrapper(Vector2F(-1.9105573f, -0.95527864f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-2.134164f, -0.95527864f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-2.0447214f, -0.91055727f)), true),
+                Arguments.of(rayC, Wrapper(Vector2F(-1.9552786f, -0.8658359f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-3.0894427f, 0.95527864f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-3f, 1f)), true),
+                Arguments.of(rayC, Wrapper(Vector2F(-2.9105573f, 1.0447214f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-4.0894427f, 2.9552786f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-4f, 3f)), true),
+                Arguments.of(rayC, Wrapper(Vector2F(-3.9105573f, 3.0447214f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-5.0894427f, 4.9552784f)), false),
+                Arguments.of(rayC, Wrapper(Vector2F(-5f, 5f)), true),
+                Arguments.of(rayC, Wrapper(Vector2F(-4.9105573f, 5.0447216f)), false),
+            )
+            return rayAArgs + rayBArgs + rayCArgs
+        }
 
         @JvmStatic
         fun copyArgs(): List<Arguments> = listOf(

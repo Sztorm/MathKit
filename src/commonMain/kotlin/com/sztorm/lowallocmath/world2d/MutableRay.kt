@@ -12,6 +12,24 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray {
     override val direction: Vector2F
         get() = _direction
 
+    override fun closestPointTo(point: Vector2F): Vector2F {
+        val op: Vector2F = point - _origin
+        val t: Float = op dot _direction
+
+        return if (t <= 0f) _origin
+        else _origin + _direction * t
+    }
+
+    override operator fun contains(point: Vector2F): Boolean {
+        val op: Vector2F = point - _origin
+        val t: Float = op dot _direction
+        val closestPoint: Vector2F =
+            if (t <= 0f) _origin
+            else _origin + _direction * t
+
+        return closestPoint.isApproximately(point)
+    }
+
     override fun copy(origin: Vector2F, direction: Vector2F) =
         MutableRay(origin, direction)
 

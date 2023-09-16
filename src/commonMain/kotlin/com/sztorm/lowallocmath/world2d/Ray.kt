@@ -8,6 +8,10 @@ interface Ray {
     val origin: Vector2F
     val direction: Vector2F
 
+    fun closestPointTo(point: Vector2F): Vector2F
+
+    operator fun contains(point: Vector2F): Boolean
+
     fun copy(origin: Vector2F = this.origin, direction: Vector2F = this.direction): Ray
 
     operator fun component1(): Vector2F
