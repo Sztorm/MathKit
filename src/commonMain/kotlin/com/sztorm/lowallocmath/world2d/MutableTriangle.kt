@@ -24,7 +24,7 @@ class MutableTriangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) : Tr
             val (bX: Float, bY: Float) = _pointB
             val (cX: Float, cY: Float) = _pointC
 
-            return 0.5f * abs(aX * (bY - cY) + bX * (cY - aY) + cX * (aY - bY))
+            return 0.5f * abs((aX - cX) * (bY - cY) - (bX - cX) * (aY - cY))
         }
 
     override val perimeter: Float
@@ -104,6 +104,70 @@ class MutableTriangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) : Tr
         }
 
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
+
+    override fun closestPointTo(point: Vector2F): Vector2F {
+        val a: Vector2F = _pointA
+        val b: Vector2F = _pointB
+        val c: Vector2F = _pointC
+        val ab: Vector2F = b - a
+        val ac: Vector2F = c - a
+        val ap: Vector2F = point - a
+        val d1: Float = ab dot ap
+        val d2: Float = ac dot ap
+
+        if (d1 <= 0f && d2 <= 0f) {
+            return a
+        }
+        val bp: Vector2F = point - b
+        val d3: Float = ab dot bp
+        val d4: Float = ac dot bp
+
+        if (d3 >= 0f && d4 <= d3) {
+            return b
+        }
+        val cp: Vector2F = point - c
+        val d5: Float = ab dot cp
+        val d6: Float = ac dot cp
+
+        if (d6 >= 0f && d5 <= d6) {
+            return c
+        }
+        val vc: Float = d1 * d4 - d3 * d2
+
+        if (vc <= 0f && d1 >= 0f && d3 <= 0f) {
+            val v: Float = d1 / (d1 - d3)
+            return a + ab * v
+        }
+        val vb: Float = d5 * d2 - d1 * d6
+
+        if (vb <= 0f && d2 >= 0f && d6 <= 0f) {
+            val v: Float = d2 / (d2 - d6)
+            return a + ac * v
+        }
+        val va: Float = d3 * d6 - d5 * d4
+
+        if (va <= 0f && (d4 - d3) >= 0f && (d5 - d6) >= 0f) {
+            val v: Float = (d4 - d3) / ((d4 - d3) + (d5 - d6))
+            return b + (c - b) * v
+        }
+        val denominator: Float = 1f / (va + vb + vc)
+        val v: Float = vb * denominator
+        val w: Float = vc * denominator
+
+        return a + ab * v + ac * w
+    }
+
+    override operator fun contains(point: Vector2F): Boolean {
+        val (pX: Float, pY: Float) = point
+        val (aX: Float, aY: Float) = _pointA
+        val (bX: Float, bY: Float) = _pointB
+        val (cX: Float, cY: Float) = _pointC
+        val abp: Boolean = ((pX - aX) * (aY - bY) + (pY - aY) * (bX - aX)) >= 0f
+        val bcp: Boolean = ((pX - bX) * (bY - cY) + (pY - bY) * (cX - bX)) >= 0f
+        val acp: Boolean = ((pX - cX) * (cY - aY) + (pY - cY) * (aX - cX)) >= 0f
+
+        return (abp == bcp) and (bcp == acp)
+    }
 
     override fun copy(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) =
         MutableTriangle(pointA, pointB, pointC)
