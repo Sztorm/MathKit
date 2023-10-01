@@ -1,36 +1,46 @@
-@file:Suppress("OVERRIDE_BY_INLINE")
+@file:Suppress("OVERRIDE_BY_INLINE", "PropertyName")
 
 package com.sztorm.lowallocmath.world2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
+import com.sztorm.lowallocmath.*
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.withSign
 
-class MutableRegularTriangle(
-    center: Vector2F, rotation: ComplexF, sideLength: Float
-) : RegularTriangle {
-    private var _center: Vector2F = center
-    private var _rotation: ComplexF = rotation
-    private var _sideLength: Float = sideLength
-    private var _pointA: Vector2F
-    private var _pointB: Vector2F
-    private var _pointC: Vector2F
+class MutableRegularTriangle : RegularTriangle {
+    internal var _center: Vector2F
+    internal var _rotation: ComplexF
+    internal var _sideLength: Float
+    internal var _pointA: Vector2F
+    internal var _pointB: Vector2F
+    internal var _pointC: Vector2F
 
-    init {
+    constructor(center: Vector2F, rotation: ComplexF, sideLength: Float) {
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = rotation
         val halfSideLength: Float = sideLength * 0.5f
-        val inradius: Float = this.inradius
+        val inradius: Float = 0.28867513f * sideLength
         val circumradius: Float = inradius + inradius
-        val rotationR: Float = rotation.real
-        val rotationI: Float = rotation.imaginary
-        val pB = ComplexF(-halfSideLength, -inradius)
-        val pC = ComplexF(halfSideLength, -inradius)
-        _pointA = center + Vector2F(-rotationI * circumradius, rotationR * circumradius)
-        _pointB = center + (rotation * pB).toVector2F()
-        _pointC = center + (rotation * pC).toVector2F()
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _center = center
+        _rotation = rotation
+        _sideLength = sideLength
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
+    internal constructor(regularPolygon: MutableRegularPolygon) {
+        val points: Vector2FArray = regularPolygon._points
+        _center = regularPolygon._center
+        _rotation = regularPolygon._rotation
+        _sideLength = regularPolygon._sideLength
+        _pointA = points.elementAt(0)
+        _pointB = points.elementAt(1)
+        _pointC = points.elementAt(2)
     }
 
     override val center: Vector2F

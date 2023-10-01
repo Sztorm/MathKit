@@ -27,6 +27,10 @@ interface RegularPolygon : RegularShape {
         sideCount: Int = this.sideCount
     ): RegularPolygon
 
+    fun toRegularTriangleOrNull(): RegularTriangle?
+
+    fun toSquareOrNull(): Square?
+
     operator fun component1(): Vector2F
 
     operator fun component2(): ComplexF

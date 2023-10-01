@@ -1,19 +1,19 @@
+@file:Suppress("PropertyName")
+
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
-class MutableRegularPolygon(
-    center: Vector2F, rotation: ComplexF, sideLength: Float, sideCount: Int
-) : RegularPolygon {
-    private var _center: Vector2F = center
-    private var _rotation: ComplexF = rotation
-    private var _sideLength: Float = sideLength
-    private var _points: Vector2FArray
+class MutableRegularPolygon : RegularPolygon {
+    internal var _center: Vector2F
+    internal var _rotation: ComplexF
+    internal var _sideLength: Float
+    internal var _points: Vector2FArray
     private var _circumradius: Float
     private var _inradius: Float
 
-    init {
+    constructor(center: Vector2F, rotation: ComplexF, sideLength: Float, sideCount: Int) {
         val points: Vector2FArray
         val halfSideLength: Float = 0.5f * sideLength
 
@@ -68,7 +68,37 @@ class MutableRegularPolygon(
         for (i in 0 until sideCount) {
             points[i] = center + (rotation * points[i].toComplexF()).toVector2F()
         }
+        _center = center
+        _rotation = rotation
+        _sideLength = sideLength
         _points = points
+    }
+
+    constructor(regularTriangle: MutableRegularTriangle) {
+        val points = Vector2FArray(3)
+        points[0] = regularTriangle._pointA
+        points[1] = regularTriangle._pointB
+        points[2] = regularTriangle._pointC
+        _center = regularTriangle._center
+        _rotation = regularTriangle._rotation
+        _sideLength = regularTriangle._sideLength
+        _points = points
+        _circumradius = regularTriangle.circumradius
+        _inradius = regularTriangle.inradius
+    }
+
+    constructor(square: MutableSquare) {
+        val points = Vector2FArray(4)
+        points[0] = square._pointA
+        points[1] = square._pointB
+        points[2] = square._pointC
+        points[3] = square._pointD
+        _center = square._center
+        _rotation = square._rotation
+        _sideLength = square._sideLength
+        _points = points
+        _circumradius = square.circumradius
+        _inradius = square.inradius
     }
 
     override val center: Vector2F
@@ -220,6 +250,18 @@ class MutableRegularPolygon(
             .append(", sideLength=").append(_sideLength)
             .append(", sideCount=").append(sideCount).append(")")
             .toString()
+
+    fun toMutableRegularTriangleOrNull(): MutableRegularTriangle? =
+        if (_points.size == 3) MutableRegularTriangle(this)
+        else null
+
+    override fun toRegularTriangleOrNull(): RegularTriangle? = toMutableRegularTriangleOrNull()
+
+    fun toMutableSquareOrNull(): MutableSquare? =
+        if (_points.size == 4) MutableSquare(this)
+        else null
+
+    override fun toSquareOrNull(): Square? = toMutableSquareOrNull()
 
     override operator fun component1(): Vector2F = _center
 

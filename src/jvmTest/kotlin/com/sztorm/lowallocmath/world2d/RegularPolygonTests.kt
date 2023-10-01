@@ -11,6 +11,40 @@ import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class RegularPolygonTests {
+    @ParameterizedTest
+    @MethodSource("constructorRegularTriangleArgs")
+    fun constructorCreatesCorrectPolygon(
+        triangle: MutableRegularTriangle, expected: MutableRegularPolygon
+    ) {
+        val actual = MutableRegularPolygon(triangle)
+        val trianglePointIterator = triangle.pointIterator()
+
+        assertEquals(expected, actual)
+
+        for (i in expected.points.indices) {
+            assertApproximation(expected.points[i], actual.points[i])
+        }
+        for (i in expected.points.indices) {
+            assertApproximation(expected.points[i], trianglePointIterator.nextVector2F())
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorSquareArgs")
+    fun constructorCreatesCorrectPolygon(square: MutableSquare, expected: MutableRegularPolygon) {
+        val actual = MutableRegularPolygon(square)
+        val trianglePointIterator = square.pointIterator()
+
+        assertEquals(expected, actual)
+
+        for (i in expected.points.indices) {
+            assertApproximation(expected.points[i], actual.points[i])
+        }
+        for (i in expected.points.indices) {
+            assertApproximation(expected.points[i], trianglePointIterator.nextVector2F())
+        }
+    }
+
     @Test
     fun constructorThrowsWhenSideCountIsLessThanTwo() {
         assertThrows<IllegalArgumentException> {
@@ -128,6 +162,30 @@ class RegularPolygonTests {
         assertEquals(expected, polygon.toString())
 
     @ParameterizedTest
+    @MethodSource("toRegularTriangleOrNullArgs")
+    fun toRegularTriangleOrNullReturnsCorrectValue(
+        polygon: RegularPolygon, expected: RegularTriangle?
+    ) = assertEquals(expected, polygon.toRegularTriangleOrNull())
+
+    @ParameterizedTest
+    @MethodSource("toMutableRegularTriangleOrNullArgs")
+    fun toMutableRegularTriangleOrNullReturnsCorrectValue(
+        polygon: MutableRegularPolygon, expected: MutableRegularTriangle?
+    ) = assertEquals(expected, polygon.toMutableRegularTriangleOrNull())
+
+    @ParameterizedTest
+    @MethodSource("toSquareOrNullArgs")
+    fun toSquareOrNullReturnsCorrectValue(
+        polygon: RegularPolygon, expected: Square?
+    ) = assertEquals(expected, polygon.toSquareOrNull())
+
+    @ParameterizedTest
+    @MethodSource("toMutableSquareOrNullArgs")
+    fun toMutableSquareOrNullReturnsCorrectValue(
+        polygon: MutableRegularPolygon, expected: MutableSquare?
+    ) = assertEquals(expected, polygon.toMutableSquareOrNull())
+
+    @ParameterizedTest
     @MethodSource("componentsArgs")
     fun componentsReturnCorrectValues(
         polygon: RegularPolygon,
@@ -145,6 +203,60 @@ class RegularPolygonTests {
     }
 
     companion object {
+        @JvmStatic
+        fun constructorRegularTriangleArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    sideLength = 5.773503f,
+                    sideCount = 3
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun constructorSquareArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableSquare(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f),
+                MutableRegularPolygon(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    sideLength = 3f,
+                    sideCount = 4
+                )
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                )
+            ),
+        )
+
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
@@ -1697,6 +1809,102 @@ class RegularPolygonTests {
                         "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-45f))}, " +
                         "sideLength=${4f}, " +
                         "sideCount=${4})"
+            ),
+        )
+
+        @JvmStatic
+        fun toRegularTriangleOrNullArgs(): List<Arguments> = toMutableRegularTriangleOrNullArgs()
+
+        @JvmStatic
+        fun toMutableRegularTriangleOrNullArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                null
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                null
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    sideLength = 5.773503f,
+                    sideCount = 3
+                ),
+                RegularTriangle(
+                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                ),
+                RegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun toSquareOrNullArgs(): List<Arguments> = toMutableSquareOrNullArgs()
+
+        @JvmStatic
+        fun toMutableSquareOrNullArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                null
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                null
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    sideLength = 3f,
+                    sideCount = 4
+                ),
+                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f)
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                Square(
+                    center = Vector2F(3f, 1f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                )
             ),
         )
 

@@ -1,34 +1,45 @@
-@file:Suppress("OVERRIDE_BY_INLINE")
+@file:Suppress("OVERRIDE_BY_INLINE", "PropertyName")
 
 package com.sztorm.lowallocmath.world2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
+import com.sztorm.lowallocmath.*
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.withSign
 
-class MutableSquare(center: Vector2F, rotation: ComplexF, sideLength: Float) : Square {
-    private var _center: Vector2F = center
-    private var _rotation: ComplexF = rotation
-    private var _sideLength: Float = sideLength
-    private var _pointA: Vector2F
-    private var _pointB: Vector2F
-    private var _pointC: Vector2F
-    private var _pointD: Vector2F
+class MutableSquare : Square {
+    internal var _center: Vector2F
+    internal var _rotation: ComplexF
+    internal var _sideLength: Float
+    internal var _pointA: Vector2F
+    internal var _pointB: Vector2F
+    internal var _pointC: Vector2F
+    internal var _pointD: Vector2F
 
-    init {
+    constructor(center: Vector2F, rotation: ComplexF, sideLength: Float) {
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = rotation
         val halfSideLength: Float = sideLength * 0.5f
-        val pA = ComplexF(halfSideLength, halfSideLength)
-        val pB = ComplexF(-halfSideLength, halfSideLength)
-        val pC = ComplexF(-halfSideLength, -halfSideLength)
-        val pD = ComplexF(halfSideLength, -halfSideLength)
-        _pointA = center + (rotation * pA).toVector2F()
-        _pointB = center + (rotation * pB).toVector2F()
-        _pointC = center + (rotation * pC).toVector2F()
-        _pointD = center + (rotation * pD).toVector2F()
+        val addendA: Float = halfSideLength * (rotR + rotI)
+        val addendB: Float = halfSideLength * (rotR - rotI)
+        _center = center
+        _rotation = rotation
+        _sideLength = sideLength
+        _pointA = Vector2F(cX + addendB, cY + addendA)
+        _pointB = Vector2F(cX - addendA, cY + addendB)
+        _pointC = Vector2F(cX - addendB, cY - addendA)
+        _pointD = Vector2F(cX + addendA, cY - addendB)
+    }
+
+    internal constructor(regularPolygon: MutableRegularPolygon) {
+        val points: Vector2FArray = regularPolygon._points
+        _center = regularPolygon._center
+        _rotation = regularPolygon._rotation
+        _sideLength = regularPolygon._sideLength
+        _pointA = points.elementAt(0)
+        _pointB = points.elementAt(1)
+        _pointC = points.elementAt(2)
+        _pointD = points.elementAt(3)
     }
 
     override val center: Vector2F
