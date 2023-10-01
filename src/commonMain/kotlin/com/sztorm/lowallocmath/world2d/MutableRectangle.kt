@@ -59,12 +59,7 @@ class MutableRectangle(
         get() = _width * _height
 
     override val perimeter: Float
-        get() {
-            val w: Float = _width
-            val h: Float = _height
-
-            return w + w + h + h
-        }
+        get() = 2f * (_width + _height)
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val halfWidth: Float = _width * 0.5f

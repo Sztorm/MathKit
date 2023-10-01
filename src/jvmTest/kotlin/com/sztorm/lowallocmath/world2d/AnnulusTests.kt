@@ -1,5 +1,7 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.AngleF
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
@@ -65,10 +67,13 @@ class AnnulusTests {
     fun copyReturnsCorrectValue(
         annulus: Annulus,
         center: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
         outerRadius: Float,
         innerRadius: Float,
         expected: Annulus
-    ) = assertEquals(expected, annulus.copy(center.value, outerRadius, innerRadius))
+    ) = assertEquals(
+        expected, annulus.copy(center.value, rotation.value, outerRadius, innerRadius)
+    )
 
     @ParameterizedTest
     @MethodSource("equalsArgs")
@@ -97,29 +102,51 @@ class AnnulusTests {
     fun componentsReturnCorrectValues(
         annulus: Annulus,
         expectedComponent1: Wrapper<Vector2F>,
-        expectedComponent2: Float,
-        expectedComponent3: Float
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float,
+        expectedComponent4: Float
     ) {
-        val (actualComponent1, actualComponent2, actualComponent3) = annulus
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float,
+            actualComponent4: Float
+        ) = annulus
 
         assertEquals(expectedComponent1.value, actualComponent1)
-        assertEquals(expectedComponent2, actualComponent2)
+        assertEquals(expectedComponent2.value, actualComponent2)
         assertEquals(expectedComponent3, actualComponent3)
+        assertEquals(expectedComponent4, actualComponent4)
     }
 
     companion object {
         @JvmStatic
         fun annularRadiusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 2f
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 2f
             ),
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 2.5f, innerRadius = 1.5f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    outerRadius = 2.5f,
+                    innerRadius = 1.5f
+                ),
                 1f
             ),
         )
@@ -127,15 +154,30 @@ class AnnulusTests {
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 37.6991f
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 37.6991f
             ),
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 2.5f, innerRadius = 1.5f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    outerRadius = 2.5f,
+                    innerRadius = 1.5f
+                ),
                 12.5664f
             ),
         )
@@ -143,15 +185,30 @@ class AnnulusTests {
         @JvmStatic
         fun perimeterArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 37.6991f
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 37.6991f
             ),
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 2.5f, innerRadius = 1.5f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    rotation = ComplexF.ONE,
+                    outerRadius = 2.5f,
+                    innerRadius = 1.5f
+                ),
                 25.1327f
             ),
         )
@@ -159,27 +216,52 @@ class AnnulusTests {
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-2.9f, 2f)),
                 Wrapper(Vector2F(-3f, 2f))
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-3.1f, 2f)),
                 Wrapper(Vector2F(-3.1f, 2f))
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-4.9f, 2f)),
                 Wrapper(Vector2F(-4.9f, 2f))
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-5.1f, 2f)),
                 Wrapper(Vector2F(-5f, 2f))
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-5f, 6f)),
                 Wrapper(Vector2F(-3.828429f, 4.828429f))
             ),
@@ -188,23 +270,43 @@ class AnnulusTests {
         @JvmStatic
         fun intersectsCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Circle(center = Vector2F(-2f, 2f), radius = 1.01f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Circle(center = Vector2F(-2f, 2f), rotation = ComplexF.ONE, radius = 1.01f),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Circle(center = Vector2F(-2f, 2f), radius = 0.99f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Circle(center = Vector2F(-2f, 2f), rotation = ComplexF.ONE, radius = 0.99f),
                 false
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Circle(center = Vector2F(-6f, 2f), radius = 1.01f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Circle(center = Vector2F(-6f, 2f), rotation = ComplexF.ONE, radius = 1.01f),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Circle(center = Vector2F(-6f, 2f), radius = 0.99f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Circle(center = Vector2F(-6f, 2f), rotation = ComplexF.ONE, radius = 0.99f),
                 false
             ),
         )
@@ -212,33 +314,93 @@ class AnnulusTests {
         @JvmStatic
         fun intersectsAnnulusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-2f, 2f), outerRadius = 1.01f, innerRadius = 0.5f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-2f, 2f),
+                    outerRadius = 1.01f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 0.5f
+                ),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-2f, 2f), outerRadius = 0.99f, innerRadius = 0.5f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-2f, 2f),
+                    outerRadius = 0.99f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 0.5f
+                ),
                 false
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-6f, 2f), outerRadius = 1.01f, innerRadius = 0.5f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-6f, 2f),
+                    outerRadius = 1.01f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 0.5f
+                ),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-6f, 2f), outerRadius = 0.99f, innerRadius = 0.5f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-6f, 2f),
+                    outerRadius = 0.99f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 0.5f
+                ),
                 false
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(0f, 2f), outerRadius = 7f, innerRadius = 4.9f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(0f, 2f),
+                    outerRadius = 7f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 4.9f
+                ),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(0f, 2f), outerRadius = 7f, innerRadius = 5.1f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(0f, 2f),
+                    outerRadius = 7f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 5.1f
+                ),
                 false
             ),
         )
@@ -246,22 +408,42 @@ class AnnulusTests {
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-3.01f, 2f)),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-2.99f, 2f)),
                 false
             ),
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 2.5f, innerRadius = 1.5f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    outerRadius = 2.5f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 1.5f
+                ),
                 Wrapper(Vector2F(0f, 2.49f)),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F.ZERO, outerRadius = 2.5f, innerRadius = 1.5f),
+                Annulus(
+                    center = Vector2F.ZERO,
+                    outerRadius = 2.5f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 1.5f
+                ),
                 Wrapper(Vector2F(0f, 2.51f)),
                 false
             ),
@@ -270,13 +452,23 @@ class AnnulusTests {
         @JvmStatic
         fun containsCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Circle(center = Vector2F(-1f, -1f), radius = 0.99f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Circle(center = Vector2F(-1f, -1f), rotation = ComplexF.ONE, radius = 0.99f),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Circle(center = Vector2F(-1f, -1f), radius = 1.01f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Circle(center = Vector2F(-1f, -1f), rotation = ComplexF.ONE, radius = 1.01f),
                 false
             ),
         )
@@ -284,28 +476,78 @@ class AnnulusTests {
         @JvmStatic
         fun containsAnnulusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, -1f), outerRadius = 0.99f, innerRadius = 0.5f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-1f, -1f),
+                    outerRadius = 0.99f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 0.5f
+                ),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, -1f), outerRadius = 1.01f, innerRadius = 0.5f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-1f, -1f),
+                    outerRadius = 1.01f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 0.5f
+                ),
                 false
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 3.99f, innerRadius = 2.01f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 3.99f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2.01f
+                ),
                 true
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4.01f, innerRadius = 2.01f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4.01f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2.01f
+                ),
                 false
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 3.99f, innerRadius = 1.99f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 4f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 2f
+                ),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    outerRadius = 3.99f,
+                    rotation = ComplexF.ONE,
+                    innerRadius = 1.99f
+                ),
                 false
             ),
         )
@@ -313,32 +555,70 @@ class AnnulusTests {
         @JvmStatic
         fun copyArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-1f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
                 4f,
                 2f,
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f)
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(6f, 3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
                 4f,
                 1f,
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 4f, innerRadius = 1f)
+                Annulus(
+                    center = Vector2F(6f, 3f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 1f
+                )
             ),
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(6f, 3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
                 8f,
                 1f,
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f)
+                Annulus(
+                    center = Vector2F(6f, 3f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                )
             ),
         )
 
         @JvmStatic
         fun equalsArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(
             Arguments.of(
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 null,
                 false
             ),
@@ -347,13 +627,33 @@ class AnnulusTests {
         @JvmStatic
         fun equalsMutableAnnulusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 true
             ),
             Arguments.of(
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 3.9f, innerRadius = 2f),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 3.9f,
+                    innerRadius = 2f
+                ),
                 false
             ),
         )
@@ -361,28 +661,60 @@ class AnnulusTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f)
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
             ),
             Arguments.of(
-                MutableAnnulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
-                MutableAnnulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f)
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                )
             )
         )
 
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableAnnulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 "Annulus(" +
                         "center=${Vector2F(-1f, 2f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-45f))}, " +
                         "outerRadius=${4f}, " +
                         "innerRadius=${2f})"
             ),
             Arguments.of(
-                MutableAnnulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
                 "Annulus(" +
                         "center=${Vector2F(6f, 3f)}, " +
+                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(330f))}, " +
                         "outerRadius=${8f}, " +
                         "innerRadius=${1f})"
             )
@@ -391,14 +723,26 @@ class AnnulusTests {
         @JvmStatic
         fun componentsArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(center = Vector2F(-1f, 2f), outerRadius = 4f, innerRadius = 2f),
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
                 Wrapper(Vector2F(-1f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
                 4f,
                 2f
             ),
             Arguments.of(
-                Annulus(center = Vector2F(6f, 3f), outerRadius = 8f, innerRadius = 1f),
+                Annulus(
+                    center = Vector2F(6f, 3f),
+                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
                 Wrapper(Vector2F(6f, 3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
                 8f,
                 1f
             ),

@@ -1,15 +1,20 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.PI
 import kotlin.math.sqrt
 
-class MutableCircle(center: Vector2F, radius: Float) : Circle {
+class MutableCircle(center: Vector2F, rotation: ComplexF, radius: Float) : Circle {
     private var _center: Vector2F = center
+    private var _rotation: ComplexF = rotation
     private var _radius: Float = radius
 
     override val center: Vector2F
         get() = _center
+
+    override val rotation: ComplexF
+        get() = _rotation
 
     override val radius: Float
         get() = _radius
@@ -55,28 +60,36 @@ class MutableCircle(center: Vector2F, radius: Float) : Circle {
     override operator fun contains(circle: CircleShape): Boolean =
         _center.distanceTo(circle.center) <= _radius - circle.radius
 
-    override fun copy(center: Vector2F, radius: Float) = MutableCircle(center, radius)
+    override fun copy(center: Vector2F, rotation: ComplexF, radius: Float) =
+        MutableCircle(center, rotation, radius)
 
     override fun equals(other: Any?): Boolean = other is Circle &&
             _center == other.center &&
+            _rotation == other.rotation &&
             _radius == other.radius
 
     fun equals(other: MutableCircle): Boolean =
-        _center == other._center && _radius == other._radius
+        _center == other._center &&
+                _rotation == other._rotation &&
+                _radius == other._radius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()
+        val rotationHash: Int = _rotation.hashCode()
         val radiusHash: Int = _radius.hashCode()
 
-        return centerHash * 31 + radiusHash
+        return centerHash * 961 + rotationHash * 31 + radiusHash
     }
 
     override fun toString() =
         StringBuilder("Circle(center=").append(_center)
+            .append(", rotation=").append(_rotation)
             .append(", radius=").append(_radius).append(")")
             .toString()
 
     override operator fun component1(): Vector2F = _center
 
-    override operator fun component2(): Float = _radius
+    override operator fun component2(): ComplexF = _rotation
+
+    override operator fun component3(): Float = _radius
 }

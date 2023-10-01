@@ -2,17 +2,24 @@
 
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.PI
 import kotlin.math.sqrt
 
-class MutableAnnulus(center: Vector2F, outerRadius: Float, innerRadius: Float) : Annulus {
+class MutableAnnulus(
+    center: Vector2F, rotation: ComplexF, outerRadius: Float, innerRadius: Float
+) : Annulus {
     private var _center: Vector2F = center
+    private var _rotation: ComplexF = rotation
     private var _outerRadius: Float = outerRadius
     private var _innerRadius: Float = innerRadius
 
     override val center: Vector2F
         get() = _center
+
+    override val rotation: ComplexF
+        get() = _rotation
 
     override val outerRadius: Float
         get() = _outerRadius
@@ -99,36 +106,43 @@ class MutableAnnulus(center: Vector2F, outerRadius: Float, innerRadius: Float) :
                 (_innerRadius <= (distance - circleRadius))
     }
 
-    override fun copy(center: Vector2F, outerRadius: Float, innerRadius: Float) =
-        MutableAnnulus(center, outerRadius, innerRadius)
+    override fun copy(
+        center: Vector2F, rotation: ComplexF, outerRadius: Float, innerRadius: Float
+    ) = MutableAnnulus(center, rotation, outerRadius, innerRadius)
 
     override fun equals(other: Any?): Boolean = other is Annulus &&
             _center == other.center &&
+            _rotation == other.rotation &&
             _outerRadius == other.outerRadius &&
             _innerRadius == other.innerRadius
 
     fun equals(other: MutableAnnulus): Boolean =
         _center == other._center &&
+                _rotation == other._rotation &&
                 _outerRadius == other._outerRadius &&
                 _innerRadius == other._innerRadius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()
+        val rotationHash: Int = _rotation.hashCode()
         val outerRadiusHash: Int = _outerRadius.hashCode()
         val innerRadiusHash: Int = _innerRadius.hashCode()
 
-        return centerHash * 961 + outerRadiusHash * 31 + innerRadiusHash
+        return centerHash * 29791 + rotationHash * 961 + outerRadiusHash * 31 + innerRadiusHash
     }
 
     override fun toString() =
         StringBuilder("Annulus(center=").append(_center)
+            .append(", rotation=").append(_rotation)
             .append(", outerRadius=").append(_outerRadius)
             .append(", innerRadius=").append(_innerRadius).append(")")
             .toString()
 
     override operator fun component1(): Vector2F = _center
 
-    override operator fun component2(): Float = _outerRadius
+    override operator fun component2(): ComplexF = _rotation
 
-    override operator fun component3(): Float = _innerRadius
+    override operator fun component3(): Float = _outerRadius
+
+    override operator fun component4(): Float = _innerRadius
 }

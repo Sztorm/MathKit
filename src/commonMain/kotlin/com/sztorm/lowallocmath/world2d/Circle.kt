@@ -1,10 +1,14 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
-fun Circle(center: Vector2F, radius: Float): Circle = MutableCircle(center, radius)
+fun Circle(center: Vector2F, rotation: ComplexF, radius: Float): Circle =
+    MutableCircle(center, rotation, radius)
 
 interface Circle : CircleShape {
+    val rotation: ComplexF
+
     fun closestPointTo(point: Vector2F): Vector2F
 
     fun intersects(annulus: AnnulusShape): Boolean
@@ -17,9 +21,15 @@ interface Circle : CircleShape {
 
     operator fun contains(circle: CircleShape): Boolean
 
-    fun copy(center: Vector2F = this.center, radius: Float = this.radius): Circle
+    fun copy(
+        center: Vector2F = this.center,
+        rotation: ComplexF = this.rotation,
+        radius: Float = this.radius
+    ): Circle
 
     operator fun component1(): Vector2F
 
-    operator fun component2(): Float
+    operator fun component2(): ComplexF
+
+    operator fun component3(): Float
 }
