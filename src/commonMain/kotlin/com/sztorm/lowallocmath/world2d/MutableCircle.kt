@@ -1,11 +1,14 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.PI
 import kotlin.math.sqrt
 
-class MutableCircle(center: Vector2F, rotation: ComplexF, radius: Float) : Circle {
+class MutableCircle(
+    center: Vector2F, rotation: ComplexF, radius: Float
+) : Circle, MutableTransformable {
     private var _center: Vector2F = center
     private var _rotation: ComplexF = rotation
     private var _radius: Float = radius
@@ -27,6 +30,117 @@ class MutableCircle(center: Vector2F, rotation: ComplexF, radius: Float) : Circl
 
     override val diameter: Float
         get() = 2f * _radius
+
+    override val position: Vector2F
+        get() = _center
+
+    override fun movedBy(offset: Vector2F) =
+        MutableCircle(_center + offset, _rotation, _radius)
+
+    override fun movedTo(position: Vector2F) =
+        MutableCircle(position, _rotation, _radius)
+
+    override fun moveBy(offset: Vector2F) {
+        _center += offset
+    }
+
+    override fun moveTo(position: Vector2F) {
+        _center = position
+    }
+
+    override fun rotatedBy(angle: AngleF) =
+        MutableCircle(_center, _rotation * ComplexF.fromAngle(angle), _radius)
+
+    override fun rotatedBy(rotation: ComplexF) =
+        MutableCircle(_center, _rotation * rotation, _radius)
+
+    override fun rotatedTo(angle: AngleF) =
+        MutableCircle(_center, ComplexF.fromAngle(angle), _radius)
+
+    override fun rotatedTo(rotation: ComplexF) = MutableCircle(_center, rotation, _radius)
+
+    override fun rotateBy(angle: AngleF) {
+        _rotation *= ComplexF.fromAngle(angle)
+    }
+
+    override fun rotateBy(rotation: ComplexF) {
+        _rotation *= rotation
+    }
+
+    override fun rotateTo(angle: AngleF) {
+        _rotation = ComplexF.fromAngle(angle)
+    }
+
+    override fun rotateTo(rotation: ComplexF) {
+        _rotation = rotation
+    }
+
+    override fun scaledBy(factor: Float) =
+        MutableCircle(_center, _rotation, _radius * factor)
+
+    override fun scaleBy(factor: Float) {
+        _radius *= factor
+    }
+
+    override fun transformedBy(offset: Vector2F, angle: AngleF) = MutableCircle(
+        _center + offset,
+        _rotation * ComplexF.fromAngle(angle),
+        _radius
+    )
+
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
+        MutableCircle(_center + offset, _rotation * rotation, _radius)
+
+    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float) = MutableCircle(
+        _center + offset,
+        _rotation * ComplexF.fromAngle(angle),
+        _radius * factor
+    )
+
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
+        MutableCircle(
+            _center + offset,
+            _rotation * rotation,
+            _radius * factor
+        )
+
+    override fun transformedTo(position: Vector2F, angle: AngleF) =
+        MutableCircle(position, ComplexF.fromAngle(angle), _radius)
+
+    override fun transformedTo(position: Vector2F, rotation: ComplexF) =
+        MutableCircle(position, rotation, _radius)
+
+    override fun transformBy(offset: Vector2F, angle: AngleF) {
+        _center += offset
+        _rotation *= ComplexF.fromAngle(angle)
+    }
+
+    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
+        _center += offset
+        _rotation *= rotation
+    }
+
+    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) {
+        _center += offset
+        _rotation *= ComplexF.fromAngle(angle)
+        _radius *= factor
+    }
+
+    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+        _center += offset
+        _rotation *= rotation
+        _radius *= factor
+    }
+
+    override fun transformTo(position: Vector2F, angle: AngleF) {
+        _center = position
+        _rotation = ComplexF.fromAngle(angle)
+    }
+
+    override fun transformTo(position: Vector2F, rotation: ComplexF) {
+        _center = position
+        _rotation = rotation
+    }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val radius: Float = _radius

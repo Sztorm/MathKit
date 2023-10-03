@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
@@ -110,6 +111,12 @@ class CircleTests {
     }
 
     companion object {
+        @JvmStatic
+        fun areApproximatelyEqual(a: Circle, b: Circle): Boolean =
+            a.center.isApproximately(b.center) and
+                    a.rotation.isApproximately(b.rotation) and
+                    a.radius.isApproximately(b.radius)
+
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
