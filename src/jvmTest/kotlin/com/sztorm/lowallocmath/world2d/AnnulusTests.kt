@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
@@ -120,6 +121,13 @@ class AnnulusTests {
     }
 
     companion object {
+        @JvmStatic
+        fun areApproximatelyEqual(a: Annulus, b: Annulus): Boolean =
+            a.center.isApproximately(b.center) and
+                    a.rotation.isApproximately(b.rotation) and
+                    a.outerRadius.isApproximately(b.outerRadius) and
+                    a.innerRadius.isApproximately(b.innerRadius)
+
         @JvmStatic
         fun annularRadiusArgs(): List<Arguments> = listOf(
             Arguments.of(

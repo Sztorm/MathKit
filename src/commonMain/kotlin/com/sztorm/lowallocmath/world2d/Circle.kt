@@ -8,8 +8,6 @@ fun Circle(center: Vector2F, rotation: ComplexF, radius: Float): Circle =
     MutableCircle(center, rotation, radius)
 
 interface Circle : CircleShape, Transformable {
-    override val rotation: ComplexF
-
     override fun movedBy(offset: Vector2F): Circle
 
     override fun movedTo(position: Vector2F): Circle

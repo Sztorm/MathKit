@@ -7,4 +7,5 @@ interface AnnulusShape : Shape {
     val outerRadius: Float
     val innerRadius: Float
     val annularRadius: Float
+        get() = outerRadius - innerRadius
 }
