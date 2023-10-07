@@ -303,36 +303,6 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableCircle(
-                        center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableCircle(
-                        center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -367,11 +337,6 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
-        }
-
-        @JvmStatic
-        fun movedToArgs(): List<Arguments> {
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::areApproximatelyEqual,
@@ -382,7 +347,7 @@ class TransformableTests {
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableCircle(
-                        center = Vector2F(-4f, 2f),
+                        center = Vector2F(-3f, 4f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     )
@@ -396,12 +361,51 @@ class TransformableTests {
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableCircle(
-                        center = Vector2F(0.5f, 0f),
+                        center = Vector2F(1.5f, 2f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     )
                 ),
             )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRectangle(
+                        center = Vector2F(-5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRectangle(
+                        center = Vector2F(-0.5f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
+        }
+
+        @JvmStatic
+        fun movedToArgs(): List<Arguments> {
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -436,7 +440,71 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableCircle(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableCircle(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRectangle(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRectangle(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
@@ -447,36 +515,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
-                        radius = 4f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -511,110 +549,85 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
-        fun rotatedByComplexFArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
-                        radius = 4f
-                    )
-                ),
+        fun rotatedByComplexFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
+            val argArray = args.get()
+            val angle = (argArray[2] as Wrapper<*>).value as AngleF
+
+            Arguments.of(
+                argArray[0], argArray[1], Wrapper(ComplexF.fromAngle(angle)), argArray[3]
             )
-            val annulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-            )
-            return circleArgs + annulusArgs
         }
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        radius = 4f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -649,76 +662,81 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
-        fun rotatedToComplexFArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        radius = 4f
-                    )
-                ),
+        fun rotatedToComplexFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
+            val argArray = args.get()
+            val angle = (argArray[2] as Wrapper<*>).value as AngleF
+
+            Arguments.of(
+                argArray[0], argArray[1], Wrapper(ComplexF.fromAngle(angle)), argArray[3]
             )
-            val annulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-            )
-            return circleArgs + annulusArgs
         }
 
         @JvmStatic
@@ -735,36 +753,6 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    2f,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 8f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    0.3f,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 1.2f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -799,7 +787,71 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    2f,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 8f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    0.3f,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 1.2f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    2f,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 6f,
+                        height = 10f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    0.3f,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 0.9f,
+                        height = 1.5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
@@ -807,38 +859,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableCircle(
-                        center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableCircle(
-                        center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
-                        radius = 4f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -875,118 +895,94 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(-3f, 4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(1.5f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(-5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(-0.5f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
-        fun transformedByVector2FComplexFArgs(): List<Arguments> {
-            val circleArgs = listOf(
+        fun transformedByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FAngleFArgs().map { args ->
+                val argArray = args.get()
+                val angle = (argArray[3] as Wrapper<*>).value as AngleF
+
                 Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableCircle(
-                        center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableCircle(
-                        center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
-                        radius = 4f
-                    )
-                ),
-            )
-            val annulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableAnnulus(
-                        center = Vector2F(-0.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-            )
-            return circleArgs + annulusArgs
-        }
+                    argArray[0],
+                    argArray[1],
+                    argArray[2],
+                    Wrapper(ComplexF.fromAngle(angle)),
+                    argArray[4]
+                )
+            }
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    2f,
-                    MutableCircle(
-                        center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        radius = 8f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    0.3f,
-                    MutableCircle(
-                        center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
-                        radius = 1.2f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1025,120 +1021,99 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableCircle(
+                        center = Vector2F(-3f, 4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        radius = 8f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableCircle(
+                        center = Vector2F(1.5f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        radius = 1.2f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableRectangle(
+                        center = Vector2F(-5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        width = 6f,
+                        height = 10f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableRectangle(
+                        center = Vector2F(-0.5f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        width = 0.9f,
+                        height = 1.5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
-        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> {
-            val circleArgs = listOf(
+        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformedByVector2FAngleFFloatArgs().map { args ->
+                val argArray = args.get()
+                val angle = (argArray[3] as Wrapper<*>).value as AngleF
+
                 Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    2f,
-                    MutableCircle(
-                        center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        radius = 8f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    0.3f,
-                    MutableCircle(
-                        center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
-                        radius = 1.2f
-                    )
-                ),
-            )
-            val annulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    2f,
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 8f,
-                        innerRadius = 4f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    0.3f,
-                    MutableAnnulus(
-                        center = Vector2F(-0.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 1.2f,
-                        innerRadius = 0.6f
-                    ),
-                ),
-            )
-            return circleArgs + annulusArgs
-        }
+                    argArray[0],
+                    argArray[1],
+                    argArray[2],
+                    Wrapper(ComplexF.fromAngle(angle)),
+                    argArray[4],
+                    argArray[5]
+                )
+            }
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val circleArgs = listOf(
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableCircle(
-                        center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableCircle(
-                        center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        radius = 4f
-                    )
-                ),
-            )
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1175,87 +1150,98 @@ class TransformableTests {
                     ),
                 ),
             )
-            return circleArgs + annulusArgs
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs
         }
 
         @JvmStatic
-        fun transformedToVector2FComplexFArgs(): List<Arguments> {
-            val circleArgs = listOf(
+        fun transformedToVector2FComplexFArgs(): List<Arguments> =
+            transformedToVector2FAngleFArgs().map { args ->
+                val argArray = args.get()
+                val angle = (argArray[3] as Wrapper<*>).value as AngleF
+
                 Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableCircle(
-                        center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        radius = 4f
-                    )
-                ),
-                Arguments.of(
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableCircle(
-                        center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        radius = 4f
-                    )
-                ),
-            )
-            val annulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-200f))),
-                    MutableAnnulus(
-                        center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-            )
-            return circleArgs + annulusArgs
-        }
+                    argArray[0],
+                    argArray[1],
+                    argArray[2],
+                    Wrapper(ComplexF.fromAngle(angle)),
+                    argArray[4]
+                )
+            }
 
         @JvmStatic
         fun transformByVector2FAngleFArgs(): List<Arguments> = transformedByVector2FAngleFArgs()
 
         @JvmStatic
-        fun transformByVector2FComplexFArgs(): List<Arguments> = transformedByVector2FComplexFArgs()
+        fun transformByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FComplexFArgs()
 
         @JvmStatic
         fun transformByVector2FAngleFFloatArgs(): List<Arguments> =

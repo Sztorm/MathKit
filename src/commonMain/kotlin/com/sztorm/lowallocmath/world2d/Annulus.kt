@@ -9,6 +9,9 @@ fun Annulus(
 ): Annulus = MutableAnnulus(center, rotation, outerRadius, innerRadius)
 
 interface Annulus : AnnulusShape, Transformable {
+    override val position: Vector2F
+        get() = center
+
     override fun movedBy(offset: Vector2F): Annulus
 
     override fun movedTo(position: Vector2F): Annulus
