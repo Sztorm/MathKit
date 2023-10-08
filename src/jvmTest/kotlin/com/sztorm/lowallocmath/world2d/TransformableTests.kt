@@ -4,12 +4,18 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertTrue
 
 class TransformableTests {
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(movable: Movable, expected: Wrapper<Vector2F>) =
+        assertApproximation(expected.value, movable.position)
+
     @ParameterizedTest
     @MethodSource("movedByArgs")
     fun movedByReturnsCorrectValue(
@@ -45,6 +51,11 @@ class TransformableTests {
         position: Wrapper<Vector2F>,
         expected: MutableMovable
     ) = assertTrue(equalityComparator(expected, movable.apply { moveTo(position.value) }))
+
+    @ParameterizedTest
+    @MethodSource("rotationArgs")
+    fun rotationReturnsCorrectValue(rotatable: Rotatable, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, rotatable.rotation)
 
     @ParameterizedTest
     @MethodSource("rotatedByAngleFArgs")
@@ -302,6 +313,87 @@ class TransformableTests {
 
     companion object {
         @JvmStatic
+        fun positionArgs(): List<Arguments> {
+            val annulusArgs = listOf(
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(-1f, 2f)),
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(6f, 3f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                        outerRadius = 8f,
+                        innerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(6f, 3f)),
+                ),
+            )
+            val circleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(1f, 2f)),
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-1f, 7f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, 7f)),
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, -2f)),
+                ),
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(-2f, 4f)),
+                ),
+            )
+            val squareArgs = listOf(
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(3f, 1f)),
+                ),
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(Vector2F(8f, -2f)),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+        }
+
+        @JvmStatic
         fun movedByArgs(): List<Arguments> {
             val annulusArgs = listOf(
                 Arguments.of(
@@ -401,7 +493,37 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableSquare(
+                        center = Vector2F(-1f, 3f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableSquare(
+                        center = Vector2F(3.5f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -504,7 +626,37 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableSquare(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableSquare(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -512,6 +664,87 @@ class TransformableTests {
 
         @JvmStatic
         fun moveToArgs(): List<Arguments> = movedToArgs()
+
+        @JvmStatic
+        fun rotationArgs(): List<Arguments> {
+            val annulusArgs = listOf(
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(6f, 3f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                        outerRadius = 8f,
+                        innerRadius = 1f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
+                ),
+            )
+            val circleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-1f, 7f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
+                ),
+            )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                ),
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                ),
+            )
+            val squareArgs = listOf(
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                ),
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+        }
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
@@ -613,7 +846,37 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        sideLength = 4f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        sideLength = 4f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -726,7 +989,37 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        sideLength = 4f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -851,7 +1144,37 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    2f,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 8f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    0.3f,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 1.2f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -963,7 +1286,39 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableSquare(
+                        center = Vector2F(-1f, 3f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        sideLength = 4f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableSquare(
+                        center = Vector2F(3.5f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        sideLength = 4f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -1093,7 +1448,41 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableSquare(
+                        center = Vector2F(-1f, 3f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        sideLength = 8f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableSquare(
+                        center = Vector2F(3.5f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        sideLength = 1.2f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic
@@ -1218,7 +1607,39 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs
+            val squareArgs = listOf(
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableSquare(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f
+                    ),
+                ),
+                Arguments.of(
+                    SquareTests.Companion::areApproximatelyEqual,
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableSquare(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        sideLength = 4f
+                    ),
+                ),
+            )
+            return annulusArgs + circleArgs + rectangleArgs + squareArgs
         }
 
         @JvmStatic

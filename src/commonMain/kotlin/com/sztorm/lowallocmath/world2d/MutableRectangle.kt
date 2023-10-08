@@ -218,42 +218,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override fun transformedTo(position: Vector2F, angle: AngleF): MutableRectangle =
         transformedTo(position, ComplexF.fromAngle(angle))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF) = MutableRectangle(
-        position,
-        rotation,
-        _width,
-        _height
-    )
+    override fun transformedTo(position: Vector2F, rotation: ComplexF) =
+        MutableRectangle(position, rotation, _width, _height)
 
     override fun transformBy(offset: Vector2F, angle: AngleF) =
         transformBy(offset, ComplexF.fromAngle(angle))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
-        val cX: Float = _center.x + offset.x
-        val cY: Float = _center.y + offset.y
-        val r0 = _rotation.real
-        val i0 = _rotation.imaginary
-        val r1 = rotation.real
-        val i1 = rotation.imaginary
-        val rotR: Float = r0 * r1 - i0 * i1
-        val rotI: Float = i0 * r1 + r0 * i1
-        val halfWidth: Float = _width * 0.5f
-        val halfHeight: Float = _height * 0.5f
-        val addendX1: Float = rotR * halfWidth
-        val addendX1A: Float = cX + addendX1
-        val addendX1B: Float = cX - addendX1
-        val addendX2: Float = rotI * halfHeight
-        val addendY1: Float = rotR * halfHeight
-        val addendY1A: Float = cY + addendY1
-        val addendY1B: Float = cY - addendY1
-        val addendY2: Float = rotI * halfWidth
-        _center = Vector2F(cX, cY)
-        _rotation = ComplexF(rotR, rotI)
-        _pointA = Vector2F(addendX1A - addendX2, addendY1A + addendY2)
-        _pointB = Vector2F(addendX1B - addendX2, addendY1A - addendY2)
-        _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
-        _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
-    }
+    override fun transformBy(offset: Vector2F, rotation: ComplexF) =
+        transformTo(_center + offset, _rotation * rotation)
 
     override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
         transformBy(offset, ComplexF.fromAngle(angle), factor)
