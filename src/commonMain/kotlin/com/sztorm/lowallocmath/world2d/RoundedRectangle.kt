@@ -38,9 +38,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         transformedBy(offset, ComplexF.fromAngle(angle), factor)
 
     override fun transformedBy(
-        offset: Vector2F,
-        rotation: ComplexF,
-        factor: Float
+        offset: Vector2F, rotation: ComplexF, factor: Float
     ): RoundedRectangle
 
     override fun transformedTo(position: Vector2F, angle: AngleF): RoundedRectangle =

@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
@@ -145,6 +146,15 @@ class RegularTriangleTests {
     }
 
     companion object {
+        @JvmStatic
+        fun areApproximatelyEqual(a: RegularTriangle, b: RegularTriangle): Boolean =
+            a.center.isApproximately(b.center) and
+                    a.rotation.isApproximately(b.rotation) and
+                    a.sideLength.isApproximately(b.sideLength) and
+                    a.pointA.isApproximately(b.pointA) and
+                    a.pointB.isApproximately(b.pointB) and
+                    a.pointC.isApproximately(b.pointC)
+
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(

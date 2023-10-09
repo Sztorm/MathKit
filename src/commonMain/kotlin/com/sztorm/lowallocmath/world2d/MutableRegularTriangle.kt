@@ -7,7 +7,7 @@ import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.withSign
 
-class MutableRegularTriangle : RegularTriangle {
+class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     internal var _center: Vector2F
     internal var _rotation: ComplexF
     internal var _sideLength: Float
@@ -31,6 +31,22 @@ class MutableRegularTriangle : RegularTriangle {
         _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
         _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
+    private constructor(
+        center: Vector2F,
+        rotation: ComplexF,
+        sideLength: Float,
+        pointA: Vector2F,
+        pointB: Vector2F,
+        pointC: Vector2F
+    ) {
+        _center = center
+        _rotation = rotation
+        _sideLength = sideLength
+        _pointA = pointA
+        _pointB = pointB
+        _pointC = pointC
     }
 
     internal constructor(regularPolygon: MutableRegularPolygon) {
@@ -93,6 +109,183 @@ class MutableRegularTriangle : RegularTriangle {
 
     override val circumradius: Float
         get() = 0.5773503f * _sideLength
+
+    override val position: Vector2F
+        get() = _center
+
+    override fun movedBy(offset: Vector2F) = MutableRegularTriangle(
+        _center + offset,
+        _rotation,
+        _sideLength,
+        _pointA + offset,
+        _pointB + offset,
+        _pointC + offset
+    )
+
+    override fun movedTo(position: Vector2F): MutableRegularTriangle {
+        val offset: Vector2F = position - _center
+
+        return MutableRegularTriangle(
+            position,
+            _rotation,
+            _sideLength,
+            _pointA + offset,
+            _pointB + offset,
+            _pointC + offset
+        )
+    }
+
+    override fun moveBy(offset: Vector2F) {
+        _center += offset
+        _pointA += offset
+        _pointB += offset
+        _pointC += offset
+    }
+
+    override fun moveTo(position: Vector2F) {
+        val offset: Vector2F = position - _center
+        _center = position
+        _pointA += offset
+        _pointB += offset
+        _pointC += offset
+    }
+
+    override fun rotatedBy(angle: AngleF) =
+        MutableRegularTriangle(_center, _rotation * ComplexF.fromAngle(angle), _sideLength)
+
+    override fun rotatedBy(rotation: ComplexF) =
+        MutableRegularTriangle(_center, _rotation * rotation, _sideLength)
+
+    override fun rotatedTo(angle: AngleF) =
+        MutableRegularTriangle(_center, ComplexF.fromAngle(angle), _sideLength)
+
+    override fun rotatedTo(rotation: ComplexF) =
+        MutableRegularTriangle(_center, rotation, _sideLength)
+
+    override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
+
+    override fun rotateBy(rotation: ComplexF) = rotateTo(_rotation * rotation)
+
+    override fun rotateTo(angle: AngleF) = rotateTo(ComplexF.fromAngle(angle))
+
+    override fun rotateTo(rotation: ComplexF) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = rotation
+        val sideLength: Float = _sideLength
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _rotation = rotation
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
+    override fun scaledBy(factor: Float) =
+        MutableRegularTriangle(_center, _rotation, _sideLength * factor)
+
+    override fun scaleBy(factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = _rotation
+        val sideLength: Float = _sideLength * factor
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _sideLength = sideLength
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
+    override fun transformedBy(offset: Vector2F, angle: AngleF) = MutableRegularTriangle(
+        _center + offset, _rotation * ComplexF.fromAngle(angle), _sideLength
+    )
+
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
+        MutableRegularTriangle(_center + offset, _rotation * rotation, _sideLength)
+
+    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float) =
+        MutableRegularTriangle(
+            _center + offset,
+            _rotation * ComplexF.fromAngle(angle),
+            _sideLength * factor
+        )
+
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
+        MutableRegularTriangle(
+            _center + offset,
+            _rotation * rotation,
+            _sideLength * factor
+        )
+
+    override fun transformedTo(position: Vector2F, angle: AngleF) =
+        MutableRegularTriangle(position, ComplexF.fromAngle(angle), _sideLength)
+
+    override fun transformedTo(position: Vector2F, rotation: ComplexF) =
+        MutableRegularTriangle(position, rotation, _sideLength)
+
+    override fun transformBy(offset: Vector2F, angle: AngleF) =
+        transformTo(_center + offset, _rotation * ComplexF.fromAngle(angle))
+
+    override fun transformBy(offset: Vector2F, rotation: ComplexF) =
+        transformTo(_center + offset, _rotation * rotation)
+
+    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
+        transformBy(offset, ComplexF.fromAngle(angle), factor)
+
+    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+        val cX: Float = _center.x + offset.x
+        val cY: Float = _center.y + offset.y
+        val r0 = _rotation.real
+        val i0 = _rotation.imaginary
+        val r1 = rotation.real
+        val i1 = rotation.imaginary
+        val rotR: Float = r0 * r1 - i0 * i1
+        val rotI: Float = i0 * r1 + r0 * i1
+        val sideLength: Float = _sideLength * factor
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _center = Vector2F(cX, cY)
+        _rotation = ComplexF(rotR, rotI)
+        _sideLength = sideLength
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
+    override fun transformTo(position: Vector2F, angle: AngleF) =
+        transformTo(position, ComplexF.fromAngle(angle))
+
+    override fun transformTo(position: Vector2F, rotation: ComplexF) {
+        val (cX: Float, cY: Float) = position
+        val (rotR: Float, rotI: Float) = rotation
+        val sideLength: Float = _sideLength
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _center = position
+        _rotation = rotation
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val halfSideLength: Float = _sideLength * 0.5f
