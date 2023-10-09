@@ -152,17 +152,19 @@ class MutableSquare : Square, MutableTransformable {
         _pointD += offset
     }
 
-    override fun rotatedBy(angle: AngleF): MutableSquare = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(angle: AngleF) =
+        MutableSquare(_center, _rotation * ComplexF.fromAngle(angle), _sideLength)
 
     override fun rotatedBy(rotation: ComplexF) =
         MutableSquare(_center, _rotation * rotation, _sideLength)
 
-    override fun rotatedTo(angle: AngleF): MutableSquare = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(angle: AngleF) =
+        MutableSquare(_center, ComplexF.fromAngle(angle), _sideLength)
 
     override fun rotatedTo(rotation: ComplexF) =
         MutableSquare(_center, rotation, _sideLength)
 
-    override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
+    override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
 
     override fun rotateBy(rotation: ComplexF) = rotateTo(_rotation * rotation)
 
@@ -185,27 +187,31 @@ class MutableSquare : Square, MutableTransformable {
         MutableSquare(_center, _rotation, _sideLength * factor)
 
     override fun scaleBy(factor: Float) {
-        val newSideLength: Float = _sideLength * factor
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _rotation
-        val halfSideLength: Float = newSideLength * 0.5f
+        val sideLength: Float = _sideLength * factor
+        val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (rotR + rotI)
         val addendB: Float = halfSideLength * (rotR - rotI)
-        _sideLength = newSideLength
+        _sideLength = sideLength
         _pointA = Vector2F(cX + addendB, cY + addendA)
         _pointB = Vector2F(cX - addendA, cY + addendB)
         _pointC = Vector2F(cX - addendB, cY - addendA)
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): MutableSquare =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, angle: AngleF) = MutableSquare(
+        _center + offset, _rotation * ComplexF.fromAngle(angle), _sideLength
+    )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
         MutableSquare(_center + offset, _rotation * rotation, _sideLength)
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): MutableSquare =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float) = MutableSquare(
+        _center + offset,
+        _rotation * ComplexF.fromAngle(angle),
+        _sideLength * factor
+    )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
         MutableSquare(
@@ -214,14 +220,14 @@ class MutableSquare : Square, MutableTransformable {
             _sideLength * factor
         )
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): MutableSquare =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, angle: AngleF) =
+        MutableSquare(position, ComplexF.fromAngle(angle), _sideLength)
 
     override fun transformedTo(position: Vector2F, rotation: ComplexF) =
         MutableSquare(position, rotation, _sideLength)
 
     override fun transformBy(offset: Vector2F, angle: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(angle))
+        transformTo(_center + offset, _rotation * ComplexF.fromAngle(angle))
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF) =
         transformTo(_center + offset, _rotation * rotation)

@@ -23,21 +23,21 @@ class MutableRectangle : Rectangle, MutableTransformable {
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val addendX1: Float = rotR * halfWidth
-        val addendX1A: Float = cX + addendX1
-        val addendX1B: Float = cX - addendX1
         val addendX2: Float = rotI * halfHeight
         val addendY1: Float = rotR * halfHeight
-        val addendY1A: Float = cY + addendY1
-        val addendY1B: Float = cY - addendY1
         val addendY2: Float = rotI * halfWidth
+        val addendSumX1X2: Float = addendX1 + addendX2
+        val addendDiffX1X2: Float = addendX1 - addendX2
+        val addendSumY1Y2: Float = addendY1 + addendY2
+        val addendDiffY1Y2: Float = addendY1 - addendY2
         _center = center
         _rotation = rotation
         _width = width
         _height = height
-        _pointA = Vector2F(addendX1A - addendX2, addendY1A + addendY2)
-        _pointB = Vector2F(addendX1B - addendX2, addendY1A - addendY2)
-        _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
-        _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
+        _pointA = Vector2F(cX + addendDiffX1X2, cY + addendSumY1Y2)
+        _pointB = Vector2F(cX - addendSumX1X2, cY + addendDiffY1Y2)
+        _pointC = Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2)
+        _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
     }
 
     private constructor(
@@ -136,17 +136,19 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD += offset
     }
 
-    override fun rotatedBy(angle: AngleF): MutableRectangle = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(angle: AngleF): MutableRectangle =
+        MutableRectangle(_center, _rotation * ComplexF.fromAngle(angle), _width, _height)
 
     override fun rotatedBy(rotation: ComplexF) =
         MutableRectangle(_center, _rotation * rotation, _width, _height)
 
-    override fun rotatedTo(angle: AngleF): MutableRectangle = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(angle: AngleF): MutableRectangle =
+        MutableRectangle(_center, ComplexF.fromAngle(angle), _width, _height)
 
     override fun rotatedTo(rotation: ComplexF) =
         MutableRectangle(_center, rotation, _width, _height)
 
-    override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
+    override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
 
     override fun rotateBy(rotation: ComplexF) = rotateTo(_rotation * rotation)
 
@@ -176,12 +178,12 @@ class MutableRectangle : Rectangle, MutableTransformable {
         MutableRectangle(_center, _rotation, _width * factor, _height * factor)
 
     override fun scaleBy(factor: Float) {
-        val newWidth: Float = _width * factor
-        val newHeight: Float = _height * factor
+        val width: Float = _width * factor
+        val height: Float = _height * factor
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _rotation
-        val halfWidth: Float = newWidth * 0.5f
-        val halfHeight: Float = newHeight * 0.5f
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
         val addendX1: Float = rotR * halfWidth
         val addendX1A: Float = cX + addendX1
         val addendX1B: Float = cX - addendX1
@@ -190,22 +192,27 @@ class MutableRectangle : Rectangle, MutableTransformable {
         val addendY1A: Float = cY + addendY1
         val addendY1B: Float = cY - addendY1
         val addendY2: Float = rotI * halfWidth
-        _width = newWidth
-        _height = newHeight
+        _width = width
+        _height = height
         _pointA = Vector2F(addendX1A - addendX2, addendY1A + addendY2)
         _pointB = Vector2F(addendX1B - addendX2, addendY1A - addendY2)
         _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): MutableRectangle =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, angle: AngleF) = MutableRectangle(
+        _center + offset, _rotation * ComplexF.fromAngle(angle), _width, _height
+    )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
         MutableRectangle(_center + offset, _rotation * rotation, _width, _height)
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): MutableRectangle =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float) = MutableRectangle(
+        _center + offset,
+        _rotation * ComplexF.fromAngle(angle),
+        _width * factor,
+        _height * factor
+    )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
         MutableRectangle(
@@ -215,14 +222,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
             _height * factor
         )
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): MutableRectangle =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, angle: AngleF) =
+        MutableRectangle(position, ComplexF.fromAngle(angle), _width, _height)
 
     override fun transformedTo(position: Vector2F, rotation: ComplexF) =
         MutableRectangle(position, rotation, _width, _height)
 
     override fun transformBy(offset: Vector2F, angle: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(angle))
+        transformTo(_center + offset, _rotation * ComplexF.fromAngle(angle))
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF) =
         transformTo(_center + offset, _rotation * rotation)

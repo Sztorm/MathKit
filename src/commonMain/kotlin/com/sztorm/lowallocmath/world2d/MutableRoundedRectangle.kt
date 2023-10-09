@@ -268,7 +268,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _center, _rotation * rotation, _width, _height, _cornerRadius
     )
 
-    override fun rotatedTo(angle: AngleF): MutableRoundedRectangle =
+    override fun rotatedTo(angle: AngleF) =
         MutableRoundedRectangle(_center, ComplexF.fromAngle(angle), _width, _height, _cornerRadius)
 
     override fun rotatedTo(rotation: ComplexF) =

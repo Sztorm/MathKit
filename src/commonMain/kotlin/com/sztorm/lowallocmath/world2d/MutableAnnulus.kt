@@ -124,22 +124,16 @@ class MutableAnnulus(
     override fun transformedTo(position: Vector2F, rotation: ComplexF) =
         MutableAnnulus(position, rotation, _outerRadius, _innerRadius)
 
-    override fun transformBy(offset: Vector2F, angle: AngleF) {
-        _center += offset
-        _rotation *= ComplexF.fromAngle(angle)
-    }
+    override fun transformBy(offset: Vector2F, angle: AngleF) =
+        transformBy(offset, ComplexF.fromAngle(angle))
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF) {
         _center += offset
         _rotation *= rotation
     }
 
-    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) {
-        _center += offset
-        _rotation *= ComplexF.fromAngle(angle)
-        _outerRadius *= factor
-        _innerRadius *= factor
-    }
+    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
+        transformBy(offset, ComplexF.fromAngle(angle), factor)
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
         _center += offset
@@ -148,10 +142,8 @@ class MutableAnnulus(
         _innerRadius *= factor
     }
 
-    override fun transformTo(position: Vector2F, angle: AngleF) {
-        _center = position
-        _rotation = ComplexF.fromAngle(angle)
-    }
+    override fun transformTo(position: Vector2F, angle: AngleF) =
+        transformTo(position, ComplexF.fromAngle(angle))
 
     override fun transformTo(position: Vector2F, rotation: ComplexF) {
         _center = position
