@@ -372,6 +372,28 @@ class TransformableTests {
                     Wrapper(Vector2F(-2f, 4f)),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f)),
+                ),
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(Vector2F(6f, -4f)),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     MutableSquare(
@@ -390,7 +412,13 @@ class TransformableTests {
                     Wrapper(Vector2F(8f, -2f)),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -493,6 +521,44 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-7f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-2.5f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -523,7 +589,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -626,6 +698,44 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -656,7 +766,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -725,6 +841,28 @@ class TransformableTests {
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                ),
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     MutableSquare(
@@ -743,7 +881,13 @@ class TransformableTests {
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -846,6 +990,44 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -876,7 +1058,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -989,6 +1177,44 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1019,7 +1245,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -1144,6 +1376,44 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    2f,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 16f,
+                        height = 8f,
+                        cornerRadius = 2f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    0.3f,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 2.4f,
+                        height = 1.2f,
+                        cornerRadius = 0.3f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1174,7 +1444,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -1286,6 +1562,46 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-7f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-2.5f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1318,7 +1634,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -1448,6 +1770,48 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-7f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        width = 16f,
+                        height = 8f,
+                        cornerRadius = 2f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-2.5f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        width = 2.4f,
+                        height = 1.2f,
+                        cornerRadius = 0.3f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1482,7 +1846,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -1607,6 +1977,46 @@ class TransformableTests {
                     ),
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-4f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(0.5f, 0f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                ),
+            )
             val squareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1639,7 +2049,13 @@ class TransformableTests {
                     ),
                 ),
             )
-            return annulusArgs + circleArgs + rectangleArgs + squareArgs
+            return listOf(
+                annulusArgs,
+                circleArgs,
+                rectangleArgs,
+                roundedRectangleArgs,
+                squareArgs
+            ).flatten()
         }
 
         @JvmStatic

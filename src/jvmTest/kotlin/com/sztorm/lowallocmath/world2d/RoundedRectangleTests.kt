@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
@@ -134,6 +135,26 @@ class RoundedRectangleTests {
     }
 
     companion object {
+        @JvmStatic
+        fun areApproximatelyEqual(a: RoundedRectangle, b: RoundedRectangle): Boolean =
+            a.center.isApproximately(b.center) and
+                    a.rotation.isApproximately(b.rotation) and
+                    a.width.isApproximately(b.width) and
+                    a.height.isApproximately(b.height) and
+                    a.cornerRadius.isApproximately(b.cornerRadius) and
+                    a.pointA.isApproximately(b.pointA) and
+                    a.pointB.isApproximately(b.pointB) and
+                    a.pointC.isApproximately(b.pointC) and
+                    a.pointD.isApproximately(b.pointD) and
+                    a.pointE.isApproximately(b.pointE) and
+                    a.pointF.isApproximately(b.pointF) and
+                    a.pointG.isApproximately(b.pointG) and
+                    a.pointH.isApproximately(b.pointH) and
+                    a.cornerCenterA.isApproximately(b.cornerCenterA) and
+                    a.cornerCenterB.isApproximately(b.cornerCenterB) and
+                    a.cornerCenterC.isApproximately(b.cornerCenterC) and
+                    a.cornerCenterD.isApproximately(b.cornerCenterD)
+
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(

@@ -1,5 +1,6 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
@@ -8,14 +9,12 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
-class MutableRoundedRectangle(
-    center: Vector2F, rotation: ComplexF, width: Float, height: Float, cornerRadius: Float
-) : RoundedRectangle {
-    private var _center: Vector2F = center
-    private var _rotation: ComplexF = rotation
-    private var _width: Float = width
-    private var _height: Float = height
-    private var _cornerRadius: Float = cornerRadius
+class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
+    private var _center: Vector2F
+    private var _rotation: ComplexF
+    private var _width: Float
+    private var _height: Float
+    private var _cornerRadius: Float
     private var _pointA: Vector2F
     private var _pointB: Vector2F
     private var _pointC: Vector2F
@@ -29,35 +28,90 @@ class MutableRoundedRectangle(
     private var _cornerCenterC: Vector2F
     private var _cornerCenterD: Vector2F
 
-    init {
+    constructor(
+        center: Vector2F, rotation: ComplexF, width: Float, height: Float, cornerRadius: Float
+    ) {
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = rotation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
-        val pA = ComplexF(halfWidthMinusRadius, halfHeight)
-        val pB = ComplexF(-halfWidthMinusRadius, halfHeight)
-        val pC = ComplexF(-halfWidth, halfHeightMinusRadius)
-        val pD = ComplexF(-halfWidth, -halfHeightMinusRadius)
-        val pE = ComplexF(-halfWidthMinusRadius, -halfHeight)
-        val pF = ComplexF(halfWidthMinusRadius, -halfHeight)
-        val pG = ComplexF(halfWidth, -halfHeightMinusRadius)
-        val pH = ComplexF(halfWidth, halfHeightMinusRadius)
-        val ccA = ComplexF(halfWidthMinusRadius, halfHeightMinusRadius)
-        val ccB = ComplexF(-halfWidthMinusRadius, halfHeightMinusRadius)
-        val ccC = ComplexF(-halfWidthMinusRadius, -halfHeightMinusRadius)
-        val ccD = ComplexF(halfWidthMinusRadius, -halfHeightMinusRadius)
-        _pointA = center + (rotation * pA).toVector2F()
-        _pointB = center + (rotation * pB).toVector2F()
-        _pointC = center + (rotation * pC).toVector2F()
-        _pointD = center + (rotation * pD).toVector2F()
-        _pointE = center + (rotation * pE).toVector2F()
-        _pointF = center + (rotation * pF).toVector2F()
-        _pointG = center + (rotation * pG).toVector2F()
-        _pointH = center + (rotation * pH).toVector2F()
-        _cornerCenterA = center + (rotation * ccA).toVector2F()
-        _cornerCenterB = center + (rotation * ccB).toVector2F()
-        _cornerCenterC = center + (rotation * ccC).toVector2F()
-        _cornerCenterD = center + (rotation * ccD).toVector2F()
+        val addendA: Float = rotR * halfWidthMinusRadius
+        val addendB: Float = rotI * halfWidthMinusRadius
+        val addendC: Float = rotR * halfHeightMinusRadius
+        val addendD: Float = rotI * halfHeightMinusRadius
+        val addendE: Float = rotR * halfWidth
+        val addendF: Float = rotI * halfWidth
+        val addendG: Float = rotR * halfHeight
+        val addendH: Float = rotI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _center = center
+        _rotation = rotation
+        _width = width
+        _height = height
+        _cornerRadius = cornerRadius
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
+
+    private constructor(
+        center: Vector2F,
+        rotation: ComplexF,
+        width: Float,
+        height: Float,
+        cornerRadius: Float,
+        pointA: Vector2F,
+        pointB: Vector2F,
+        pointC: Vector2F,
+        pointD: Vector2F,
+        pointE: Vector2F,
+        pointF: Vector2F,
+        pointG: Vector2F,
+        pointH: Vector2F,
+        cornerCenterA: Vector2F,
+        cornerCenterB: Vector2F,
+        cornerCenterC: Vector2F,
+        cornerCenterD: Vector2F
+    ) {
+        _center = center
+        _rotation = rotation
+        _width = width
+        _height = height
+        _cornerRadius = cornerRadius
+        _pointA = pointA
+        _pointB = pointB
+        _pointC = pointC
+        _pointD = pointD
+        _pointE = pointE
+        _pointF = pointF
+        _pointG = pointG
+        _pointH = pointH
+        _cornerCenterA = cornerCenterA
+        _cornerCenterB = cornerCenterB
+        _cornerCenterC = cornerCenterC
+        _cornerCenterD = cornerCenterD
     }
 
     override val center: Vector2F
@@ -125,6 +179,356 @@ class MutableRoundedRectangle(
 
             return (2.0 * PI).toFloat() * radius + 2f * (_width + _height - 4f * radius)
         }
+
+    override val position: Vector2F
+        get() = _center
+
+    override fun movedBy(offset: Vector2F) = MutableRoundedRectangle(
+        _center + offset,
+        _rotation,
+        _width,
+        _height,
+        _cornerRadius,
+        _pointA + offset,
+        _pointB + offset,
+        _pointC + offset,
+        _pointD + offset,
+        _pointE + offset,
+        _pointF + offset,
+        _pointG + offset,
+        _pointH + offset,
+        _cornerCenterA + offset,
+        _cornerCenterB + offset,
+        _cornerCenterC + offset,
+        _cornerCenterD + offset,
+    )
+
+    override fun movedTo(position: Vector2F): MutableRoundedRectangle {
+        val offset: Vector2F = position - _center
+
+        return MutableRoundedRectangle(
+            position,
+            _rotation,
+            _width,
+            _height,
+            _cornerRadius,
+            _pointA + offset,
+            _pointB + offset,
+            _pointC + offset,
+            _pointD + offset,
+            _pointE + offset,
+            _pointF + offset,
+            _pointG + offset,
+            _pointH + offset,
+            _cornerCenterA + offset,
+            _cornerCenterB + offset,
+            _cornerCenterC + offset,
+            _cornerCenterD + offset,
+        )
+    }
+
+    override fun moveBy(offset: Vector2F) {
+        _center += offset
+        _pointA += offset
+        _pointB += offset
+        _pointC += offset
+        _pointD += offset
+        _pointE += offset
+        _pointF += offset
+        _pointG += offset
+        _pointH += offset
+        _cornerCenterA += offset
+        _cornerCenterB += offset
+        _cornerCenterC += offset
+        _cornerCenterD += offset
+    }
+
+    override fun moveTo(position: Vector2F) {
+        val offset: Vector2F = position - _center
+        _center = position
+        _pointA += offset
+        _pointB += offset
+        _pointC += offset
+        _pointD += offset
+        _pointE += offset
+        _pointF += offset
+        _pointG += offset
+        _pointH += offset
+        _cornerCenterA += offset
+        _cornerCenterB += offset
+        _cornerCenterC += offset
+        _cornerCenterD += offset
+    }
+
+    override fun rotatedBy(angle: AngleF) = MutableRoundedRectangle(
+        _center, _rotation * ComplexF.fromAngle(angle), _width, _height, _cornerRadius
+    )
+
+    override fun rotatedBy(rotation: ComplexF) = MutableRoundedRectangle(
+        _center, _rotation * rotation, _width, _height, _cornerRadius
+    )
+
+    override fun rotatedTo(angle: AngleF): MutableRoundedRectangle =
+        MutableRoundedRectangle(_center, ComplexF.fromAngle(angle), _width, _height, _cornerRadius)
+
+    override fun rotatedTo(rotation: ComplexF) =
+        MutableRoundedRectangle(_center, rotation, _width, _height, _cornerRadius)
+
+    override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
+
+    override fun rotateBy(rotation: ComplexF) = rotateTo(_rotation * rotation)
+
+    override fun rotateTo(angle: AngleF) = rotateTo(ComplexF.fromAngle(angle))
+
+    override fun rotateTo(rotation: ComplexF) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = rotation
+        val halfWidth: Float = _width * 0.5f
+        val halfHeight: Float = _height * 0.5f
+        val cornerRadius: Float = _cornerRadius
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val addendA: Float = rotR * halfWidthMinusRadius
+        val addendB: Float = rotI * halfWidthMinusRadius
+        val addendC: Float = rotR * halfHeightMinusRadius
+        val addendD: Float = rotI * halfHeightMinusRadius
+        val addendE: Float = rotR * halfWidth
+        val addendF: Float = rotI * halfWidth
+        val addendG: Float = rotR * halfHeight
+        val addendH: Float = rotI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _rotation = rotation
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
+
+    override fun scaledBy(factor: Float) = MutableRoundedRectangle(
+        _center,
+        _rotation,
+        _width * factor,
+        _height * factor,
+        _cornerRadius * factor
+    )
+
+    override fun scaleBy(factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = _rotation
+        val width: Float = _width * factor
+        val height: Float = _height * factor
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val cornerRadius: Float = _cornerRadius * factor
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val addendA: Float = rotR * halfWidthMinusRadius
+        val addendB: Float = rotI * halfWidthMinusRadius
+        val addendC: Float = rotR * halfHeightMinusRadius
+        val addendD: Float = rotI * halfHeightMinusRadius
+        val addendE: Float = rotR * halfWidth
+        val addendF: Float = rotI * halfWidth
+        val addendG: Float = rotR * halfHeight
+        val addendH: Float = rotI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _width = width
+        _height = height
+        _cornerRadius = cornerRadius
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
+
+    override fun transformedBy(offset: Vector2F, angle: AngleF) = MutableRoundedRectangle(
+        _center + offset,
+        _rotation * ComplexF.fromAngle(angle),
+        _width,
+        _height,
+        _cornerRadius
+    )
+
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableRoundedRectangle(
+        _center + offset,
+        _rotation * rotation,
+        _width,
+        _height,
+        _cornerRadius
+    )
+
+    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float) =
+        MutableRoundedRectangle(
+            _center + offset,
+            _rotation * ComplexF.fromAngle(angle),
+            _width * factor,
+            _height * factor,
+            _cornerRadius * factor
+        )
+
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
+        MutableRoundedRectangle(
+            _center + offset,
+            _rotation * rotation,
+            _width * factor,
+            _height * factor,
+            _cornerRadius * factor
+        )
+
+    override fun transformedTo(position: Vector2F, angle: AngleF) = MutableRoundedRectangle(
+        position, ComplexF.fromAngle(angle), _width, _height, _cornerRadius
+    )
+
+    override fun transformedTo(position: Vector2F, rotation: ComplexF) =
+        MutableRoundedRectangle(position, rotation, _width, _height, _cornerRadius)
+
+    override fun transformBy(offset: Vector2F, angle: AngleF) =
+        transformTo(_center + offset, _rotation * ComplexF.fromAngle(angle))
+
+    override fun transformBy(offset: Vector2F, rotation: ComplexF) =
+        transformTo(_center + offset, _rotation * rotation)
+
+    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
+        transformBy(offset, ComplexF.fromAngle(angle), factor)
+
+    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+        val cX: Float = _center.x + offset.x
+        val cY: Float = _center.y + offset.y
+        val r0 = _rotation.real
+        val i0 = _rotation.imaginary
+        val r1 = rotation.real
+        val i1 = rotation.imaginary
+        val rotR: Float = r0 * r1 - i0 * i1
+        val rotI: Float = i0 * r1 + r0 * i1
+        val width: Float = _width * factor
+        val height: Float = _height * factor
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val cornerRadius: Float = _cornerRadius * factor
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val addendA: Float = rotR * halfWidthMinusRadius
+        val addendB: Float = rotI * halfWidthMinusRadius
+        val addendC: Float = rotR * halfHeightMinusRadius
+        val addendD: Float = rotI * halfHeightMinusRadius
+        val addendE: Float = rotR * halfWidth
+        val addendF: Float = rotI * halfWidth
+        val addendG: Float = rotR * halfHeight
+        val addendH: Float = rotI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _center = Vector2F(cX, cY)
+        _rotation = ComplexF(rotR, rotI)
+        _width = width
+        _height = height
+        _cornerRadius = cornerRadius
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
+
+    override fun transformTo(position: Vector2F, angle: AngleF) =
+        transformTo(position, ComplexF.fromAngle(angle))
+
+    override fun transformTo(position: Vector2F, rotation: ComplexF) {
+        val (cX: Float, cY: Float) = position
+        val (rotR: Float, rotI: Float) = rotation
+        val halfWidth: Float = _width * 0.5f
+        val halfHeight: Float = _height * 0.5f
+        val cornerRadius: Float = _cornerRadius
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val addendA: Float = rotR * halfWidthMinusRadius
+        val addendB: Float = rotI * halfWidthMinusRadius
+        val addendC: Float = rotR * halfHeightMinusRadius
+        val addendD: Float = rotI * halfHeightMinusRadius
+        val addendE: Float = rotR * halfWidth
+        val addendF: Float = rotI * halfWidth
+        val addendG: Float = rotR * halfHeight
+        val addendH: Float = rotI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _center = position
+        _rotation = rotation
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val rotation: ComplexF = _rotation
