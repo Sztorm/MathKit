@@ -204,6 +204,18 @@ class RegularPolygonTests {
 
     companion object {
         @JvmStatic
+        fun areApproximatelyEqual(a: RegularPolygon, b: RegularPolygon): Boolean =
+            a.center.isApproximately(b.center) and
+                    a.rotation.isApproximately(b.rotation) and
+                    a.sideLength.isApproximately(b.sideLength) and
+                    (a.points.size == b.points.size) and
+                    a.points
+                        .mapIndexed { index, point -> point.isApproximately(b.points[index]) }
+                        .all { it } and
+                    a.circumradius.isApproximately(b.circumradius) and
+                    a.inradius.isApproximately(b.inradius)
+
+        @JvmStatic
         fun constructorRegularTriangleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularTriangle(

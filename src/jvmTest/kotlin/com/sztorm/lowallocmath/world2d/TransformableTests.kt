@@ -372,6 +372,26 @@ class TransformableTests {
                     Wrapper(Vector2F(-2f, 4f)),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0f, 8f)),
+                ),
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(Vector2F(14f, 1f)),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     MutableRegularTriangle(
@@ -434,6 +454,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -540,6 +561,40 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRegularPolygon(
+                        Vector2F(-4f, 10f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRegularPolygon(
+                        Vector2F(0.5f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -642,6 +697,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -748,6 +804,40 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRegularPolygon(
+                        Vector2F(-4f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRegularPolygon(
+                        Vector2F(0.5f, 0f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -850,6 +940,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -922,6 +1013,26 @@ class TransformableTests {
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                ),
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f))),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     MutableRegularTriangle(
@@ -984,6 +1095,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -1090,6 +1202,40 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1192,6 +1338,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -1308,6 +1455,40 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1410,6 +1591,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -1538,6 +1720,40 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    2f,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 6f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    0.3f,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 0.9f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1640,6 +1856,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -1755,6 +1972,42 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(-4f, 10f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(0.5f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1863,6 +2116,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -1996,6 +2250,44 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableRegularPolygon(
+                        Vector2F(-4f, 10f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        sideLength = 6f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableRegularPolygon(
+                        Vector2F(0.5f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        sideLength = 0.9f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -2110,6 +2402,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
@@ -2238,6 +2531,42 @@ class TransformableTests {
                     ),
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(-4f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(0.5f, 0f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                ),
+            )
             val regularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -2346,6 +2675,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
+                regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
                 squareArgs
