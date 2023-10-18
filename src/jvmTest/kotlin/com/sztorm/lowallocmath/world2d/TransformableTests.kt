@@ -322,7 +322,7 @@ class TransformableTests {
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
-                    Wrapper(Vector2F(-1f, 2f)),
+                    Wrapper(Vector2F(-1f, 2f))
                 ),
                 Arguments.of(
                     MutableAnnulus(
@@ -331,7 +331,7 @@ class TransformableTests {
                         outerRadius = 8f,
                         innerRadius = 1f
                     ),
-                    Wrapper(Vector2F(6f, 3f)),
+                    Wrapper(Vector2F(6f, 3f))
                 ),
             )
             val circleArgs = listOf(
@@ -341,7 +341,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
-                    Wrapper(Vector2F(1f, 2f)),
+                    Wrapper(Vector2F(1f, 2f))
                 ),
                 Arguments.of(
                     MutableCircle(
@@ -349,7 +349,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                         radius = 5f
                     ),
-                    Wrapper(Vector2F(-1f, 7f)),
+                    Wrapper(Vector2F(-1f, 7f))
                 ),
             )
             val rectangleArgs = listOf(
@@ -360,7 +360,7 @@ class TransformableTests {
                         width = 3f,
                         height = 5f
                     ),
-                    Wrapper(Vector2F(-1f, -2f)),
+                    Wrapper(Vector2F(-1f, -2f))
                 ),
                 Arguments.of(
                     MutableRectangle(
@@ -369,7 +369,7 @@ class TransformableTests {
                         width = 4f,
                         height = 2f
                     ),
-                    Wrapper(Vector2F(-2f, 4f)),
+                    Wrapper(Vector2F(-2f, 4f))
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -380,7 +380,7 @@ class TransformableTests {
                         sideLength = 3f,
                         sideCount = 7
                     ),
-                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(Vector2F(0f, 8f))
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
@@ -389,7 +389,7 @@ class TransformableTests {
                         sideLength = 2f,
                         sideCount = 10
                     ),
-                    Wrapper(Vector2F(14f, 1f)),
+                    Wrapper(Vector2F(14f, 1f))
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -399,7 +399,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
-                    Wrapper(Vector2F(5f, 7f)),
+                    Wrapper(Vector2F(5f, 7f))
                 ),
                 Arguments.of(
                     MutableRegularTriangle(
@@ -407,7 +407,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                         sideLength = 4f
                     ),
-                    Wrapper(Vector2F(3.1547005f, -4f)),
+                    Wrapper(Vector2F(3.1547005f, -4f))
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -419,7 +419,7 @@ class TransformableTests {
                         height = 4f,
                         cornerRadius = 1f
                     ),
-                    Wrapper(Vector2F(-3f, -4f)),
+                    Wrapper(Vector2F(-3f, -4f))
                 ),
                 Arguments.of(
                     MutableRoundedRectangle(
@@ -429,7 +429,7 @@ class TransformableTests {
                         height = 4f,
                         cornerRadius = 1.5f
                     ),
-                    Wrapper(Vector2F(6f, -4f)),
+                    Wrapper(Vector2F(6f, -4f))
                 ),
             )
             val squareArgs = listOf(
@@ -439,7 +439,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
-                    Wrapper(Vector2F(3f, 1f)),
+                    Wrapper(Vector2F(3f, 1f))
                 ),
                 Arguments.of(
                     MutableSquare(
@@ -447,7 +447,21 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                         sideLength = 3f
                     ),
-                    Wrapper(Vector2F(8f, -2f)),
+                    Wrapper(Vector2F(8f, -2f))
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-0.3333333f, 3f))
                 ),
             )
             return listOf(
@@ -457,7 +471,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -478,7 +493,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -494,7 +509,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -542,7 +557,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -558,7 +573,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -576,7 +591,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -592,7 +607,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -608,7 +623,7 @@ class TransformableTests {
                         center = Vector2F(1f, 9f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -622,7 +637,7 @@ class TransformableTests {
                         center = Vector2F(5.5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -642,7 +657,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -660,7 +675,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -676,7 +691,7 @@ class TransformableTests {
                         center = Vector2F(-1f, 3f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -690,7 +705,31 @@ class TransformableTests {
                         center = Vector2F(3.5f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableTriangle(
+                        Vector2F(-6f, 3f), Vector2F(-7f, -1f), Vector2F(-3f, -4f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableTriangle(
+                        Vector2F(-1.5f, 1f),
+                        Vector2F(-2.5f, -3f),
+                        Vector2F(1.5f, -6f)
+                    )
                 ),
             )
             return listOf(
@@ -700,7 +739,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -721,7 +761,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -737,7 +777,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -785,7 +825,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -801,7 +841,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -819,7 +859,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -835,7 +875,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -851,7 +891,7 @@ class TransformableTests {
                         center = Vector2F(-4f, 2f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -865,7 +905,7 @@ class TransformableTests {
                         center = Vector2F(0.5f, 0f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -885,7 +925,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -903,7 +943,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -919,7 +959,7 @@ class TransformableTests {
                         center = Vector2F(-4f, 2f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -933,7 +973,33 @@ class TransformableTests {
                         center = Vector2F(0.5f, 0f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableTriangle(
+                        Vector2F(-4.666667f, 5.666667f),
+                        Vector2F(-5.666667f, 1.6666667f),
+                        Vector2F(-1.6666667f, -1.3333333f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableTriangle(
+                        Vector2F(-0.1666667f, 3.666667f),
+                        Vector2F(-1.1666667f, -0.3333333f),
+                        Vector2F(2.8333333f, -3.3333333f)
+                    )
                 ),
             )
             return listOf(
@@ -943,7 +1009,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -963,7 +1030,7 @@ class TransformableTests {
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f)))
                 ),
                 Arguments.of(
                     MutableAnnulus(
@@ -972,7 +1039,7 @@ class TransformableTests {
                         outerRadius = 8f,
                         innerRadius = 1f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f)))
                 ),
             )
             val circleArgs = listOf(
@@ -982,7 +1049,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
                 ),
                 Arguments.of(
                     MutableCircle(
@@ -990,7 +1057,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                         radius = 5f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f)))
                 ),
             )
             val rectangleArgs = listOf(
@@ -1001,7 +1068,7 @@ class TransformableTests {
                         width = 3f,
                         height = 5f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
                 ),
                 Arguments.of(
                     MutableRectangle(
@@ -1010,7 +1077,7 @@ class TransformableTests {
                         width = 4f,
                         height = 2f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -1021,7 +1088,7 @@ class TransformableTests {
                         sideLength = 3f,
                         sideCount = 7
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
@@ -1030,7 +1097,7 @@ class TransformableTests {
                         sideLength = 2f,
                         sideCount = 10
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f)))
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -1040,7 +1107,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f)))
                 ),
                 Arguments.of(
                     MutableRegularTriangle(
@@ -1048,7 +1115,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                         sideLength = 4f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f)))
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -1060,7 +1127,7 @@ class TransformableTests {
                         height = 4f,
                         cornerRadius = 1f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f)))
                 ),
                 Arguments.of(
                     MutableRoundedRectangle(
@@ -1070,7 +1137,7 @@ class TransformableTests {
                         height = 4f,
                         cornerRadius = 1.5f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
                 ),
             )
             val squareArgs = listOf(
@@ -1080,7 +1147,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)))
                 ),
                 Arguments.of(
                     MutableSquare(
@@ -1088,7 +1155,21 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                         sideLength = 3f
                     ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f)))
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
                 ),
             )
             return listOf(
@@ -1098,7 +1179,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -1119,7 +1201,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1135,7 +1217,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -1183,7 +1265,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -1199,7 +1281,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -1217,7 +1299,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -1233,7 +1315,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -1249,7 +1331,7 @@ class TransformableTests {
                         center = Vector2F(5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1263,7 +1345,7 @@ class TransformableTests {
                         center = Vector2F(5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -1283,7 +1365,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -1301,7 +1383,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -1317,7 +1399,7 @@ class TransformableTests {
                         center = Vector2F(3f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1331,7 +1413,33 @@ class TransformableTests {
                         center = Vector2F(3f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 4f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(-4.397463f, -0.54534626f),
+                        Vector2F(-2.2761421f, -4.08088f),
+                        Vector2F(2.6736052f, -3.3737736f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-1.9609454f, -6.3402195f),
+                        Vector2F(0.34682798f, -2.923469f),
+                        Vector2F(-2.385882f, 1.2636895f)
+                    )
                 ),
             )
             return listOf(
@@ -1341,7 +1449,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -1372,7 +1481,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1388,7 +1497,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -1436,7 +1545,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -1452,7 +1561,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -1470,7 +1579,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -1486,7 +1595,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -1502,7 +1611,7 @@ class TransformableTests {
                         center = Vector2F(5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1516,7 +1625,7 @@ class TransformableTests {
                         center = Vector2F(5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -1536,7 +1645,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -1554,7 +1663,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -1570,7 +1679,7 @@ class TransformableTests {
                         center = Vector2F(3f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1584,7 +1693,33 @@ class TransformableTests {
                         center = Vector2F(3f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 4f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(1.301898f, -0.03143549f),
+                        Vector2F(-2.5560806f, -1.4860829f),
+                        Vector2F(-2.7458177f, -6.482481f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-4.8353605f, -1.3920327f),
+                        Vector2F(-1.88655f, -4.273788f),
+                        Vector2F(2.7219107f, -2.334179f)
+                    )
                 ),
             )
             return listOf(
@@ -1594,7 +1729,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -1637,7 +1773,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 8f,
                         innerRadius = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1653,7 +1789,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 1.2f,
                         innerRadius = 0.6f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -1701,7 +1837,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 6f,
                         height = 10f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -1717,7 +1853,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 0.9f,
                         height = 1.5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -1735,7 +1871,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 6f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -1751,7 +1887,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 0.9f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -1767,7 +1903,7 @@ class TransformableTests {
                         center = Vector2F(5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 6f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -1781,7 +1917,7 @@ class TransformableTests {
                         center = Vector2F(5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 0.9f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -1801,7 +1937,7 @@ class TransformableTests {
                         width = 16f,
                         height = 8f,
                         cornerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -1819,7 +1955,7 @@ class TransformableTests {
                         width = 2.4f,
                         height = 1.2f,
                         cornerRadius = 0.3f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -1835,7 +1971,7 @@ class TransformableTests {
                         center = Vector2F(3f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 8f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1849,7 +1985,33 @@ class TransformableTests {
                         center = Vector2F(3f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 1.2f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    2f,
+                    MutableTriangle(
+                        Vector2F(-2.6666667f, 4.6666665f),
+                        Vector2F(-4.666667f, -3.3333335f),
+                        Vector2F(3.3333333f, -9.333334f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    0.3f,
+                    MutableTriangle(
+                        Vector2F(-1.5333333f, -1.5666666f),
+                        Vector2F(-1.8333333f, -2.7666667f),
+                        Vector2F(-0.63333327f, -3.6666665f)
+                    )
                 ),
             )
             return listOf(
@@ -1859,7 +2021,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -1884,7 +2047,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1901,7 +2064,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -1952,7 +2115,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -1969,7 +2132,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -1988,7 +2151,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -2005,7 +2168,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -2022,7 +2185,7 @@ class TransformableTests {
                         center = Vector2F(1f, 9f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -2037,7 +2200,7 @@ class TransformableTests {
                         center = Vector2F(5.5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -2058,7 +2221,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -2077,7 +2240,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -2094,7 +2257,7 @@ class TransformableTests {
                         center = Vector2F(-1f, 3f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -2109,7 +2272,35 @@ class TransformableTests {
                         center = Vector2F(3.5f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 4f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(-8.397463f, 1.4546535f),
+                        Vector2F(-6.276142f, -2.0808804f),
+                        Vector2F(-1.3263946f, -1.3737737f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-1.4609454f, -6.3402195f),
+                        Vector2F(0.846828f, -2.923469f),
+                        Vector2F(-1.885882f, 1.2636895f)
+                    )
                 ),
             )
             return listOf(
@@ -2119,7 +2310,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -2157,7 +2349,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 8f,
                         innerRadius = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -2175,7 +2367,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 1.2f,
                         innerRadius = 0.6f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -2229,7 +2421,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 6f,
                         height = 10f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -2247,7 +2439,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 0.9f,
                         height = 1.5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -2267,7 +2459,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         sideLength = 6f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -2285,7 +2477,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         sideLength = 0.9f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -2303,7 +2495,7 @@ class TransformableTests {
                         center = Vector2F(1f, 9f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 6f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -2319,7 +2511,7 @@ class TransformableTests {
                         center = Vector2F(5.5f, 7f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 0.9f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -2341,7 +2533,7 @@ class TransformableTests {
                         width = 16f,
                         height = 8f,
                         cornerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -2361,7 +2553,7 @@ class TransformableTests {
                         width = 2.4f,
                         height = 1.2f,
                         cornerRadius = 0.3f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -2379,7 +2571,7 @@ class TransformableTests {
                         center = Vector2F(-1f, 3f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 8f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -2395,7 +2587,37 @@ class TransformableTests {
                         center = Vector2F(3.5f, 1f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 1.2f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableTriangle(
+                        Vector2F(-11.461593f, 3.5759735f),
+                        Vector2F(-7.218951f, -3.4950943f),
+                        Vector2F(2.680544f, -2.0808809f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableTriangle(
+                        Vector2F(-1.0216169f, -3.7687325f),
+                        Vector2F(-0.32928485f, -2.7437072f),
+                        Vector2F(-1.1490979f, -1.4875597f)
+                    )
                 ),
             )
             return listOf(
@@ -2405,7 +2627,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -2443,7 +2666,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -2460,7 +2683,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         outerRadius = 4f,
                         innerRadius = 2f
-                    ),
+                    )
                 ),
             )
             val circleArgs = listOf(
@@ -2511,7 +2734,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RectangleTests.Companion::areApproximatelyEqual,
@@ -2528,7 +2751,7 @@ class TransformableTests {
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 3f,
                         height = 5f
-                    ),
+                    )
                 ),
             )
             val regularPolygonArgs = listOf(
@@ -2547,7 +2770,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::areApproximatelyEqual,
@@ -2564,7 +2787,7 @@ class TransformableTests {
                         ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f,
                         sideCount = 7
-                    ),
+                    )
                 ),
             )
             val regularTriangleArgs = listOf(
@@ -2581,7 +2804,7 @@ class TransformableTests {
                         center = Vector2F(-4f, 2f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::areApproximatelyEqual,
@@ -2596,7 +2819,7 @@ class TransformableTests {
                         center = Vector2F(0.5f, 0f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f
-                    ),
+                    )
                 ),
             )
             val roundedRectangleArgs = listOf(
@@ -2617,7 +2840,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
@@ -2636,7 +2859,7 @@ class TransformableTests {
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
-                    ),
+                    )
                 ),
             )
             val squareArgs = listOf(
@@ -2653,7 +2876,7 @@ class TransformableTests {
                         center = Vector2F(-4f, 2f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f
-                    ),
+                    )
                 ),
                 Arguments.of(
                     SquareTests.Companion::areApproximatelyEqual,
@@ -2668,7 +2891,35 @@ class TransformableTests {
                         center = Vector2F(0.5f, 0f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 4f
+                    )
+                ),
+            )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(-1.364769f, 4.635231f),
+                        Vector2F(-5.222748f, 3.1805837f),
+                        Vector2F(-5.412484f, -1.8158145f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-3.0020273f, 1.2746338f),
+                        Vector2F(-0.053216696f, -1.6071216f),
+                        Vector2F(4.555244f, 0.33248746f)
+                    )
                 ),
             )
             return listOf(
@@ -2678,7 +2929,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 

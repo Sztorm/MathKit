@@ -112,6 +112,14 @@ class TriangleTests {
 
     companion object {
         @JvmStatic
+        fun areApproximatelyEqual(a: Triangle, b: Triangle): Boolean =
+            a.pointA.isApproximately(b.pointA) and
+                    a.pointB.isApproximately(b.pointB) and
+                    a.pointC.isApproximately(b.pointC) and
+                    a.centroid.isApproximately(b.centroid) and
+                    a.rotation.isApproximately(b.rotation)
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
