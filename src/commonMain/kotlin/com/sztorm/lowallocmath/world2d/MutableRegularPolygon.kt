@@ -251,6 +251,18 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         )
     }
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableRegularPolygon =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableRegularPolygon =
+        TODO()
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableRegularPolygon =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableRegularPolygon =
+        TODO()
+
     override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
 
     override fun rotateBy(rotation: ComplexF) {
@@ -280,6 +292,18 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         }
         _rotation = rotation
     }
+
+    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        TODO()
+
+    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
+        TODO()
 
     override fun scaledBy(factor: Float): MutableRegularPolygon {
         val points: Vector2FArray = _points.copyOf()

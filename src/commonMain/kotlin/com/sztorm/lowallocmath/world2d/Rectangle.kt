@@ -26,6 +26,16 @@ interface Rectangle : RectangleShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): Rectangle
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Rectangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Rectangle
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Rectangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Rectangle
+
     override fun scaledBy(factor: Float): Rectangle
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): Rectangle =

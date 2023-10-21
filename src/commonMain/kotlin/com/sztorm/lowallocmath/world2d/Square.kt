@@ -26,6 +26,16 @@ interface Square : RectangleShape, RegularShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): Square
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Square =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Square
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Square =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Square
+
     override fun scaledBy(factor: Float): Square
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): Square =

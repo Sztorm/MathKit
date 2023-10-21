@@ -215,6 +215,18 @@ class MutableTriangle : Triangle, MutableTransformable {
         )
     }
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableTriangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableTriangle =
+        TODO()
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableTriangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableTriangle =
+        TODO()
+
     override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
 
     override fun rotateBy(rotation: ComplexF) {
@@ -251,6 +263,18 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointC = Vector2F(pccX * rotR - pccY * rotI + cX, pccY * rotR + pccX * rotI + cY)
         _rotation = rotation
     }
+
+    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        TODO()
+
+    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
+        TODO()
 
     override fun scaledBy(factor: Float): MutableTriangle {
         val f: Float = 1f - factor

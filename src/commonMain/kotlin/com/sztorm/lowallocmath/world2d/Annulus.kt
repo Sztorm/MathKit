@@ -24,6 +24,16 @@ interface Annulus : AnnulusShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): Annulus
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Annulus =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Annulus
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Annulus =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Annulus
+
     override fun scaledBy(factor: Float): Annulus
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): Annulus =

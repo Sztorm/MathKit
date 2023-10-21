@@ -26,6 +26,16 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): RegularTriangle
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): RegularTriangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RegularTriangle
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): RegularTriangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): RegularTriangle
+
     override fun scaledBy(factor: Float): RegularTriangle
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): RegularTriangle =

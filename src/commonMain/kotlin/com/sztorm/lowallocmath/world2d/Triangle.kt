@@ -21,6 +21,16 @@ interface Triangle : TriangleShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): Triangle
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Triangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Triangle
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Triangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Triangle
+
     override fun scaledBy(factor: Float): Triangle
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): Triangle =

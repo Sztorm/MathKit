@@ -23,6 +23,16 @@ interface Circle : CircleShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): Circle
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Circle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Circle
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Circle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Circle
+
     override fun scaledBy(factor: Float): Circle
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): Circle =

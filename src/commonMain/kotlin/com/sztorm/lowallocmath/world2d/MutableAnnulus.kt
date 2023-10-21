@@ -67,6 +67,18 @@ class MutableAnnulus(
     override fun rotatedTo(rotation: ComplexF) =
         MutableAnnulus(_center, rotation, _outerRadius, _innerRadius)
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableAnnulus =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableAnnulus =
+        TODO()
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableAnnulus =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableAnnulus =
+        TODO()
+
     override fun rotateBy(angle: AngleF) {
         _rotation *= ComplexF.fromAngle(angle)
     }
@@ -82,6 +94,18 @@ class MutableAnnulus(
     override fun rotateTo(rotation: ComplexF) {
         _rotation = rotation
     }
+
+    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        TODO()
+
+    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
+        TODO()
 
     override fun scaledBy(factor: Float) = MutableAnnulus(
         _center, _rotation, _outerRadius * factor, _innerRadius * factor

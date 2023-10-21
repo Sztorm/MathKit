@@ -25,6 +25,16 @@ interface RegularPolygon : RegularShape, Transformable {
 
     override fun rotatedTo(rotation: ComplexF): RegularPolygon
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): RegularPolygon =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RegularPolygon
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): RegularPolygon =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): RegularPolygon
+
     override fun scaledBy(factor: Float): RegularPolygon
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): RegularPolygon =

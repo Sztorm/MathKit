@@ -17,6 +17,16 @@ interface Transformable : Movable, Rotatable, Scalable {
 
     override fun rotatedTo(rotation: ComplexF): Transformable
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Transformable =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Transformable
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Transformable =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Transformable
+
     override fun scaledBy(factor: Float): Transformable
 
     fun transformedBy(offset: Vector2F, angle: AngleF): Transformable =

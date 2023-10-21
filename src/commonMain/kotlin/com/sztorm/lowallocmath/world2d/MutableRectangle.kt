@@ -148,6 +148,18 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override fun rotatedTo(rotation: ComplexF) =
         MutableRectangle(_center, rotation, _width, _height)
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableRectangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableRectangle =
+        TODO()
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableRectangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableRectangle =
+        TODO()
+
     override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
 
     override fun rotateBy(rotation: ComplexF) = rotateTo(_rotation * rotation)
@@ -173,6 +185,18 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
+
+    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        TODO()
+
+    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
+        TODO()
 
     override fun scaledBy(factor: Float) =
         MutableRectangle(_center, _rotation, _width * factor, _height * factor)

@@ -164,6 +164,18 @@ class MutableSquare : Square, MutableTransformable {
     override fun rotatedTo(rotation: ComplexF) =
         MutableSquare(_center, rotation, _sideLength)
 
+    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableSquare =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableSquare =
+        TODO()
+
+    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableSquare =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableSquare =
+        TODO()
+
     override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
 
     override fun rotateBy(rotation: ComplexF) = rotateTo(_rotation * rotation)
@@ -182,6 +194,18 @@ class MutableSquare : Square, MutableTransformable {
         _pointC = Vector2F(cX - addendB, cY - addendA)
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
+
+    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        TODO()
+
+    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
+        TODO()
 
     override fun scaledBy(factor: Float) =
         MutableSquare(_center, _rotation, _sideLength * factor)
