@@ -156,6 +156,9 @@ class RoundedRectangleTests {
                     a.cornerCenterD.isApproximately(b.cornerCenterD)
 
         @JvmStatic
+        fun clone(rectangle: RoundedRectangle) = rectangle.copy()
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RoundedRectangle(

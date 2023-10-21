@@ -120,6 +120,9 @@ class TriangleTests {
                     a.rotation.isApproximately(b.rotation)
 
         @JvmStatic
+        fun clone(triangle: Triangle) = triangle.copy()
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),

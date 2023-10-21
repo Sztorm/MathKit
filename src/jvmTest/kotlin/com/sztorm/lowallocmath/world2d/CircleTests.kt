@@ -118,6 +118,9 @@ class CircleTests {
                     a.radius.isApproximately(b.radius)
 
         @JvmStatic
+        fun clone(circle: Circle) = circle.copy()
+
+        @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f), 50.2655f

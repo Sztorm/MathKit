@@ -112,6 +112,9 @@ class RectangleTests {
                     a.pointD.isApproximately(b.pointD)
 
         @JvmStatic
+        fun clone(rectangle: Rectangle) = rectangle.copy()
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f),

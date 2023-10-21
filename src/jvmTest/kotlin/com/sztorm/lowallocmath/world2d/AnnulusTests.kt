@@ -129,6 +129,9 @@ class AnnulusTests {
                     a.innerRadius.isApproximately(b.innerRadius)
 
         @JvmStatic
+        fun clone(annulus: Annulus) = annulus.copy()
+
+        @JvmStatic
         fun annularRadiusArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Annulus(

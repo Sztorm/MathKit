@@ -147,6 +147,9 @@ class SquareTests {
                     a.pointD.isApproximately(b.pointD)
 
         @JvmStatic
+        fun clone(square: Square) = square.copy()
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f),

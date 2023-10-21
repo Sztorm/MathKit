@@ -216,6 +216,9 @@ class RegularPolygonTests {
                     a.inradius.isApproximately(b.inradius)
 
         @JvmStatic
+        fun clone(polygon: RegularPolygon) = polygon.copy()
+
+        @JvmStatic
         fun constructorRegularTriangleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularTriangle(

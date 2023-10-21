@@ -156,6 +156,9 @@ class RegularTriangleTests {
                     a.pointC.isApproximately(b.pointC)
 
         @JvmStatic
+        fun clone(triangle: RegularTriangle) = triangle.copy()
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
