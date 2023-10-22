@@ -156,6 +156,74 @@ class TransformableTests {
     }
 
     @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
+    fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
+        cloner: (Rotatable) -> Rotatable,
+        equalityComparator: (Rotatable, Rotatable) -> Boolean,
+        rotatable: Rotatable,
+        point: Wrapper<Vector2F>,
+        angle: Wrapper<AngleF>,
+        expected: Rotatable
+    ) {
+        val clone: Rotatable = cloner(rotatable)
+        val actual: Rotatable = rotatable.rotatedAroundPointBy(point.value, angle.value)
+
+        assertTrue(equalityComparator(expected, actual))
+        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
+    fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
+        cloner: (Rotatable) -> Rotatable,
+        equalityComparator: (Rotatable, Rotatable) -> Boolean,
+        rotatable: Rotatable,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Rotatable
+    ) {
+        val clone: Rotatable = cloner(rotatable)
+        val actual: Rotatable = rotatable.rotatedAroundPointBy(point.value, rotation.value)
+
+        assertTrue(equalityComparator(expected, actual))
+        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
+    fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
+        cloner: (Rotatable) -> Rotatable,
+        equalityComparator: (Rotatable, Rotatable) -> Boolean,
+        rotatable: Rotatable,
+        point: Wrapper<Vector2F>,
+        angle: Wrapper<AngleF>,
+        expected: Rotatable
+    ) {
+        val clone: Rotatable = cloner(rotatable)
+        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, angle.value)
+
+        assertTrue(equalityComparator(expected, actual))
+        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
+    fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
+        cloner: (Rotatable) -> Rotatable,
+        equalityComparator: (Rotatable, Rotatable) -> Boolean,
+        rotatable: Rotatable,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Rotatable
+    ) {
+        val clone: Rotatable = cloner(rotatable)
+        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, rotation.value)
+
+        assertTrue(equalityComparator(expected, actual))
+        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+    }
+
+    @ParameterizedTest
     @MethodSource("rotateByAngleFArgs")
     fun rotateByAngleFMutatesRotatableCorrectly(
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
@@ -190,6 +258,62 @@ class TransformableTests {
         rotation: Wrapper<ComplexF>,
         expected: MutableRotatable
     ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(rotation.value) }))
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FAngleFArgs")
+    fun rotateAroundPointByVector2FAngleFMutatesRotatableCorrectly(
+        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
+        rotatable: MutableRotatable,
+        point: Wrapper<Vector2F>,
+        angle: Wrapper<AngleF>,
+        expected: MutableRotatable
+    ) = assertTrue(
+        equalityComparator(
+            expected, rotatable.apply { rotateAroundPointBy(point.value, angle.value) }
+        )
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FComplexFArgs")
+    fun rotateAroundPointByVector2FComplexFMutatesRotatableCorrectly(
+        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
+        rotatable: MutableRotatable,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRotatable
+    ) = assertTrue(
+        equalityComparator(
+            expected, rotatable.apply { rotateAroundPointBy(point.value, rotation.value) }
+        )
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FAngleFArgs")
+    fun rotateAroundPointToVector2FAngleFMutatesRotatableCorrectly(
+        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
+        rotatable: MutableRotatable,
+        point: Wrapper<Vector2F>,
+        angle: Wrapper<AngleF>,
+        expected: MutableRotatable
+    ) = assertTrue(
+        equalityComparator(
+            expected, rotatable.apply { rotateAroundPointTo(point.value, angle.value) }
+        )
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FComplexFArgs")
+    fun rotateAroundPointToVector2FComplexFMutatesRotatableCorrectly(
+        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
+        rotatable: MutableRotatable,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRotatable
+    ) = assertTrue(
+        equalityComparator(
+            expected, rotatable.apply { rotateAroundPointTo(point.value, rotation.value) }
+        )
+    )
 
     @ParameterizedTest
     @MethodSource("scaledByArgs")
@@ -1985,6 +2109,110 @@ class TransformableTests {
         }
 
         @JvmStatic
+        fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(-1.0710678f, -3f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(8.988362f, -9.408564f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            return listOf(
+                circleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(4) as Wrapper<*>).value as AngleF
+                        set(4, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(6f, 4.071068f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(-0.4085636f, -5.9883623f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        radius = 4f
+                    )
+                ),
+            )
+            return listOf(
+                circleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(4) as Wrapper<*>).value as AngleF
+                        set(4, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
         fun rotateByAngleFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
             Arguments.of(*args.get().drop(1).toTypedArray())
         }
@@ -2003,6 +2231,30 @@ class TransformableTests {
         fun rotateToComplexFArgs(): List<Arguments> = rotatedToComplexFArgs().map { args ->
             Arguments.of(*args.get().drop(1).toTypedArray())
         }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(*args.get().drop(1).toTypedArray())
+            }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FComplexFArgs().map { args ->
+                Arguments.of(*args.get().drop(1).toTypedArray())
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(*args.get().drop(1).toTypedArray())
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FComplexFArgs().map { args ->
+                Arguments.of(*args.get().drop(1).toTypedArray())
+            }
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {

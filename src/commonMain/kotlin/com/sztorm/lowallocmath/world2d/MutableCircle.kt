@@ -62,14 +62,46 @@ class MutableCircle(
     override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableCircle =
         rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableCircle =
-        TODO()
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableCircle {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val (cX: Float, cY: Float) = _center
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+
+        return MutableCircle(
+            Vector2F(
+                cpDiffX * rotR - cpDiffY * rotI + pX,
+                cpDiffY * rotR + cpDiffX * rotI + pY
+            ),
+            ComplexF(
+                startRotR * rotR - startRotI * rotI,
+                startRotI * rotR + startRotR * rotI
+            ),
+            _radius
+        )
+    }
 
     override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableCircle =
         rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableCircle =
-        TODO()
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableCircle {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation * ComplexF.conjugate(_rotation)
+        val (cX: Float, cY: Float) = _center
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+
+        return MutableCircle(
+            Vector2F(
+                cpDiffX * rotR - cpDiffY * rotI + pX,
+                cpDiffY * rotR + cpDiffX * rotI + pY
+            ),
+            rotation,
+            _radius
+        )
+    }
 
     override fun rotateBy(angle: AngleF) {
         _rotation *= ComplexF.fromAngle(angle)
@@ -90,14 +122,37 @@ class MutableCircle(
     override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
         rotateAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
-        TODO()
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val (cX: Float, cY: Float) = _center
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+
+        _center = Vector2F(
+            cpDiffX * rotR - cpDiffY * rotI + pX, cpDiffY * rotR + cpDiffX * rotI + pY
+        )
+        _rotation = ComplexF(
+            startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
+        )
+    }
 
     override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
         rotateAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
-        TODO()
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation * ComplexF.conjugate(_rotation)
+        val (cX: Float, cY: Float) = _center
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+
+        _center = Vector2F(
+            cpDiffX * rotR - cpDiffY * rotI + pX, cpDiffY * rotR + cpDiffX * rotI + pY
+        )
+        _rotation = rotation
+    }
 
     override fun scaledBy(factor: Float) =
         MutableCircle(_center, _rotation, _radius * factor)
