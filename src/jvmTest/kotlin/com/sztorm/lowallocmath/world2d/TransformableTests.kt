@@ -2110,6 +2110,44 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val annulusArgs = listOf(
+                Arguments.of(
+                    AnnulusTests.Companion::clone,
+                    AnnulusTests.Companion::areApproximatelyEqual,
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableAnnulus(
+                        center = Vector2F(-2.485281f, -4.4142137f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    )
+                ),
+                Arguments.of(
+                    AnnulusTests.Companion::clone,
+                    AnnulusTests.Companion::areApproximatelyEqual,
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableAnnulus(
+                        center = Vector2F(10.867748f, -10.092604f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    )
+                ),
+            )
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -2145,6 +2183,7 @@ class TransformableTests {
                 ),
             )
             return listOf(
+                annulusArgs,
                 circleArgs
             ).flatten()
         }
@@ -2162,6 +2201,44 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val annulusArgs = listOf(
+                Arguments.of(
+                    AnnulusTests.Companion::clone,
+                    AnnulusTests.Companion::areApproximatelyEqual,
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableAnnulus(
+                        center = Vector2F(12.082763f, 3.0827627f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-144.46233f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    )
+                ),
+                Arguments.of(
+                    AnnulusTests.Companion::clone,
+                    AnnulusTests.Companion::areApproximatelyEqual,
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableAnnulus(
+                        center = Vector2F(-2.0835419f, -0.057831287f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-29.462322f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    )
+                ),
+            )
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -2197,6 +2274,7 @@ class TransformableTests {
                 ),
             )
             return listOf(
+                annulusArgs,
                 circleArgs
             ).flatten()
         }
