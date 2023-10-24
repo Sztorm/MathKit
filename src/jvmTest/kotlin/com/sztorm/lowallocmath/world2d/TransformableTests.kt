@@ -2174,8 +2174,8 @@ class TransformableTests {
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
-                        center = Vector2F(6f, 4.071068f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(11f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         radius = 4f
                     )
                 ),
@@ -2190,8 +2190,8 @@ class TransformableTests {
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
-                        center = Vector2F(-0.4085636f, -5.9883623f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        center = Vector2F(-0.64463043f, -0.58155227f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(115f)),
                         radius = 4f
                     )
                 ),

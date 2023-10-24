@@ -88,19 +88,26 @@ class MutableCircle(
 
     override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableCircle {
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation * ComplexF.conjugate(_rotation)
+        val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
-        return MutableCircle(
-            Vector2F(
-                cpDiffX * rotR - cpDiffY * rotI + pX,
-                cpDiffY * rotR + cpDiffX * rotI + pY
-            ),
-            rotation,
-            _radius
-        )
+        return if (centerToPointDist > 0.00001f) {
+            val startRotR: Float = cpDiffX / centerToPointDist
+            val startRotI: Float = cpDiffY / centerToPointDist
+
+            MutableCircle(
+                Vector2F(
+                    rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
+                ),
+                ComplexF(startRotR, -startRotI) * _rotation * rotation,
+                _radius
+            )
+        } else {
+            MutableCircle(_center, rotation, _radius)
+        }
     }
 
     override fun rotateBy(angle: AngleF) {
@@ -143,15 +150,23 @@ class MutableCircle(
 
     override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation * ComplexF.conjugate(_rotation)
+        val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
-        _center = Vector2F(
-            cpDiffX * rotR - cpDiffY * rotI + pX, cpDiffY * rotR + cpDiffX * rotI + pY
-        )
-        _rotation = rotation
+        if (centerToPointDist > 0.00001f) {
+            val startRotR: Float = cpDiffX / centerToPointDist
+            val startRotI: Float = cpDiffY / centerToPointDist
+
+            _center = Vector2F(
+                rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
+            )
+            _rotation = ComplexF(startRotR, -startRotI) * _rotation * rotation
+        } else {
+            _rotation = rotation
+        }
     }
 
     override fun scaledBy(factor: Float) =
