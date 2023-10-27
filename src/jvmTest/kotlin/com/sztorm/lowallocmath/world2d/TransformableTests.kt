@@ -2182,9 +2182,48 @@ class TransformableTests {
                     )
                 ),
             )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(0.34314585f, -7.242641f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        width = 3f,
+                        height = 5f
+                    )
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(12.235828f, -6.3338337f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        width = 3f,
+                        height = 5f
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
-                circleArgs
+                circleArgs,
+                rectangleArgs
             ).flatten()
         }
 
@@ -2273,9 +2312,48 @@ class TransformableTests {
                     )
                 ),
             )
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(11f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-6.8698964f)),
+                        width = 3f,
+                        height = 5f
+                    )
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(-0.64463043f, -0.58155227f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(108.130104f)),
+                        width = 3f,
+                        height = 5f
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
-                circleArgs
+                circleArgs,
+                rectangleArgs
             ).flatten()
         }
 
