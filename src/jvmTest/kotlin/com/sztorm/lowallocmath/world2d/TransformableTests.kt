@@ -2292,12 +2292,55 @@ class TransformableTests {
                     )
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::clone,
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(0.34314585f, -10.071068f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::clone,
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(14.799253f, -5.138489f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
                 regularPolygonArgs,
-                regularTriangleArgs
+                regularTriangleArgs,
+                roundedRectangleArgs
             ).flatten()
         }
 
@@ -2668,12 +2711,95 @@ class TransformableTests {
                     )
                 ),
             )
+            val roundedRectangleArgs = listOf(
+                Arguments.of(
+                    RoundedRectangleTests.Companion::clone,
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(12.403124f, 3.4031243f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(158.6598f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::clone,
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-2.5092793f, 0.09712434f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-86.340195f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::clone,
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
+                ),
+                Arguments.of(
+                    RoundedRectangleTests.Companion::clone,
+                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
                 circleArgs,
                 rectangleArgs,
                 regularPolygonArgs,
-                regularTriangleArgs
+                regularTriangleArgs,
+                roundedRectangleArgs
             ).flatten()
         }
 
