@@ -202,7 +202,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
         if (centerToPointDist > 0.00001f) {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
-            val targetRot: ComplexF = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
+            val targetRot = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
             val (targetRotR: Float, targetRotI: Float) = targetRot
             val targetCenterX: Float = rotR * centerToPointDist + pX
             val targetCenterY: Float = rotI * centerToPointDist + pY
@@ -322,7 +322,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
         if (centerToPointDist > 0.00001f) {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
-            val targetRot: ComplexF = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
+            val targetRot = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
             val (targetRotR: Float, targetRotI: Float) = targetRot
             val targetCenterX: Float = rotR * centerToPointDist + pX
             val targetCenterY: Float = rotI * centerToPointDist + pY
