@@ -2220,10 +2220,49 @@ class TransformableTests {
                     )
                 ),
             )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::clone,
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(-6.020815f, 0.5355339f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    )
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::clone,
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(7.875934f, -15.38874f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
                 circleArgs,
-                rectangleArgs
+                rectangleArgs,
+                regularPolygonArgs
             ).flatten()
         }
 
@@ -2277,6 +2316,42 @@ class TransformableTests {
                         innerRadius = 2f
                     )
                 ),
+                Arguments.of(
+                    AnnulusTests.Companion::clone,
+                    AnnulusTests.Companion::areApproximatelyEqual,
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(-1f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    )
+                ),
+                Arguments.of(
+                    AnnulusTests.Companion::clone,
+                    AnnulusTests.Companion::areApproximatelyEqual,
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    Wrapper(Vector2F(-1f, 2f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    )
+                ),
             )
             val circleArgs = listOf(
                 Arguments.of(
@@ -2308,6 +2383,38 @@ class TransformableTests {
                     MutableCircle(
                         center = Vector2F(-0.64463043f, -0.58155227f),
                         rotation = ComplexF.fromAngle(AngleF.fromDegrees(115f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(1f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        radius = 4f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(1f, 2f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         radius = 4f
                     )
                 ),
@@ -2349,11 +2456,122 @@ class TransformableTests {
                         height = 5f
                     )
                 ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, -2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 5f
+                    )
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, -2f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        width = 3f,
+                        height = 5f
+                    )
+                ),
+            )
+            val regularPolygonArgs = listOf(
+                Arguments.of(
+                    RegularPolygonTests.Companion::clone,
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(14.860023f, 5.8600225f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(46.38954f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    )
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::clone,
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(-5.774315f, 1.2855005f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(161.38954f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    )
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::clone,
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    )
+                ),
+                Arguments.of(
+                    RegularPolygonTests.Companion::clone,
+                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    )
+                ),
             )
             return listOf(
                 annulusArgs,
                 circleArgs,
-                rectangleArgs
+                rectangleArgs,
+                regularPolygonArgs
             ).flatten()
         }
 
