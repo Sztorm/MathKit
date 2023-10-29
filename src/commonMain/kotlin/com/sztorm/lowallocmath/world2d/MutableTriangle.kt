@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 class MutableTriangle : Triangle, MutableTransformable {
     private var _pointA: Vector2F
@@ -218,14 +219,110 @@ class MutableTriangle : Triangle, MutableTransformable {
     override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableTriangle =
         rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableTriangle =
-        TODO()
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableTriangle {
+        val (cX: Float, cY: Float) = _centroid
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val pcaX: Float = _pointA.x - cX
+        val pcaY: Float = _pointA.y - cY
+        val pcbX: Float = _pointB.x - cX
+        val pcbY: Float = _pointB.y - cY
+        val pccX: Float = _pointC.x - cX
+        val pccY: Float = _pointC.y - cY
+
+        return MutableTriangle(
+            pointA = Vector2F(
+                pcaX * rotR - pcaY * rotI + targetCenterX,
+                pcaY * rotR + pcaX * rotI + targetCenterY
+            ),
+            pointB = Vector2F(
+                pcbX * rotR - pcbY * rotI + targetCenterX,
+                pcbY * rotR + pcbX * rotI + targetCenterY
+            ),
+            pointC = Vector2F(
+                pccX * rotR - pccY * rotI + targetCenterX,
+                pccY * rotR + pccX * rotI + targetCenterY
+            ),
+            centroid = Vector2F(targetCenterX, targetCenterY),
+            rotation = ComplexF(
+                startRotR * rotR - startRotI * rotI,
+                startRotI * rotR + startRotR * rotI
+            )
+        )
+    }
 
     override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableTriangle =
         rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableTriangle =
-        TODO()
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableTriangle {
+        val (cX: Float, cY: Float) = _centroid
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val pcaX: Float = _pointA.x - cX
+        val pcaY: Float = _pointA.y - cY
+        val pcbX: Float = _pointB.x - cX
+        val pcbY: Float = _pointB.y - cY
+        val pccX: Float = _pointC.x - cX
+        val pccY: Float = _pointC.y - cY
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+
+        if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val pRotR: Float = pointRotR * rotR + pointRotI * rotI
+            val pRotI: Float = pointRotR * rotI - pointRotI * rotR
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+
+            return MutableTriangle(
+                pointA = Vector2F(
+                    pcaX * pRotR - pcaY * pRotI + targetCenterX,
+                    pcaY * pRotR + pcaX * pRotI + targetCenterY
+                ),
+                pointB = Vector2F(
+                    pcbX * pRotR - pcbY * pRotI + targetCenterX,
+                    pcbY * pRotR + pcbX * pRotI + targetCenterY
+                ),
+                pointC = Vector2F(
+                    pccX * pRotR - pccY * pRotI + targetCenterX,
+                    pccY * pRotR + pccX * pRotI + targetCenterY
+                ),
+                centroid = Vector2F(targetCenterX, targetCenterY),
+                rotation = ComplexF(
+                    pRotR * startRotR - pRotI * startRotI,
+                    pRotI * startRotR + pRotR * startRotI
+                )
+            )
+        } else {
+            val pRotR: Float = rotR * startRotR + rotI * startRotI
+            val pRotI: Float = rotI * startRotR - rotR * startRotI
+
+            return MutableTriangle(
+                pointA = Vector2F(
+                    pcaX * pRotR - pcaY * pRotI + cX,
+                    pcaY * pRotR + pcaX * pRotI + cY
+                ),
+                pointB = Vector2F(
+                    pcbX * pRotR - pcbY * pRotI + cX,
+                    pcbY * pRotR + pcbX * pRotI + cY
+                ),
+                pointC = Vector2F(
+                    pccX * pRotR - pccY * pRotI + cX,
+                    pccY * pRotR + pccX * pRotI + cY
+                ),
+                _centroid,
+                rotation
+            )
+        }
+    }
 
     override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
 
@@ -267,14 +364,100 @@ class MutableTriangle : Triangle, MutableTransformable {
     override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
         rotateAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
-        TODO()
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
+        val (cX: Float, cY: Float) = _centroid
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val pcaX: Float = _pointA.x - cX
+        val pcaY: Float = _pointA.y - cY
+        val pcbX: Float = _pointB.x - cX
+        val pcbY: Float = _pointB.y - cY
+        val pccX: Float = _pointC.x - cX
+        val pccY: Float = _pointC.y - cY
+        _pointA = Vector2F(
+            pcaX * rotR - pcaY * rotI + targetCenterX,
+            pcaY * rotR + pcaX * rotI + targetCenterY
+        )
+        _pointB = Vector2F(
+            pcbX * rotR - pcbY * rotI + targetCenterX,
+            pcbY * rotR + pcbX * rotI + targetCenterY
+        )
+        _pointC = Vector2F(
+            pccX * rotR - pccY * rotI + targetCenterX,
+            pccY * rotR + pccX * rotI + targetCenterY
+        )
+        _centroid = Vector2F(targetCenterX, targetCenterY)
+        _rotation = ComplexF(
+            startRotR * rotR - startRotI * rotI,
+            startRotI * rotR + startRotR * rotI
+        )
+    }
 
     override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
         rotateAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
-        TODO()
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
+        val (cX: Float, cY: Float) = _centroid
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val pcaX: Float = _pointA.x - cX
+        val pcaY: Float = _pointA.y - cY
+        val pcbX: Float = _pointB.x - cX
+        val pcbY: Float = _pointB.y - cY
+        val pccX: Float = _pointC.x - cX
+        val pccY: Float = _pointC.y - cY
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+
+        if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val pRotR: Float = pointRotR * rotR + pointRotI * rotI
+            val pRotI: Float = pointRotR * rotI - pointRotI * rotR
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+            _pointA = Vector2F(
+                pcaX * pRotR - pcaY * pRotI + targetCenterX,
+                pcaY * pRotR + pcaX * pRotI + targetCenterY
+            )
+            _pointB = Vector2F(
+                pcbX * pRotR - pcbY * pRotI + targetCenterX,
+                pcbY * pRotR + pcbX * pRotI + targetCenterY
+            )
+            _pointC = Vector2F(
+                pccX * pRotR - pccY * pRotI + targetCenterX,
+                pccY * pRotR + pccX * pRotI + targetCenterY
+            )
+            _centroid = Vector2F(targetCenterX, targetCenterY)
+            _rotation = ComplexF(
+                pRotR * startRotR - pRotI * startRotI,
+                pRotI * startRotR + pRotR * startRotI
+            )
+        } else {
+            val pRotR: Float = rotR * startRotR + rotI * startRotI
+            val pRotI: Float = rotI * startRotR - rotR * startRotI
+            _pointA = Vector2F(
+                pcaX * pRotR - pcaY * pRotI + cX,
+                pcaY * pRotR + pcaX * pRotI + cY
+            )
+            _pointB = Vector2F(
+                pcbX * pRotR - pcbY * pRotI + cX,
+                pcbY * pRotR + pcbX * pRotI + cY
+            )
+            _pointC = Vector2F(
+                pccX * pRotR - pccY * pRotI + cX,
+                pccY * pRotR + pccX * pRotI + cY
+            )
+            _rotation = rotation
+        }
+    }
 
     override fun scaledBy(factor: Float): MutableTriangle {
         val f: Float = 1f - factor

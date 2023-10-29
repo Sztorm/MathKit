@@ -2612,6 +2612,64 @@ class TransformableTests {
                     )
                 ),
             )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(-2.4852815f, -5.828427f),
+                        Vector2F(-0.3639611f, -9.363961f),
+                        Vector2F(4.5857863f, -8.656855f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(12.14946f, -9.494932f),
+                        Vector2F(14.457233f, -6.0781813f),
+                        Vector2F(11.724524f, -1.8910227f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(-4.397463f, -0.54534626f),
+                        Vector2F(-2.2761421f, -4.08088f),
+                        Vector2F(2.6736052f, -3.3737736f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-1.9609454f, -6.3402195f),
+                        Vector2F(0.34682798f, -2.923469f),
+                        Vector2F(-2.385882f, 1.2636895f)
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
                 circleArgs,
@@ -2619,7 +2677,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
@@ -3138,6 +3197,64 @@ class TransformableTests {
                     )
                 ),
             )
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(14.348097f, 0.21080625f),
+                        Vector2F(12.068424f, 3.6463695f),
+                        Vector2F(7.15589f, 2.7152355f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-0.43803674f, 3.2089996f),
+                        Vector2F(-2.588283f, -0.3090171f),
+                        Vector2F(0.33173776f, -4.3677707f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableTriangle(
+                        Vector2F(1.301898f, -0.03143549f),
+                        Vector2F(-2.5560806f, -1.4860829f),
+                        Vector2F(-2.7458177f, -6.482481f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableTriangle(
+                        Vector2F(-4.8353605f, -1.3920327f),
+                        Vector2F(-1.88655f, -4.273788f),
+                        Vector2F(2.7219107f, -2.334179f)
+                    )
+                ),
+            )
             return listOf(
                 annulusArgs,
                 circleArgs,
@@ -3145,7 +3262,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs
+                squareArgs,
+                triangleArgs
             ).flatten()
         }
 
