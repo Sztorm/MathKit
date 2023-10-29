@@ -5,6 +5,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.PI
 import kotlin.math.absoluteValue
+import kotlin.math.sqrt
 import kotlin.math.withSign
 
 class MutableSquare : Square, MutableTransformable {
@@ -167,14 +168,78 @@ class MutableSquare : Square, MutableTransformable {
     override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableSquare =
         rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableSquare =
-        TODO()
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableSquare {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val (cX: Float, cY: Float) = _center
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val halfSideLength: Float = _sideLength * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val targetRotR: Float = startRotR * rotR - startRotI * rotI
+        val targetRotI: Float = startRotI * rotR + startRotR * rotI
+        val addendA: Float = halfSideLength * (targetRotR + targetRotI)
+        val addendB: Float = halfSideLength * (targetRotR - targetRotI)
+
+        return MutableSquare(
+            center = Vector2F(targetCenterX, targetCenterY),
+            rotation = ComplexF(targetRotR, targetRotI),
+            _sideLength,
+            pointA = Vector2F(targetCenterX + addendB, targetCenterY + addendA),
+            pointB = Vector2F(targetCenterX - addendA, targetCenterY + addendB),
+            pointC = Vector2F(targetCenterX - addendB, targetCenterY - addendA),
+            pointD = Vector2F(targetCenterX + addendA, targetCenterY - addendB),
+        )
+    }
 
     override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableSquare =
         rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableSquare =
-        TODO()
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableSquare {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val (cX: Float, cY: Float) = _center
+        val halfSideLength: Float = _sideLength * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+
+        if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val targetRot = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
+            val (targetRotR: Float, targetRotI: Float) = targetRot
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+            val addendA: Float = halfSideLength * (targetRotR + targetRotI)
+            val addendB: Float = halfSideLength * (targetRotR - targetRotI)
+
+            return MutableSquare(
+                center = Vector2F(targetCenterX, targetCenterY),
+                rotation = targetRot,
+                _sideLength,
+                pointA = Vector2F(targetCenterX + addendB, targetCenterY + addendA),
+                pointB = Vector2F(targetCenterX - addendA, targetCenterY + addendB),
+                pointC = Vector2F(targetCenterX - addendB, targetCenterY - addendA),
+                pointD = Vector2F(targetCenterX + addendA, targetCenterY - addendB),
+            )
+        } else {
+            val addendA: Float = halfSideLength * (rotR + rotI)
+            val addendB: Float = halfSideLength * (rotR - rotI)
+
+            return MutableSquare(
+                _center,
+                rotation,
+                _sideLength,
+                pointA = Vector2F(cX + addendB, cY + addendA),
+                pointB = Vector2F(cX - addendA, cY + addendB),
+                pointC = Vector2F(cX - addendB, cY - addendA),
+                pointD = Vector2F(cX + addendA, cY - addendB),
+            )
+        }
+    }
 
     override fun rotateBy(angle: AngleF) = rotateTo(_rotation * ComplexF.fromAngle(angle))
 
@@ -198,14 +263,65 @@ class MutableSquare : Square, MutableTransformable {
     override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
         rotateAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
-        TODO()
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val (cX: Float, cY: Float) = _center
+        val (startRotR: Float, startRotI: Float) = _rotation
+        val halfSideLength: Float = _sideLength * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val targetRotR: Float = startRotR * rotR - startRotI * rotI
+        val targetRotI: Float = startRotI * rotR + startRotR * rotI
+        val addendA: Float = halfSideLength * (targetRotR + targetRotI)
+        val addendB: Float = halfSideLength * (targetRotR - targetRotI)
+        _center = Vector2F(targetCenterX, targetCenterY)
+        _rotation = ComplexF(targetRotR, targetRotI)
+        _pointA = Vector2F(targetCenterX + addendB, targetCenterY + addendA)
+        _pointB = Vector2F(targetCenterX - addendA, targetCenterY + addendB)
+        _pointC = Vector2F(targetCenterX - addendB, targetCenterY - addendA)
+        _pointD = Vector2F(targetCenterX + addendA, targetCenterY - addendB)
+    }
 
     override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
         rotateAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) =
-        TODO()
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val (cX: Float, cY: Float) = _center
+        val halfSideLength: Float = _sideLength * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+
+        if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val targetRot = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
+            val (targetRotR: Float, targetRotI: Float) = targetRot
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+            val addendA: Float = halfSideLength * (targetRotR + targetRotI)
+            val addendB: Float = halfSideLength * (targetRotR - targetRotI)
+            _center = Vector2F(targetCenterX, targetCenterY)
+            _rotation = targetRot
+            _pointA = Vector2F(targetCenterX + addendB, targetCenterY + addendA)
+            _pointB = Vector2F(targetCenterX - addendA, targetCenterY + addendB)
+            _pointC = Vector2F(targetCenterX - addendB, targetCenterY - addendA)
+            _pointD = Vector2F(targetCenterX + addendA, targetCenterY - addendB)
+        } else {
+            val addendA: Float = halfSideLength * (rotR + rotI)
+            val addendB: Float = halfSideLength * (rotR - rotI)
+            _rotation = rotation
+            _pointA = Vector2F(cX + addendB, cY + addendA)
+            _pointB = Vector2F(cX - addendA, cY + addendB)
+            _pointC = Vector2F(cX - addendB, cY - addendA)
+            _pointD = Vector2F(cX + addendA, cY - addendB)
+        }
+    }
 
     override fun scaledBy(factor: Float) =
         MutableSquare(_center, _rotation, _sideLength * factor)
