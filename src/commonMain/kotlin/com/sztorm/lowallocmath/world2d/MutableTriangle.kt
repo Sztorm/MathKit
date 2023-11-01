@@ -671,8 +671,6 @@ class MutableTriangle : Triangle, MutableTransformable {
         _rotation = rotation
     }
 
-    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
-
     override fun closestPointTo(point: Vector2F): Vector2F {
         val a: Vector2F = _pointA
         val b: Vector2F = _pointB
@@ -736,6 +734,8 @@ class MutableTriangle : Triangle, MutableTransformable {
 
         return (abp == bcp) and (bcp == acp)
     }
+
+    override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
     override fun copy(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) =
         MutableTriangle(pointA, pointB, pointC)

@@ -48,11 +48,11 @@ interface Triangle : TriangleShape, Transformable {
 
     override fun transformedTo(position: Vector2F, rotation: ComplexF): Triangle
 
-    fun pointIterator(): Vector2FIterator
-
     fun closestPointTo(point: Vector2F): Vector2F
 
     operator fun contains(point: Vector2F): Boolean
+
+    fun pointIterator(): Vector2FIterator
 
     fun copy(
         pointA: Vector2F = this.pointA,
