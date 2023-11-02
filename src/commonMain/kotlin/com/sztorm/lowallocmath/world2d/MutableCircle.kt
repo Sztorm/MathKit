@@ -157,13 +157,13 @@ class MutableCircle(
         val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
         if (centerToPointDist > 0.00001f) {
-            val startRotR: Float = cpDiffX / centerToPointDist
-            val startRotI: Float = cpDiffY / centerToPointDist
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
 
             _center = Vector2F(
                 rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
             )
-            _rotation = ComplexF(startRotR, -startRotI) * _rotation * rotation
+            _rotation = ComplexF(pointRotR, -pointRotI) * _rotation * rotation
         } else {
             _rotation = rotation
         }

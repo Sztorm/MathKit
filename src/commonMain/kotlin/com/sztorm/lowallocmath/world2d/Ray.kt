@@ -55,7 +55,6 @@ interface Ray : Transformable {
 
     override fun transformedTo(position: Vector2F, rotation: ComplexF): Ray
 
-
     fun closestPointTo(point: Vector2F): Vector2F
 
     operator fun contains(point: Vector2F): Boolean

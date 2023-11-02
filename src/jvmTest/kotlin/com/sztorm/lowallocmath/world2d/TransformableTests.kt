@@ -606,6 +606,20 @@ class TransformableTests {
                     Wrapper(Vector2F(0f, 5f))
                 ),
             )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 3f))
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
+                    Wrapper(Vector2F(-2f, 5f))
+                ),
+            )
             val rectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -746,6 +760,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -839,6 +854,22 @@ class TransformableTests {
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableLineSegment(Vector2F(-3.5f, 3f), Vector2F(-1.5f, -1f)),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRay(Vector2F(-8f, 5f), Vector2F(0.7071068f, -0.7071068f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRay(Vector2F(-3.5f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -1047,6 +1078,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -1140,6 +1172,22 @@ class TransformableTests {
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableLineSegment(Vector2F(-0.5f, 2f), Vector2F(1.5f, -2f)),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    MutableRay(Vector2F(-4f, 2f), Vector2F(0.7071068f, -0.7071068f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    MutableRay(Vector2F(0.5f, 0f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -1350,6 +1398,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -1429,6 +1478,20 @@ class TransformableTests {
                     LineSegmentTests.Companion::areApproximatelyEqual,
                     MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f)))
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f)))
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f)))
                 ),
             )
             val rectangleArgs = listOf(
@@ -1571,6 +1634,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -1670,6 +1734,22 @@ class TransformableTests {
                         Vector2F(-2.7443476f, -1.2214055f),
                         Vector2F(-3.2556524f, 3.2214055f)
                     ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(1f, 0f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.42261827f, 0.9063078f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -1880,6 +1960,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -1989,6 +2070,22 @@ class TransformableTests {
                         Vector2F(-5.1012163f, 1.7647803f),
                         Vector2F(-0.89878345f, 0.23521966f)
                     ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.70710677f, 0.70710677f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.9396926f, 0.34202015f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -2199,6 +2296,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -2404,6 +2502,43 @@ class TransformableTests {
                         Vector2F(-2.7443476f, -1.2214055f),
                         Vector2F(-3.2556524f, 3.2214055f)
                     ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-5.3137083f, -5.8284273f), Vector2F(1f, 0f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(
+                        Vector2F(13.344805f, -12.058357f),
+                        Vector2F(-0.42261827f, 0.9063078f)
+                    ),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(1f, 0f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.42261827f, 0.9063078f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -2830,6 +2965,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -3036,6 +3172,46 @@ class TransformableTests {
                         Vector2F(-5.1012163f, 1.7647803f),
                         Vector2F(-0.89878345f, 0.23521966f)
                     ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(
+                        Vector2F(14.246211f, 5.246211f),
+                        Vector2F(-0.85749304f, -0.51449573f)
+                    ),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(
+                        Vector2F(-4.958605f, 0.988606f),
+                        Vector2F(0.82868373f, -0.5597173f)
+                    ),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 3f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.70710677f, 0.70710677f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 3f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.9396926f, 0.34202015f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -3462,6 +3638,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -3612,6 +3789,22 @@ class TransformableTests {
                     MutableLineSegment(
                         Vector2F(-3.3f, 1.6f), Vector2F(-2.6999998f, 0.39999998f)
                     ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    2f,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    0.3f,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -3822,6 +4015,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -3931,6 +4125,26 @@ class TransformableTests {
                     MutableLineSegment(
                         Vector2F(-2.2443476f, -1.2214055f),
                         Vector2F(-2.7556524f, 3.2214055f)
+                    ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-8f, 5f), Vector2F(1f, 0f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(
+                        Vector2F(-3.5f, 3f), Vector2F(-0.42261827f, 0.9063078f)
                     ),
                 ),
             )
@@ -4154,6 +4368,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -4275,6 +4490,28 @@ class TransformableTests {
                     MutableLineSegment(
                         Vector2F(-2.4233043f, 0.33357832f),
                         Vector2F(-2.5766957f, 1.6664217f)
+                    ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    2f,
+                    MutableRay(Vector2F(-8f, 5f), Vector2F(1f, 0f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    0.3f,
+                    MutableRay(
+                        Vector2F(-3.5f, 3f), Vector2F(-0.42261827f, 0.9063078f)
                     ),
                 ),
             )
@@ -4510,6 +4747,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -4626,6 +4864,24 @@ class TransformableTests {
                         Vector2F(-1.6012166f, 0.76478034f),
                         Vector2F(2.6012166f, -0.76478034f)
                     ),
+                ),
+            )
+            val rayArgs = listOf(
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(AngleF.fromDegrees(45f)),
+                    MutableRay(Vector2F(-4f, 2f), Vector2F(0.70710677f, 0.70710677f)),
+                ),
+                Arguments.of(
+                    RayTests.Companion::clone,
+                    RayTests.Companion::areApproximatelyEqual,
+                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                    Wrapper(Vector2F(0.5f, 0f)),
+                    Wrapper(AngleF.fromDegrees(-200f)),
+                    MutableRay(Vector2F(0.5f, 0f), Vector2F(-0.9396926f, 0.34202015f)),
                 ),
             )
             val rectangleArgs = listOf(
@@ -4848,6 +5104,7 @@ class TransformableTests {
                 annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
+                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,

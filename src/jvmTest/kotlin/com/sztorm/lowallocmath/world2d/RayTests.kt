@@ -74,6 +74,13 @@ class RayTests {
 
     companion object {
         @JvmStatic
+        fun areApproximatelyEqual(a: Ray, b: Ray): Boolean =
+            a.origin.isApproximately(b.origin) and a.direction.isApproximately(b.direction)
+
+        @JvmStatic
+        fun clone(ray: Ray) = ray.copy()
+
+        @JvmStatic
         fun originArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Ray(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
