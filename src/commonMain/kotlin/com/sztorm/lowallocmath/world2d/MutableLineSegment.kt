@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, MutableTransformable {
     private var _pointA: Vector2F = pointA
@@ -28,62 +29,310 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
     override val rotation: ComplexF
         get() = (_pointA - _pointB).normalized.toComplexF()
 
-    override fun movedBy(offset: Vector2F): MutableLineSegment = TODO()
+    override fun movedBy(offset: Vector2F) =
+        MutableLineSegment(_pointA + offset, _pointB + offset)
 
-    override fun movedTo(position: Vector2F): MutableLineSegment = TODO()
+    override fun movedTo(position: Vector2F): MutableLineSegment {
+        val center: Vector2F = (_pointA + _pointB) * 0.5f
+        val offset: Vector2F = position - center
 
-    override fun moveBy(offset: Vector2F) = TODO()
+        return MutableLineSegment(_pointA + offset, _pointB + offset)
+    }
 
-    override fun moveTo(position: Vector2F) = TODO()
+    override fun moveBy(offset: Vector2F) {
+        _pointA += offset
+        _pointB += offset
+    }
+
+    override fun moveTo(position: Vector2F) {
+        val center: Vector2F = (_pointA + _pointB) * 0.5f
+        val offset: Vector2F = position - center
+        _pointA += offset
+        _pointB += offset
+    }
 
     override fun rotatedBy(angle: AngleF): MutableLineSegment =
         rotatedBy(ComplexF.fromAngle(angle))
 
-    override fun rotatedBy(rotation: ComplexF): MutableLineSegment = TODO()
+    override fun rotatedBy(rotation: ComplexF): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+
+        return MutableLineSegment(
+            pointA = Vector2F(
+                pcaX * rotR - pcaY * rotI + cX, pcaY * rotR + pcaX * rotI + cY
+            ),
+            pointB = Vector2F(
+                pcbX * rotR - pcbY * rotI + cX, pcbY * rotR + pcbX * rotI + cY
+            )
+        )
+    }
 
     override fun rotatedTo(angle: AngleF): MutableLineSegment =
         rotatedTo(ComplexF.fromAngle(angle))
 
-    override fun rotatedTo(rotation: ComplexF): MutableLineSegment = TODO()
+    override fun rotatedTo(rotation: ComplexF): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pabY: Float = pbY - paY
+        val pabX: Float = pbX - paX
+        val halfLength = sqrt(pabX * pabX + pabY * pabY) * 0.5f
+
+        return MutableLineSegment(
+            pointA = Vector2F(cX + halfLength * rotR, cY + halfLength * rotI),
+            pointB = Vector2F(cX - halfLength * rotR, cY - halfLength * rotI)
+        )
+    }
 
     override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableLineSegment =
         rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableLineSegment =
-        TODO()
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+
+        return MutableLineSegment(
+            pointA = Vector2F(
+                pcaX * rotR - pcaY * rotI + targetCenterX,
+                pcaY * rotR + pcaX * rotI + targetCenterY
+            ),
+            pointB = Vector2F(
+                pcbX * rotR - pcbY * rotI + targetCenterX,
+                pcbY * rotR + pcbX * rotI + targetCenterY
+            )
+        )
+    }
 
     override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableLineSegment =
         rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableLineSegment =
-        TODO()
+    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+
+        if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val pRotR: Float = pointRotR * rotR + pointRotI * rotI
+            val pRotI: Float = pointRotR * rotI - pointRotI * rotR
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+            val pcaX: Float = paX - cX
+            val pcaY: Float = paY - cY
+            val pcbX: Float = pbX - cX
+            val pcbY: Float = pbY - cY
+
+            return MutableLineSegment(
+                pointA = Vector2F(
+                    pcaX * pRotR - pcaY * pRotI + targetCenterX,
+                    pcaY * pRotR + pcaX * pRotI + targetCenterY
+                ),
+                pointB = Vector2F(
+                    pcbX * pRotR - pcbY * pRotI + targetCenterX,
+                    pcbY * pRotR + pcbX * pRotI + targetCenterY
+                )
+            )
+        } else {
+            val pabX: Float = pbX - paX
+            val pabY: Float = pbY - paY
+            val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
+
+            return MutableLineSegment(
+                pointA = Vector2F(cX + halfLength * rotR, cY + halfLength * rotI),
+                pointB = Vector2F(cX - halfLength * rotR, cY - halfLength * rotI)
+            )
+        }
+    }
 
     override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
 
-    override fun rotateBy(rotation: ComplexF) = TODO()
+    override fun rotateBy(rotation: ComplexF) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+        _pointA = Vector2F(pcaX * rotR - pcaY * rotI + cX, pcaY * rotR + pcaX * rotI + cY)
+        _pointB = Vector2F(pcbX * rotR - pcbY * rotI + cX, pcbY * rotR + pcbX * rotI + cY)
+    }
 
     override fun rotateTo(angle: AngleF) = rotateTo(ComplexF.fromAngle(angle))
 
-    override fun rotateTo(rotation: ComplexF) = TODO()
+    override fun rotateTo(rotation: ComplexF) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pabX: Float = pbX - paX
+        val pabY: Float = pbY - paY
+        val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
+
+        _pointA = Vector2F(cX + halfLength * rotR, cY + halfLength * rotI)
+        _pointB = Vector2F(cX - halfLength * rotR, cY - halfLength * rotI)
+    }
 
     override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
         rotateAroundPointBy(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) = TODO()
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+        _pointA = Vector2F(
+            pcaX * rotR - pcaY * rotI + targetCenterX,
+            pcaY * rotR + pcaX * rotI + targetCenterY
+        )
+        _pointB = Vector2F(
+            pcbX * rotR - pcbY * rotI + targetCenterX,
+            pcbY * rotR + pcbX * rotI + targetCenterY
+        )
+    }
 
     override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
         rotateAroundPointTo(point, ComplexF.fromAngle(angle))
 
-    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) = TODO()
+    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
-    override fun scaledBy(factor: Float): MutableLineSegment = TODO()
+        if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val pRotR: Float = pointRotR * rotR + pointRotI * rotI
+            val pRotI: Float = pointRotR * rotI - pointRotI * rotR
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+            val pcaX: Float = paX - cX
+            val pcaY: Float = paY - cY
+            val pcbX: Float = pbX - cX
+            val pcbY: Float = pbY - cY
 
-    override fun scaleBy(factor: Float) = TODO()
+            _pointA = Vector2F(
+                pcaX * pRotR - pcaY * pRotI + targetCenterX,
+                pcaY * pRotR + pcaX * pRotI + targetCenterY
+            )
+            _pointB = Vector2F(
+                pcbX * pRotR - pcbY * pRotI + targetCenterX,
+                pcbY * pRotR + pcbX * pRotI + targetCenterY
+            )
+        } else {
+            val pabX: Float = pbX - paX
+            val pabY: Float = pbY - paY
+            val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
+
+            _pointA = Vector2F(cX + halfLength * rotR, cY + halfLength * rotI)
+            _pointB = Vector2F(cX - halfLength * rotR, cY - halfLength * rotI)
+        }
+    }
+
+    override fun scaledBy(factor: Float): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val f: Float = 1f - factor
+        val addendX: Float = cX * f
+        val addendY: Float = cY * f
+
+        return MutableLineSegment(
+            pointA = Vector2F(paX * factor + addendX, paY * factor + addendY),
+            pointB = Vector2F(pbX * factor + addendX, pbY * factor + addendY)
+        )
+    }
+
+    override fun scaleBy(factor: Float) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val f: Float = 1f - factor
+        val addendX: Float = cX * f
+        val addendY: Float = cY * f
+
+        _pointA = Vector2F(paX * factor + addendX, paY * factor + addendY)
+        _pointB = Vector2F(pbX * factor + addendX, pbY * factor + addendY)
+    }
 
     override fun transformedBy(offset: Vector2F, angle: AngleF): MutableLineSegment =
         transformedBy(offset, ComplexF.fromAngle(angle))
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): MutableLineSegment = TODO()
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (oX: Float, oY: Float) = offset
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+        val targetPosX: Float = cX + oX
+        val targetPosY: Float = cY + oY
+
+        return MutableLineSegment(
+            pointA = Vector2F(
+                pcaX * rotR - pcaY * rotI + targetPosX,
+                pcaY * rotR + pcaX * rotI + targetPosY
+            ),
+            pointB = Vector2F(
+                pcbX * rotR - pcbY * rotI + targetPosX,
+                pcbY * rotR + pcbX * rotI + targetPosY
+            )
+        )
+    }
 
     override fun transformedBy(
         offset: Vector2F, angle: AngleF, factor: Float
@@ -91,27 +340,123 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
 
     override fun transformedBy(
         offset: Vector2F, rotation: ComplexF, factor: Float
-    ): MutableLineSegment = TODO()
+    ): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (oX: Float, oY: Float) = offset
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+        val targetPosX: Float = cX + oX
+        val targetPosY: Float = cY + oY
+        val f: Float = 1f - factor
+        val addendX: Float = targetPosX * f
+        val addendY: Float = targetPosY * f
+
+        return MutableLineSegment(
+            pointA = Vector2F(
+                (pcaX * rotR - pcaY * rotI + targetPosX) * factor + addendX,
+                (pcaY * rotR + pcaX * rotI + targetPosY) * factor + addendY
+            ),
+            pointB = Vector2F(
+                (pcbX * rotR - pcbY * rotI + targetPosX) * factor + addendX,
+                (pcbY * rotR + pcbX * rotI + targetPosY) * factor + addendY
+            )
+        )
+    }
 
     override fun transformedTo(position: Vector2F, angle: AngleF): MutableLineSegment =
         transformedTo(position, ComplexF.fromAngle(angle))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): MutableLineSegment = TODO()
+    override fun transformedTo(position: Vector2F, rotation: ComplexF): MutableLineSegment {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (pX: Float, pY: Float) = position
+        val (rotR: Float, rotI: Float) = rotation
+        val pabX: Float = pbX - paX
+        val pabY: Float = pbY - paY
+        val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
+
+        return MutableLineSegment(
+            pointA = Vector2F(pX + halfLength * rotR, pY + halfLength * rotI),
+            pointB = Vector2F(pX - halfLength * rotR, pY - halfLength * rotI)
+        )
+    }
 
     override fun transformBy(offset: Vector2F, angle: AngleF) =
         transformBy(offset, ComplexF.fromAngle(angle))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) = TODO()
+    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (oX: Float, oY: Float) = offset
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+        val targetPosX: Float = cX + oX
+        val targetPosY: Float = cY + oY
+        _pointA = Vector2F(
+            pcaX * rotR - pcaY * rotI + targetPosX,
+            pcaY * rotR + pcaX * rotI + targetPosY
+        )
+        _pointB = Vector2F(
+            pcbX * rotR - pcbY * rotI + targetPosX,
+            pcbY * rotR + pcbX * rotI + targetPosY
+        )
+    }
 
     override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
         transformBy(offset, ComplexF.fromAngle(angle), factor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) = TODO()
+    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (oX: Float, oY: Float) = offset
+        val (rotR: Float, rotI: Float) = rotation
+        val cX: Float = (paX + pbX) * 0.5f
+        val cY: Float = (paY + pbY) * 0.5f
+        val pcaX: Float = paX - cX
+        val pcaY: Float = paY - cY
+        val pcbX: Float = pbX - cX
+        val pcbY: Float = pbY - cY
+        val targetPosX: Float = cX + oX
+        val targetPosY: Float = cY + oY
+        val f: Float = 1f - factor
+        val addendX: Float = targetPosX * f
+        val addendY: Float = targetPosY * f
+        _pointA = Vector2F(
+            (pcaX * rotR - pcaY * rotI + targetPosX) * factor + addendX,
+            (pcaY * rotR + pcaX * rotI + targetPosY) * factor + addendY
+        )
+        _pointB = Vector2F(
+            (pcbX * rotR - pcbY * rotI + targetPosX) * factor + addendX,
+            (pcbY * rotR + pcbX * rotI + targetPosY) * factor + addendY
+        )
+    }
 
     override fun transformTo(position: Vector2F, angle: AngleF) =
         transformTo(position, ComplexF.fromAngle(angle))
 
-    override fun transformTo(position: Vector2F, rotation: ComplexF) = TODO()
+    override fun transformTo(position: Vector2F, rotation: ComplexF) {
+        val (paX: Float, paY: Float) = _pointA
+        val (pbX: Float, pbY: Float) = _pointB
+        val (pX: Float, pY: Float) = position
+        val (rotR: Float, rotI: Float) = rotation
+        val pabX: Float = pbX - paX
+        val pabY: Float = pbY - paY
+        val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
+
+        _pointA = Vector2F(pX + halfLength * rotR, pY + halfLength * rotI)
+        _pointB = Vector2F(pX - halfLength * rotR, pY - halfLength * rotI)
+    }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val ab: Vector2F = _pointB - _pointA
