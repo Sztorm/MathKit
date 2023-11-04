@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
+import kotlin.math.sign
 import kotlin.math.sqrt
 
 class MutableTriangle : Triangle, MutableTransformable {
@@ -467,15 +468,29 @@ class MutableTriangle : Triangle, MutableTransformable {
         val addendY: Float = _centroid.y * f
 
         return MutableTriangle(
-            Vector2F(_pointA.x * factor + addendX, _pointA.y * factor + addendY),
-            Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY),
-            Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY),
+            pointA = Vector2F(_pointA.x * factor + addendX, _pointA.y * factor + addendY),
+            pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY),
+            pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY),
             _centroid,
-            _orientation
+            _orientation * factor.sign
         )
     }
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableTriangle = TODO()
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableTriangle {
+        val f: Float = 1f - factor
+        val addendX: Float = point.x * f
+        val addendY: Float = point.y * f
+
+        return MutableTriangle(
+            pointA = Vector2F(_pointA.x * factor + addendX, _pointA.y * factor + addendY),
+            pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY),
+            pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY),
+            centroid = Vector2F(
+                _centroid.x * factor + addendX, _centroid.y * factor + addendY
+            ),
+            _orientation * factor.sign
+        )
+    }
 
     override fun scaleBy(factor: Float) {
         val f: Float = 1f - factor
@@ -484,9 +499,19 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointA = Vector2F(_pointA.x * factor + addendX, _pointA.y * factor + addendY)
         _pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY)
         _pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY)
+        _orientation *= factor.sign
     }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val f: Float = 1f - factor
+        val addendX: Float = point.x * f
+        val addendY: Float = point.y * f
+        _pointA = Vector2F(_pointA.x * factor + addendX, _pointA.y * factor + addendY)
+        _pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY)
+        _pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY)
+        _centroid = Vector2F(_centroid.x * factor + addendX, _centroid.y * factor + addendY)
+        _orientation *= factor.sign
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableTriangle =
         transformedBy(offset, ComplexF.fromAngle(rotation))

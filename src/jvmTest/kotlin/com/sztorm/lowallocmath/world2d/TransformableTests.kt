@@ -331,8 +331,8 @@ class TransformableTests {
         assertTrue(equalityComparator(clone, scalable), "Scalable must not be mutated.")
     }
 
-    //@ParameterizedTest
-    //@MethodSource("dilatedByArgs")
+    @ParameterizedTest
+    @MethodSource("dilatedByArgs")
     fun dilatedByReturnsCorrectValue(
         cloner: (Scalable) -> Scalable,
         equalityComparator: (Scalable, Scalable) -> Boolean,
@@ -357,8 +357,8 @@ class TransformableTests {
         expected: MutableScalable
     ) = assertTrue(equalityComparator(expected, scalable.apply { scaleBy(factor) }))
 
-    //@ParameterizedTest
-    //@MethodSource("dilateByArgs")
+    @ParameterizedTest
+    @MethodSource("dilateByArgs")
     fun dilateByMutatesScalableCorrectly(
         equalityComparator: (MutableScalable, MutableScalable) -> Boolean,
         scalable: MutableScalable,
@@ -4038,6 +4038,30 @@ class TransformableTests {
                         Vector2F(-0.63333327f, -3.6666665f)
                     )
                 ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    1f,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    -1f,
+                    MutableTriangle(
+                        Vector2F(-0.6666667f, -6.333333f),
+                        Vector2F(0.3333335f, -2.333333f),
+                        Vector2F(-3.6666665f, 0.666667f)
+                    ),
+                ),
             )
             return listOf(
                 annulusArgs,
@@ -4055,7 +4079,77 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            return listOf<List<Arguments>>().flatten()
+            val triangleArgs = listOf(
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    2f,
+                    MutableTriangle(
+                        Vector2F(-10f, 5f),
+                        Vector2F(-12f, -3f),
+                        Vector2F(-4f, -9f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    0.3f,
+                    MutableTriangle(
+                        Vector2F(3.6f, -1.8f),
+                        Vector2F(3.2999997f, -3.0f),
+                        Vector2F(4.5f, -3.9f)
+                    )
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    1f,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    -1f,
+                    MutableTriangle(
+                        Vector2F(14f, -7f), Vector2F(15f, -3f), Vector2F(11f, 0f)
+                    ),
+                ),
+                Arguments.of(
+                    TriangleTests.Companion::clone,
+                    TriangleTests.Companion::areApproximatelyEqual,
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666665f)),
+                    2f,
+                    MutableTriangle(
+                        Vector2F(-2.6666667f, 4.6666665f),
+                        Vector2F(-4.666667f, -3.3333335f),
+                        Vector2F(3.3333333f, -9.333334f)
+                    )
+                ),
+            )
+            return listOf(
+                triangleArgs
+            ).flatten()
         }
 
         @JvmStatic
