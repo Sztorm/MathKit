@@ -327,6 +327,8 @@ class MutableSquare : Square, MutableTransformable {
     override fun scaledBy(factor: Float) =
         MutableSquare(_center, _orientation, _sideLength * factor)
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableSquare = TODO()
+
     override fun scaleBy(factor: Float) {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _orientation
@@ -340,6 +342,8 @@ class MutableSquare : Square, MutableTransformable {
         _pointC = Vector2F(cX - addendB, cY - addendA)
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableSquare(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _sideLength

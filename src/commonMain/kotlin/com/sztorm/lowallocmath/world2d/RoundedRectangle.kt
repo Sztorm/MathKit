@@ -41,6 +41,8 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
 
     override fun scaledBy(factor: Float): RoundedRectangle
 
+    override fun dilatedBy(point: Vector2F, factor: Float): RoundedRectangle
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): RoundedRectangle =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

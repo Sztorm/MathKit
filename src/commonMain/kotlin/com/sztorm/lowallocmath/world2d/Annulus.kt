@@ -20,7 +20,8 @@ interface Annulus : AnnulusShape, Transformable {
 
     override fun rotatedBy(rotation: ComplexF): Annulus
 
-    override fun rotatedTo(orientation: AngleF): Annulus = rotatedTo(ComplexF.fromAngle(orientation))
+    override fun rotatedTo(orientation: AngleF): Annulus =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
     override fun rotatedTo(orientation: ComplexF): Annulus
 
@@ -35,6 +36,8 @@ interface Annulus : AnnulusShape, Transformable {
     override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Annulus
 
     override fun scaledBy(factor: Float): Annulus
+
+    override fun dilatedBy(point: Vector2F, factor: Float): Annulus
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): Annulus =
         transformedBy(offset, ComplexF.fromAngle(rotation))

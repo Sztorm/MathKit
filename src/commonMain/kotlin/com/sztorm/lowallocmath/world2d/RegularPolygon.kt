@@ -39,6 +39,8 @@ interface RegularPolygon : RegularShape, Transformable {
 
     override fun scaledBy(factor: Float): RegularPolygon
 
+    override fun dilatedBy(point: Vector2F, factor: Float): RegularPolygon
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): RegularPolygon =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

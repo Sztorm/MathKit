@@ -31,6 +31,8 @@ interface Transformable : Movable, Rotatable, Scalable {
 
     override fun scaledBy(factor: Float): Transformable
 
+    override fun dilatedBy(point: Vector2F, factor: Float): Transformable
+
     fun transformedBy(offset: Vector2F, rotation: AngleF): Transformable =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

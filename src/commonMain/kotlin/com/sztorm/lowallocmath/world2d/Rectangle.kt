@@ -39,6 +39,8 @@ interface Rectangle : RectangleShape, Transformable {
 
     override fun scaledBy(factor: Float): Rectangle
 
+    override fun dilatedBy(point: Vector2F, factor: Float): Rectangle
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): Rectangle =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

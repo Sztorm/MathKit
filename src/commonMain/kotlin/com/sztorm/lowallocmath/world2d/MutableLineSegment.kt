@@ -292,6 +292,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableLineSegment = TODO()
+
     override fun scaleBy(factor: Float) {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
@@ -304,6 +306,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointA = Vector2F(paX * factor + addendX, paY * factor + addendY)
         _pointB = Vector2F(pbX * factor + addendX, pbY * factor + addendY)
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableLineSegment =
         transformedBy(offset, ComplexF.fromAngle(rotation))

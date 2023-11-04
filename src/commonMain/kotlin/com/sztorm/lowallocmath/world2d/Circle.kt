@@ -36,6 +36,8 @@ interface Circle : CircleShape, Transformable {
 
     override fun scaledBy(factor: Float): Circle
 
+    override fun dilatedBy(point: Vector2F, factor: Float): Circle
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): Circle =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

@@ -475,6 +475,8 @@ class MutableTriangle : Triangle, MutableTransformable {
         )
     }
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableTriangle = TODO()
+
     override fun scaleBy(factor: Float) {
         val f: Float = 1f - factor
         val addendX: Float = _centroid.x * f
@@ -483,6 +485,8 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY)
         _pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY)
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableTriangle =
         transformedBy(offset, ComplexF.fromAngle(rotation))

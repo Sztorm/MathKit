@@ -183,10 +183,14 @@ class MutableAnnulus(
         _center, _orientation, _outerRadius * factor, _innerRadius * factor
     )
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableAnnulus = TODO()
+
     override fun scaleBy(factor: Float) {
         _outerRadius *= factor
         _innerRadius *= factor
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableAnnulus(
         _center + offset,

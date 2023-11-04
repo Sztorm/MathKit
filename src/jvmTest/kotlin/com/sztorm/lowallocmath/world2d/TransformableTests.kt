@@ -331,6 +331,23 @@ class TransformableTests {
         assertTrue(equalityComparator(clone, scalable), "Scalable must not be mutated.")
     }
 
+    //@ParameterizedTest
+    //@MethodSource("dilatedByArgs")
+    fun dilatedByReturnsCorrectValue(
+        cloner: (Scalable) -> Scalable,
+        equalityComparator: (Scalable, Scalable) -> Boolean,
+        scalable: Scalable,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: Scalable
+    ) {
+        val clone: Scalable = cloner(scalable)
+        val actual: Scalable = scalable.dilatedBy(point.value, factor)
+
+        assertTrue(equalityComparator(expected, actual))
+        assertTrue(equalityComparator(clone, scalable), "Scalable must not be mutated.")
+    }
+
     @ParameterizedTest
     @MethodSource("scaleByArgs")
     fun scaleByMutatesScalableCorrectly(
@@ -339,6 +356,16 @@ class TransformableTests {
         factor: Float,
         expected: MutableScalable
     ) = assertTrue(equalityComparator(expected, scalable.apply { scaleBy(factor) }))
+
+    //@ParameterizedTest
+    //@MethodSource("dilateByArgs")
+    fun dilateByMutatesScalableCorrectly(
+        equalityComparator: (MutableScalable, MutableScalable) -> Boolean,
+        scalable: MutableScalable,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: MutableScalable
+    ) = assertTrue(equalityComparator(expected, scalable.apply { dilateBy(point.value, factor) }))
 
     @ParameterizedTest
     @MethodSource("transformedByVector2FAngleFArgs")
@@ -4027,7 +4054,17 @@ class TransformableTests {
         }
 
         @JvmStatic
+        fun dilatedByArgs(): List<Arguments> {
+            return listOf<List<Arguments>>().flatten()
+        }
+
+        @JvmStatic
         fun scaleByArgs(): List<Arguments> = scaledByArgs().map { args ->
+            Arguments.of(*args.get().drop(1).toTypedArray())
+        }
+
+        @JvmStatic
+        fun dilateByArgs(): List<Arguments> = dilatedByArgs().map { args ->
             Arguments.of(*args.get().drop(1).toTypedArray())
         }
 

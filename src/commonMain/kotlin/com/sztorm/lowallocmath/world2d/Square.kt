@@ -39,6 +39,8 @@ interface Square : RectangleShape, RegularShape, Transformable {
 
     override fun scaledBy(factor: Float): Square
 
+    override fun dilatedBy(point: Vector2F, factor: Float): Square
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): Square =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

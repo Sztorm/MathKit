@@ -684,6 +684,8 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerRadius * factor
     )
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRoundedRectangle = TODO()
+
     override fun scaleBy(factor: Float) {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _orientation
@@ -730,6 +732,8 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
         _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRoundedRectangle(
         _center + offset,

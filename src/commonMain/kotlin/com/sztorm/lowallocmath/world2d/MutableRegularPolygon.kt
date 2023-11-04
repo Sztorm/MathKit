@@ -481,6 +481,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         )
     }
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRegularPolygon = TODO()
+
     override fun scaleBy(factor: Float) {
         val points: Vector2FArray = _points
         val center: Vector2F = _center
@@ -496,6 +498,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _circumradius *= factor
         _inradius *= factor
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableRegularPolygon =
         transformedBy(offset, ComplexF.fromAngle(rotation))

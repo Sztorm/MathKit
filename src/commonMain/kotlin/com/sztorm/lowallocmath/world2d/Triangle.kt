@@ -34,6 +34,8 @@ interface Triangle : TriangleShape, Transformable {
 
     override fun scaledBy(factor: Float): Triangle
 
+    override fun dilatedBy(point: Vector2F, factor: Float): Triangle
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): Triangle =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

@@ -361,6 +361,8 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override fun scaledBy(factor: Float) =
         MutableRectangle(_center, _orientation, _width * factor, _height * factor)
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRectangle = TODO()
+
     override fun scaleBy(factor: Float) {
         val width: Float = _width * factor
         val height: Float = _height * factor
@@ -383,6 +385,8 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRectangle(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _width, _height

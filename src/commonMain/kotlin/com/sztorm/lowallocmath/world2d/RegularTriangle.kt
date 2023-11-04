@@ -40,6 +40,8 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     override fun scaledBy(factor: Float): RegularTriangle
 
+    override fun dilatedBy(point: Vector2F, factor: Float): RegularTriangle
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): RegularTriangle =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

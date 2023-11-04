@@ -172,9 +172,13 @@ class MutableCircle(
     override fun scaledBy(factor: Float) =
         MutableCircle(_center, _orientation, _radius * factor)
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableCircle = TODO()
+
     override fun scaleBy(factor: Float) {
         _radius *= factor
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableCircle(
         _center + offset,

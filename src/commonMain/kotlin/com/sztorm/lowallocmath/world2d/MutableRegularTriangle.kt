@@ -364,6 +364,8 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override fun scaledBy(factor: Float) =
         MutableRegularTriangle(_center, _orientation, _sideLength * factor)
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRegularTriangle = TODO()
+
     override fun scaleBy(factor: Float) {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _orientation
@@ -380,6 +382,8 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRegularTriangle(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _sideLength

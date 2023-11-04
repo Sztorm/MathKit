@@ -173,7 +173,11 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
 
     override fun scaledBy(factor: Float) = MutableRay(_origin, _direction)
 
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRay = TODO()
+
     override fun scaleBy(factor: Float) {}
+
+    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableRay =
         transformedBy(offset, ComplexF.fromAngle(rotation))

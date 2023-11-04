@@ -40,6 +40,8 @@ interface Ray : Transformable {
 
     override fun scaledBy(factor: Float): Ray
 
+    override fun dilatedBy(point: Vector2F, factor: Float): Ray
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): Ray =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 

@@ -49,6 +49,8 @@ interface LineSegment : Transformable {
 
     override fun scaledBy(factor: Float): LineSegment
 
+    override fun dilatedBy(point: Vector2F, factor: Float): LineSegment
+
     override fun transformedBy(offset: Vector2F, rotation: AngleF): LineSegment =
         transformedBy(offset, ComplexF.fromAngle(rotation))
 
