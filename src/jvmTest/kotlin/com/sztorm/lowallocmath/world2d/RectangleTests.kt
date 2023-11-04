@@ -54,11 +54,11 @@ class RectangleTests {
     fun copyReturnsCorrectValue(
         rectangle: Rectangle,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         width: Float,
         height: Float,
         expected: Rectangle
-    ) = assertEquals(expected, rectangle.copy(center.value, rotation.value, width, height))
+    ) = assertEquals(expected, rectangle.copy(center.value, orientation.value, width, height))
 
     @ParameterizedTest
     @MethodSource("equalsArgs")
@@ -103,7 +103,7 @@ class RectangleTests {
         @JvmStatic
         fun areApproximatelyEqual(a: Rectangle, b: Rectangle): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.width.isApproximately(b.width) and
                     a.height.isApproximately(b.height) and
                     a.pointA.isApproximately(b.pointA) and
@@ -117,7 +117,12 @@ class RectangleTests {
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f),
+                Rectangle(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    width = 4f,
+                    height = 2f
+                ),
                 Wrapper(Vector2F(2f, 1f)),
                 Wrapper(Vector2F(-2f, 1f)),
                 Wrapper(Vector2F(-2f, -1f)),
@@ -126,7 +131,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -138,7 +143,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-1f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     width = 3f,
                     height = 5f
                 ),
@@ -152,13 +157,9 @@ class RectangleTests {
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f),
-                8f
-            ),
-            Arguments.of(
                 Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
                     width = 4f,
                     height = 2f
                 ),
@@ -166,7 +167,16 @@ class RectangleTests {
             ),
             Arguments.of(
                 Rectangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 1.5f, height = 3f
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                8f
+            ),
+            Arguments.of(
+                Rectangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, width = 1.5f, height = 3f
                 ),
                 4.5f
             ),
@@ -175,13 +185,18 @@ class RectangleTests {
         @JvmStatic
         fun perimeterArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Rectangle(center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f),
+                Rectangle(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    width = 4f,
+                    height = 2f
+                ),
                 12f
             ),
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -190,7 +205,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     width = 1.5f,
                     height = 3f
                 ),
@@ -207,7 +222,7 @@ class RectangleTests {
             val a = (pointA.y - pointB.y) / (pointA.x - pointB.x)
             val rectangle = Rectangle(
                 center = (pointB + pointD) * 0.5f,
-                rotation = ComplexF.fromAngle(AngleF.atan(a)),
+                orientation = ComplexF.fromAngle(AngleF.atan(a)),
                 width = pointA.distanceTo(pointB),
                 height = pointB.distanceTo(pointC)
             )
@@ -257,7 +272,7 @@ class RectangleTests {
             val a = (pointA.y - pointB.y) / (pointA.x - pointB.x)
             val rectangle = Rectangle(
                 center = (pointB + pointD) * 0.5f,
-                rotation = ComplexF.fromAngle(AngleF.atan(a)),
+                orientation = ComplexF.fromAngle(AngleF.atan(a)),
                 width = pointA.distanceTo(pointB),
                 height = pointB.distanceTo(pointC)
             )
@@ -282,14 +297,14 @@ class RectangleTests {
                 ),
                 Arguments.of(
                     Rectangle(
-                        center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, width = 4f, height = 2f
                     ),
                     Wrapper(Vector2F(-1.9f, -0.9f)),
                     true
                 ),
                 Arguments.of(
                     Rectangle(
-                        center = Vector2F.ZERO, rotation = ComplexF.ONE, width = 4f, height = 2f
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, width = 4f, height = 2f
                     ),
                     Wrapper(Vector2F(-2.1f, -1f)),
                     false
@@ -297,7 +312,7 @@ class RectangleTests {
                 Arguments.of(
                     Rectangle(
                         center = Vector2F(-2f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 4f,
                         height = 2f
                     ),
@@ -307,7 +322,7 @@ class RectangleTests {
                 Arguments.of(
                     Rectangle(
                         center = Vector2F(-2f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 4f,
                         height = 2f
                     ),
@@ -322,7 +337,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -332,7 +347,7 @@ class RectangleTests {
                 2f,
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 )
@@ -340,7 +355,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -350,7 +365,7 @@ class RectangleTests {
                 1f,
                 Rectangle(
                     center = Vector2F(-2.5f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 1f
                 )
@@ -358,7 +373,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -368,7 +383,7 @@ class RectangleTests {
                 3f,
                 Rectangle(
                     center = Vector2F(0f, 8f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     width = 1f,
                     height = 3f
                 )
@@ -380,7 +395,7 @@ class RectangleTests {
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -394,13 +409,13 @@ class RectangleTests {
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -409,13 +424,13 @@ class RectangleTests {
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2.1f
                 ),
@@ -428,13 +443,13 @@ class RectangleTests {
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 )
@@ -442,13 +457,13 @@ class RectangleTests {
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(0f, 8f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     width = 1f,
                     height = 3f
                 ),
                 MutableRectangle(
                     center = Vector2F(0f, 8f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     width = 1f,
                     height = 3f
                 )
@@ -460,26 +475,26 @@ class RectangleTests {
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
                 "Rectangle(" +
                         "center=${Vector2F(-2f, 4f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(45f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(45f))}, " +
                         "width=${4f}, " +
                         "height=${2f})"
             ),
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(0f, 8f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     width = 1f,
                     height = 3f
                 ),
                 "Rectangle(" +
                         "center=${Vector2F(0f, 8f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(30f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(30f))}, " +
                         "width=${1f}, " +
                         "height=${3f})"
             ),
@@ -490,7 +505,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(-2f, 4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 4f,
                     height = 2f
                 ),
@@ -502,7 +517,7 @@ class RectangleTests {
             Arguments.of(
                 Rectangle(
                     center = Vector2F(0f, 8f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     width = 1f,
                     height = 3f
                 ),

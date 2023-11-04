@@ -13,47 +13,47 @@ interface Ray : Transformable {
     override val position: Vector2F
         get() = origin
 
-    override val rotation: ComplexF
+    override val orientation: ComplexF
         get() = direction.toComplexF()
 
     override fun movedBy(offset: Vector2F): Ray
 
     override fun movedTo(position: Vector2F): Ray
 
-    override fun rotatedBy(angle: AngleF): Ray = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): Ray = rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): Ray
 
-    override fun rotatedTo(angle: AngleF): Ray = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): Ray = rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): Ray
+    override fun rotatedTo(orientation: ComplexF): Ray
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Ray =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Ray =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Ray
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Ray =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Ray =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Ray
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Ray
 
     override fun scaledBy(factor: Float): Ray
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): Ray =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): Ray =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): Ray
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): Ray =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Ray =
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Ray
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): Ray =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Ray =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): Ray
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Ray
 
     fun closestPointTo(point: Vector2F): Vector2F
 

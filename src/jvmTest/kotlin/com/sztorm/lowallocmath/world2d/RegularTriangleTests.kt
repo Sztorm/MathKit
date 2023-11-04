@@ -102,10 +102,10 @@ class RegularTriangleTests {
     fun copyReturnsCorrectValue(
         triangle: RegularTriangle,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         sideLength: Float,
         expected: RegularTriangle
-    ) = assertEquals(expected, triangle.copy(center.value, rotation.value, sideLength))
+    ) = assertEquals(expected, triangle.copy(center.value, orientation.value, sideLength))
 
     @ParameterizedTest
     @MethodSource("equalsArgs")
@@ -149,7 +149,7 @@ class RegularTriangleTests {
         @JvmStatic
         fun areApproximatelyEqual(a: RegularTriangle, b: RegularTriangle): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.sideLength.isApproximately(b.sideLength) and
                     a.pointA.isApproximately(b.pointA) and
                     a.pointB.isApproximately(b.pointB) and
@@ -162,7 +162,7 @@ class RegularTriangleTests {
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 Wrapper(Vector2F(0f, 3.3333333f)),
                 Wrapper(Vector2F(-2.886751f, -1.6666667f)),
@@ -171,7 +171,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(5.464102f, -4f)),
@@ -184,14 +184,14 @@ class RegularTriangleTests {
         fun centroidArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 Wrapper(Vector2F.ZERO)
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(3.1547005f, -4f))
@@ -211,14 +211,14 @@ class RegularTriangleTests {
         fun sideLengthArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 5.773503f
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 5.773503f
@@ -226,7 +226,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 4f
@@ -237,14 +237,14 @@ class RegularTriangleTests {
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 14.433758f
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 14.433758f
@@ -252,7 +252,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 6.928203f
@@ -263,14 +263,14 @@ class RegularTriangleTests {
         fun perimeterArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 17.320509f
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 17.320509f
@@ -278,7 +278,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 12f
@@ -289,14 +289,14 @@ class RegularTriangleTests {
         fun sideCountArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 3
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 3
@@ -304,7 +304,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 3
@@ -315,14 +315,14 @@ class RegularTriangleTests {
         fun interiorAngleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 Wrapper(AngleF.fromDegrees(60f))
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 Wrapper(AngleF.fromDegrees(60f))
@@ -330,7 +330,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 Wrapper(AngleF.fromDegrees(60f))
@@ -341,14 +341,14 @@ class RegularTriangleTests {
         fun exteriorAngleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 Wrapper(AngleF.fromDegrees(120f))
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 Wrapper(AngleF.fromDegrees(120f))
@@ -356,7 +356,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 Wrapper(AngleF.fromDegrees(120f))
@@ -367,14 +367,14 @@ class RegularTriangleTests {
         fun inradiusArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 1.6666667f
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 1.6666667f
@@ -382,7 +382,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 1.1547005f
@@ -393,14 +393,14 @@ class RegularTriangleTests {
         fun circumradiusArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 3.3333333f
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 3.3333333f
@@ -408,7 +408,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 2.309401f
@@ -423,7 +423,7 @@ class RegularTriangleTests {
             val center: Vector2F = (pointA + pointB + pointC) / 3f
             val triangle = RegularTriangle(
                 center,
-                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
@@ -534,7 +534,7 @@ class RegularTriangleTests {
             val center: Vector2F = (pointA + pointB + pointC) / 3f
             val triangle = RegularTriangle(
                 center,
-                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
@@ -560,7 +560,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 Wrapper(Vector2F(-4f, 2f)),
@@ -568,14 +568,14 @@ class RegularTriangleTests {
                 5.773503f,
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 )
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 Wrapper(Vector2F(-4f, 2f)),
@@ -583,14 +583,14 @@ class RegularTriangleTests {
                 5.773503f,
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 5.773503f
                 )
             ),
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 Wrapper(Vector2F(5f, 7f)),
@@ -598,7 +598,7 @@ class RegularTriangleTests {
                 3f,
                 RegularTriangle(
                     center = Vector2F(5f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
                 )
             ),
@@ -609,7 +609,7 @@ class RegularTriangleTests {
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 null,
@@ -622,12 +622,12 @@ class RegularTriangleTests {
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 true
@@ -635,12 +635,12 @@ class RegularTriangleTests {
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 MutableRegularTriangle(
                     center = Vector2F(-4.1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 false
@@ -652,24 +652,24 @@ class RegularTriangleTests {
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 )
             ),
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(5f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
                 ),
                 MutableRegularTriangle(
                     center = Vector2F(5f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
                 )
             ),
@@ -680,23 +680,23 @@ class RegularTriangleTests {
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 "RegularTriangle(" +
                         "center=${Vector2F(-4f, 2f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(30f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(30f))}, " +
                         "sideLength=${5.773503f})"
             ),
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(5f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
                 ),
                 "RegularTriangle(" +
                         "center=${Vector2F(5f, 7f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-40f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(-40f))}, " +
                         "sideLength=${3f})"
             ),
         )
@@ -706,7 +706,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(-4f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
                     sideLength = 5.773503f
                 ),
                 Wrapper(Vector2F(-4f, 2f)),
@@ -716,7 +716,7 @@ class RegularTriangleTests {
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F(5f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                     sideLength = 3f
                 ),
                 Wrapper(Vector2F(5f, 7f)),

@@ -3,8 +3,8 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.*
 
 fun RegularPolygon(
-    center: Vector2F, rotation: ComplexF, sideLength: Float, sideCount: Int
-): RegularPolygon = MutableRegularPolygon(center, rotation, sideLength, sideCount)
+    center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int
+): RegularPolygon = MutableRegularPolygon(center, orientation, sideLength, sideCount)
 
 interface RegularPolygon : RegularShape, Transformable {
     val center: Vector2F
@@ -17,40 +17,42 @@ interface RegularPolygon : RegularShape, Transformable {
 
     override fun movedTo(position: Vector2F): RegularPolygon
 
-    override fun rotatedBy(angle: AngleF): RegularPolygon = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): RegularPolygon =
+        rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): RegularPolygon
 
-    override fun rotatedTo(angle: AngleF): RegularPolygon = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): RegularPolygon =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): RegularPolygon
+    override fun rotatedTo(orientation: ComplexF): RegularPolygon
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): RegularPolygon =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): RegularPolygon =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RegularPolygon
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): RegularPolygon =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): RegularPolygon =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): RegularPolygon
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): RegularPolygon
 
     override fun scaledBy(factor: Float): RegularPolygon
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): RegularPolygon =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): RegularPolygon =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): RegularPolygon
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): RegularPolygon =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): RegularPolygon =
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): RegularPolygon
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): RegularPolygon =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): RegularPolygon =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): RegularPolygon
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularPolygon
 
     fun closestPointTo(point: Vector2F): Vector2F
 
@@ -60,7 +62,7 @@ interface RegularPolygon : RegularShape, Transformable {
 
     fun copy(
         center: Vector2F = this.center,
-        rotation: ComplexF = this.rotation,
+        orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength,
         sideCount: Int = this.sideCount
     ): RegularPolygon

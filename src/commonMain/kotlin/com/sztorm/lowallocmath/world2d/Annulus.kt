@@ -5,8 +5,8 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
 fun Annulus(
-    center: Vector2F, rotation: ComplexF, outerRadius: Float, innerRadius: Float
-): Annulus = MutableAnnulus(center, rotation, outerRadius, innerRadius)
+    center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
+): Annulus = MutableAnnulus(center, orientation, outerRadius, innerRadius)
 
 interface Annulus : AnnulusShape, Transformable {
     override val position: Vector2F
@@ -16,40 +16,40 @@ interface Annulus : AnnulusShape, Transformable {
 
     override fun movedTo(position: Vector2F): Annulus
 
-    override fun rotatedBy(angle: AngleF): Annulus = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): Annulus = rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): Annulus
 
-    override fun rotatedTo(angle: AngleF): Annulus = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): Annulus = rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): Annulus
+    override fun rotatedTo(orientation: ComplexF): Annulus
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Annulus =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Annulus =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Annulus
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Annulus =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Annulus =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Annulus
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Annulus
 
     override fun scaledBy(factor: Float): Annulus
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): Annulus =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): Annulus =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): Annulus
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): Annulus =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Annulus =
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Annulus
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): Annulus =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Annulus =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): Annulus
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Annulus
 
     fun closestPointTo(point: Vector2F): Vector2F
 
@@ -65,7 +65,7 @@ interface Annulus : AnnulusShape, Transformable {
 
     fun copy(
         center: Vector2F = this.center,
-        rotation: ComplexF = this.rotation,
+        orientation: ComplexF = this.orientation,
         outerRadius: Float = this.outerRadius,
         innerRadius: Float = this.innerRadius
     ): Annulus

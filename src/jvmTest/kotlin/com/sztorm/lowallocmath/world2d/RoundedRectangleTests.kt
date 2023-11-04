@@ -77,13 +77,13 @@ class RoundedRectangleTests {
     fun copyReturnsCorrectValue(
         rectangle: RoundedRectangle,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         width: Float,
         height: Float,
         cornerRadius: Float,
         expected: RoundedRectangle
     ) = assertEquals(
-        expected, rectangle.copy(center.value, rotation.value, width, height, cornerRadius)
+        expected, rectangle.copy(center.value, orientation.value, width, height, cornerRadius)
     )
 
     @ParameterizedTest
@@ -138,7 +138,7 @@ class RoundedRectangleTests {
         @JvmStatic
         fun areApproximatelyEqual(a: RoundedRectangle, b: RoundedRectangle): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.width.isApproximately(b.width) and
                     a.height.isApproximately(b.height) and
                     a.cornerRadius.isApproximately(b.cornerRadius) and
@@ -163,7 +163,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -180,7 +180,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -197,7 +197,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 4f,
                     cornerRadius = 1.5f
@@ -218,7 +218,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -231,7 +231,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -244,7 +244,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 4f,
                     cornerRadius = 1.5f
@@ -261,7 +261,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -271,7 +271,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -281,7 +281,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 4f,
                     cornerRadius = 1.5f
@@ -295,7 +295,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -305,7 +305,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -315,7 +315,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 4f,
                     cornerRadius = 1.5f
@@ -328,7 +328,7 @@ class RoundedRectangleTests {
         fun closestPointToArgs(): List<Arguments> {
             val rectangle = RoundedRectangle(
                 center = Vector2F(-3f, -4f),
-                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                 width = 8f,
                 height = 4f,
                 cornerRadius = 1f
@@ -506,7 +506,7 @@ class RoundedRectangleTests {
         fun containsVector2FArgs(): List<Arguments> {
             val rectangle = RoundedRectangle(
                 center = Vector2F(-3f, -4f),
-                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                 width = 8f,
                 height = 4f,
                 cornerRadius = 1f
@@ -619,7 +619,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -631,7 +631,7 @@ class RoundedRectangleTests {
                 1f,
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -640,7 +640,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -652,7 +652,7 @@ class RoundedRectangleTests {
                 1.5f,
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 8f,
                     height = 5f,
                     cornerRadius = 1.5f
@@ -661,7 +661,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -673,7 +673,7 @@ class RoundedRectangleTests {
                 1.5f,
                 RoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 5f,
                     cornerRadius = 1.5f
@@ -686,7 +686,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -701,14 +701,14 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -718,14 +718,14 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60.1f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60.1f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -739,14 +739,14 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -755,14 +755,14 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 5f,
                     cornerRadius = 1.5f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 5f,
                     cornerRadius = 1.5f
@@ -775,14 +775,14 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
                 ),
                 "RoundedRectangle(" +
                         "center=${Vector2F(-3f, -4f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-60f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(-60f))}, " +
                         "width=${8f}, " +
                         "height=${4f}, " +
                         "cornerRadius=${1f})"
@@ -790,14 +790,14 @@ class RoundedRectangleTests {
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 5f,
                     cornerRadius = 1.5f
                 ),
                 "RoundedRectangle(" +
                         "center=${Vector2F(6f, -4f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(45f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(45f))}, " +
                         "width=${3f}, " +
                         "height=${5f}, " +
                         "cornerRadius=${1.5f})"
@@ -809,7 +809,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(-3f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
                     cornerRadius = 1f
@@ -823,7 +823,7 @@ class RoundedRectangleTests {
             Arguments.of(
                 RoundedRectangle(
                     center = Vector2F(6f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 5f,
                     cornerRadius = 1.5f

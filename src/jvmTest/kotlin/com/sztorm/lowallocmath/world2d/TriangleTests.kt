@@ -117,7 +117,7 @@ class TriangleTests {
                     a.pointB.isApproximately(b.pointB) and
                     a.pointC.isApproximately(b.pointC) and
                     a.centroid.isApproximately(b.centroid) and
-                    a.rotation.isApproximately(b.rotation)
+                    a.orientation.isApproximately(b.orientation)
 
         @JvmStatic
         fun clone(triangle: Triangle) = triangle.copy()

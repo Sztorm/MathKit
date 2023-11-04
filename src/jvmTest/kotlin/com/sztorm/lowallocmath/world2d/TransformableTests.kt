@@ -77,15 +77,15 @@ class TransformableTests {
     ) = assertTrue(equalityComparator(expected, movable.apply { moveTo(position.value) }))
 
     @ParameterizedTest
-    @MethodSource("rotationArgs")
-    fun rotationReturnsCorrectValue(
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(
         cloner: (Rotatable) -> Rotatable,
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
         expected: Wrapper<ComplexF>
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: ComplexF = rotatable.rotation
+        val actual: ComplexF = rotatable.orientation
 
         assertApproximation(expected.value, actual)
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -97,11 +97,11 @@ class TransformableTests {
         cloner: (Rotatable) -> Rotatable,
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         expected: Rotatable
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedBy(angle.value)
+        val actual: Rotatable = rotatable.rotatedBy(rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -129,11 +129,11 @@ class TransformableTests {
         cloner: (Rotatable) -> Rotatable,
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
-        angle: Wrapper<AngleF>,
+        orientation: Wrapper<AngleF>,
         expected: Rotatable
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedTo(angle.value)
+        val actual: Rotatable = rotatable.rotatedTo(orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -145,11 +145,11 @@ class TransformableTests {
         cloner: (Rotatable) -> Rotatable,
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         expected: Rotatable
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedTo(rotation.value)
+        val actual: Rotatable = rotatable.rotatedTo(orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -162,11 +162,11 @@ class TransformableTests {
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
         point: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         expected: Rotatable
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointBy(point.value, angle.value)
+        val actual: Rotatable = rotatable.rotatedAroundPointBy(point.value, rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -196,11 +196,11 @@ class TransformableTests {
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
         point: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        orientation: Wrapper<AngleF>,
         expected: Rotatable
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, angle.value)
+        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -213,11 +213,11 @@ class TransformableTests {
         equalityComparator: (Rotatable, Rotatable) -> Boolean,
         rotatable: Rotatable,
         point: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         expected: Rotatable
     ) {
         val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, rotation.value)
+        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
@@ -228,9 +228,9 @@ class TransformableTests {
     fun rotateByAngleFMutatesRotatableCorrectly(
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
         rotatable: MutableRotatable,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateBy(angle.value) }))
+    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateBy(rotation.value) }))
 
     @ParameterizedTest
     @MethodSource("rotateByComplexFArgs")
@@ -246,18 +246,18 @@ class TransformableTests {
     fun rotateToAngleFMutatesRotatableCorrectly(
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
         rotatable: MutableRotatable,
-        angle: Wrapper<AngleF>,
+        orientation: Wrapper<AngleF>,
         expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(angle.value) }))
+    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(orientation.value) }))
 
     @ParameterizedTest
     @MethodSource("rotateToComplexFArgs")
     fun rotateToComplexFMutatesRotatableCorrectly(
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
         rotatable: MutableRotatable,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(rotation.value) }))
+    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(orientation.value) }))
 
     @ParameterizedTest
     @MethodSource("rotateAroundPointByVector2FAngleFArgs")
@@ -265,11 +265,11 @@ class TransformableTests {
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
         rotatable: MutableRotatable,
         point: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         expected: MutableRotatable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointBy(point.value, angle.value) }
+            expected, rotatable.apply { rotateAroundPointBy(point.value, rotation.value) }
         )
     )
 
@@ -293,11 +293,11 @@ class TransformableTests {
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
         rotatable: MutableRotatable,
         point: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        orientation: Wrapper<AngleF>,
         expected: MutableRotatable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointTo(point.value, angle.value) }
+            expected, rotatable.apply { rotateAroundPointTo(point.value, orientation.value) }
         )
     )
 
@@ -307,11 +307,11 @@ class TransformableTests {
         equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
         rotatable: MutableRotatable,
         point: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         expected: MutableRotatable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointTo(point.value, rotation.value) }
+            expected, rotatable.apply { rotateAroundPointTo(point.value, orientation.value) }
         )
     )
 
@@ -347,11 +347,11 @@ class TransformableTests {
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
         offset: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.transformedBy(offset.value, angle.value)
+        val actual: Transformable = transformable.transformedBy(offset.value, rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(
@@ -385,12 +385,13 @@ class TransformableTests {
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
         offset: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         factor: Float,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.transformedBy(offset.value, angle.value, factor)
+        val actual: Transformable =
+            transformable.transformedBy(offset.value, rotation.value, factor)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(
@@ -426,11 +427,11 @@ class TransformableTests {
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
         position: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        orientation: Wrapper<AngleF>,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.transformedTo(position.value, angle.value)
+        val actual: Transformable = transformable.transformedTo(position.value, orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(
@@ -445,11 +446,11 @@ class TransformableTests {
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
         position: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.transformedTo(position.value, rotation.value)
+        val actual: Transformable = transformable.transformedTo(position.value, orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
         assertTrue(
@@ -463,11 +464,11 @@ class TransformableTests {
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
         offset: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, transformable.apply { transformBy(offset.value, angle.value) }
+            expected, transformable.apply { transformBy(offset.value, rotation.value) }
         )
     )
 
@@ -491,12 +492,12 @@ class TransformableTests {
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
         offset: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        rotation: Wrapper<AngleF>,
         factor: Float,
         expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, transformable.apply { transformBy(offset.value, angle.value, factor) }
+            expected, transformable.apply { transformBy(offset.value, rotation.value, factor) }
         )
     )
 
@@ -521,11 +522,11 @@ class TransformableTests {
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
         position: Wrapper<Vector2F>,
-        angle: Wrapper<AngleF>,
+        orientation: Wrapper<AngleF>,
         expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, transformable.apply { transformTo(position.value, angle.value) }
+            expected, transformable.apply { transformTo(position.value, orientation.value) }
         )
     )
 
@@ -535,11 +536,11 @@ class TransformableTests {
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
         position: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, transformable.apply { transformTo(position.value, rotation.value) }
+            expected, transformable.apply { transformTo(position.value, orientation.value) }
         )
     )
 
@@ -552,7 +553,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -563,7 +564,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(6f, 3f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                         outerRadius = 8f,
                         innerRadius = 1f
                     ),
@@ -576,7 +577,7 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(1f, 2f))
@@ -586,7 +587,7 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(-1f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                         radius = 5f
                     ),
                     Wrapper(Vector2F(-1f, 7f))
@@ -626,7 +627,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -637,7 +638,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-2f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 4f,
                         height = 2f
                     ),
@@ -674,7 +675,7 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(5f, 7f))
@@ -684,7 +685,7 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(3.1547005f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(3.1547005f, -4f))
@@ -696,7 +697,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -708,7 +709,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(6f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 4f,
                         cornerRadius = 1.5f
@@ -722,7 +723,7 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(3f, 1f))
@@ -732,7 +733,7 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(8f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(8f, -2f))
@@ -778,14 +779,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableAnnulus(
                         center = Vector2F(-5f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -795,14 +796,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableAnnulus(
                         center = Vector2F(-0.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -814,13 +815,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableCircle(
                         center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     )
                 ),
@@ -829,13 +830,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableCircle(
                         center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     )
                 ),
@@ -878,14 +879,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRectangle(
                         center = Vector2F(-5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     )
@@ -895,14 +896,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRectangle(
                         center = Vector2F(-0.5f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     )
@@ -950,13 +951,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRegularTriangle(
                         center = Vector2F(1f, 9f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     )
                 ),
@@ -965,13 +966,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRegularTriangle(
                         center = Vector2F(5.5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     )
                 ),
@@ -982,7 +983,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -990,7 +991,7 @@ class TransformableTests {
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-7f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1001,7 +1002,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1009,7 +1010,7 @@ class TransformableTests {
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-2.5f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1022,13 +1023,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableSquare(
                         center = Vector2F(-1f, 3f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     )
                 ),
@@ -1037,13 +1038,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableSquare(
                         center = Vector2F(3.5f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     )
                 ),
@@ -1096,14 +1097,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableAnnulus(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -1113,14 +1114,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableAnnulus(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -1132,13 +1133,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableCircle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     )
                 ),
@@ -1147,13 +1148,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableCircle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     )
                 ),
@@ -1196,14 +1197,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRectangle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     )
@@ -1213,14 +1214,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRectangle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     )
@@ -1268,13 +1269,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRegularTriangle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     )
                 ),
@@ -1283,13 +1284,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRegularTriangle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     )
                 ),
@@ -1300,7 +1301,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1308,7 +1309,7 @@ class TransformableTests {
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1319,7 +1320,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1327,7 +1328,7 @@ class TransformableTests {
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRoundedRectangle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1340,13 +1341,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableSquare(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     )
                 ),
@@ -1355,13 +1356,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableSquare(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     )
                 ),
@@ -1419,14 +1420,14 @@ class TransformableTests {
         }
 
         @JvmStatic
-        fun rotationArgs(): List<Arguments> {
+        fun orientationArgs(): List<Arguments> {
             val annulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -1437,7 +1438,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(6f, 3f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                         outerRadius = 8f,
                         innerRadius = 1f
                     ),
@@ -1450,7 +1451,7 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
@@ -1460,7 +1461,7 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(-1f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                         radius = 5f
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f)))
@@ -1500,7 +1501,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -1511,7 +1512,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-2f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 4f,
                         height = 2f
                     ),
@@ -1548,7 +1549,7 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f)))
@@ -1558,7 +1559,7 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(3.1547005f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                         sideLength = 4f
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f)))
@@ -1570,7 +1571,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1582,7 +1583,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(6f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 4f,
                         cornerRadius = 1.5f
@@ -1596,7 +1597,7 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)))
@@ -1606,7 +1607,7 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(8f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                         sideLength = 3f
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f)))
@@ -1652,14 +1653,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -1669,14 +1670,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -1688,13 +1689,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         radius = 4f
                     )
                 ),
@@ -1703,13 +1704,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
                         radius = 4f
                     )
                 ),
@@ -1758,14 +1759,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 3f,
                         height = 5f
                     )
@@ -1775,14 +1776,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 3f,
                         height = 5f
                     )
@@ -1830,13 +1831,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 3f
                     )
                 ),
@@ -1845,13 +1846,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 3f
                     )
                 ),
@@ -1862,7 +1863,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1870,7 +1871,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1881,7 +1882,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1889,7 +1890,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -1902,13 +1903,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 4f
                     )
                 ),
@@ -1917,13 +1918,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 4f
                     )
                 ),
@@ -1988,14 +1989,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -2005,14 +2006,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -2024,13 +2025,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         radius = 4f
                     )
                 ),
@@ -2039,13 +2040,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         radius = 4f
                     )
                 ),
@@ -2094,14 +2095,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 5f
                     )
@@ -2111,14 +2112,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 3f,
                         height = 5f
                     )
@@ -2166,13 +2167,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f
                     )
                 ),
@@ -2181,13 +2182,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f
                     )
                 ),
@@ -2198,7 +2199,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2206,7 +2207,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2217,7 +2218,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2225,7 +2226,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2238,13 +2239,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f
                     )
                 ),
@@ -2253,13 +2254,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 4f
                     )
                 ),
@@ -2324,7 +2325,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -2332,7 +2333,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-2.485281f, -4.4142137f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -2342,7 +2343,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -2350,7 +2351,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(10.867748f, -10.092604f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -2360,7 +2361,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -2368,7 +2369,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -2378,7 +2379,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -2386,7 +2387,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -2398,14 +2399,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(-1.0710678f, -3f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         radius = 4f
                     )
                 ),
@@ -2414,14 +2415,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(8.988362f, -9.408564f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
                         radius = 4f
                     )
                 ),
@@ -2430,14 +2431,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(1f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         radius = 4f
                     )
                 ),
@@ -2446,14 +2447,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(1f, 2f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
                         radius = 4f
                     )
                 ),
@@ -2547,7 +2548,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -2555,7 +2556,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(0.34314585f, -7.242641f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 3f,
                         height = 5f
                     )
@@ -2565,7 +2566,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -2573,7 +2574,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(12.235828f, -6.3338337f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 3f,
                         height = 5f
                     )
@@ -2583,7 +2584,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -2591,7 +2592,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 3f,
                         height = 5f
                     )
@@ -2601,7 +2602,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -2609,7 +2610,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 3f,
                         height = 5f
                     )
@@ -2695,14 +2696,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(-1.7781744f, 3.3639612f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 3f
                     )
                 ),
@@ -2711,14 +2712,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(3.5194912f, -12.738946f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 3f
                     )
                 ),
@@ -2727,14 +2728,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(5f, 7f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 3f
                     )
                 ),
@@ -2743,14 +2744,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(5f, 7f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 3f
                     )
                 ),
@@ -2761,7 +2762,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2770,7 +2771,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(0.34314585f, -10.071068f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2781,7 +2782,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2790,7 +2791,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(14.799253f, -5.138489f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2801,7 +2802,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2810,7 +2811,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2821,7 +2822,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2830,7 +2831,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -2843,14 +2844,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(1.0502529f, -2.2928932f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 4f
                     )
                 ),
@@ -2859,14 +2860,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(7.4509974f, -7.784831f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 4f
                     )
                 ),
@@ -2875,14 +2876,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(3f, 1f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 4f
                     )
                 ),
@@ -2891,14 +2892,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(3f, 1f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 4f
                     )
                 ),
@@ -2994,7 +2995,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -3002,7 +3003,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(12.082763f, 3.0827627f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-144.46233f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-144.46233f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -3012,7 +3013,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -3020,7 +3021,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(-2.0835419f, -0.057831287f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-29.462322f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-29.462322f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -3030,7 +3031,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -3038,7 +3039,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -3048,7 +3049,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -3056,7 +3057,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -3068,14 +3069,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(11f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         radius = 4f
                     )
                 ),
@@ -3084,14 +3085,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(-0.64463043f, -0.58155227f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(115f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(115f)),
                         radius = 4f
                     )
                 ),
@@ -3100,14 +3101,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(1f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         radius = 4f
                     )
                 ),
@@ -3116,14 +3117,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(1f, 2f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         radius = 4f
                     )
                 ),
@@ -3220,7 +3221,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -3228,7 +3229,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(11f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-6.8698964f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-6.8698964f)),
                         width = 3f,
                         height = 5f
                     )
@@ -3238,7 +3239,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -3246,7 +3247,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(-0.64463043f, -0.58155227f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(108.130104f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(108.130104f)),
                         width = 3f,
                         height = 5f
                     )
@@ -3256,7 +3257,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -3264,7 +3265,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 5f
                     )
@@ -3274,7 +3275,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -3282,7 +3283,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 3f,
                         height = 5f
                     )
@@ -3368,14 +3369,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(13.106335f, 4.1063347f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90.710594f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90.710594f)),
                         sideLength = 3f
                     )
                 ),
@@ -3384,14 +3385,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(-3.4437933f, 0.4372599f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(24.289406f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(24.289406f)),
                         sideLength = 3f
                     )
                 ),
@@ -3400,14 +3401,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(5f, 7f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f
                     )
                 ),
@@ -3416,14 +3417,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(5f, 7f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f
                     )
                 ),
@@ -3434,7 +3435,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3443,7 +3444,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(12.403124f, 3.4031243f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(158.6598f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(158.6598f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3454,7 +3455,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3463,7 +3464,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-2.5092793f, 0.09712434f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-86.340195f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-86.340195f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3474,7 +3475,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3483,7 +3484,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3494,7 +3495,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3503,7 +3504,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3516,14 +3517,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(9.535534f, 0.5355339f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-21.869894f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-21.869894f)),
                         sideLength = 4f
                     )
                 ),
@@ -3532,14 +3533,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(1.301537f, -1.2898992f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(93.13011f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(93.13011f)),
                         sideLength = 4f
                     )
                 ),
@@ -3548,14 +3549,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(3f, 1f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f
                     )
                 ),
@@ -3564,14 +3565,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(3f, 1f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 4f
                     )
                 ),
@@ -3711,14 +3712,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     2f,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 8f,
                         innerRadius = 4f
                     )
@@ -3728,14 +3729,14 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
                     0.3f,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 1.2f,
                         innerRadius = 0.6f
                     )
@@ -3747,13 +3748,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     2f,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 8f
                     )
                 ),
@@ -3762,13 +3763,13 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     0.3f,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 1.2f
                     )
                 ),
@@ -3813,14 +3814,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     2f,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 6f,
                         height = 10f
                     )
@@ -3830,14 +3831,14 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
                     0.3f,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 0.9f,
                         height = 1.5f
                     )
@@ -3885,13 +3886,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     2f,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 6f
                     )
                 ),
@@ -3900,13 +3901,13 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     0.3f,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 0.9f
                     )
                 ),
@@ -3917,7 +3918,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3925,7 +3926,7 @@ class TransformableTests {
                     2f,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 16f,
                         height = 8f,
                         cornerRadius = 2f
@@ -3936,7 +3937,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -3944,7 +3945,7 @@ class TransformableTests {
                     0.3f,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 2.4f,
                         height = 1.2f,
                         cornerRadius = 0.3f
@@ -3957,13 +3958,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     2f,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 8f
                     )
                 ),
@@ -3972,13 +3973,13 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     0.3f,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 1.2f
                     )
                 ),
@@ -4038,7 +4039,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -4046,7 +4047,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-5f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -4056,7 +4057,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -4064,7 +4065,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(-0.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -4076,14 +4077,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         radius = 4f
                     )
                 ),
@@ -4092,14 +4093,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
                         radius = 4f
                     )
                 ),
@@ -4154,7 +4155,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -4162,7 +4163,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(-5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 3f,
                         height = 5f
                     )
@@ -4172,7 +4173,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -4180,7 +4181,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(-0.5f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 3f,
                         height = 5f
                     )
@@ -4230,14 +4231,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(1f, 9f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 3f
                     )
                 ),
@@ -4246,14 +4247,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(5.5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 3f
                     )
                 ),
@@ -4264,7 +4265,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -4273,7 +4274,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-7f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -4284,7 +4285,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -4293,7 +4294,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-2.5f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -4306,14 +4307,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(-1f, 3f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 4f
                     )
                 ),
@@ -4322,14 +4323,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(3.5f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 4f
                     )
                 ),
@@ -4397,7 +4398,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -4406,7 +4407,7 @@ class TransformableTests {
                     2f,
                     MutableAnnulus(
                         center = Vector2F(-5f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                         outerRadius = 8f,
                         innerRadius = 4f
                     )
@@ -4416,7 +4417,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -4425,7 +4426,7 @@ class TransformableTests {
                     0.3f,
                     MutableAnnulus(
                         center = Vector2F(-0.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
                         outerRadius = 1.2f,
                         innerRadius = 0.6f
                     )
@@ -4437,7 +4438,7 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
@@ -4445,7 +4446,7 @@ class TransformableTests {
                     2f,
                     MutableCircle(
                         center = Vector2F(-3f, 4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         radius = 8f
                     )
                 ),
@@ -4454,7 +4455,7 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
@@ -4462,7 +4463,7 @@ class TransformableTests {
                     0.3f,
                     MutableCircle(
                         center = Vector2F(1.5f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
                         radius = 1.2f
                     )
                 ),
@@ -4521,7 +4522,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -4530,7 +4531,7 @@ class TransformableTests {
                     2f,
                     MutableRectangle(
                         center = Vector2F(-5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
                         width = 6f,
                         height = 10f
                     )
@@ -4540,7 +4541,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -4549,7 +4550,7 @@ class TransformableTests {
                     0.3f,
                     MutableRectangle(
                         center = Vector2F(-0.5f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
                         width = 0.9f,
                         height = 1.5f
                     )
@@ -4601,7 +4602,7 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
@@ -4609,7 +4610,7 @@ class TransformableTests {
                     2f,
                     MutableRegularTriangle(
                         center = Vector2F(1f, 9f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(5f)),
                         sideLength = 6f
                     )
                 ),
@@ -4618,7 +4619,7 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
@@ -4626,7 +4627,7 @@ class TransformableTests {
                     0.3f,
                     MutableRegularTriangle(
                         center = Vector2F(5.5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-240f)),
                         sideLength = 0.9f
                     )
                 ),
@@ -4637,7 +4638,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -4647,7 +4648,7 @@ class TransformableTests {
                     2f,
                     MutableRoundedRectangle(
                         center = Vector2F(-7f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
                         width = 16f,
                         height = 8f,
                         cornerRadius = 2f
@@ -4658,7 +4659,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -4668,7 +4669,7 @@ class TransformableTests {
                     0.3f,
                     MutableRoundedRectangle(
                         center = Vector2F(-2.5f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
                         width = 2.4f,
                         height = 1.2f,
                         cornerRadius = 0.3f
@@ -4681,7 +4682,7 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
@@ -4689,7 +4690,7 @@ class TransformableTests {
                     2f,
                     MutableSquare(
                         center = Vector2F(-1f, 3f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
                         sideLength = 8f
                     )
                 ),
@@ -4698,7 +4699,7 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
@@ -4706,7 +4707,7 @@ class TransformableTests {
                     0.3f,
                     MutableSquare(
                         center = Vector2F(3.5f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
                         sideLength = 1.2f
                     )
                 ),
@@ -4776,7 +4777,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -4784,7 +4785,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableAnnulus(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -4794,7 +4795,7 @@ class TransformableTests {
                     AnnulusTests.Companion::areApproximatelyEqual,
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     ),
@@ -4802,7 +4803,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableAnnulus(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         outerRadius = 4f,
                         innerRadius = 2f
                     )
@@ -4814,14 +4815,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableCircle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         radius = 4f
                     )
                 ),
@@ -4830,14 +4831,14 @@ class TransformableTests {
                     CircleTests.Companion::areApproximatelyEqual,
                     MutableCircle(
                         center = Vector2F(1f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                         radius = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableCircle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         radius = 4f
                     )
                 ),
@@ -4890,7 +4891,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -4898,7 +4899,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRectangle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 3f,
                         height = 5f
                     )
@@ -4908,7 +4909,7 @@ class TransformableTests {
                     RectangleTests.Companion::areApproximatelyEqual,
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         width = 3f,
                         height = 5f
                     ),
@@ -4916,7 +4917,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRectangle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 3f,
                         height = 5f
                     )
@@ -4966,14 +4967,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRegularTriangle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 3f
                     )
                 ),
@@ -4982,14 +4983,14 @@ class TransformableTests {
                     RegularTriangleTests.Companion::areApproximatelyEqual,
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
                         sideLength = 3f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRegularTriangle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 3f
                     )
                 ),
@@ -5000,7 +5001,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -5009,7 +5010,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRoundedRectangle(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -5020,7 +5021,7 @@ class TransformableTests {
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -5029,7 +5030,7 @@ class TransformableTests {
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRoundedRectangle(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         width = 8f,
                         height = 4f,
                         cornerRadius = 1f
@@ -5042,14 +5043,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableSquare(
                         center = Vector2F(-4f, 2f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f
                     )
                 ),
@@ -5058,14 +5059,14 @@ class TransformableTests {
                     SquareTests.Companion::areApproximatelyEqual,
                     MutableSquare(
                         center = Vector2F(3f, 1f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableSquare(
                         center = Vector2F(0.5f, 0f),
-                        rotation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
                         sideLength = 4f
                     )
                 ),

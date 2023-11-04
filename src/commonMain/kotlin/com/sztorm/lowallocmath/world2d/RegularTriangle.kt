@@ -5,8 +5,8 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 
-fun RegularTriangle(center: Vector2F, rotation: ComplexF, sideLength: Float): RegularTriangle =
-    MutableRegularTriangle(center, rotation, sideLength)
+fun RegularTriangle(center: Vector2F, orientation: ComplexF, sideLength: Float): RegularTriangle =
+    MutableRegularTriangle(center, orientation, sideLength)
 
 interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     val center: Vector2F
@@ -18,42 +18,45 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     override fun movedTo(position: Vector2F): RegularTriangle
 
-    override fun rotatedBy(angle: AngleF): RegularTriangle = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): RegularTriangle =
+        rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): RegularTriangle
 
-    override fun rotatedTo(angle: AngleF): RegularTriangle = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): RegularTriangle =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): RegularTriangle
+    override fun rotatedTo(orientation: ComplexF): RegularTriangle
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): RegularTriangle =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): RegularTriangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RegularTriangle
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): RegularTriangle =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): RegularTriangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): RegularTriangle
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): RegularTriangle
 
     override fun scaledBy(factor: Float): RegularTriangle
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): RegularTriangle =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): RegularTriangle =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): RegularTriangle
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): RegularTriangle =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(
+        offset: Vector2F, rotation: AngleF, factor: Float
+    ): RegularTriangle = transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(
         offset: Vector2F, rotation: ComplexF, factor: Float
     ): RegularTriangle
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): RegularTriangle =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): RegularTriangle =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): RegularTriangle
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularTriangle
 
     fun closestPointTo(point: Vector2F): Vector2F
 
@@ -63,7 +66,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     fun copy(
         center: Vector2F = this.center,
-        rotation: ComplexF = this.rotation,
+        orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength,
     ): RegularTriangle
 

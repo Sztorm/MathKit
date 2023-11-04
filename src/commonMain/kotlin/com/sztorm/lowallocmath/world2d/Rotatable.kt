@@ -5,23 +5,23 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
 interface Rotatable {
-    val rotation: ComplexF
+    val orientation: ComplexF
 
-    fun rotatedBy(angle: AngleF): Rotatable = rotatedBy(ComplexF.fromAngle(angle))
+    fun rotatedBy(rotation: AngleF): Rotatable = rotatedBy(ComplexF.fromAngle(rotation))
 
     fun rotatedBy(rotation: ComplexF): Rotatable
 
-    fun rotatedTo(angle: AngleF): Rotatable = rotatedTo(ComplexF.fromAngle(angle))
+    fun rotatedTo(orientation: AngleF): Rotatable = rotatedTo(ComplexF.fromAngle(orientation))
 
-    fun rotatedTo(rotation: ComplexF): Rotatable
+    fun rotatedTo(orientation: ComplexF): Rotatable
 
-    fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Rotatable =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Rotatable =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Rotatable
 
-    fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Rotatable =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Rotatable =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Rotatable
+    fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Rotatable
 }

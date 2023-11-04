@@ -49,17 +49,17 @@ class RegularPolygonTests {
     fun constructorThrowsWhenSideCountIsLessThanTwo() {
         assertThrows<IllegalArgumentException> {
             RegularPolygon(
-                center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 2f, sideCount = 1
+                center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 2f, sideCount = 1
             )
         }
         assertThrows<IllegalArgumentException> {
             RegularPolygon(
-                center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 2f, sideCount = 0
+                center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 2f, sideCount = 0
             )
         }
         assertThrows<IllegalArgumentException> {
             RegularPolygon(
-                center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 2f, sideCount = -1
+                center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 2f, sideCount = -1
             )
         }
     }
@@ -133,11 +133,11 @@ class RegularPolygonTests {
     fun copyReturnsCorrectValue(
         polygon: RegularPolygon,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         sideLength: Float,
         sideCount: Int,
         expected: RegularPolygon
-    ) = assertEquals(expected, polygon.copy(center.value, rotation.value, sideLength, sideCount))
+    ) = assertEquals(expected, polygon.copy(center.value, orientation.value, sideLength, sideCount))
 
     @ParameterizedTest
     @MethodSource("equalsArgs")
@@ -206,7 +206,7 @@ class RegularPolygonTests {
         @JvmStatic
         fun areApproximatelyEqual(a: RegularPolygon, b: RegularPolygon): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.sideLength.isApproximately(b.sideLength) and
                     (a.points.size == b.points.size) and
                     a.points
@@ -222,11 +222,11 @@ class RegularPolygonTests {
         fun constructorRegularTriangleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 ),
                 MutableRegularPolygon(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     sideLength = 5.773503f,
                     sideCount = 3
                 )
@@ -234,12 +234,12 @@ class RegularPolygonTests {
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 ),
                 MutableRegularPolygon(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f,
                     sideCount = 3
                 )
@@ -249,10 +249,10 @@ class RegularPolygonTests {
         @JvmStatic
         fun constructorSquareArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableSquare(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f),
+                MutableSquare(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
                 MutableRegularPolygon(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     sideLength = 3f,
                     sideCount = 4
                 )
@@ -260,12 +260,12 @@ class RegularPolygonTests {
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 MutableRegularPolygon(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f,
                     sideCount = 4
                 )
@@ -1808,7 +1808,7 @@ class RegularPolygonTests {
                 ),
                 "RegularPolygon(" +
                         "center=${Vector2F(0f, 8f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(120f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(120f))}, " +
                         "sideLength=${3f}, " +
                         "sideCount=${7})"
             ),
@@ -1821,7 +1821,7 @@ class RegularPolygonTests {
                 ),
                 "RegularPolygon(" +
                         "center=${Vector2F(2f, -7.5f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-45f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(-45f))}, " +
                         "sideLength=${4f}, " +
                         "sideCount=${4})"
             ),
@@ -1853,24 +1853,24 @@ class RegularPolygonTests {
             Arguments.of(
                 RegularPolygon(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     sideLength = 5.773503f,
                     sideCount = 3
                 ),
                 RegularTriangle(
-                    center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 5.773503f
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 )
             ),
             Arguments.of(
                 RegularPolygon(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f,
                     sideCount = 3
                 ),
                 RegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
                 )
             ),
@@ -1902,22 +1902,22 @@ class RegularPolygonTests {
             Arguments.of(
                 RegularPolygon(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     sideLength = 3f,
                     sideCount = 4
                 ),
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f)
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f)
             ),
             Arguments.of(
                 RegularPolygon(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 )
             ),

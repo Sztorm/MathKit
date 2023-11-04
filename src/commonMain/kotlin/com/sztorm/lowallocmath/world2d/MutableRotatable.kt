@@ -5,21 +5,21 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
 interface MutableRotatable : Rotatable {
-    fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
+    fun rotateBy(rotation: AngleF) = rotateBy(ComplexF.fromAngle(rotation))
 
     fun rotateBy(rotation: ComplexF)
 
-    fun rotateTo(angle: AngleF) = rotateTo(ComplexF.fromAngle(angle))
+    fun rotateTo(orientation: AngleF) = rotateTo(ComplexF.fromAngle(orientation))
 
-    fun rotateTo(rotation: ComplexF)
+    fun rotateTo(orientation: ComplexF)
 
-    fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+    fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF)
 
-    fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+    fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF)
+    fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF)
 }

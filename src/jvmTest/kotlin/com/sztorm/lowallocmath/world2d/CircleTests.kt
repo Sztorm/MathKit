@@ -64,10 +64,10 @@ class CircleTests {
     fun copyReturnsCorrectValue(
         circle: Circle,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         radius: Float,
         expected: Circle
-    ) = assertEquals(expected, circle.copy(center.value, rotation.value, radius))
+    ) = assertEquals(expected, circle.copy(center.value, orientation.value, radius))
 
     @ParameterizedTest
     @MethodSource("equalsArgs")
@@ -114,7 +114,7 @@ class CircleTests {
         @JvmStatic
         fun areApproximatelyEqual(a: Circle, b: Circle): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.radius.isApproximately(b.radius)
 
         @JvmStatic
@@ -123,80 +123,80 @@ class CircleTests {
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f), 50.2655f
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f), 50.2655f
             ),
             Arguments.of(
                 Circle(
                     center = Vector2F(1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                     radius = 4f
                 ),
                 50.2655f
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 2.5f), 19.635f
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 19.635f
             ),
         )
 
         @JvmStatic
         fun perimeterArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f), 25.1327f
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f), 25.1327f
             ),
             Arguments.of(
                 Circle(
                     center = Vector2F(1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                     radius = 4f
                 ),
                 25.1327f
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 2.5f), 15.708f
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 15.708f
             ),
         )
 
         @JvmStatic
         fun diameterArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f), 8f
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f), 8f
             ),
             Arguments.of(
                 Circle(
                     center = Vector2F(1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                     radius = 4f
                 ), 8f
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 2.5f), 5f
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 5f
             ),
         )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F.ZERO),
                 Wrapper(Vector2F.ZERO)
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F(-2.1f, 0f)),
                 Wrapper(Vector2F(-2f, 0f))
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F(-2f, 4f)),
                 Wrapper(Vector2F(-0.828429f, 2.828429f))
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F(6f, -4f)),
                 Wrapper(Vector2F(4.828429f, -2.828429f))
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F(0f, 2f)),
                 Wrapper(Vector2F(0f, 2f))
             ),
@@ -205,40 +205,40 @@ class CircleTests {
         @JvmStatic
         fun intersectsAnnulusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F(-2f, 2f), rotation = ComplexF.ONE, radius = 1.01f),
+                Circle(center = Vector2F(-2f, 2f), orientation = ComplexF.ONE, radius = 1.01f),
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F(-2f, 2f), rotation = ComplexF.ONE, radius = 0.99f),
+                Circle(center = Vector2F(-2f, 2f), orientation = ComplexF.ONE, radius = 0.99f),
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 false
             ),
             Arguments.of(
-                Circle(center = Vector2F(-6f, 2f), rotation = ComplexF.ONE, radius = 1.01f),
+                Circle(center = Vector2F(-6f, 2f), orientation = ComplexF.ONE, radius = 1.01f),
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F(-6f, 2f), rotation = ComplexF.ONE, radius = 0.99f),
+                Circle(center = Vector2F(-6f, 2f), orientation = ComplexF.ONE, radius = 0.99f),
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -249,18 +249,18 @@ class CircleTests {
         @JvmStatic
         fun intersectsCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F(-4f, 4f), rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 3f),
+                Circle(center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 3f),
                 false
             ),
             Arguments.of(
-                Circle(center = Vector2F(-4f, 4f), rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F(-4f, 4f), rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(3.99f, 4f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(3.99f, 4f), orientation = ComplexF.ONE, radius = 4f),
                 true
             ),
         )
@@ -268,17 +268,17 @@ class CircleTests {
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F.ZERO),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F(3.99f, 0f)),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
                 Wrapper(Vector2F(4.01f, 0f)),
                 false
             ),
@@ -287,40 +287,40 @@ class CircleTests {
         @JvmStatic
         fun containsAnnulusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 3.99f,
                     innerRadius = 2f
                 ),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4.01f,
                     innerRadius = 2f
                 ),
                 false
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Annulus(
                     center = Vector2F(4f, 0f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 1.99f,
                     innerRadius = 1f
                 ),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
                 Annulus(
                     center = Vector2F(4f, 0f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 2.01f,
                     innerRadius = 1f
                 ),
@@ -331,23 +331,23 @@ class CircleTests {
         @JvmStatic
         fun containsCircleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 3.99f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 3.99f),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F.ZERO, rotation = ComplexF.ONE, radius = 4.01f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4.01f),
                 false
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(4f, 0f), rotation = ComplexF.ONE, radius = 1.99f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 1.99f),
                 true
             ),
             Arguments.of(
-                Circle(center = Vector2F(2f, 0f), rotation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(4f, 0f), rotation = ComplexF.ONE, radius = 2.01f),
+                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
+                Circle(center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 2.01f),
                 false
             ),
         )
@@ -357,7 +357,7 @@ class CircleTests {
             Arguments.of(
                 Circle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 Wrapper(Vector2F(2f, 0f)),
@@ -365,14 +365,14 @@ class CircleTests {
                 4f,
                 Circle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 )
             ),
             Arguments.of(
                 Circle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 Wrapper(Vector2F(2f, 0f)),
@@ -380,14 +380,14 @@ class CircleTests {
                 5f,
                 Circle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 5f
                 )
             ),
             Arguments.of(
                 Circle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                     radius = 4f
                 ),
                 Wrapper(Vector2F(-1f, 7f)),
@@ -395,7 +395,7 @@ class CircleTests {
                 5f,
                 Circle(
                     center = Vector2F(-1f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                     radius = 5f
                 )
             ),
@@ -406,7 +406,7 @@ class CircleTests {
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 null,
@@ -419,12 +419,12 @@ class CircleTests {
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 true
@@ -432,12 +432,12 @@ class CircleTests {
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 MutableCircle(
                     center = Vector2F(2f, 0.1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 false
@@ -449,24 +449,24 @@ class CircleTests {
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 )
             ),
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(-1f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                     radius = 5f
                 ),
                 MutableCircle(
                     center = Vector2F(-1f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                     radius = 5f
                 )
             ),
@@ -477,23 +477,23 @@ class CircleTests {
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(2f, 0f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
                     radius = 4f
                 ),
                 "Circle(" +
                         "center=${Vector2F(2f, 0f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-78f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(-78f))}, " +
                         "radius=${4f})"
             ),
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(-1f, 7f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                     radius = 5f
                 ),
                 "Circle(" +
                         "center=${Vector2F(-1f, 7f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(244f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(244f))}, " +
                         "radius=${5f})"
             ),
         )

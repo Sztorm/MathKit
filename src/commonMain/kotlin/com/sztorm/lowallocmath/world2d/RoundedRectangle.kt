@@ -6,8 +6,8 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 
 fun RoundedRectangle(
-    center: Vector2F, rotation: ComplexF, width: Float, height: Float, cornerRadius: Float
-): RoundedRectangle = MutableRoundedRectangle(center, rotation, width, height, cornerRadius)
+    center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
+): RoundedRectangle = MutableRoundedRectangle(center, orientation, width, height, cornerRadius)
 
 interface RoundedRectangle : RoundedRectangleShape, Transformable {
     val center: Vector2F
@@ -19,42 +19,45 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
 
     override fun movedTo(position: Vector2F): RoundedRectangle
 
-    override fun rotatedBy(angle: AngleF): RoundedRectangle = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): RoundedRectangle =
+        rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): RoundedRectangle
 
-    override fun rotatedTo(angle: AngleF): RoundedRectangle = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): RoundedRectangle =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): RoundedRectangle
+    override fun rotatedTo(orientation: ComplexF): RoundedRectangle
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): RoundedRectangle =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): RoundedRectangle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RoundedRectangle
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): RoundedRectangle =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): RoundedRectangle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): RoundedRectangle
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): RoundedRectangle
 
     override fun scaledBy(factor: Float): RoundedRectangle
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): RoundedRectangle =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): RoundedRectangle =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): RoundedRectangle
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): RoundedRectangle =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(
+        offset: Vector2F, rotation: AngleF, factor: Float
+    ): RoundedRectangle = transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(
         offset: Vector2F, rotation: ComplexF, factor: Float
     ): RoundedRectangle
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): RoundedRectangle =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): RoundedRectangle =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): RoundedRectangle
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): RoundedRectangle
 
     fun closestPointTo(point: Vector2F): Vector2F
 
@@ -66,7 +69,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
 
     fun copy(
         center: Vector2F = this.center,
-        rotation: ComplexF = this.rotation,
+        orientation: ComplexF = this.orientation,
         width: Float = this.width,
         height: Float = this.height,
         cornerRadius: Float = this.cornerRadius

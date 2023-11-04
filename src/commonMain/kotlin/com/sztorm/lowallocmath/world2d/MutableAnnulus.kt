@@ -9,18 +9,18 @@ import kotlin.math.PI
 import kotlin.math.sqrt
 
 class MutableAnnulus(
-    center: Vector2F, rotation: ComplexF, outerRadius: Float, innerRadius: Float
+    center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
 ) : Annulus, MutableTransformable {
     private var _center: Vector2F = center
-    private var _rotation: ComplexF = rotation
+    private var _orientation: ComplexF = orientation
     private var _outerRadius: Float = outerRadius
     private var _innerRadius: Float = innerRadius
 
     override val center: Vector2F
         get() = _center
 
-    override val rotation: ComplexF
-        get() = _rotation
+    override val orientation: ComplexF
+        get() = _orientation
 
     override val outerRadius: Float
         get() = _outerRadius
@@ -41,10 +41,10 @@ class MutableAnnulus(
         get() = _center
 
     override fun movedBy(offset: Vector2F) =
-        MutableAnnulus(_center + offset, _rotation, _outerRadius, _innerRadius)
+        MutableAnnulus(_center + offset, _orientation, _outerRadius, _innerRadius)
 
     override fun movedTo(position: Vector2F) =
-        MutableAnnulus(position, _rotation, _outerRadius, _innerRadius)
+        MutableAnnulus(position, _orientation, _outerRadius, _innerRadius)
 
     override fun moveBy(offset: Vector2F) {
         _center += offset
@@ -54,27 +54,27 @@ class MutableAnnulus(
         _center = position
     }
 
-    override fun rotatedBy(angle: AngleF) = MutableAnnulus(
-        _center, _rotation * ComplexF.fromAngle(angle), _outerRadius, _innerRadius
+    override fun rotatedBy(rotation: AngleF) = MutableAnnulus(
+        _center, _orientation * ComplexF.fromAngle(rotation), _outerRadius, _innerRadius
     )
 
     override fun rotatedBy(rotation: ComplexF) =
-        MutableAnnulus(_center, _rotation * rotation, _outerRadius, _innerRadius)
+        MutableAnnulus(_center, _orientation * rotation, _outerRadius, _innerRadius)
 
-    override fun rotatedTo(angle: AngleF) =
-        MutableAnnulus(_center, ComplexF.fromAngle(angle), _outerRadius, _innerRadius)
+    override fun rotatedTo(orientation: AngleF) =
+        MutableAnnulus(_center, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius)
 
-    override fun rotatedTo(rotation: ComplexF) =
-        MutableAnnulus(_center, rotation, _outerRadius, _innerRadius)
+    override fun rotatedTo(orientation: ComplexF) =
+        MutableAnnulus(_center, orientation, _outerRadius, _innerRadius)
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableAnnulus =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableAnnulus =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableAnnulus {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
-        val (startRotR: Float, startRotI: Float) = _rotation
+        val (startRotR: Float, startRotI: Float) = _orientation
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
 
@@ -92,12 +92,12 @@ class MutableAnnulus(
         )
     }
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableAnnulus =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): MutableAnnulus =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableAnnulus {
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): MutableAnnulus {
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = _center
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
@@ -111,56 +111,56 @@ class MutableAnnulus(
                 Vector2F(
                     rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
                 ),
-                ComplexF(startRotR, -startRotI) * _rotation * rotation,
+                ComplexF(startRotR, -startRotI) * _orientation * orientation,
                 _outerRadius,
                 _innerRadius
             )
         } else {
-            MutableAnnulus(_center, rotation, _outerRadius, _innerRadius)
+            MutableAnnulus(_center, orientation, _outerRadius, _innerRadius)
         }
     }
 
-    override fun rotateBy(angle: AngleF) {
-        _rotation *= ComplexF.fromAngle(angle)
+    override fun rotateBy(rotation: AngleF) {
+        _orientation *= ComplexF.fromAngle(rotation)
     }
 
     override fun rotateBy(rotation: ComplexF) {
-        _rotation *= rotation
+        _orientation *= rotation
     }
 
-    override fun rotateTo(angle: AngleF) {
-        _rotation = ComplexF.fromAngle(angle)
+    override fun rotateTo(orientation: AngleF) {
+        _orientation = ComplexF.fromAngle(orientation)
     }
 
-    override fun rotateTo(rotation: ComplexF) {
-        _rotation = rotation
+    override fun rotateTo(orientation: ComplexF) {
+        _orientation = orientation
     }
 
-    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
-        val (startRotR: Float, startRotI: Float) = _rotation
+        val (startRotR: Float, startRotI: Float) = _orientation
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
 
         _center = Vector2F(
             cpDiffX * rotR - cpDiffY * rotI + pX, cpDiffY * rotR + cpDiffX * rotI + pY
         )
-        _rotation = ComplexF(
+        _orientation = ComplexF(
             startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
         )
     }
 
-    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
+    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) {
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = _center
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
@@ -173,14 +173,14 @@ class MutableAnnulus(
             _center = Vector2F(
                 rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
             )
-            _rotation = ComplexF(startRotR, -startRotI) * _rotation * rotation
+            _orientation = ComplexF(startRotR, -startRotI) * _orientation * orientation
         } else {
-            _rotation = rotation
+            _orientation = orientation
         }
     }
 
     override fun scaledBy(factor: Float) = MutableAnnulus(
-        _center, _rotation, _outerRadius * factor, _innerRadius * factor
+        _center, _orientation, _outerRadius * factor, _innerRadius * factor
     )
 
     override fun scaleBy(factor: Float) {
@@ -188,20 +188,20 @@ class MutableAnnulus(
         _innerRadius *= factor
     }
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF) = MutableAnnulus(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableAnnulus(
         _center + offset,
-        _rotation * ComplexF.fromAngle(angle),
+        _orientation * ComplexF.fromAngle(rotation),
         _outerRadius,
         _innerRadius
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableAnnulus(
-        _center + offset, _rotation * rotation, _outerRadius, _innerRadius
+        _center + offset, _orientation * rotation, _outerRadius, _innerRadius
     )
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float) = MutableAnnulus(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableAnnulus(
         _center + offset,
-        _rotation * ComplexF.fromAngle(angle),
+        _orientation * ComplexF.fromAngle(rotation),
         _outerRadius * factor,
         _innerRadius * factor
     )
@@ -209,41 +209,41 @@ class MutableAnnulus(
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
         MutableAnnulus(
             _center + offset,
-            _rotation * rotation,
+            _orientation * rotation,
             _outerRadius * factor,
             _innerRadius * factor
         )
 
-    override fun transformedTo(position: Vector2F, angle: AngleF) =
-        MutableAnnulus(position, ComplexF.fromAngle(angle), _outerRadius, _innerRadius)
+    override fun transformedTo(position: Vector2F, orientation: AngleF) =
+        MutableAnnulus(position, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius)
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF) =
-        MutableAnnulus(position, rotation, _outerRadius, _innerRadius)
+    override fun transformedTo(position: Vector2F, orientation: ComplexF) =
+        MutableAnnulus(position, orientation, _outerRadius, _innerRadius)
 
-    override fun transformBy(offset: Vector2F, angle: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(angle))
+    override fun transformBy(offset: Vector2F, rotation: AngleF) =
+        transformBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF) {
         _center += offset
-        _rotation *= rotation
+        _orientation *= rotation
     }
 
-    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
+        transformBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
         _center += offset
-        _rotation *= rotation
+        _orientation *= rotation
         _outerRadius *= factor
         _innerRadius *= factor
     }
 
-    override fun transformTo(position: Vector2F, angle: AngleF) =
-        transformTo(position, ComplexF.fromAngle(angle))
+    override fun transformTo(position: Vector2F, orientation: AngleF) =
+        transformTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformTo(position: Vector2F, rotation: ComplexF) {
+    override fun transformTo(position: Vector2F, orientation: ComplexF) {
         _center = position
-        _rotation = rotation
+        _orientation = orientation
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
@@ -317,40 +317,40 @@ class MutableAnnulus(
     }
 
     override fun copy(
-        center: Vector2F, rotation: ComplexF, outerRadius: Float, innerRadius: Float
-    ) = MutableAnnulus(center, rotation, outerRadius, innerRadius)
+        center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
+    ) = MutableAnnulus(center, orientation, outerRadius, innerRadius)
 
     override fun equals(other: Any?): Boolean = other is Annulus &&
             _center == other.center &&
-            _rotation == other.rotation &&
+            _orientation == other.orientation &&
             _outerRadius == other.outerRadius &&
             _innerRadius == other.innerRadius
 
     fun equals(other: MutableAnnulus): Boolean =
         _center == other._center &&
-                _rotation == other._rotation &&
+                _orientation == other._orientation &&
                 _outerRadius == other._outerRadius &&
                 _innerRadius == other._innerRadius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()
-        val rotationHash: Int = _rotation.hashCode()
+        val orientationHash: Int = _orientation.hashCode()
         val outerRadiusHash: Int = _outerRadius.hashCode()
         val innerRadiusHash: Int = _innerRadius.hashCode()
 
-        return centerHash * 29791 + rotationHash * 961 + outerRadiusHash * 31 + innerRadiusHash
+        return centerHash * 29791 + orientationHash * 961 + outerRadiusHash * 31 + innerRadiusHash
     }
 
     override fun toString() =
         StringBuilder("Annulus(center=").append(_center)
-            .append(", rotation=").append(_rotation)
+            .append(", orientation=").append(_orientation)
             .append(", outerRadius=").append(_outerRadius)
             .append(", innerRadius=").append(_innerRadius).append(")")
             .toString()
 
     override operator fun component1(): Vector2F = _center
 
-    override operator fun component2(): ComplexF = _rotation
+    override operator fun component2(): ComplexF = _orientation
 
     override operator fun component3(): Float = _outerRadius
 

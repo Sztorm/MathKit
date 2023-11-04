@@ -68,12 +68,12 @@ class AnnulusTests {
     fun copyReturnsCorrectValue(
         annulus: Annulus,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         outerRadius: Float,
         innerRadius: Float,
         expected: Annulus
     ) = assertEquals(
-        expected, annulus.copy(center.value, rotation.value, outerRadius, innerRadius)
+        expected, annulus.copy(center.value, orientation.value, outerRadius, innerRadius)
     )
 
     @ParameterizedTest
@@ -124,7 +124,7 @@ class AnnulusTests {
         @JvmStatic
         fun areApproximatelyEqual(a: Annulus, b: Annulus): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.outerRadius.isApproximately(b.outerRadius) and
                     a.innerRadius.isApproximately(b.innerRadius)
 
@@ -136,7 +136,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -145,7 +145,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -154,7 +154,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 2.5f,
                     innerRadius = 1.5f
                 ),
@@ -167,7 +167,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -176,7 +176,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -185,7 +185,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 2.5f,
                     innerRadius = 1.5f
                 ),
@@ -198,7 +198,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -207,7 +207,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -216,7 +216,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 2.5f,
                     innerRadius = 1.5f
                 ),
@@ -229,7 +229,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -239,7 +239,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -249,7 +249,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -259,7 +259,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -269,7 +269,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -284,40 +284,40 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
-                Circle(center = Vector2F(-2f, 2f), rotation = ComplexF.ONE, radius = 1.01f),
+                Circle(center = Vector2F(-2f, 2f), orientation = ComplexF.ONE, radius = 1.01f),
                 true
             ),
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
-                Circle(center = Vector2F(-2f, 2f), rotation = ComplexF.ONE, radius = 0.99f),
+                Circle(center = Vector2F(-2f, 2f), orientation = ComplexF.ONE, radius = 0.99f),
                 false
             ),
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
-                Circle(center = Vector2F(-6f, 2f), rotation = ComplexF.ONE, radius = 1.01f),
+                Circle(center = Vector2F(-6f, 2f), orientation = ComplexF.ONE, radius = 1.01f),
                 true
             ),
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
-                Circle(center = Vector2F(-6f, 2f), rotation = ComplexF.ONE, radius = 0.99f),
+                Circle(center = Vector2F(-6f, 2f), orientation = ComplexF.ONE, radius = 0.99f),
                 false
             ),
         )
@@ -328,13 +328,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-2f, 2f),
                     outerRadius = 1.01f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 0.5f
                 ),
                 true
@@ -343,13 +343,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-2f, 2f),
                     outerRadius = 0.99f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 0.5f
                 ),
                 false
@@ -358,13 +358,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-6f, 2f),
                     outerRadius = 1.01f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 0.5f
                 ),
                 true
@@ -373,13 +373,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-6f, 2f),
                     outerRadius = 0.99f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 0.5f
                 ),
                 false
@@ -388,13 +388,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(0f, 2f),
                     outerRadius = 7f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 4.9f
                 ),
                 true
@@ -403,13 +403,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(0f, 2f),
                     outerRadius = 7f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 5.1f
                 ),
                 false
@@ -422,7 +422,7 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Wrapper(Vector2F(-3.01f, 2f)),
@@ -432,7 +432,7 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Wrapper(Vector2F(-2.99f, 2f)),
@@ -442,7 +442,7 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F.ZERO,
                     outerRadius = 2.5f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 1.5f
                 ),
                 Wrapper(Vector2F(0f, 2.49f)),
@@ -452,7 +452,7 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F.ZERO,
                     outerRadius = 2.5f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 1.5f
                 ),
                 Wrapper(Vector2F(0f, 2.51f)),
@@ -466,20 +466,20 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
-                Circle(center = Vector2F(-1f, -1f), rotation = ComplexF.ONE, radius = 0.99f),
+                Circle(center = Vector2F(-1f, -1f), orientation = ComplexF.ONE, radius = 0.99f),
                 true
             ),
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
-                Circle(center = Vector2F(-1f, -1f), rotation = ComplexF.ONE, radius = 1.01f),
+                Circle(center = Vector2F(-1f, -1f), orientation = ComplexF.ONE, radius = 1.01f),
                 false
             ),
         )
@@ -490,13 +490,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-1f, -1f),
                     outerRadius = 0.99f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 0.5f
                 ),
                 true
@@ -505,13 +505,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-1f, -1f),
                     outerRadius = 1.01f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 0.5f
                 ),
                 false
@@ -520,13 +520,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 3.99f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2.01f
                 ),
                 true
@@ -535,13 +535,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4.01f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2.01f
                 ),
                 false
@@ -550,13 +550,13 @@ class AnnulusTests {
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 4f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 2f
                 ),
                 Annulus(
                     center = Vector2F(-1f, 2f),
                     outerRadius = 3.99f,
-                    rotation = ComplexF.ONE,
+                    orientation = ComplexF.ONE,
                     innerRadius = 1.99f
                 ),
                 false
@@ -568,7 +568,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -578,7 +578,7 @@ class AnnulusTests {
                 2f,
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 )
@@ -586,7 +586,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -596,7 +596,7 @@ class AnnulusTests {
                 1f,
                 Annulus(
                     center = Vector2F(6f, 3f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 1f
                 )
@@ -604,7 +604,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -614,7 +614,7 @@ class AnnulusTests {
                 1f,
                 Annulus(
                     center = Vector2F(6f, 3f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                     outerRadius = 8f,
                     innerRadius = 1f
                 )
@@ -626,7 +626,7 @@ class AnnulusTests {
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -640,13 +640,13 @@ class AnnulusTests {
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -655,13 +655,13 @@ class AnnulusTests {
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 3.9f,
                     innerRadius = 2f
                 ),
@@ -674,13 +674,13 @@ class AnnulusTests {
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 )
@@ -688,13 +688,13 @@ class AnnulusTests {
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(6f, 3f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                     outerRadius = 8f,
                     innerRadius = 1f
                 ),
                 MutableAnnulus(
                     center = Vector2F(6f, 3f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                     outerRadius = 8f,
                     innerRadius = 1f
                 )
@@ -706,26 +706,26 @@ class AnnulusTests {
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
                 "Annulus(" +
                         "center=${Vector2F(-1f, 2f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-45f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(-45f))}, " +
                         "outerRadius=${4f}, " +
                         "innerRadius=${2f})"
             ),
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(6f, 3f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                     outerRadius = 8f,
                     innerRadius = 1f
                 ),
                 "Annulus(" +
                         "center=${Vector2F(6f, 3f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(330f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(330f))}, " +
                         "outerRadius=${8f}, " +
                         "innerRadius=${1f})"
             )
@@ -736,7 +736,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(-1f, 2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
@@ -748,7 +748,7 @@ class AnnulusTests {
             Arguments.of(
                 Annulus(
                     center = Vector2F(6f, 3f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                     outerRadius = 8f,
                     innerRadius = 1f
                 ),

@@ -21,47 +21,48 @@ interface LineSegment : Transformable {
     override val position: Vector2F
         get() = center
 
-    override val rotation: ComplexF
+    override val orientation: ComplexF
         get() = (pointA - pointB).normalized.toComplexF()
 
     override fun movedBy(offset: Vector2F): LineSegment
 
     override fun movedTo(position: Vector2F): LineSegment
 
-    override fun rotatedBy(angle: AngleF): LineSegment = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): LineSegment = rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): LineSegment
 
-    override fun rotatedTo(angle: AngleF): LineSegment = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): LineSegment =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): LineSegment
+    override fun rotatedTo(orientation: ComplexF): LineSegment
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): LineSegment =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): LineSegment =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): LineSegment
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): LineSegment =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): LineSegment =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): LineSegment
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): LineSegment
 
     override fun scaledBy(factor: Float): LineSegment
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): LineSegment =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): LineSegment =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): LineSegment
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): LineSegment =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): LineSegment =
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): LineSegment
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): LineSegment =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): LineSegment =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): LineSegment
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): LineSegment
 
     fun closestPointTo(point: Vector2F): Vector2F
 

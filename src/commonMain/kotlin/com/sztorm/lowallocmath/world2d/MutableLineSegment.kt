@@ -26,7 +26,7 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
     override val position: Vector2F
         get() = (_pointA + _pointB) * 0.5f
 
-    override val rotation: ComplexF
+    override val orientation: ComplexF
         get() = (_pointA - _pointB).normalized.toComplexF()
 
     override fun movedBy(offset: Vector2F) =
@@ -51,8 +51,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB += offset
     }
 
-    override fun rotatedBy(angle: AngleF): MutableLineSegment =
-        rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): MutableLineSegment =
+        rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): MutableLineSegment {
         val (paX: Float, paY: Float) = _pointA
@@ -75,13 +75,13 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun rotatedTo(angle: AngleF): MutableLineSegment =
-        rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): MutableLineSegment =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): MutableLineSegment {
+    override fun rotatedTo(orientation: ComplexF): MutableLineSegment {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val cX: Float = (paX + pbX) * 0.5f
         val cY: Float = (paY + pbY) * 0.5f
         val pabY: Float = pbY - paY
@@ -94,8 +94,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): MutableLineSegment =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableLineSegment =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableLineSegment {
         val (paX: Float, paY: Float) = _pointA
@@ -125,14 +125,14 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): MutableLineSegment =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): MutableLineSegment =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): MutableLineSegment {
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): MutableLineSegment {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val cX: Float = (paX + pbX) * 0.5f
         val cY: Float = (paY + pbY) * 0.5f
         val cpDiffX: Float = cX - pX
@@ -173,7 +173,7 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         }
     }
 
-    override fun rotateBy(angle: AngleF) = rotateBy(ComplexF.fromAngle(angle))
+    override fun rotateBy(rotation: AngleF) = rotateBy(ComplexF.fromAngle(rotation))
 
     override fun rotateBy(rotation: ComplexF) {
         val (paX: Float, paY: Float) = _pointA
@@ -189,12 +189,12 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB = Vector2F(pcbX * rotR - pcbY * rotI + cX, pcbY * rotR + pcbX * rotI + cY)
     }
 
-    override fun rotateTo(angle: AngleF) = rotateTo(ComplexF.fromAngle(angle))
+    override fun rotateTo(orientation: AngleF) = rotateTo(ComplexF.fromAngle(orientation))
 
-    override fun rotateTo(rotation: ComplexF) {
+    override fun rotateTo(orientation: ComplexF) {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val cX: Float = (paX + pbX) * 0.5f
         val cY: Float = (paY + pbY) * 0.5f
         val pabX: Float = pbX - paX
@@ -205,8 +205,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB = Vector2F(cX - halfLength * rotR, cY - halfLength * rotI)
     }
 
-    override fun rotateAroundPointBy(point: Vector2F, angle: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
+        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
         val (paX: Float, paY: Float) = _pointA
@@ -233,14 +233,14 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun rotateAroundPointTo(point: Vector2F, angle: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
+        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotateAroundPointTo(point: Vector2F, rotation: ComplexF) {
+    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val cX: Float = (paX + pbX) * 0.5f
         val cY: Float = (paY + pbY) * 0.5f
         val cpDiffX: Float = cX - pX
@@ -305,8 +305,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB = Vector2F(pbX * factor + addendX, pbY * factor + addendY)
     }
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): MutableLineSegment =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableLineSegment =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): MutableLineSegment {
         val (paX: Float, paY: Float) = _pointA
@@ -335,8 +335,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
     }
 
     override fun transformedBy(
-        offset: Vector2F, angle: AngleF, factor: Float
-    ): MutableLineSegment = transformedBy(offset, ComplexF.fromAngle(angle), factor)
+        offset: Vector2F, rotation: AngleF, factor: Float
+    ): MutableLineSegment = transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(
         offset: Vector2F, rotation: ComplexF, factor: Float
@@ -369,14 +369,14 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): MutableLineSegment =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): MutableLineSegment =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): MutableLineSegment {
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): MutableLineSegment {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
         val (pX: Float, pY: Float) = position
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val pabX: Float = pbX - paX
         val pabY: Float = pbY - paY
         val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
@@ -387,8 +387,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun transformBy(offset: Vector2F, angle: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(angle))
+    override fun transformBy(offset: Vector2F, rotation: AngleF) =
+        transformBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF) {
         val (paX: Float, paY: Float) = _pointA
@@ -413,8 +413,8 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun transformBy(offset: Vector2F, angle: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
+        transformBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
         val (paX: Float, paY: Float) = _pointA
@@ -442,14 +442,14 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         )
     }
 
-    override fun transformTo(position: Vector2F, angle: AngleF) =
-        transformTo(position, ComplexF.fromAngle(angle))
+    override fun transformTo(position: Vector2F, orientation: AngleF) =
+        transformTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformTo(position: Vector2F, rotation: ComplexF) {
+    override fun transformTo(position: Vector2F, orientation: ComplexF) {
         val (paX: Float, paY: Float) = _pointA
         val (pbX: Float, pbY: Float) = _pointB
         val (pX: Float, pY: Float) = position
-        val (rotR: Float, rotI: Float) = rotation
+        val (rotR: Float, rotI: Float) = orientation
         val pabX: Float = pbX - paX
         val pabY: Float = pbY - paY
         val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f

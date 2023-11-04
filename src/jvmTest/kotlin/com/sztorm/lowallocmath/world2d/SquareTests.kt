@@ -93,10 +93,10 @@ class SquareTests {
     fun copyReturnsCorrectValue(
         square: Square,
         center: Wrapper<Vector2F>,
-        rotation: Wrapper<ComplexF>,
+        orientation: Wrapper<ComplexF>,
         sideLength: Float,
         expected: Square
-    ) = assertEquals(expected, square.copy(center.value, rotation.value, sideLength))
+    ) = assertEquals(expected, square.copy(center.value, orientation.value, sideLength))
 
     @ParameterizedTest
     @MethodSource("equalsArgs")
@@ -139,7 +139,7 @@ class SquareTests {
         @JvmStatic
         fun areApproximatelyEqual(a: Square, b: Square): Boolean =
             a.center.isApproximately(b.center) and
-                    a.rotation.isApproximately(b.rotation) and
+                    a.orientation.isApproximately(b.orientation) and
                     a.sideLength.isApproximately(b.sideLength) and
                     a.pointA.isApproximately(b.pointA) and
                     a.pointB.isApproximately(b.pointB) and
@@ -152,7 +152,7 @@ class SquareTests {
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f),
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
                 Wrapper(Vector2F(1.5f, 1.5f)),
                 Wrapper(Vector2F(-1.5f, 1.5f)),
                 Wrapper(Vector2F(-1.5f, -1.5f)),
@@ -161,7 +161,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(2.267949f, 3.732051f)),
@@ -174,12 +174,12 @@ class SquareTests {
         @JvmStatic
         fun sideLengthArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 3f
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 3f
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 3f
@@ -187,7 +187,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 4f
@@ -203,12 +203,12 @@ class SquareTests {
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 9f
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 9f
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 9f
@@ -216,7 +216,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 16f
@@ -226,12 +226,12 @@ class SquareTests {
         @JvmStatic
         fun perimeterArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 12f
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 12f
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 12f
@@ -239,7 +239,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 16f
@@ -249,12 +249,12 @@ class SquareTests {
         @JvmStatic
         fun sideCountArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 4
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 4
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 4
@@ -262,7 +262,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 4
@@ -272,13 +272,13 @@ class SquareTests {
         @JvmStatic
         fun interiorAngleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f),
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
                 Wrapper(AngleF.fromDegrees(90f))
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 Wrapper(AngleF.fromDegrees(90f))
@@ -286,7 +286,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 Wrapper(AngleF.fromDegrees(90f))
@@ -299,12 +299,12 @@ class SquareTests {
         @JvmStatic
         fun inradiusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 1.5f
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 1.5f
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 1.5f
@@ -312,7 +312,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 2f
@@ -322,12 +322,13 @@ class SquareTests {
         @JvmStatic
         fun circumradiusArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, rotation = ComplexF.ONE, sideLength = 3f), 2.12132f
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                2.12132f
             ),
             Arguments.of(
                 Square(
                     center = Vector2F.ZERO,
-                    rotation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                     sideLength = 3f
                 ),
                 2.12132f
@@ -335,7 +336,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 2.828427f
@@ -352,7 +353,7 @@ class SquareTests {
             val center: Vector2F = (pointA + pointC) * 0.5f
             val square = Square(
                 center,
-                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)) *
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
@@ -475,7 +476,7 @@ class SquareTests {
             val center: Vector2F = (pointA + pointC) * 0.5f
             val square = Square(
                 center,
-                rotation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)) *
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
@@ -505,7 +506,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(3f, 1f)),
@@ -513,14 +514,14 @@ class SquareTests {
                 4f,
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 )
             ),
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(8f, -2f)),
@@ -528,14 +529,14 @@ class SquareTests {
                 3f,
                 Square(
                     center = Vector2F(8f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 3f
                 )
             ),
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(8f, -2f)),
@@ -543,7 +544,7 @@ class SquareTests {
                 3f,
                 Square(
                     center = Vector2F(8f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
                 )
             ),
@@ -554,7 +555,7 @@ class SquareTests {
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 null,
@@ -567,12 +568,12 @@ class SquareTests {
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 true
@@ -580,12 +581,12 @@ class SquareTests {
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4.1f
                 ),
                 false
@@ -597,24 +598,24 @@ class SquareTests {
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 )
             ),
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(8f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
                 ),
                 MutableSquare(
                     center = Vector2F(8f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
                 )
             ),
@@ -625,23 +626,23 @@ class SquareTests {
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 "Square(" +
                         "center=${Vector2F(3f, 1f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(60f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(60f))}, " +
                         "sideLength=${4f})"
             ),
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(8f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
                 ),
                 "Square(" +
                         "center=${Vector2F(8f, -2f)}, " +
-                        "rotation=${ComplexF.fromAngle(AngleF.fromDegrees(-135f))}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(-135f))}, " +
                         "sideLength=${3f})"
             ),
         )
@@ -651,7 +652,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(3f, 1f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
                 Wrapper(Vector2F(3f, 1f)),
@@ -661,7 +662,7 @@ class SquareTests {
             Arguments.of(
                 Square(
                     center = Vector2F(8f, -2f),
-                    rotation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
                 ),
                 Wrapper(Vector2F(8f, -2f)),

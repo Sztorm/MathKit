@@ -5,8 +5,8 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 
-fun Square(center: Vector2F, rotation: ComplexF, sideLength: Float): Square =
-    MutableSquare(center, rotation, sideLength)
+fun Square(center: Vector2F, orientation: ComplexF, sideLength: Float): Square =
+    MutableSquare(center, orientation, sideLength)
 
 interface Square : RectangleShape, RegularShape, Transformable {
     val center: Vector2F
@@ -18,40 +18,41 @@ interface Square : RectangleShape, RegularShape, Transformable {
 
     override fun movedTo(position: Vector2F): Square
 
-    override fun rotatedBy(angle: AngleF): Square = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): Square = rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): Square
 
-    override fun rotatedTo(angle: AngleF): Square = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): Square =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): Square
+    override fun rotatedTo(orientation: ComplexF): Square
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Square =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Square =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Square
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Square =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Square =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Square
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Square
 
     override fun scaledBy(factor: Float): Square
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): Square =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): Square =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): Square
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): Square =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Square =
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Square
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): Square =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Square =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): Square
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Square
 
     fun closestPointTo(point: Vector2F): Vector2F
 
@@ -61,7 +62,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
 
     fun copy(
         center: Vector2F = this.center,
-        rotation: ComplexF = this.rotation,
+        orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength,
     ): Square
 

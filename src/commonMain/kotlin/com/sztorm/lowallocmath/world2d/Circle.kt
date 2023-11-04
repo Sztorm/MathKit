@@ -4,8 +4,8 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
-fun Circle(center: Vector2F, rotation: ComplexF, radius: Float): Circle =
-    MutableCircle(center, rotation, radius)
+fun Circle(center: Vector2F, orientation: ComplexF, radius: Float): Circle =
+    MutableCircle(center, orientation, radius)
 
 interface Circle : CircleShape, Transformable {
     override val position: Vector2F
@@ -15,40 +15,41 @@ interface Circle : CircleShape, Transformable {
 
     override fun movedTo(position: Vector2F): Circle
 
-    override fun rotatedBy(angle: AngleF): Circle = rotatedBy(ComplexF.fromAngle(angle))
+    override fun rotatedBy(rotation: AngleF): Circle = rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): Circle
 
-    override fun rotatedTo(angle: AngleF): Circle = rotatedTo(ComplexF.fromAngle(angle))
+    override fun rotatedTo(orientation: AngleF): Circle =
+        rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(rotation: ComplexF): Circle
+    override fun rotatedTo(orientation: ComplexF): Circle
 
-    override fun rotatedAroundPointBy(point: Vector2F, angle: AngleF): Circle =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Circle =
+        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Circle
 
-    override fun rotatedAroundPointTo(point: Vector2F, angle: AngleF): Circle =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(angle))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Circle =
+        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, rotation: ComplexF): Circle
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Circle
 
     override fun scaledBy(factor: Float): Circle
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF): Circle =
-        transformedBy(offset, ComplexF.fromAngle(angle))
+    override fun transformedBy(offset: Vector2F, rotation: AngleF): Circle =
+        transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): Circle
 
-    override fun transformedBy(offset: Vector2F, angle: AngleF, factor: Float): Circle =
-        transformedBy(offset, ComplexF.fromAngle(angle), factor)
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Circle =
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Circle
 
-    override fun transformedTo(position: Vector2F, angle: AngleF): Circle =
-        transformedTo(position, ComplexF.fromAngle(angle))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Circle =
+        transformedTo(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, rotation: ComplexF): Circle
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Circle
 
     fun closestPointTo(point: Vector2F): Vector2F
 
@@ -64,7 +65,7 @@ interface Circle : CircleShape, Transformable {
 
     fun copy(
         center: Vector2F = this.center,
-        rotation: ComplexF = this.rotation,
+        orientation: ComplexF = this.orientation,
         radius: Float = this.radius
     ): Circle
 
