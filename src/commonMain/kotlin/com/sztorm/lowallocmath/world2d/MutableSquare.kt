@@ -3,10 +3,7 @@
 package com.sztorm.lowallocmath.world2d
 
 import com.sztorm.lowallocmath.*
-import kotlin.math.PI
-import kotlin.math.absoluteValue
-import kotlin.math.sqrt
-import kotlin.math.withSign
+import kotlin.math.*
 
 class MutableSquare : Square, MutableTransformable {
     internal var _center: Vector2F
@@ -324,18 +321,41 @@ class MutableSquare : Square, MutableTransformable {
         }
     }
 
-    override fun scaledBy(factor: Float) =
-        MutableSquare(_center, _orientation, _sideLength * factor)
+    override fun scaledBy(factor: Float) = MutableSquare(
+        _center,
+        orientation = _orientation * factor.sign,
+        sideLength = _sideLength * factor.absoluteValue
+    )
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableSquare = TODO()
-
-    override fun scaleBy(factor: Float) {
-        val (cX: Float, cY: Float) = _center
-        val (rotR: Float, rotI: Float) = _orientation
-        val sideLength: Float = _sideLength * factor
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableSquare {
+        val f: Float = 1f - factor
+        val cX: Float = _center.x * factor + point.x * f
+        val cY: Float = _center.y * factor + point.y * f
+        val (rotR: Float, rotI: Float) = _orientation * factor.sign
+        val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (rotR + rotI)
         val addendB: Float = halfSideLength * (rotR - rotI)
+
+        return MutableSquare(
+            center = Vector2F(cX, cY),
+            orientation = ComplexF(rotR, rotI),
+            sideLength = sideLength,
+            pointA = Vector2F(cX + addendB, cY + addendA),
+            pointB = Vector2F(cX - addendA, cY + addendB),
+            pointC = Vector2F(cX - addendB, cY - addendA),
+            pointD = Vector2F(cX + addendA, cY - addendB)
+        )
+    }
+
+    override fun scaleBy(factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = _orientation * factor.sign
+        val sideLength: Float = _sideLength * factor.absoluteValue
+        val halfSideLength: Float = sideLength * 0.5f
+        val addendA: Float = halfSideLength * (rotR + rotI)
+        val addendB: Float = halfSideLength * (rotR - rotI)
+        _orientation = ComplexF(rotR, rotI)
         _sideLength = sideLength
         _pointA = Vector2F(cX + addendB, cY + addendA)
         _pointB = Vector2F(cX - addendA, cY + addendB)
@@ -343,7 +363,23 @@ class MutableSquare : Square, MutableTransformable {
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val f: Float = 1f - factor
+        val cX: Float = _center.x * factor + point.x * f
+        val cY: Float = _center.y * factor + point.y * f
+        val (rotR: Float, rotI: Float) = _orientation * factor.sign
+        val sideLength: Float = _sideLength * factor.absoluteValue
+        val halfSideLength: Float = sideLength * 0.5f
+        val addendA: Float = halfSideLength * (rotR + rotI)
+        val addendB: Float = halfSideLength * (rotR - rotI)
+        _center = Vector2F(cX, cY)
+        _orientation = ComplexF(rotR, rotI)
+        _sideLength = sideLength
+        _pointA = Vector2F(cX + addendB, cY + addendA)
+        _pointB = Vector2F(cX - addendA, cY + addendB)
+        _pointC = Vector2F(cX - addendB, cY - addendA)
+        _pointD = Vector2F(cX + addendA, cY - addendB)
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableSquare(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _sideLength
