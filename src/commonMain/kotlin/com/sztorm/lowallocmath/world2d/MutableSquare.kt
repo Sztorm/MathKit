@@ -323,7 +323,7 @@ class MutableSquare : Square, MutableTransformable {
 
     override fun scaledBy(factor: Float) = MutableSquare(
         _center,
-        orientation = _orientation * factor.sign,
+        orientation = _orientation * 1f.withSign(factor),
         sideLength = _sideLength * factor.absoluteValue
     )
 
@@ -331,7 +331,7 @@ class MutableSquare : Square, MutableTransformable {
         val f: Float = 1f - factor
         val cX: Float = _center.x * factor + point.x * f
         val cY: Float = _center.y * factor + point.y * f
-        val (rotR: Float, rotI: Float) = _orientation * factor.sign
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
         val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (rotR + rotI)
@@ -350,7 +350,7 @@ class MutableSquare : Square, MutableTransformable {
 
     override fun scaleBy(factor: Float) {
         val (cX: Float, cY: Float) = _center
-        val (rotR: Float, rotI: Float) = _orientation * factor.sign
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
         val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (rotR + rotI)
@@ -367,7 +367,7 @@ class MutableSquare : Square, MutableTransformable {
         val f: Float = 1f - factor
         val cX: Float = _center.x * factor + point.x * f
         val cY: Float = _center.y * factor + point.y * f
-        val (rotR: Float, rotI: Float) = _orientation * factor.sign
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
         val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (rotR + rotI)

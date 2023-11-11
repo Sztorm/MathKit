@@ -5,8 +5,8 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
-import kotlin.math.sign
 import kotlin.math.sqrt
+import kotlin.math.withSign
 
 class MutableTriangle : Triangle, MutableTransformable {
     private var _pointA: Vector2F
@@ -472,7 +472,7 @@ class MutableTriangle : Triangle, MutableTransformable {
             pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY),
             pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY),
             _centroid,
-            _orientation * factor.sign
+            _orientation * 1f.withSign(factor)
         )
     }
 
@@ -488,7 +488,7 @@ class MutableTriangle : Triangle, MutableTransformable {
             centroid = Vector2F(
                 _centroid.x * factor + addendX, _centroid.y * factor + addendY
             ),
-            _orientation * factor.sign
+            _orientation * 1f.withSign(factor)
         )
     }
 
@@ -499,7 +499,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointA = Vector2F(_pointA.x * factor + addendX, _pointA.y * factor + addendY)
         _pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY)
         _pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY)
-        _orientation *= factor.sign
+        _orientation *= 1f.withSign(factor)
     }
 
     override fun dilateBy(point: Vector2F, factor: Float) {
@@ -510,7 +510,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointB = Vector2F(_pointB.x * factor + addendX, _pointB.y * factor + addendY)
         _pointC = Vector2F(_pointC.x * factor + addendX, _pointC.y * factor + addendY)
         _centroid = Vector2F(_centroid.x * factor + addendX, _centroid.y * factor + addendY)
-        _orientation *= factor.sign
+        _orientation *= 1f.withSign(factor)
     }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableTriangle =
