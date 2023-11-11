@@ -340,7 +340,7 @@ class MutableSquare : Square, MutableTransformable {
         return MutableSquare(
             center = Vector2F(cX, cY),
             orientation = ComplexF(rotR, rotI),
-            sideLength = sideLength,
+            sideLength,
             pointA = Vector2F(cX + addendB, cY + addendA),
             pointB = Vector2F(cX - addendA, cY + addendB),
             pointC = Vector2F(cX - addendB, cY - addendA),

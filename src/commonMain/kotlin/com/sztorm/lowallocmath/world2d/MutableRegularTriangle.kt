@@ -361,15 +361,18 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         }
     }
 
-    override fun scaledBy(factor: Float) =
-        MutableRegularTriangle(_center, _orientation, _sideLength * factor)
+    override fun scaledBy(factor: Float) = MutableRegularTriangle(
+        _center,
+        orientation = _orientation * 1f.withSign(factor),
+        sideLength = _sideLength * factor.absoluteValue
+    )
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableRegularTriangle = TODO()
-
-    override fun scaleBy(factor: Float) {
-        val (cX: Float, cY: Float) = _center
-        val (rotR: Float, rotI: Float) = _orientation
-        val sideLength: Float = _sideLength * factor
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRegularTriangle {
+        val f: Float = 1f - factor
+        val cX: Float = _center.x * factor + point.x * f
+        val cY: Float = _center.y * factor + point.y * f
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
+        val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val inradius: Float = 0.28867513f * sideLength
         val circumradius: Float = inradius + inradius
@@ -377,13 +380,55 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         val addendX2: Float = rotR * halfSideLength
         val addendY1: Float = rotI * halfSideLength
         val addendY2: Float = rotR * inradius - cY
+
+        return MutableRegularTriangle(
+            center = Vector2F(cX, cY),
+            orientation = ComplexF(rotR, rotI),
+            sideLength,
+            pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius),
+            pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2),
+            pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+        )
+    }
+
+    override fun scaleBy(factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
+        val sideLength: Float = _sideLength * factor.absoluteValue
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _orientation = ComplexF(rotR, rotI)
         _sideLength = sideLength
         _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
         _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val f: Float = 1f - factor
+        val cX: Float = _center.x * factor + point.x * f
+        val cY: Float = _center.y * factor + point.y * f
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
+        val sideLength: Float = _sideLength * factor.absoluteValue
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _center = Vector2F(cX, cY)
+        _orientation = ComplexF(rotR, rotI)
+        _sideLength = sideLength
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRegularTriangle(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _sideLength

@@ -722,9 +722,9 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         return MutableRoundedRectangle(
             center = Vector2F(cX, cY),
             orientation = ComplexF(rotR, rotI),
-            width = width,
-            height = height,
-            cornerRadius = cornerRadius,
+            width,
+            height,
+            cornerRadius,
             pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG),
             pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG),
             pointC = Vector2F(cX - addendSumED, cY + addendDiffCF),
