@@ -3882,6 +3882,20 @@ class TransformableTests {
                         Vector2F(-3.3f, 1.6f), Vector2F(-2.6999998f, 0.39999998f)
                     ),
                 ),
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    1f,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                ),
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    -1f,
+                    MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-4f, 3f)),
+                ),
             )
             val rayArgs = listOf(
                 Arguments.of(
@@ -4483,6 +4497,48 @@ class TransformableTests {
                     )
                 ),
             )
+            val lineSegmentArgs = listOf(
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    2f,
+                    MutableLineSegment(Vector2F(-14f, 9f), Vector2F(-10f, 1f)),
+                ),
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    0.3f,
+                    MutableLineSegment(Vector2F(3f, -1.2f), Vector2F(3.6f, -2.4f)),
+                ),
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    1f,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                ),
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(6f, -3f)),
+                    -1f,
+                    MutableLineSegment(Vector2F(16f, -9f), Vector2F(14f, -5f)),
+                ),
+                Arguments.of(
+                    LineSegmentTests.Companion::clone,
+                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(-3f, 1f)),
+                    2f,
+                    MutableLineSegment(Vector2F(-5f, 5f), Vector2F(-1f, -3f)),
+                ),
+            )
             val rectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -5004,6 +5060,7 @@ class TransformableTests {
             return listOf(
                 annulusArgs,
                 circleArgs,
+                lineSegmentArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
