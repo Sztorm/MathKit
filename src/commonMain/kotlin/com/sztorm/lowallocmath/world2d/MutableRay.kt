@@ -4,6 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.sqrt
+import kotlin.math.withSign
 
 class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransformable {
     private var _origin: Vector2F = origin
@@ -171,13 +172,29 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         }
     }
 
-    override fun scaledBy(factor: Float) = MutableRay(_origin, _direction)
+    override fun scaledBy(factor: Float) =
+        MutableRay(_origin, _direction * 1f.withSign(factor))
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableRay = TODO()
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRay {
+        val (cX: Float, cY: Float) = _origin
+        val (pX: Float, pY: Float) = point
 
-    override fun scaleBy(factor: Float) {}
+        return MutableRay(
+            origin = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY)),
+            direction * 1f.withSign(factor)
+        )
+    }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun scaleBy(factor: Float) {
+        _direction *= 1f.withSign(factor)
+    }
+
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val (cX: Float, cY: Float) = _origin
+        val (pX: Float, pY: Float) = point
+        _origin = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY))
+        _direction *= 1f.withSign(factor)
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableRay =
         transformedBy(offset, ComplexF.fromAngle(rotation))
