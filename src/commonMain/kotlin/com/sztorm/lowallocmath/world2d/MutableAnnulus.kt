@@ -6,7 +6,9 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.PI
+import kotlin.math.absoluteValue
 import kotlin.math.sqrt
+import kotlin.math.withSign
 
 class MutableAnnulus(
     center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
@@ -179,18 +181,46 @@ class MutableAnnulus(
         }
     }
 
-    override fun scaledBy(factor: Float) = MutableAnnulus(
-        _center, _orientation, _outerRadius * factor, _innerRadius * factor
-    )
+    override fun scaledBy(factor: Float): MutableAnnulus {
+        val absFactor: Float = factor.absoluteValue
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableAnnulus = TODO()
-
-    override fun scaleBy(factor: Float) {
-        _outerRadius *= factor
-        _innerRadius *= factor
+        return MutableAnnulus(
+            _center,
+            _orientation * 1f.withSign(factor),
+            _outerRadius * absFactor,
+            _innerRadius * absFactor
+        )
     }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableAnnulus {
+        val (cX: Float, cY: Float) = _center
+        val (pX: Float, pY: Float) = point
+        val absFactor: Float = factor.absoluteValue
+
+        return MutableAnnulus(
+            center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY)),
+            orientation * 1f.withSign(factor),
+            _outerRadius * absFactor,
+            _innerRadius * absFactor
+        )
+    }
+
+    override fun scaleBy(factor: Float) {
+        val absFactor: Float = factor.absoluteValue
+        _orientation *= 1f.withSign(factor)
+        _outerRadius *= absFactor
+        _innerRadius *= absFactor
+    }
+
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (pX: Float, pY: Float) = point
+        val absFactor: Float = factor.absoluteValue
+        _center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY))
+        _orientation *= 1f.withSign(factor)
+        _outerRadius *= absFactor
+        _innerRadius *= absFactor
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableAnnulus(
         _center + offset,
