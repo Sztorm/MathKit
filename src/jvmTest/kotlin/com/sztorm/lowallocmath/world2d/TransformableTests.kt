@@ -3800,6 +3800,36 @@ class TransformableTests {
                         radius = 1.2f
                     )
                 ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    1f,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    -1f,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(270f)),
+                        radius = 4f
+                    ),
+                ),
             )
             val lineSegmentArgs = listOf(
                 Arguments.of(
@@ -4245,6 +4275,88 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
+            val circleArgs = listOf(
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    2f,
+                    MutableCircle(
+                        center = Vector2F(-4f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 8f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    0.3f,
+                    MutableCircle(
+                        center = Vector2F(4.5f, -1.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 1.2f
+                    )
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    1f,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    -1f,
+                    MutableCircle(
+                        center = Vector2F(11f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(270f)),
+                        radius = 4f
+                    ),
+                ),
+                Arguments.of(
+                    CircleTests.Companion::clone,
+                    CircleTests.Companion::areApproximatelyEqual,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(1f, 2f)),
+                    2f,
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 8f
+                    )
+                ),
+            )
             val rectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -4764,6 +4876,7 @@ class TransformableTests {
                 ),
             )
             return listOf(
+                circleArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,

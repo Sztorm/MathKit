@@ -4,7 +4,9 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.PI
+import kotlin.math.absoluteValue
 import kotlin.math.sqrt
+import kotlin.math.withSign
 
 class MutableCircle(
     center: Vector2F, orientation: ComplexF, radius: Float
@@ -169,16 +171,35 @@ class MutableCircle(
         }
     }
 
-    override fun scaledBy(factor: Float) =
-        MutableCircle(_center, _orientation, _radius * factor)
+    override fun scaledBy(factor: Float) = MutableCircle(
+        _center,
+        _orientation * 1f.withSign(factor),
+        _radius * factor.absoluteValue
+    )
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableCircle = TODO()
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableCircle {
+        val (cX: Float, cY: Float) = _center
+        val (pX: Float, pY: Float) = point
 
-    override fun scaleBy(factor: Float) {
-        _radius *= factor
+        return MutableCircle(
+            center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY)),
+            orientation * 1f.withSign(factor),
+            radius * factor.absoluteValue
+        )
     }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun scaleBy(factor: Float) {
+        _orientation *= 1f.withSign(factor)
+        _radius *= factor.absoluteValue
+    }
+
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (pX: Float, pY: Float) = point
+        _center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY))
+        _orientation *= 1f.withSign(factor)
+        _radius *= factor.absoluteValue
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableCircle(
         _center + offset,
