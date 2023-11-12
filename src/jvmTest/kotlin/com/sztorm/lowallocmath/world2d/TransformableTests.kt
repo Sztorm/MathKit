@@ -3870,6 +3870,40 @@ class TransformableTests {
                         height = 1.5f
                     )
                 ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    1f,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    -1f,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(300f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
             )
             val regularPolygonArgs = listOf(
                 Arguments.of(
@@ -4211,6 +4245,98 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
+            val rectangleArgs = listOf(
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    2f,
+                    MutableRectangle(
+                        center = Vector2F(-8f, -1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 6f,
+                        height = 10f
+                    )
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    0.3f,
+                    MutableRectangle(
+                        center = Vector2F(3.8999999f, -2.6999998f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 0.9f,
+                        height = 1.5f
+                    )
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    1f,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(6f, -3f)),
+                    -1f,
+                    MutableRectangle(
+                        center = Vector2F(13f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(300f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                ),
+                Arguments.of(
+                    RectangleTests.Companion::clone,
+                    RectangleTests.Companion::areApproximatelyEqual,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, -2f)),
+                    2f,
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 6f,
+                        height = 10f
+                    )
+                ),
+            )
             val regularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
@@ -4638,6 +4764,7 @@ class TransformableTests {
                 ),
             )
             return listOf(
+                rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,

@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
@@ -358,16 +359,25 @@ class MutableRectangle : Rectangle, MutableTransformable {
         }
     }
 
-    override fun scaledBy(factor: Float) =
-        MutableRectangle(_center, _orientation, _width * factor, _height * factor)
+    override fun scaledBy(factor: Float): MutableRectangle {
+        val absFactor: Float = factor.absoluteValue
 
-    override fun dilatedBy(point: Vector2F, factor: Float): MutableRectangle = TODO()
+        return MutableRectangle(
+            _center,
+            _orientation * 1f.withSign(factor),
+            _width * absFactor,
+            _height * absFactor
+        )
+    }
 
-    override fun scaleBy(factor: Float) {
-        val width: Float = _width * factor
-        val height: Float = _height * factor
-        val (cX: Float, cY: Float) = _center
-        val (rotR: Float, rotI: Float) = _orientation
+    override fun dilatedBy(point: Vector2F, factor: Float): MutableRectangle {
+        val f: Float = 1f - factor
+        val cX: Float = _center.x * factor + point.x * f
+        val cY: Float = _center.y * factor + point.y * f
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
+        val absFactor: Float = factor.absoluteValue
+        val width: Float = _width * absFactor
+        val height: Float = _height * absFactor
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val addendX1: Float = rotR * halfWidth
@@ -378,6 +388,36 @@ class MutableRectangle : Rectangle, MutableTransformable {
         val addendY1A: Float = cY + addendY1
         val addendY1B: Float = cY - addendY1
         val addendY2: Float = rotI * halfWidth
+
+        return MutableRectangle(
+            center = Vector2F(cX, cY),
+            orientation = ComplexF(rotR, rotI),
+            width,
+            height,
+            pointA = Vector2F(addendX1A - addendX2, addendY1A + addendY2),
+            pointB = Vector2F(addendX1B - addendX2, addendY1A - addendY2),
+            pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2),
+            pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
+        )
+    }
+
+    override fun scaleBy(factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
+        val absFactor: Float = factor.absoluteValue
+        val width: Float = _width * absFactor
+        val height: Float = _height * absFactor
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val addendX1: Float = rotR * halfWidth
+        val addendX1A: Float = cX + addendX1
+        val addendX1B: Float = cX - addendX1
+        val addendX2: Float = rotI * halfHeight
+        val addendY1: Float = rotR * halfHeight
+        val addendY1A: Float = cY + addendY1
+        val addendY1B: Float = cY - addendY1
+        val addendY2: Float = rotI * halfWidth
+        _orientation = ComplexF(rotR, rotI)
         _width = width
         _height = height
         _pointA = Vector2F(addendX1A - addendX2, addendY1A + addendY2)
@@ -386,7 +426,33 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
 
-    override fun dilateBy(point: Vector2F, factor: Float) = TODO()
+    override fun dilateBy(point: Vector2F, factor: Float) {
+        val f: Float = 1f - factor
+        val cX: Float = _center.x * factor + point.x * f
+        val cY: Float = _center.y * factor + point.y * f
+        val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
+        val absFactor: Float = factor.absoluteValue
+        val width: Float = _width * absFactor
+        val height: Float = _height * absFactor
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val addendX1: Float = rotR * halfWidth
+        val addendX1A: Float = cX + addendX1
+        val addendX1B: Float = cX - addendX1
+        val addendX2: Float = rotI * halfHeight
+        val addendY1: Float = rotR * halfHeight
+        val addendY1A: Float = cY + addendY1
+        val addendY1B: Float = cY - addendY1
+        val addendY2: Float = rotI * halfWidth
+        _center = Vector2F(cX, cY)
+        _orientation = ComplexF(rotR, rotI)
+        _width = width
+        _height = height
+        _pointA = Vector2F(addendX1A - addendX2, addendY1A + addendY2)
+        _pointB = Vector2F(addendX1B - addendX2, addendY1A - addendY2)
+        _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
+        _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
+    }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRectangle(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _width, _height
