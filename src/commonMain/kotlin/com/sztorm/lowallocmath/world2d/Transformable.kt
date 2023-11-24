@@ -4,34 +4,37 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
-interface Transformable : Movable, Rotatable, Scalable {
-    override fun movedBy(offset: Vector2F): Transformable
+interface Transformable {
+    val position: Vector2F
+    val orientation: ComplexF
 
-    override fun movedTo(position: Vector2F): Transformable
+    fun movedBy(offset: Vector2F): Transformable
 
-    override fun rotatedBy(rotation: AngleF): Transformable =
+    fun movedTo(position: Vector2F): Transformable
+
+    fun rotatedBy(rotation: AngleF): Transformable =
         rotatedBy(ComplexF.fromAngle(rotation))
 
-    override fun rotatedBy(rotation: ComplexF): Transformable
+    fun rotatedBy(rotation: ComplexF): Transformable
 
-    override fun rotatedTo(orientation: AngleF): Transformable =
+    fun rotatedTo(orientation: AngleF): Transformable =
         rotatedTo(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): Transformable
+    fun rotatedTo(orientation: ComplexF): Transformable
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Transformable =
+    fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Transformable =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Transformable
+    fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Transformable
 
-    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Transformable =
+    fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Transformable =
         rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Transformable
+    fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Transformable
 
-    override fun scaledBy(factor: Float): Transformable
+    fun scaledBy(factor: Float): Transformable
 
-    override fun dilatedBy(point: Vector2F, factor: Float): Transformable
+    fun dilatedBy(point: Vector2F, factor: Float): Transformable
 
     fun transformedBy(offset: Vector2F, rotation: AngleF): Transformable =
         transformedBy(offset, ComplexF.fromAngle(rotation))

@@ -14,358 +14,394 @@ class TransformableTests {
     @ParameterizedTest
     @MethodSource("positionArgs")
     fun positionReturnsCorrectValue(
-        cloner: (Movable) -> Movable,
-        equalityComparator: (Movable, Movable) -> Boolean,
-        movable: Movable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         expected: Wrapper<Vector2F>
     ) {
-        val clone: Movable = cloner(movable)
-        val actual: Vector2F = movable.position
+        val clone: Transformable = cloner(transformable)
+        val actual: Vector2F = transformable.position
 
         assertApproximation(expected.value, actual)
-        assertTrue(equalityComparator(clone, movable), "Movable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("movedByArgs")
     fun movedByReturnsCorrectValue(
-        cloner: (Movable) -> Movable,
-        equalityComparator: (Movable, Movable) -> Boolean,
-        movable: Movable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         offset: Wrapper<Vector2F>,
-        expected: Movable
+        expected: Transformable
     ) {
-        val clone: Movable = cloner(movable)
-        val actual: Movable = movable.movedBy(offset.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.movedBy(offset.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, movable), "Movable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("movedToArgs")
     fun movedToReturnsCorrectValue(
-        cloner: (Movable) -> Movable,
-        equalityComparator: (Movable, Movable) -> Boolean,
-        movable: Movable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         position: Wrapper<Vector2F>,
-        expected: Movable
+        expected: Transformable
     ) {
-        val clone: Movable = cloner(movable)
-        val actual: Movable = movable.movedTo(position.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.movedTo(position.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, movable), "Movable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("moveByArgs")
-    fun moveByMutatesMovableCorrectly(
-        equalityComparator: (MutableMovable, MutableMovable) -> Boolean,
-        movable: MutableMovable,
+    fun moveByMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         offset: Wrapper<Vector2F>,
-        expected: MutableMovable
-    ) = assertTrue(equalityComparator(expected, movable.apply { moveBy(offset.value) }))
+        expected: MutableTransformable
+    ) = assertTrue(equalityComparator(expected, transformable.apply { moveBy(offset.value) }))
 
     @ParameterizedTest
     @MethodSource("moveToArgs")
-    fun moveToMutatesMovableCorrectly(
-        equalityComparator: (MutableMovable, MutableMovable) -> Boolean,
-        movable: MutableMovable,
+    fun moveToMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         position: Wrapper<Vector2F>,
-        expected: MutableMovable
-    ) = assertTrue(equalityComparator(expected, movable.apply { moveTo(position.value) }))
+        expected: MutableTransformable
+    ) = assertTrue(equalityComparator(expected, transformable.apply { moveTo(position.value) }))
 
     @ParameterizedTest
     @MethodSource("orientationArgs")
     fun orientationReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         expected: Wrapper<ComplexF>
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: ComplexF = rotatable.orientation
+        val clone: Transformable = cloner(transformable)
+        val actual: ComplexF = transformable.orientation
 
         assertApproximation(expected.value, actual)
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedByAngleFArgs")
     fun rotatedByAngleFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         rotation: Wrapper<AngleF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedBy(rotation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.rotatedBy(rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedByComplexFArgs")
     fun rotatedByComplexFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         rotation: Wrapper<ComplexF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedBy(rotation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.rotatedBy(rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedToAngleFArgs")
     fun rotatedToAngleFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         orientation: Wrapper<AngleF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedTo(orientation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.rotatedTo(orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedToComplexFArgs")
     fun rotatedToComplexFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         orientation: Wrapper<ComplexF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedTo(orientation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.rotatedTo(orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
     fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         point: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointBy(point.value, rotation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.rotatedAroundPointBy(point.value, rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
     fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         point: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointBy(point.value, rotation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.rotatedAroundPointBy(point.value, rotation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
     fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         point: Wrapper<Vector2F>,
         orientation: Wrapper<AngleF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, orientation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable =
+            transformable.rotatedAroundPointTo(point.value, orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
     fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
-        cloner: (Rotatable) -> Rotatable,
-        equalityComparator: (Rotatable, Rotatable) -> Boolean,
-        rotatable: Rotatable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         point: Wrapper<Vector2F>,
         orientation: Wrapper<ComplexF>,
-        expected: Rotatable
+        expected: Transformable
     ) {
-        val clone: Rotatable = cloner(rotatable)
-        val actual: Rotatable = rotatable.rotatedAroundPointTo(point.value, orientation.value)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable =
+            transformable.rotatedAroundPointTo(point.value, orientation.value)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, rotatable), "Rotatable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("rotateByAngleFArgs")
-    fun rotateByAngleFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateByAngleFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         rotation: Wrapper<AngleF>,
-        expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateBy(rotation.value) }))
+        expected: MutableTransformable
+    ) = assertTrue(equalityComparator(expected, transformable.apply { rotateBy(rotation.value) }))
 
     @ParameterizedTest
     @MethodSource("rotateByComplexFArgs")
-    fun rotateByComplexFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateByComplexFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         rotation: Wrapper<ComplexF>,
-        expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateBy(rotation.value) }))
+        expected: MutableTransformable
+    ) = assertTrue(equalityComparator(expected, transformable.apply { rotateBy(rotation.value) }))
 
     @ParameterizedTest
     @MethodSource("rotateToAngleFArgs")
-    fun rotateToAngleFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateToAngleFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         orientation: Wrapper<AngleF>,
-        expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(orientation.value) }))
+        expected: MutableTransformable
+    ) = assertTrue(
+        equalityComparator(expected, transformable.apply { rotateTo(orientation.value) })
+    )
 
     @ParameterizedTest
     @MethodSource("rotateToComplexFArgs")
-    fun rotateToComplexFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateToComplexFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         orientation: Wrapper<ComplexF>,
-        expected: MutableRotatable
-    ) = assertTrue(equalityComparator(expected, rotatable.apply { rotateTo(orientation.value) }))
+        expected: MutableTransformable
+    ) = assertTrue(
+        equalityComparator(expected, transformable.apply { rotateTo(orientation.value) })
+    )
 
     @ParameterizedTest
     @MethodSource("rotateAroundPointByVector2FAngleFArgs")
-    fun rotateAroundPointByVector2FAngleFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateAroundPointByVector2FAngleFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         point: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
-        expected: MutableRotatable
+        expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointBy(point.value, rotation.value) }
+            expected, transformable.apply { rotateAroundPointBy(point.value, rotation.value) }
         )
     )
 
     @ParameterizedTest
     @MethodSource("rotateAroundPointByVector2FComplexFArgs")
-    fun rotateAroundPointByVector2FComplexFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateAroundPointByVector2FComplexFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         point: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
-        expected: MutableRotatable
+        expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointBy(point.value, rotation.value) }
+            expected, transformable.apply { rotateAroundPointBy(point.value, rotation.value) }
         )
     )
 
     @ParameterizedTest
     @MethodSource("rotateAroundPointToVector2FAngleFArgs")
-    fun rotateAroundPointToVector2FAngleFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateAroundPointToVector2FAngleFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         point: Wrapper<Vector2F>,
         orientation: Wrapper<AngleF>,
-        expected: MutableRotatable
+        expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointTo(point.value, orientation.value) }
+            expected, transformable.apply { rotateAroundPointTo(point.value, orientation.value) }
         )
     )
 
     @ParameterizedTest
     @MethodSource("rotateAroundPointToVector2FComplexFArgs")
-    fun rotateAroundPointToVector2FComplexFMutatesRotatableCorrectly(
-        equalityComparator: (MutableRotatable, MutableRotatable) -> Boolean,
-        rotatable: MutableRotatable,
+    fun rotateAroundPointToVector2FComplexFMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         point: Wrapper<Vector2F>,
         orientation: Wrapper<ComplexF>,
-        expected: MutableRotatable
+        expected: MutableTransformable
     ) = assertTrue(
         equalityComparator(
-            expected, rotatable.apply { rotateAroundPointTo(point.value, orientation.value) }
+            expected, transformable.apply { rotateAroundPointTo(point.value, orientation.value) }
         )
     )
 
     @ParameterizedTest
     @MethodSource("scaledByArgs")
     fun scaledByReturnsCorrectValue(
-        cloner: (Scalable) -> Scalable,
-        equalityComparator: (Scalable, Scalable) -> Boolean,
-        scalable: Scalable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         factor: Float,
-        expected: Scalable
+        expected: Transformable
     ) {
-        val clone: Scalable = cloner(scalable)
-        val actual: Scalable = scalable.scaledBy(factor)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.scaledBy(factor)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, scalable), "Scalable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("dilatedByArgs")
     fun dilatedByReturnsCorrectValue(
-        cloner: (Scalable) -> Scalable,
-        equalityComparator: (Scalable, Scalable) -> Boolean,
-        scalable: Scalable,
+        cloner: (Transformable) -> Transformable,
+        equalityComparator: (Transformable, Transformable) -> Boolean,
+        transformable: Transformable,
         point: Wrapper<Vector2F>,
         factor: Float,
-        expected: Scalable
+        expected: Transformable
     ) {
-        val clone: Scalable = cloner(scalable)
-        val actual: Scalable = scalable.dilatedBy(point.value, factor)
+        val clone: Transformable = cloner(transformable)
+        val actual: Transformable = transformable.dilatedBy(point.value, factor)
 
         assertTrue(equalityComparator(expected, actual))
-        assertTrue(equalityComparator(clone, scalable), "Scalable must not be mutated.")
+        assertTrue(
+            equalityComparator(clone, transformable), "Transformable must not be mutated."
+        )
     }
 
     @ParameterizedTest
     @MethodSource("scaleByArgs")
-    fun scaleByMutatesScalableCorrectly(
-        equalityComparator: (MutableScalable, MutableScalable) -> Boolean,
-        scalable: MutableScalable,
+    fun scaleByMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         factor: Float,
-        expected: MutableScalable
-    ) = assertTrue(equalityComparator(expected, scalable.apply { scaleBy(factor) }))
+        expected: MutableTransformable
+    ) = assertTrue(equalityComparator(expected, transformable.apply { scaleBy(factor) }))
 
     @ParameterizedTest
     @MethodSource("dilateByArgs")
-    fun dilateByMutatesScalableCorrectly(
-        equalityComparator: (MutableScalable, MutableScalable) -> Boolean,
-        scalable: MutableScalable,
+    fun dilateByMutatesTransformableCorrectly(
+        equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
+        transformable: MutableTransformable,
         point: Wrapper<Vector2F>,
         factor: Float,
-        expected: MutableScalable
-    ) = assertTrue(equalityComparator(expected, scalable.apply { dilateBy(point.value, factor) }))
+        expected: MutableTransformable
+    ) = assertTrue(
+        equalityComparator(expected, transformable.apply { dilateBy(point.value, factor) })
+    )
 
     @ParameterizedTest
     @MethodSource("transformedByVector2FAngleFArgs")
