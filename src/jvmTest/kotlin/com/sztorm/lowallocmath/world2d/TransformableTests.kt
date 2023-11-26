@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -40,7 +41,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.movedBy(offset.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -58,7 +59,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.movedTo(position.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -71,7 +72,7 @@ class TransformableTests {
         transformable: MutableTransformable,
         offset: Wrapper<Vector2F>,
         expected: MutableTransformable
-    ) = assertTrue(equalityComparator(expected, transformable.apply { moveBy(offset.value) }))
+    ) = assertEquals(expected, transformable.apply { moveBy(offset.value) }, equalityComparator)
 
     @ParameterizedTest
     @MethodSource("moveToArgs")
@@ -80,7 +81,7 @@ class TransformableTests {
         transformable: MutableTransformable,
         position: Wrapper<Vector2F>,
         expected: MutableTransformable
-    ) = assertTrue(equalityComparator(expected, transformable.apply { moveTo(position.value) }))
+    ) = assertEquals(expected, transformable.apply { moveTo(position.value) }, equalityComparator)
 
     @ParameterizedTest
     @MethodSource("orientationArgs")
@@ -111,7 +112,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.rotatedBy(rotation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -129,7 +130,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.rotatedBy(rotation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -147,7 +148,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.rotatedTo(orientation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -165,7 +166,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.rotatedTo(orientation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -184,7 +185,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.rotatedAroundPointBy(point.value, rotation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -203,7 +204,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.rotatedAroundPointBy(point.value, rotation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -223,7 +224,7 @@ class TransformableTests {
         val actual: Transformable =
             transformable.rotatedAroundPointTo(point.value, orientation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -243,7 +244,7 @@ class TransformableTests {
         val actual: Transformable =
             transformable.rotatedAroundPointTo(point.value, orientation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -256,7 +257,9 @@ class TransformableTests {
         transformable: MutableTransformable,
         rotation: Wrapper<AngleF>,
         expected: MutableTransformable
-    ) = assertTrue(equalityComparator(expected, transformable.apply { rotateBy(rotation.value) }))
+    ) = assertEquals(
+        expected, transformable.apply { rotateBy(rotation.value) }, equalityComparator
+    )
 
     @ParameterizedTest
     @MethodSource("rotateByComplexFArgs")
@@ -265,7 +268,9 @@ class TransformableTests {
         transformable: MutableTransformable,
         rotation: Wrapper<ComplexF>,
         expected: MutableTransformable
-    ) = assertTrue(equalityComparator(expected, transformable.apply { rotateBy(rotation.value) }))
+    ) = assertEquals(
+        expected, transformable.apply { rotateBy(rotation.value) }, equalityComparator
+    )
 
     @ParameterizedTest
     @MethodSource("rotateToAngleFArgs")
@@ -274,8 +279,8 @@ class TransformableTests {
         transformable: MutableTransformable,
         orientation: Wrapper<AngleF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(expected, transformable.apply { rotateTo(orientation.value) })
+    ) = assertEquals(
+        expected, transformable.apply { rotateTo(orientation.value) }, equalityComparator
     )
 
     @ParameterizedTest
@@ -285,8 +290,8 @@ class TransformableTests {
         transformable: MutableTransformable,
         orientation: Wrapper<ComplexF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(expected, transformable.apply { rotateTo(orientation.value) })
+    ) = assertEquals(
+        expected, transformable.apply { rotateTo(orientation.value) }, equalityComparator
     )
 
     @ParameterizedTest
@@ -297,10 +302,10 @@ class TransformableTests {
         point: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { rotateAroundPointBy(point.value, rotation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { rotateAroundPointBy(point.value, rotation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -311,10 +316,10 @@ class TransformableTests {
         point: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { rotateAroundPointBy(point.value, rotation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { rotateAroundPointBy(point.value, rotation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -325,10 +330,10 @@ class TransformableTests {
         point: Wrapper<Vector2F>,
         orientation: Wrapper<AngleF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { rotateAroundPointTo(point.value, orientation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { rotateAroundPointTo(point.value, orientation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -339,10 +344,10 @@ class TransformableTests {
         point: Wrapper<Vector2F>,
         orientation: Wrapper<ComplexF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { rotateAroundPointTo(point.value, orientation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { rotateAroundPointTo(point.value, orientation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -357,7 +362,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.scaledBy(factor)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -376,7 +381,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.dilatedBy(point.value, factor)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -389,7 +394,7 @@ class TransformableTests {
         transformable: MutableTransformable,
         factor: Float,
         expected: MutableTransformable
-    ) = assertTrue(equalityComparator(expected, transformable.apply { scaleBy(factor) }))
+    ) = assertEquals(expected, transformable.apply { scaleBy(factor) }, equalityComparator)
 
     @ParameterizedTest
     @MethodSource("dilateByArgs")
@@ -399,8 +404,8 @@ class TransformableTests {
         point: Wrapper<Vector2F>,
         factor: Float,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(expected, transformable.apply { dilateBy(point.value, factor) })
+    ) = assertEquals(
+        expected, transformable.apply { dilateBy(point.value, factor) }, equalityComparator
     )
 
     @ParameterizedTest
@@ -416,7 +421,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.transformedBy(offset.value, rotation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -435,7 +440,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.transformedBy(offset.value, rotation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -456,7 +461,7 @@ class TransformableTests {
         val actual: Transformable =
             transformable.transformedBy(offset.value, rotation.value, factor)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -477,7 +482,7 @@ class TransformableTests {
         val actual: Transformable =
             transformable.transformedBy(offset.value, rotation.value, factor)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -496,7 +501,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.transformedTo(position.value, orientation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -515,7 +520,7 @@ class TransformableTests {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable = transformable.transformedTo(position.value, orientation.value)
 
-        assertTrue(equalityComparator(expected, actual))
+        assertEquals(expected, actual, equalityComparator)
         assertTrue(
             equalityComparator(clone, transformable), "Transformable must not be mutated."
         )
@@ -529,10 +534,10 @@ class TransformableTests {
         offset: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { transformBy(offset.value, rotation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { transformBy(offset.value, rotation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -543,10 +548,10 @@ class TransformableTests {
         offset: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { transformBy(offset.value, rotation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { transformBy(offset.value, rotation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -558,10 +563,10 @@ class TransformableTests {
         rotation: Wrapper<AngleF>,
         factor: Float,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { transformBy(offset.value, rotation.value, factor) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { transformBy(offset.value, rotation.value, factor) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -573,10 +578,10 @@ class TransformableTests {
         rotation: Wrapper<ComplexF>,
         factor: Float,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { transformBy(offset.value, rotation.value, factor) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { transformBy(offset.value, rotation.value, factor) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -587,10 +592,10 @@ class TransformableTests {
         position: Wrapper<Vector2F>,
         orientation: Wrapper<AngleF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { transformTo(position.value, orientation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { transformTo(position.value, orientation.value) },
+        equalityComparator
     )
 
     @ParameterizedTest
@@ -601,225 +606,85 @@ class TransformableTests {
         position: Wrapper<Vector2F>,
         orientation: Wrapper<ComplexF>,
         expected: MutableTransformable
-    ) = assertTrue(
-        equalityComparator(
-            expected, transformable.apply { transformTo(position.value, orientation.value) }
-        )
+    ) = assertEquals(
+        expected,
+        transformable.apply { transformTo(position.value, orientation.value) },
+        equalityComparator
     )
 
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val annulusArgs = AnnulusTests.positionArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f))
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(6f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
-                        outerRadius = 8f,
-                        innerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, 3f))
-                ),
-            )
-            val circleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val circleArgs = CircleTests.positionArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(Vector2F(1f, 2f))
-                ),
-                Arguments.of(
-                    CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(-1f, 7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                        radius = 5f
-                    ),
-                    Wrapper(Vector2F(-1f, 7f))
-                ),
-            )
-            val lineSegmentArgs = listOf(
+                    *it.get()
+                )
+            }
+            val lineSegmentArgs = LineSegmentTests.positionArgs().map {
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                    Wrapper(Vector2F(-3f, 1f))
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(Vector2F(0f, 5f))
-                ),
-            )
-            val rayArgs = listOf(
+                    *it.get()
+                )
+            }
+            val rayArgs = RayTests.positionArgs().map {
                 Arguments.of(
                     RayTests.Companion::clone,
                     RayTests.Companion::areApproximatelyEqual,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 3f))
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
-                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
-                    Wrapper(Vector2F(-2f, 5f))
-                ),
-            )
-            val rectangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val rectangleArgs = RectangleTests.positionArgs().map {
                 Arguments.of(
                     RectangleTests.Companion::clone,
                     RectangleTests.Companion::areApproximatelyEqual,
-                    MutableRectangle(
-                        center = Vector2F(-1f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                        width = 3f,
-                        height = 5f
-                    ),
-                    Wrapper(Vector2F(-1f, -2f))
-                ),
-                Arguments.of(
-                    RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
-                    Wrapper(Vector2F(-2f, 4f))
-                ),
-            )
-            val regularPolygonArgs = listOf(
+                    *it.get()
+                )
+            }
+            val regularPolygonArgs = RegularPolygonTests.positionArgs().map {
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
                     RegularPolygonTests.Companion::areApproximatelyEqual,
-                    MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                        sideLength = 3f,
-                        sideCount = 7
-                    ),
-                    Wrapper(Vector2F(0f, 8f))
-                ),
-                Arguments.of(
-                    RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
-                    MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                        sideLength = 2f,
-                        sideCount = 10
-                    ),
-                    Wrapper(Vector2F(14f, 1f))
-                ),
-            )
-            val regularTriangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val regularTriangleArgs = RegularTriangleTests.positionArgs().map {
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
                     RegularTriangleTests.Companion::areApproximatelyEqual,
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, 7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
-                    Wrapper(Vector2F(5f, 7f))
-                ),
-                Arguments.of(
-                    RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
-                    MutableRegularTriangle(
-                        center = Vector2F(3.1547005f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3.1547005f, -4f))
-                ),
-            )
-            val roundedRectangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val roundedRectangleArgs = RoundedRectangleTests.positionArgs().map {
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-3f, -4f))
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
-                    MutableRoundedRectangle(
-                        center = Vector2F(6f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 3f,
-                        height = 4f,
-                        cornerRadius = 1.5f
-                    ),
-                    Wrapper(Vector2F(6f, -4f))
-                ),
-            )
-            val squareArgs = listOf(
+                    *it.get()
+                )
+            }
+            val squareArgs = SquareTests.positionArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3f, 1f))
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
-                    Wrapper(Vector2F(8f, -2f))
-                ),
-            )
-            val triangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val triangleArgs = TriangleTests.positionArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     TriangleTests.Companion::areApproximatelyEqual,
-                    MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    ),
-                    Wrapper(Vector2F(-1.3333333f, -2.6666667f))
-                ),
-                Arguments.of(
-                    TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
-                    Wrapper(Vector2F(-0.3333333f, 3f))
-                ),
-            )
+                    *it.get()
+                )
+            }
             return listOf(
                 annulusArgs,
                 circleArgs,
@@ -1484,216 +1349,76 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val annulusArgs = AnnulusTests.orientationArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f)))
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
-                    MutableAnnulus(
-                        center = Vector2F(6f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
-                        outerRadius = 8f,
-                        innerRadius = 1f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f)))
-                ),
-            )
-            val circleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val circleArgs = CircleTests.orientationArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                        radius = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
-                ),
-                Arguments.of(
-                    CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
-                    MutableCircle(
-                        center = Vector2F(-1f, 7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                        radius = 5f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f)))
-                ),
-            )
-            val lineSegmentArgs = listOf(
+                    *it.get()
+                )
+            }
+            val lineSegmentArgs = LineSegmentTests.orientationArgs().map {
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)))
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f)))
-                ),
-            )
-            val rayArgs = listOf(
+                    *it.get()
+                )
+            }
+            val rayArgs = RayTests.orientationArgs().map {
                 Arguments.of(
                     RayTests.Companion::clone,
                     RayTests.Companion::areApproximatelyEqual,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f)))
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
-                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f)))
-                ),
-            )
-            val rectangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val rectangleArgs = RectangleTests.orientationArgs().map {
                 Arguments.of(
                     RectangleTests.Companion::clone,
                     RectangleTests.Companion::areApproximatelyEqual,
-                    MutableRectangle(
-                        center = Vector2F(-1f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                        width = 3f,
-                        height = 5f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
-                ),
-                Arguments.of(
-                    RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
-                ),
-            )
-            val regularPolygonArgs = listOf(
+                    *it.get()
+                )
+            }
+            val regularPolygonArgs = RegularPolygonTests.orientationArgs().map {
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
                     RegularPolygonTests.Companion::areApproximatelyEqual,
-                    MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                        sideLength = 3f,
-                        sideCount = 7
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
-                ),
-                Arguments.of(
-                    RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
-                    MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                        sideLength = 2f,
-                        sideCount = 10
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f)))
-                ),
-            )
-            val regularTriangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val regularTriangleArgs = RegularTriangleTests.orientationArgs().map {
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
                     RegularTriangleTests.Companion::areApproximatelyEqual,
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, 7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f)))
-                ),
-                Arguments.of(
-                    RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
-                    MutableRegularTriangle(
-                        center = Vector2F(3.1547005f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f)))
-                ),
-            )
-            val roundedRectangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val roundedRectangleArgs = RoundedRectangleTests.orientationArgs().map {
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
                     RoundedRectangleTests.Companion::areApproximatelyEqual,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f)))
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
-                    MutableRoundedRectangle(
-                        center = Vector2F(6f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 3f,
-                        height = 4f,
-                        cornerRadius = 1.5f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
-                ),
-            )
-            val squareArgs = listOf(
+                    *it.get()
+                )
+            }
+            val squareArgs = SquareTests.orientationArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)))
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f)))
-                ),
-            )
-            val triangleArgs = listOf(
+                    *it.get()
+                )
+            }
+            val triangleArgs = TriangleTests.orientationArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     TriangleTests.Companion::areApproximatelyEqual,
-                    MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
-                ),
-                Arguments.of(
-                    TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
-                ),
-            )
+                    *it.get()
+                )
+            }
             return listOf(
                 annulusArgs,
                 circleArgs,
