@@ -30,14 +30,14 @@ class MutableAnnulus(
     override val innerRadius: Float
         get() = _innerRadius
 
-    override val annularRadius: Float
-        get() = _outerRadius - _innerRadius
-
     override val area: Float
         get() = PI.toFloat() * (_outerRadius * _outerRadius - _innerRadius * _innerRadius)
 
     override val perimeter: Float
         get() = (2.0 * PI).toFloat() * (_outerRadius + _innerRadius)
+
+    override val annularRadius: Float
+        get() = _outerRadius - _innerRadius
 
     override val position: Vector2F
         get() = _center
@@ -306,7 +306,7 @@ class MutableAnnulus(
         }
     }
 
-    override fun intersects(annulus: AnnulusShape): Boolean {
+    override fun intersects(annulus: Annulus): Boolean {
         val distance: Float = center.distanceTo(annulus.center)
         val otherAnnulusOuterRadius: Float = annulus.outerRadius
         val otherAnnulusInnerRadius: Float = annulus.innerRadius
@@ -317,7 +317,7 @@ class MutableAnnulus(
                 (otherAnnulusInnerRadius <= (_outerRadius + distance))
     }
 
-    override fun intersects(circle: CircleShape): Boolean {
+    override fun intersects(circle: Circle): Boolean {
         val distance: Float = _center.distanceTo(circle.center)
         val circleRadius: Float = circle.radius
 
@@ -331,7 +331,7 @@ class MutableAnnulus(
         return distance >= _innerRadius && distance <= _outerRadius
     }
 
-    override operator fun contains(annulus: AnnulusShape): Boolean {
+    override operator fun contains(annulus: Annulus): Boolean {
         val distance: Float = _center.distanceTo(annulus.center)
         val otherAnnulusOuterRadius: Float = annulus.outerRadius
         val otherAnnulusInnerRadius: Float = annulus.innerRadius
@@ -342,7 +342,7 @@ class MutableAnnulus(
                         (innerRadius <= (distance + otherAnnulusInnerRadius)))
     }
 
-    override operator fun contains(circle: CircleShape): Boolean {
+    override operator fun contains(circle: Circle): Boolean {
         val distance: Float = _center.distanceTo(circle.center)
         val circleRadius: Float = circle.radius
 

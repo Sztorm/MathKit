@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,51 +14,104 @@ import kotlin.test.assertEquals
 
 class CircleTests {
     @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(circle: Circle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected.value, circle.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(circle: Circle, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected.value, circle.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("radiusArgs")
+    fun radiusReturnsCorrectValue(circle: Circle, expected: Float) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected, circle.radius)
+        }
+
+    @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(circle: CircleShape, expected: Float) =
-        assertApproximation(expected, circle.area)
+    fun areaReturnsCorrectValue(circle: Circle, expected: Float) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected, circle.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(circle: CircleShape, expected: Float) =
-        assertApproximation(expected, circle.perimeter)
+    fun perimeterReturnsCorrectValue(circle: Circle, expected: Float) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected, circle.perimeter)
+        }
 
     @ParameterizedTest
     @MethodSource("diameterArgs")
-    fun diameterReturnsCorrectValue(circle: CircleShape, expected: Float) =
-        assertApproximation(expected, circle.diameter)
+    fun diameterReturnsCorrectValue(circle: Circle, expected: Float) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected, circle.diameter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(circle: Circle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(circle) {
+            assertApproximation(expected.value, circle.position)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         circle: Circle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, circle.closestPointTo(point.value))
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected.value, circle.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("intersectsAnnulusArgs")
-    fun intersectsReturnsCorrectValue(circle: Circle, annulus: AnnulusShape, expected: Boolean) =
-        assertEquals(expected, circle.intersects(annulus))
+    fun intersectsReturnsCorrectValue(circle: Circle, annulus: Annulus, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(annulus) {
+                assertEquals(expected, circle.intersects(annulus))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
-    fun intersectsReturnsCorrectValue(
-        circle: Circle, otherCircle: CircleShape, expected: Boolean
-    ) = assertEquals(expected, circle.intersects(otherCircle))
+    fun intersectsReturnsCorrectValue(circle: Circle, otherCircle: Circle, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(otherCircle) {
+                assertEquals(expected, circle.intersects(otherCircle))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(circle: Circle, point: Wrapper<Vector2F>, expected: Boolean) =
-        assertEquals(expected, circle.contains(point.value))
+        assertImmutabilityOf(circle) {
+            assertEquals(expected, circle.contains(point.value))
+        }
 
     @ParameterizedTest
     @MethodSource("containsAnnulusArgs")
-    fun containsReturnsCorrectValue(circle: Circle, annulus: AnnulusShape, expected: Boolean) =
-        assertEquals(expected, circle.contains(annulus))
+    fun containsReturnsCorrectValue(circle: Circle, annulus: Annulus, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(annulus) {
+                assertEquals(expected, circle.contains(annulus))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsCircleArgs")
-    fun containsReturnsCorrectValue(circle: Circle, otherCircle: CircleShape, expected: Boolean) =
-        assertEquals(expected, circle.contains(otherCircle))
+    fun containsReturnsCorrectValue(circle: Circle, otherCircle: Circle, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(otherCircle) {
+                assertEquals(expected, circle.contains(otherCircle))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -70,26 +124,36 @@ class CircleTests {
     ) = assertEquals(expected, circle.copy(center.value, orientation.value, radius))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
-    fun equalsReturnsCorrectValue(
-        circle: MutableCircle, other: Any?, expected: Boolean
-    ) = assertEquals(expected, circle == other)
+    @MethodSource("equalsAnyArgs")
+    fun equalsReturnsCorrectValue(circle: MutableCircle, other: Any?, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertEquals(expected, circle == other)
+        }
 
     @ParameterizedTest
     @MethodSource("equalsMutableCircleArgs")
-    fun equalsReturnsCorrectValue(
-        circle: MutableCircle, other: MutableCircle, expected: Boolean
-    ) = assertEquals(expected, circle.equals(other))
+    fun equalsReturnsCorrectValue(circle: MutableCircle, other: MutableCircle, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(other) {
+                assertEquals(expected, circle.equals(other))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(circle: MutableCircle, other: MutableCircle) =
-        assertEquals(circle.hashCode(), other.hashCode())
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(other) {
+                assertEquals(circle.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(circle: MutableCircle, expected: String) =
-        assertEquals(expected, circle.toString())
+        assertImmutabilityOf(circle) {
+            assertEquals(expected, circle.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -98,7 +162,7 @@ class CircleTests {
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float
-    ) {
+    ) = assertImmutabilityOf(circle) {
         val (
             actualComponent1: Vector2F,
             actualComponent2: ComplexF,
@@ -119,6 +183,66 @@ class CircleTests {
 
         @JvmStatic
         fun clone(circle: Circle) = circle.copy()
+
+        @JvmStatic
+        fun centerArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(1f, 2f))
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+                Wrapper(Vector2F(-1f, 7f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f)))
+            ),
+        )
+
+        @JvmStatic
+        fun radiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                4f
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+                5f
+            ),
+        )
 
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
@@ -172,6 +296,9 @@ class CircleTests {
                 Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 5f
             ),
         )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> = listOf(
@@ -402,7 +529,7 @@ class CircleTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(
             Arguments.of(
                 MutableCircle(
                     center = Vector2F(2f, 0f),

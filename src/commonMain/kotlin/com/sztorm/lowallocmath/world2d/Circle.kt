@@ -8,8 +8,7 @@ fun Circle(center: Vector2F, orientation: ComplexF, radius: Float): Circle =
     MutableCircle(center, orientation, radius)
 
 interface Circle : CircleShape, Transformable {
-    override val position: Vector2F
-        get() = center
+    val center: Vector2F
 
     override fun movedBy(offset: Vector2F): Circle
 
@@ -55,15 +54,15 @@ interface Circle : CircleShape, Transformable {
 
     fun closestPointTo(point: Vector2F): Vector2F
 
-    fun intersects(annulus: AnnulusShape): Boolean
+    fun intersects(annulus: Annulus): Boolean
 
-    fun intersects(circle: CircleShape): Boolean
+    fun intersects(circle: Circle): Boolean
 
     operator fun contains(point: Vector2F): Boolean
 
-    operator fun contains(annulus: AnnulusShape): Boolean
+    operator fun contains(annulus: Annulus): Boolean
 
-    operator fun contains(circle: CircleShape): Boolean
+    operator fun contains(circle: Circle): Boolean
 
     fun copy(
         center: Vector2F = this.center,

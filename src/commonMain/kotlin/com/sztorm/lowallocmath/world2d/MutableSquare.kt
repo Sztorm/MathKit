@@ -79,17 +79,17 @@ class MutableSquare : Square, MutableTransformable {
     override val pointD: Vector2F
         get() = _pointD
 
-    override val width: Float
-        get() = _sideLength
-
-    override val height: Float
-        get() = _sideLength
-
     override val area: Float
         get() = _sideLength * _sideLength
 
     override val perimeter: Float
         get() = 4f * _sideLength
+
+    override val width: Float
+        get() = _sideLength
+
+    override val height: Float
+        get() = _sideLength
 
     override inline val sideCount: Int
         get() = 4

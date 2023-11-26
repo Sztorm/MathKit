@@ -1,8 +1,11 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.AngleF
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -15,32 +18,54 @@ class LineSegmentTests {
         lineSegment: LineSegment,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>
-    ) {
+    ) = assertImmutabilityOf(lineSegment) {
         assertApproximation(expectedPointA.value, lineSegment.pointA)
         assertApproximation(expectedPointB.value, lineSegment.pointB)
     }
 
     @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected.value, lineSegment.position)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected.value, lineSegment.orientation)
+        }
+
+    @ParameterizedTest
     @MethodSource("centerArgs")
     fun centerReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, lineSegment.center)
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected.value, lineSegment.center)
+        }
 
     @ParameterizedTest
     @MethodSource("lengthArgs")
     fun lengthReturnsCorrectValue(lineSegment: LineSegment, expected: Float) =
-        assertApproximation(expected, lineSegment.length)
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected, lineSegment.length)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         lineSegment: LineSegment, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, lineSegment.closestPointTo(point.value))
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected.value, lineSegment.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         lineSegment: LineSegment, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, lineSegment.contains(point.value))
+    ) = assertImmutabilityOf(lineSegment) {
+        assertEquals(expected, lineSegment.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -52,26 +77,38 @@ class LineSegmentTests {
     ) = assertEquals(expected, lineSegment.copy(pointA.value, pointB.value))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(
         lineSegment: MutableLineSegment, other: Any?, expected: Boolean
-    ) = assertEquals(expected, lineSegment == other)
+    ) = assertImmutabilityOf(lineSegment) {
+        assertEquals(expected, lineSegment == other)
+    }
 
     @ParameterizedTest
     @MethodSource("equalsMutableLineSegmentArgs")
     fun equalsReturnsCorrectValue(
         lineSegment: MutableLineSegment, other: MutableLineSegment, expected: Boolean
-    ) = assertEquals(expected, lineSegment.equals(other))
+    ) = assertImmutabilityOf(lineSegment) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, lineSegment.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(lineSegment: MutableLineSegment, other: MutableLineSegment) =
-        assertEquals(lineSegment.hashCode(), other.hashCode())
+        assertImmutabilityOf(lineSegment) {
+            assertImmutabilityOf(other) {
+                assertEquals(lineSegment.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(lineSegment: MutableLineSegment, expected: String) =
-        assertEquals(expected, lineSegment.toString())
+        assertImmutabilityOf(lineSegment) {
+            assertEquals(expected, lineSegment.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -79,8 +116,8 @@ class LineSegmentTests {
         lineSegment: LineSegment,
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<Vector2F>
-    ) {
-        val (actualComponent1, actualComponent2) = lineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        val (actualComponent1: Vector2F, actualComponent2: Vector2F) = lineSegment
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -110,6 +147,25 @@ class LineSegmentTests {
                 LineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                 Wrapper(Vector2F(-4f, 3f)),
                 Wrapper(Vector2F(-2f, -1f))
+            ),
+        )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                LineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f)))
+            ),
+            Arguments.of(
+                LineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
+            ),
+            Arguments.of(
+                LineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)))
             ),
         )
 
@@ -659,7 +715,7 @@ class LineSegmentTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableLineSegmentArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableLineSegmentArgs() + listOf(
             Arguments.of(
                 MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
                 null,

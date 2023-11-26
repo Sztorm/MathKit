@@ -6,12 +6,34 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class SquareTests {
+    @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(square: Square, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(square) {
+            assertApproximation(expected.value, square.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(square: Square, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(square) {
+            assertApproximation(expected.value, square.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("sideLengthArgs")
+    fun sideLengthReturnsCorrectValue(square: Square, expected: Float) =
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.sideLength)
+        }
+
     @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
@@ -20,7 +42,7 @@ class SquareTests {
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>,
         expectedPointD: Wrapper<Vector2F>
-    ) {
+    ) = assertImmutabilityOf(square) {
         assertApproximation(expectedPointA.value, square.pointA)
         assertApproximation(expectedPointB.value, square.pointB)
         assertApproximation(expectedPointC.value, square.pointC)
@@ -28,65 +50,89 @@ class SquareTests {
     }
 
     @ParameterizedTest
-    @MethodSource("sideLengthArgs")
-    fun sideLengthReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.sideLength)
-
-    @ParameterizedTest
-    @MethodSource("widthArgs")
-    fun widthReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.width)
-
-    @ParameterizedTest
-    @MethodSource("heightArgs")
-    fun heightReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.height)
-
-    @ParameterizedTest
     @MethodSource("areaArgs")
     fun areaReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.area)
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
     fun perimeterReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.perimeter)
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.perimeter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("widthArgs")
+    fun widthReturnsCorrectValue(square: Square, expected: Float) =
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.width)
+        }
+
+    @ParameterizedTest
+    @MethodSource("heightArgs")
+    fun heightReturnsCorrectValue(square: Square, expected: Float) =
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.height)
+        }
 
     @ParameterizedTest
     @MethodSource("sideCountArgs")
     fun sideCountReturnsCorrectValue(square: Square, expected: Int) =
-        assertEquals(expected, square.sideCount)
+        assertImmutabilityOf(square) {
+            assertEquals(expected, square.sideCount)
+        }
 
     @ParameterizedTest
     @MethodSource("interiorAngleArgs")
     fun interiorAngleReturnsCorrectValue(square: Square, expected: Wrapper<AngleF>) =
-        assertApproximation(expected.value, square.interiorAngle)
+        assertImmutabilityOf(square) {
+            assertApproximation(expected.value, square.interiorAngle)
+        }
 
     @ParameterizedTest
     @MethodSource("exteriorAngleArgs")
     fun exteriorAngleReturnsCorrectValue(square: Square, expected: Wrapper<AngleF>) =
-        assertApproximation(expected.value, square.exteriorAngle)
+        assertImmutabilityOf(square) {
+            assertApproximation(expected.value, square.exteriorAngle)
+        }
 
     @ParameterizedTest
     @MethodSource("inradiusArgs")
     fun inradiusReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.inradius)
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.inradius)
+        }
 
     @ParameterizedTest
     @MethodSource("circumradiusArgs")
     fun circumradiusReturnsCorrectValue(square: Square, expected: Float) =
-        assertApproximation(expected, square.circumradius)
+        assertImmutabilityOf(square) {
+            assertApproximation(expected, square.circumradius)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(square: Square, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(square) {
+            assertApproximation(expected.value, square.position)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         square: Square, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, square.closestPointTo(point.value))
+    ) = assertImmutabilityOf(square) {
+        assertApproximation(expected.value, square.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(square: Square, point: Wrapper<Vector2F>, expected: Boolean) =
-        assertEquals(expected, square.contains(point.value))
+        assertImmutabilityOf(square) {
+            assertEquals(expected, square.contains(point.value))
+        }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -99,26 +145,38 @@ class SquareTests {
     ) = assertEquals(expected, square.copy(center.value, orientation.value, sideLength))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(
         square: MutableSquare, other: Any?, expected: Boolean
-    ) = assertEquals(expected, square == other)
+    ) = assertImmutabilityOf(square) {
+        assertEquals(expected, square == other)
+    }
 
     @ParameterizedTest
     @MethodSource("equalsMutableSquareArgs")
     fun equalsReturnsCorrectValue(
         square: MutableSquare, other: MutableSquare, expected: Boolean
-    ) = assertEquals(expected, square.equals(other))
+    ) = assertImmutabilityOf(square) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, square.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(square: MutableSquare, other: MutableSquare) =
-        assertEquals(square.hashCode(), other.hashCode())
+        assertImmutabilityOf(square) {
+            assertImmutabilityOf(other) {
+                assertEquals(square.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(square: MutableSquare, expected: String) =
-        assertEquals(expected, square.toString())
+        assertImmutabilityOf(square) {
+            assertEquals(expected, square.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -127,8 +185,12 @@ class SquareTests {
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float
-    ) {
-        val (actualComponent1, actualComponent2, actualComponent3) = square
+    ) = assertImmutabilityOf(square) {
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float
+        ) = square
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -150,24 +212,42 @@ class SquareTests {
         fun clone(square: Square) = square.copy()
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
+        fun centerArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
-                Wrapper(Vector2F(1.5f, 1.5f)),
-                Wrapper(Vector2F(-1.5f, 1.5f)),
-                Wrapper(Vector2F(-1.5f, -1.5f)),
-                Wrapper(Vector2F(1.5f, -1.5f))
-            ),
-            Arguments.of(
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
                 ),
-                Wrapper(Vector2F(2.267949f, 3.732051f)),
-                Wrapper(Vector2F(0.2679491f, 0.26794904f)),
-                Wrapper(Vector2F(3.732051f, -1.7320509f)),
-                Wrapper(Vector2F(5.732051f, 1.7320509f))
+                Wrapper(Vector2F(3f, 1f))
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(8f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+                Wrapper(Vector2F(8f, -2f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)))
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(8f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                    sideLength = 3f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f)))
             ),
         )
 
@@ -195,10 +275,26 @@ class SquareTests {
         )
 
         @JvmStatic
-        fun widthArgs(): List<Arguments> = sideLengthArgs()
-
-        @JvmStatic
-        fun heightArgs(): List<Arguments> = sideLengthArgs()
+        fun pointsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                Wrapper(Vector2F(1.5f, 1.5f)),
+                Wrapper(Vector2F(-1.5f, 1.5f)),
+                Wrapper(Vector2F(-1.5f, -1.5f)),
+                Wrapper(Vector2F(1.5f, -1.5f))
+            ),
+            Arguments.of(
+                Square(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(2.267949f, 3.732051f)),
+                Wrapper(Vector2F(0.2679491f, 0.26794904f)),
+                Wrapper(Vector2F(3.732051f, -1.7320509f)),
+                Wrapper(Vector2F(5.732051f, 1.7320509f))
+            ),
+        )
 
         @JvmStatic
         fun areaArgs(): List<Arguments> = listOf(
@@ -245,6 +341,12 @@ class SquareTests {
                 16f
             ),
         )
+
+        @JvmStatic
+        fun widthArgs(): List<Arguments> = sideLengthArgs()
+
+        @JvmStatic
+        fun heightArgs(): List<Arguments> = sideLengthArgs()
 
         @JvmStatic
         fun sideCountArgs(): List<Arguments> = listOf(
@@ -342,6 +444,9 @@ class SquareTests {
                 2.828427f
             ),
         )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
 
         @Suppress("UNUSED_VARIABLE")
         @JvmStatic
@@ -551,7 +656,7 @@ class SquareTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableSquareArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableSquareArgs() + listOf(
             Arguments.of(
                 MutableSquare(
                     center = Vector2F(3f, 1f),

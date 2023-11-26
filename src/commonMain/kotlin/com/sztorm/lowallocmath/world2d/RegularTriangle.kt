@@ -10,9 +10,13 @@ fun RegularTriangle(center: Vector2F, orientation: ComplexF, sideLength: Float):
 
 interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     val center: Vector2F
-
-    override val position: Vector2F
-        get() = center
+    val pointA: Vector2F
+    val pointB: Vector2F
+    val pointC: Vector2F
+    val centroid: Vector2F
+    val orthocenter: Vector2F
+    val incenter: Vector2F
+    val circumcenter: Vector2F
 
     override fun movedBy(offset: Vector2F): RegularTriangle
 

@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,14 +14,42 @@ import kotlin.test.assertEquals
 
 class RectangleTests {
     @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(rectangle: Rectangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected.value, rectangle.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(rectangle: Rectangle, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected.value, rectangle.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("widthArgs")
+    fun widthReturnsCorrectValue(rectangle: Rectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.width)
+        }
+
+    @ParameterizedTest
+    @MethodSource("heightArgs")
+    fun heightReturnsCorrectValue(rectangle: Rectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.height)
+        }
+
+    @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
-        rectangle: RectangleShape,
+        rectangle: Rectangle,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>,
         expectedPointD: Wrapper<Vector2F>
-    ) {
+    ) = assertImmutabilityOf(rectangle) {
         assertApproximation(expectedPointA.value, rectangle.pointA)
         assertApproximation(expectedPointB.value, rectangle.pointB)
         assertApproximation(expectedPointC.value, rectangle.pointC)
@@ -29,25 +58,40 @@ class RectangleTests {
 
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(rectangle: RectangleShape, expected: Float) =
-        assertApproximation(expected, rectangle.area)
+    fun areaReturnsCorrectValue(rectangle: Rectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(rectangle: RectangleShape, expected: Float) =
-        assertApproximation(expected, rectangle.perimeter)
+    fun perimeterReturnsCorrectValue(rectangle: Rectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.perimeter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(rectangle: Rectangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected.value, rectangle.position)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         rectangle: Rectangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, rectangle.closestPointTo(point.value))
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected.value, rectangle.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         rectangle: Rectangle, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, rectangle.contains(point.value))
+    ) = assertImmutabilityOf(rectangle) {
+        assertEquals(expected, rectangle.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -61,26 +105,38 @@ class RectangleTests {
     ) = assertEquals(expected, rectangle.copy(center.value, orientation.value, width, height))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(
         rectangle: MutableRectangle, other: Any?, expected: Boolean
-    ) = assertEquals(expected, rectangle == other)
+    ) = assertImmutabilityOf(rectangle) {
+        assertEquals(expected, rectangle == other)
+    }
 
     @ParameterizedTest
     @MethodSource("equalsMutableRectangleArgs")
     fun equalsReturnsCorrectValue(
         rectangle: MutableRectangle, other: MutableRectangle, expected: Boolean
-    ) = assertEquals(expected, rectangle.equals(other))
+    ) = assertImmutabilityOf(rectangle) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, rectangle.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(rectangle: MutableRectangle, other: MutableRectangle) =
-        assertEquals(rectangle.hashCode(), other.hashCode())
+        assertImmutabilityOf(rectangle) {
+            assertImmutabilityOf(other) {
+                assertEquals(rectangle.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(rectangle: MutableRectangle, expected: String) =
-        assertEquals(expected, rectangle.toString())
+        assertImmutabilityOf(rectangle) {
+            assertEquals(expected, rectangle.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -90,8 +146,13 @@ class RectangleTests {
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float,
         expectedComponent4: Float
-    ) {
-        val (actualComponent1, actualComponent2, actualComponent3, actualComponent4) = rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float,
+            actualComponent4: Float
+        ) = rectangle
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -113,6 +174,94 @@ class RectangleTests {
 
         @JvmStatic
         fun clone(rectangle: Rectangle) = rectangle.copy()
+
+        @JvmStatic
+        fun centerArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-1f, -2f))
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Wrapper(Vector2F(-2f, 4f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
+            ),
+        )
+
+        @JvmStatic
+        fun widthArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                3f
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                4f
+            ),
+        )
+
+        @JvmStatic
+        fun heightArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                5f
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                2f
+            ),
+        )
 
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
@@ -212,6 +361,9 @@ class RectangleTests {
                 9f
             ),
         )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
@@ -391,7 +543,7 @@ class RectangleTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableRectangleArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableRectangleArgs() + listOf(
             Arguments.of(
                 MutableRectangle(
                     center = Vector2F(-2f, 4f),

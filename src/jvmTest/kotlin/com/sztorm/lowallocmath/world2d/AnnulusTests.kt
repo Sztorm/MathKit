@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,55 +14,112 @@ import kotlin.test.assertEquals
 
 class AnnulusTests {
     @ParameterizedTest
-    @MethodSource("annularRadiusArgs")
-    fun annularRadiusReturnsCorrectValue(annulus: AnnulusShape, expected: Float) =
-        assertApproximation(expected, annulus.annularRadius)
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(annulus: Annulus, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected.value, annulus.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(annulus: Annulus, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected.value, annulus.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("outerRadiusArgs")
+    fun outerRadiusReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.outerRadius)
+        }
+
+    @ParameterizedTest
+    @MethodSource("innerRadiusArgs")
+    fun innerRadiusReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.innerRadius)
+        }
 
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(annulus: AnnulusShape, expected: Float) =
-        assertApproximation(expected, annulus.area)
+    fun areaReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(annulus: AnnulusShape, expected: Float) =
-        assertApproximation(expected, annulus.perimeter)
+    fun perimeterReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.perimeter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("annularRadiusArgs")
+    fun annularRadiusReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.annularRadius)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(annulus: Annulus, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected.value, annulus.position)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         annulus: Annulus, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, annulus.closestPointTo(point.value))
+    ) = assertImmutabilityOf(annulus) {
+        assertApproximation(expected.value, annulus.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
-    fun intersectsReturnsCorrectValue(
-        annulus: Annulus, circle: CircleShape, expected: Boolean
-    ) = assertEquals(expected, annulus.intersects(circle))
+    fun intersectsReturnsCorrectValue(annulus: Annulus, circle: Circle, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(circle) {
+                assertEquals(expected, annulus.intersects(circle))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("intersectsAnnulusArgs")
-    fun intersectsReturnsCorrectValue(
-        annulus: Annulus, otherAnnulus: AnnulusShape, expected: Boolean
-    ) = assertEquals(expected, annulus.intersects(otherAnnulus))
+    fun intersectsReturnsCorrectValue(annulus: Annulus, otherAnnulus: Annulus, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(otherAnnulus) {
+                assertEquals(expected, annulus.intersects(otherAnnulus))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         annulus: Annulus, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, annulus.contains(point.value))
+    ) = assertImmutabilityOf(annulus) {
+        assertEquals(expected, annulus.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsCircleArgs")
-    fun containsReturnsCorrectValue(
-        annulus: Annulus, circle: CircleShape, expected: Boolean
-    ) = assertEquals(expected, annulus.contains(circle))
+    fun containsReturnsCorrectValue(annulus: Annulus, circle: Circle, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(circle) {
+                assertEquals(expected, annulus.contains(circle))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsAnnulusArgs")
-    fun containsReturnsCorrectValue(
-        annulus: Annulus, otherAnnulus: AnnulusShape, expected: Boolean
-    ) = assertEquals(expected, annulus.contains(otherAnnulus))
+    fun containsReturnsCorrectValue(annulus: Annulus, otherAnnulus: Annulus, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(otherAnnulus) {
+                assertEquals(expected, annulus.contains(otherAnnulus))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -77,26 +135,37 @@ class AnnulusTests {
     )
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
-    fun equalsReturnsCorrectValue(
-        annulus: MutableAnnulus, other: Any?, expected: Boolean
-    ) = assertEquals(expected, annulus == other)
+    @MethodSource("equalsAnyArgs")
+    fun equalsReturnsCorrectValue(annulus: MutableAnnulus, other: Any?, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertEquals(expected, annulus == other)
+        }
 
     @ParameterizedTest
     @MethodSource("equalsMutableAnnulusArgs")
     fun equalsReturnsCorrectValue(
         annulus: MutableAnnulus, other: MutableAnnulus, expected: Boolean
-    ) = assertEquals(expected, annulus.equals(other))
+    ) = assertImmutabilityOf(annulus) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, annulus.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(annulus: MutableAnnulus, other: MutableAnnulus) =
-        assertEquals(annulus.hashCode(), other.hashCode())
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(other) {
+                assertEquals(annulus.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(annulus: MutableAnnulus, expected: String) =
-        assertEquals(expected, annulus.toString())
+        assertImmutabilityOf(annulus) {
+            assertEquals(expected, annulus.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -106,7 +175,7 @@ class AnnulusTests {
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float,
         expectedComponent4: Float
-    ) {
+    ) = assertImmutabilityOf(annulus) {
         val (
             actualComponent1: Vector2F,
             actualComponent2: ComplexF,
@@ -132,18 +201,75 @@ class AnnulusTests {
         fun clone(annulus: Annulus) = annulus.copy()
 
         @JvmStatic
-        fun annularRadiusArgs(): List<Arguments> = listOf(
+        fun centerArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Annulus(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
                     innerRadius = 2f
                 ),
-                2f
+                Wrapper(Vector2F(-1f, 2f))
             ),
             Arguments.of(
-                Annulus(
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                Wrapper(Vector2F(6f, 3f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f)))
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f)))
+            ),
+        )
+
+        @JvmStatic
+        fun outerRadiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                4f
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                8f
+            ),
+        )
+
+        @JvmStatic
+        fun innerRadiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableAnnulus(
                     center = Vector2F(-1f, 2f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     outerRadius = 4f,
@@ -152,11 +278,11 @@ class AnnulusTests {
                 2f
             ),
             Arguments.of(
-                Annulus(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    outerRadius = 2.5f,
-                    innerRadius = 1.5f
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
                 ),
                 1f
             ),
@@ -223,6 +349,40 @@ class AnnulusTests {
                 25.1327f
             ),
         )
+
+        @JvmStatic
+        fun annularRadiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Annulus(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                2f
+            ),
+            Arguments.of(
+                Annulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                2f
+            ),
+            Arguments.of(
+                Annulus(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    outerRadius = 2.5f,
+                    innerRadius = 1.5f
+                ),
+                1f
+            ),
+        )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> = listOf(
@@ -622,7 +782,7 @@ class AnnulusTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(
             Arguments.of(
                 MutableAnnulus(
                     center = Vector2F(-1f, 2f),

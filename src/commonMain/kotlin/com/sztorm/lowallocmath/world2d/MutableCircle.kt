@@ -267,7 +267,7 @@ class MutableCircle(
         else point
     }
 
-    override fun intersects(annulus: AnnulusShape): Boolean {
+    override fun intersects(annulus: Annulus): Boolean {
         val distance: Float = _center.distanceTo(annulus.center)
         val radius: Float = _radius
 
@@ -275,15 +275,15 @@ class MutableCircle(
                 (distance <= (annulus.outerRadius + radius))
     }
 
-    override fun intersects(circle: CircleShape): Boolean =
+    override fun intersects(circle: Circle): Boolean =
         _center.distanceTo(circle.center) <= _radius + circle.radius
 
     override operator fun contains(point: Vector2F): Boolean = _center.distanceTo(point) <= _radius
 
-    override operator fun contains(annulus: AnnulusShape): Boolean =
+    override operator fun contains(annulus: Annulus): Boolean =
         _center.distanceTo(annulus.center) <= _radius - annulus.outerRadius
 
-    override operator fun contains(circle: CircleShape): Boolean =
+    override operator fun contains(circle: Circle): Boolean =
         _center.distanceTo(circle.center) <= _radius - circle.radius
 
     override fun copy(center: Vector2F, orientation: ComplexF, radius: Float) =

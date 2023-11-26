@@ -9,6 +9,14 @@ fun Triangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F): Triangle =
     MutableTriangle(pointA, pointB, pointC)
 
 interface Triangle : TriangleShape, Transformable {
+    val pointA: Vector2F
+    val pointB: Vector2F
+    val pointC: Vector2F
+    val centroid: Vector2F
+    val orthocenter: Vector2F
+    val incenter: Vector2F
+    val circumcenter: Vector2F
+
     override fun movedBy(offset: Vector2F): Triangle
 
     override fun movedTo(position: Vector2F): Triangle

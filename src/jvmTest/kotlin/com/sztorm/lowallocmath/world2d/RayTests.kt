@@ -1,8 +1,11 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.AngleF
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -12,23 +15,45 @@ class RayTests {
     @ParameterizedTest
     @MethodSource("originArgs")
     fun originReturnsCorrectValue(ray: Ray, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, ray.origin)
+        assertImmutabilityOf(ray) {
+            assertApproximation(expected.value, ray.origin)
+        }
 
     @ParameterizedTest
     @MethodSource("directionArgs")
     fun directionReturnsCorrectValue(ray: Ray, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, ray.direction)
+        assertImmutabilityOf(ray) {
+            assertApproximation(expected.value, ray.direction)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(ray: Ray, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(ray) {
+            assertApproximation(expected.value, ray.position)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(ray: Ray, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(ray) {
+            assertApproximation(expected.value, ray.orientation)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         ray: Ray, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, ray.closestPointTo(point.value))
+    ) = assertImmutabilityOf(ray) {
+        assertApproximation(expected.value, ray.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(ray: Ray, point: Wrapper<Vector2F>, expected: Boolean) =
-        assertEquals(expected, ray.contains(point.value))
+        assertImmutabilityOf(ray) {
+            assertEquals(expected, ray.contains(point.value))
+        }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -40,24 +65,36 @@ class RayTests {
     ) = assertEquals(expected, ray.copy(origin.value, direction.value))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(ray: MutableRay, other: Any?, expected: Boolean) =
-        assertEquals(expected, ray == other)
+        assertImmutabilityOf(ray) {
+            assertEquals(expected, ray == other)
+        }
 
     @ParameterizedTest
     @MethodSource("equalsMutableLineSegmentArgs")
     fun equalsReturnsCorrectValue(ray: MutableRay, other: MutableRay, expected: Boolean) =
-        assertEquals(expected, ray.equals(other))
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(other) {
+                assertEquals(expected, ray.equals(other))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(ray: MutableRay, other: MutableRay) =
-        assertEquals(ray.hashCode(), other.hashCode())
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(other) {
+                assertEquals(ray.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(ray: MutableRay, expected: String) =
-        assertEquals(expected, ray.toString())
+        assertImmutabilityOf(ray) {
+            assertEquals(expected, ray.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -65,8 +102,8 @@ class RayTests {
         ray: Ray,
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<Vector2F>
-    ) {
-        val (actualComponent1, actualComponent2) = ray
+    ) = assertImmutabilityOf(ray) {
+        val (actualComponent1: Vector2F, actualComponent2: Vector2F) = ray
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -107,8 +144,27 @@ class RayTests {
                 Wrapper(Vector2F(0f, 1f))
             ),
             Arguments.of(
-                Ray(Vector2F(-4f, 3f), Vector2F(1f, -1f).normalized),
-                Wrapper(Vector2F(1f, -1f).normalized)
+                Ray(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                Wrapper(Vector2F(0.7071068f, -0.7071068f))
+            ),
+        )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = originArgs()
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Ray(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f)))
+            ),
+            Arguments.of(
+                Ray(Vector2F(3f, 2f), Vector2F(0f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
+            ),
+            Arguments.of(
+                Ray(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f)))
             ),
         )
 
@@ -415,7 +471,7 @@ class RayTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableLineSegmentArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableLineSegmentArgs() + listOf(
             Arguments.of(
                 MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
                 null,

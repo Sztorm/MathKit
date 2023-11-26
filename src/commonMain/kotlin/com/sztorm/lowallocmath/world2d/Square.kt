@@ -4,15 +4,26 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
+import kotlin.math.PI
 
 fun Square(center: Vector2F, orientation: ComplexF, sideLength: Float): Square =
     MutableSquare(center, orientation, sideLength)
 
 interface Square : RectangleShape, RegularShape, Transformable {
     val center: Vector2F
+    val pointA: Vector2F
+    val pointB: Vector2F
+    val pointC: Vector2F
+    val pointD: Vector2F
 
-    override val position: Vector2F
-        get() = center
+    override val sideCount: Int
+        get() = 4
+
+    override val interiorAngle: AngleF
+        get() = AngleF((0.5 * PI).toFloat())
+
+    override val exteriorAngle: AngleF
+        get() = AngleF((0.5 * PI).toFloat())
 
     override fun movedBy(offset: Vector2F): Square
 

@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,89 +14,147 @@ import kotlin.test.assertEquals
 
 class RegularTriangleTests {
     @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("sideLengthArgs")
+    fun sideLengthReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.sideLength)
+        }
+
+    @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
-        triangle: TriangleShape,
+        triangle: RegularTriangle,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>,
-    ) {
+    ) = assertImmutabilityOf(triangle) {
         assertApproximation(expectedPointA.value, triangle.pointA)
         assertApproximation(expectedPointB.value, triangle.pointB)
         assertApproximation(expectedPointC.value, triangle.pointC)
     }
 
     @ParameterizedTest
-    @MethodSource("centroidArgs")
-    fun centroidReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.centroid)
-
-    @ParameterizedTest
-    @MethodSource("orthocenterArgs")
-    fun orthocenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.orthocenter)
-
-    @ParameterizedTest
-    @MethodSource("incenterArgs")
-    fun incenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.incenter)
-
-    @ParameterizedTest
-    @MethodSource("circumcenterArgs")
-    fun circumcenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.circumcenter)
-
-    @ParameterizedTest
-    @MethodSource("sideLengthArgs")
-    fun sideLengthReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
-        assertApproximation(expected, triangle.sideLength)
-
-    @ParameterizedTest
     @MethodSource("areaArgs")
     fun areaReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
-        assertApproximation(expected, triangle.area)
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
     fun perimeterReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
-        assertApproximation(expected, triangle.perimeter)
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.perimeter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("sideLengthsArgs")
+    fun sideLengthsReturnCorrectValues(triangle: RegularTriangle, expected: Float) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.sideLengthAB)
+            assertApproximation(expected, triangle.sideLengthBC)
+            assertApproximation(expected, triangle.sideLengthCA)
+        }
 
     @ParameterizedTest
     @MethodSource("sideCountArgs")
     fun sideCountReturnsCorrectValue(triangle: RegularTriangle, expected: Int) =
-        assertEquals(expected, triangle.sideCount)
+        assertImmutabilityOf(triangle) {
+            assertEquals(expected, triangle.sideCount)
+        }
 
     @ParameterizedTest
     @MethodSource("interiorAngleArgs")
     fun interiorAngleReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<AngleF>) =
-        assertApproximation(expected.value, triangle.interiorAngle)
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.interiorAngle)
+        }
 
     @ParameterizedTest
     @MethodSource("exteriorAngleArgs")
     fun exteriorAngleReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<AngleF>) =
-        assertApproximation(expected.value, triangle.exteriorAngle)
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.exteriorAngle)
+        }
 
     @ParameterizedTest
     @MethodSource("inradiusArgs")
     fun inradiusReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
-        assertApproximation(expected, triangle.inradius)
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.inradius)
+        }
 
     @ParameterizedTest
     @MethodSource("circumradiusArgs")
     fun circumradiusReturnsCorrectValue(triangle: RegularTriangle, expected: Float) =
-        assertApproximation(expected, triangle.circumradius)
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.circumradius)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.position)
+        }
+
+    @ParameterizedTest
+    @MethodSource("centroidArgs")
+    fun centroidReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.centroid)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orthocenterArgs")
+    fun orthocenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.orthocenter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("incenterArgs")
+    fun incenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.incenter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("circumcenterArgs")
+    fun circumcenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.circumcenter)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         triangle: RegularTriangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, triangle.closestPointTo(point.value))
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected.value, triangle.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         triangle: RegularTriangle, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, triangle.contains(point.value))
+    ) = assertImmutabilityOf(triangle) {
+        assertEquals(expected, triangle.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -108,27 +167,39 @@ class RegularTriangleTests {
     ) = assertEquals(expected, triangle.copy(center.value, orientation.value, sideLength))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(
         triangle: MutableRegularTriangle, other: Any?, expected: Boolean
-    ) = assertEquals(expected, triangle == other)
+    ) = assertImmutabilityOf(triangle) {
+        assertEquals(expected, triangle == other)
+    }
 
     @ParameterizedTest
     @MethodSource("equalsMutableRegularTriangleArgs")
     fun equalsReturnsCorrectValue(
         triangle: MutableRegularTriangle, other: MutableRegularTriangle, expected: Boolean
-    ) = assertEquals(expected, triangle.equals(other))
+    ) = assertImmutabilityOf(triangle) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, triangle.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(
         triangle: MutableRegularTriangle, other: MutableRegularTriangle
-    ) = assertEquals(triangle.hashCode(), other.hashCode())
+    ) = assertImmutabilityOf(triangle) {
+        assertImmutabilityOf(other) {
+            assertEquals(triangle.hashCode(), other.hashCode())
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(triangle: MutableRegularTriangle, expected: String) =
-        assertEquals(expected, triangle.toString())
+        assertImmutabilityOf(triangle) {
+            assertEquals(expected, triangle.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -137,8 +208,12 @@ class RegularTriangleTests {
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float
-    ) {
-        val (actualComponent1, actualComponent2, actualComponent3) = triangle
+    ) = assertImmutabilityOf(triangle) {
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float
+        ) = triangle
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -159,29 +234,7 @@ class RegularTriangleTests {
         fun clone(triangle: RegularTriangle) = triangle.copy()
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
-                ),
-                Wrapper(Vector2F(0f, 3.3333333f)),
-                Wrapper(Vector2F(-2.886751f, -1.6666667f)),
-                Wrapper(Vector2F(2.886751f, -1.6666667f))
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
-                ),
-                Wrapper(Vector2F(5.464102f, -4f)),
-                Wrapper(Vector2F(2f, -2f)),
-                Wrapper(Vector2F(2f, -6f))
-            ),
-        )
-
-        @JvmStatic
-        fun centroidArgs(): List<Arguments> = listOf(
+        fun centerArgs(): List<Arguments> = listOf(
             Arguments.of(
                 RegularTriangle(
                     center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
@@ -189,7 +242,15 @@ class RegularTriangleTests {
                 Wrapper(Vector2F.ZERO)
             ),
             Arguments.of(
-                RegularTriangle(
+                MutableRegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+                Wrapper(Vector2F(5f, 7f))
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
@@ -199,13 +260,30 @@ class RegularTriangleTests {
         )
 
         @JvmStatic
-        fun orthocenterArgs(): List<Arguments> = centroidArgs()
-
-        @JvmStatic
-        fun incenterArgs(): List<Arguments> = centroidArgs()
-
-        @JvmStatic
-        fun circumcenterArgs(): List<Arguments> = centroidArgs()
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                Wrapper(ComplexF.ONE)
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f)))
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f)))
+            ),
+        )
 
         @JvmStatic
         fun sideLengthArgs(): List<Arguments> = listOf(
@@ -230,6 +308,28 @@ class RegularTriangleTests {
                     sideLength = 4f
                 ),
                 4f
+            ),
+        )
+
+        @JvmStatic
+        fun pointsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(0f, 3.3333333f)),
+                Wrapper(Vector2F(-2.886751f, -1.6666667f)),
+                Wrapper(Vector2F(2.886751f, -1.6666667f))
+            ),
+            Arguments.of(
+                RegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                Wrapper(Vector2F(5.464102f, -4f)),
+                Wrapper(Vector2F(2f, -2f)),
+                Wrapper(Vector2F(2f, -6f))
             ),
         )
 
@@ -284,6 +384,9 @@ class RegularTriangleTests {
                 12f
             ),
         )
+
+        @JvmStatic
+        fun sideLengthsArgs(): List<Arguments> = sideLengthArgs()
 
         @JvmStatic
         fun sideCountArgs(): List<Arguments> = listOf(
@@ -414,6 +517,21 @@ class RegularTriangleTests {
                 2.309401f
             ),
         )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun centroidArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun orthocenterArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun incenterArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun circumcenterArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
@@ -605,7 +723,7 @@ class RegularTriangleTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F(-4f, 2f),

@@ -11,9 +11,18 @@ fun RoundedRectangle(
 
 interface RoundedRectangle : RoundedRectangleShape, Transformable {
     val center: Vector2F
-
-    override val position: Vector2F
-        get() = center
+    val pointA: Vector2F
+    val pointB: Vector2F
+    val pointC: Vector2F
+    val pointD: Vector2F
+    val pointE: Vector2F
+    val pointF: Vector2F
+    val pointG: Vector2F
+    val pointH: Vector2F
+    val cornerCenterA: Vector2F
+    val cornerCenterB: Vector2F
+    val cornerCenterC: Vector2F
+    val cornerCenterD: Vector2F
 
     override fun movedBy(offset: Vector2F): RoundedRectangle
 

@@ -10,9 +10,10 @@ fun Rectangle(center: Vector2F, orientation: ComplexF, width: Float, height: Flo
 
 interface Rectangle : RectangleShape, Transformable {
     val center: Vector2F
-
-    override val position: Vector2F
-        get() = center
+    val pointA: Vector2F
+    val pointB: Vector2F
+    val pointC: Vector2F
+    val pointD: Vector2F
 
     override fun movedBy(offset: Vector2F): Rectangle
 

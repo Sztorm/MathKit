@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,9 +14,44 @@ import kotlin.test.assertEquals
 
 class RoundedRectangleTests {
     @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(rectangle: RoundedRectangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected.value, rectangle.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(rectangle: RoundedRectangle, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected.value, rectangle.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("widthArgs")
+    fun widthReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.width)
+        }
+
+    @ParameterizedTest
+    @MethodSource("heightArgs")
+    fun heightReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.height)
+        }
+
+    @ParameterizedTest
+    @MethodSource("cornerRadiusArgs")
+    fun cornerRadiusReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.cornerRadius)
+        }
+
+    @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
-        rectangle: RoundedRectangleShape,
+        rectangle: RoundedRectangle,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>,
@@ -24,7 +60,7 @@ class RoundedRectangleTests {
         expectedPointF: Wrapper<Vector2F>,
         expectedPointG: Wrapper<Vector2F>,
         expectedPointH: Wrapper<Vector2F>,
-    ) {
+    ) = assertImmutabilityOf(rectangle) {
         assertApproximation(expectedPointA.value, rectangle.pointA)
         assertApproximation(expectedPointB.value, rectangle.pointB)
         assertApproximation(expectedPointC.value, rectangle.pointC)
@@ -38,12 +74,12 @@ class RoundedRectangleTests {
     @ParameterizedTest
     @MethodSource("cornerCentersArgs")
     fun cornerCentersReturnCorrectValues(
-        rectangle: RoundedRectangleShape,
+        rectangle: RoundedRectangle,
         expectedCornerCenterA: Wrapper<Vector2F>,
         expectedCornerCenterB: Wrapper<Vector2F>,
         expectedCornerCenterC: Wrapper<Vector2F>,
         expectedCornerCenterD: Wrapper<Vector2F>
-    ) {
+    ) = assertImmutabilityOf(rectangle) {
         assertApproximation(expectedCornerCenterA.value, rectangle.cornerCenterA)
         assertApproximation(expectedCornerCenterB.value, rectangle.cornerCenterB)
         assertApproximation(expectedCornerCenterC.value, rectangle.cornerCenterC)
@@ -52,25 +88,40 @@ class RoundedRectangleTests {
 
     @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(rectangle: RoundedRectangleShape, expected: Float) =
-        assertApproximation(expected, rectangle.area)
+    fun areaReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(rectangle: RoundedRectangleShape, expected: Float) =
-        assertApproximation(expected, rectangle.perimeter)
+    fun perimeterReturnsCorrectValue(rectangle: RoundedRectangle, expected: Float) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected, rectangle.perimeter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(rectangle: RoundedRectangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(rectangle) {
+            assertApproximation(expected.value, rectangle.position)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         rectangle: RoundedRectangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, rectangle.closestPointTo(point.value))
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected.value, rectangle.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         rectangle: RoundedRectangle, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, rectangle.contains(point.value))
+    ) = assertImmutabilityOf(rectangle) {
+        assertEquals(expected, rectangle.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -87,27 +138,39 @@ class RoundedRectangleTests {
     )
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(
         rectangle: MutableRoundedRectangle, other: Any?, expected: Boolean
-    ) = assertEquals(expected, rectangle == other)
+    ) = assertImmutabilityOf(rectangle) {
+        assertEquals(expected, rectangle == other)
+    }
 
     @ParameterizedTest
     @MethodSource("equalsMutableRoundedRectangleArgs")
     fun equalsReturnsCorrectValue(
         rectangle: MutableRoundedRectangle, other: MutableRoundedRectangle, expected: Boolean
-    ) = assertEquals(expected, rectangle.equals(other))
+    ) = assertImmutabilityOf(rectangle) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, rectangle.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(
         rectangle: MutableRoundedRectangle, other: MutableRoundedRectangle
-    ) = assertEquals(rectangle.hashCode(), other.hashCode())
+    ) = assertImmutabilityOf(rectangle) {
+        assertImmutabilityOf(other) {
+            assertEquals(rectangle.hashCode(), other.hashCode())
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(rectangle: MutableRoundedRectangle, expected: String) =
-        assertEquals(expected, rectangle.toString())
+        assertImmutabilityOf(rectangle) {
+            assertEquals(expected, rectangle.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -118,13 +181,13 @@ class RoundedRectangleTests {
         expectedComponent3: Float,
         expectedComponent4: Float,
         expectedComponent5: Float
-    ) {
+    ) = assertImmutabilityOf(rectangle) {
         val (
-            actualComponent1,
-            actualComponent2,
-            actualComponent3,
-            actualComponent4,
-            actualComponent5
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float,
+            actualComponent4: Float,
+            actualComponent5: Float
         ) = rectangle
 
         assertEquals(expectedComponent1.value, actualComponent1)
@@ -157,6 +220,126 @@ class RoundedRectangleTests {
 
         @JvmStatic
         fun clone(rectangle: RoundedRectangle) = rectangle.copy()
+
+        @JvmStatic
+        fun centerArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                Wrapper(Vector2F(-3f, -4f))
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 4f,
+                    cornerRadius = 1.5f
+                ),
+                Wrapper(Vector2F(6f, -4f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f)))
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 4f,
+                    cornerRadius = 1.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
+            ),
+        )
+
+        @JvmStatic
+        fun widthArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                8f
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 4f,
+                    cornerRadius = 1.5f
+                ),
+                3f
+            ),
+        )
+
+        @JvmStatic
+        fun heightArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                4f
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 4f,
+                    cornerRadius = 1.5f
+                ),
+                4f
+            ),
+        )
+
+        @JvmStatic
+        fun cornerRadiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                1f
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(6f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 4f,
+                    cornerRadius = 1.5f
+                ),
+                1.5f
+            ),
+        )
 
         @JvmStatic
         fun pointsArgs(): List<Arguments> = listOf(
@@ -323,6 +506,9 @@ class RoundedRectangleTests {
                 11.424778f
             ),
         )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
@@ -682,7 +868,7 @@ class RoundedRectangleTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableRoundedRectangleArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableRoundedRectangleArgs() + listOf(
             Arguments.of(
                 MutableRoundedRectangle(
                     center = Vector2F(-3f, -4f),

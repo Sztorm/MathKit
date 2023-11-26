@@ -10,9 +10,6 @@ interface RegularPolygon : RegularShape, Transformable {
     val center: Vector2F
     val points: Vector2FList
 
-    override val position: Vector2F
-        get() = center
-
     override fun movedBy(offset: Vector2F): RegularPolygon
 
     override fun movedTo(position: Vector2F): RegularPolygon

@@ -63,18 +63,6 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override val center: Vector2F
         get() = _center
 
-    override val centroid: Vector2F
-        get() = _center
-
-    override val orthocenter: Vector2F
-        get() = _center
-
-    override val incenter: Vector2F
-        get() = _center
-
-    override val circumcenter: Vector2F
-        get() = _center
-
     override val orientation: ComplexF
         get() = _orientation
 
@@ -96,6 +84,15 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override val perimeter: Float
         get() = 3f * _sideLength
 
+    override val sideLengthAB: Float
+        get() = _sideLength
+
+    override val sideLengthBC: Float
+        get() = _sideLength
+
+    override val sideLengthCA: Float
+        get() = _sideLength
+
     override inline val sideCount: Int
         get() = 3
 
@@ -112,6 +109,18 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         get() = 0.5773503f * _sideLength
 
     override val position: Vector2F
+        get() = _center
+
+    override val centroid: Vector2F
+        get() = _center
+
+    override val orthocenter: Vector2F
+        get() = _center
+
+    override val incenter: Vector2F
+        get() = _center
+
+    override val circumcenter: Vector2F
         get() = _center
 
     override fun movedBy(offset: Vector2F) = MutableRegularTriangle(

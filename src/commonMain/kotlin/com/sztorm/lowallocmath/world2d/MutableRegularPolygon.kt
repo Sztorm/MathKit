@@ -10,8 +10,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     internal var _orientation: ComplexF
     internal var _sideLength: Float
     internal var _points: Vector2FArray
-    private var _circumradius: Float
     private var _inradius: Float
+    private var _circumradius: Float
 
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int) {
         val points: Vector2FArray
@@ -79,15 +79,15 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         orientation: ComplexF,
         sideLength: Float,
         points: Vector2FArray,
-        circumradius: Float,
         inradius: Float,
+        circumradius: Float,
     ) {
         _center = center
         _orientation = orientation
         _sideLength = sideLength
         _points = points
-        _circumradius = circumradius
         _inradius = inradius
+        _circumradius = circumradius
     }
 
     constructor(regularTriangle: MutableRegularTriangle) {
@@ -129,14 +129,14 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     override val sideCount: Int
         get() = _points.size
 
-    override val circumradius: Float
-        get() = _circumradius
+    override val points: Vector2FList
+        get() = _points.asList()
 
     override val inradius: Float
         get() = _inradius
 
-    override val points: Vector2FList
-        get() = _points.asList()
+    override val circumradius: Float
+        get() = _circumradius
 
     override val area: Float
         get() = 0.5f * sideCount.toFloat() * _sideLength * _inradius
@@ -164,8 +164,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _orientation,
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 
@@ -181,8 +181,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _orientation,
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 
@@ -223,8 +223,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _orientation * rotation,
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 
@@ -246,8 +246,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             orientation,
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 
@@ -280,8 +280,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             orientation = ComplexF(targetRotR, targetRotI),
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 
@@ -326,8 +326,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 ),
                 _sideLength,
                 points,
-                _circumradius,
-                _inradius
+                _inradius,
+                _circumradius
             )
         } else {
             val pRotR: Float = rotR * startRotR + rotI * startRotI
@@ -346,8 +346,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 orientation,
                 _sideLength,
                 points,
-                _circumradius,
-                _inradius
+                _inradius,
+                _circumradius
             )
         }
     }
@@ -478,8 +478,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _orientation * 1f.withSign(factor),
             _sideLength * absFactor,
             points,
-            _circumradius * absFactor,
-            _inradius * absFactor
+            _inradius * absFactor,
+            _circumradius * absFactor
         )
     }
 
@@ -501,8 +501,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             orientation * 1f.withSign(factor),
             sideLength * absFactor,
             points,
-            circumradius * absFactor,
-            inradius * absFactor
+            inradius * absFactor,
+            circumradius * absFactor
         )
     }
 
@@ -565,8 +565,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _orientation * rotation,
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 
@@ -597,8 +597,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _orientation * rotation,
             _sideLength * factor,
             points,
-            _circumradius * factor,
-            _inradius * factor
+            _inradius * factor,
+            _circumradius * factor
         )
     }
 
@@ -621,8 +621,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             orientation,
             _sideLength,
             points,
-            _circumradius,
-            _inradius
+            _inradius,
+            _circumradius
         )
     }
 

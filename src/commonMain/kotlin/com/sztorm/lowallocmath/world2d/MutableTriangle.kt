@@ -46,6 +46,12 @@ class MutableTriangle : Triangle, MutableTransformable {
     override val pointC: Vector2F
         get() = _pointC
 
+    override val centroid: Vector2F
+        get() = _centroid
+
+    override val orientation: ComplexF
+        get() = _orientation
+
     override val area: Float
         get() {
             val (aX: Float, aY: Float) = _pointA
@@ -66,7 +72,16 @@ class MutableTriangle : Triangle, MutableTransformable {
                     pointC.distanceTo(pointA)
         }
 
-    override val centroid: Vector2F
+    override val sideLengthAB: Float
+        get() = _pointA.distanceTo(_pointB)
+
+    override val sideLengthBC: Float
+        get() = _pointB.distanceTo(_pointC)
+
+    override val sideLengthCA: Float
+        get() = _pointC.distanceTo(_pointA)
+
+    override val position: Vector2F
         get() = _centroid
 
     override val orthocenter: Vector2F
@@ -129,12 +144,6 @@ class MutableTriangle : Triangle, MutableTransformable {
                     pASquaredMagnitude * bX - aX * pCSquaredMagnitude
             return Vector2F(xDet * factor, yDet * factor)
         }
-
-    override val position: Vector2F
-        get() = _centroid
-
-    override val orientation: ComplexF
-        get() = _orientation
 
     override fun movedBy(offset: Vector2F) = MutableTriangle(
         _pointA + offset,

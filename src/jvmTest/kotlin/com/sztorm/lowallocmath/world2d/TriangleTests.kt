@@ -1,8 +1,11 @@
 package com.sztorm.lowallocmath.world2d
 
+import com.sztorm.lowallocmath.AngleF
+import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -12,57 +15,100 @@ class TriangleTests {
     @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
-        triangle: TriangleShape,
+        triangle: Triangle,
         expectedPointA: Wrapper<Vector2F>,
         expectedPointB: Wrapper<Vector2F>,
         expectedPointC: Wrapper<Vector2F>
-    ) {
+    ) = assertImmutabilityOf(triangle) {
         assertApproximation(expectedPointA.value, triangle.pointA)
         assertApproximation(expectedPointB.value, triangle.pointB)
         assertApproximation(expectedPointC.value, triangle.pointC)
     }
 
     @ParameterizedTest
+    @MethodSource("centroidArgs")
+    fun centroidReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.centroid)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(triangle: Triangle, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.orientation)
+        }
+
+    @ParameterizedTest
     @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(triangle: TriangleShape, expected: Float) =
-        assertApproximation(expected, triangle.area)
+    fun areaReturnsCorrectValue(triangle: Triangle, expected: Float) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.area)
+        }
 
     @ParameterizedTest
     @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(triangle: TriangleShape, expected: Float) =
-        assertApproximation(expected, triangle.perimeter)
+    fun perimeterReturnsCorrectValue(triangle: Triangle, expected: Float) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.perimeter)
+        }
 
     @ParameterizedTest
-    @MethodSource("centroidArgs")
-    fun centroidReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.centroid)
+    @MethodSource("sideLengthsArgs")
+    fun sideLengthsReturnsCorrectValues(
+        triangle: Triangle,
+        expectedSideLengthAB: Float,
+        expectedSideLengthBC: Float,
+        expectedSideLengthCA: Float,
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expectedSideLengthAB, triangle.sideLengthAB)
+        assertApproximation(expectedSideLengthBC, triangle.sideLengthBC)
+        assertApproximation(expectedSideLengthCA, triangle.sideLengthCA)
+    }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.position)
+        }
 
     @ParameterizedTest
     @MethodSource("orthocenterArgs")
-    fun orthocenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.orthocenter)
+    fun orthocenterReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.orthocenter)
+        }
 
     @ParameterizedTest
     @MethodSource("incenterArgs")
-    fun incenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.incenter)
+    fun incenterReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.incenter)
+        }
 
     @ParameterizedTest
     @MethodSource("circumcenterArgs")
-    fun circumcenterReturnsCorrectValue(triangle: TriangleShape, expected: Wrapper<Vector2F>) =
-        assertApproximation(expected.value, triangle.circumcenter)
+    fun circumcenterReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.circumcenter)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         triangle: Triangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, triangle.closestPointTo(point.value))
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected.value, triangle.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         triangle: Triangle, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, triangle.contains(point.value))
+    ) = assertImmutabilityOf(triangle) {
+        assertEquals(expected, triangle.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -75,25 +121,37 @@ class TriangleTests {
     ) = assertEquals(expected, triangle.copy(pointA.value, pointB.value, pointC.value))
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(triangle: MutableTriangle, other: Any?, expected: Boolean) =
-        assertEquals(expected, triangle == other)
+        assertImmutabilityOf(triangle) {
+            assertEquals(expected, triangle == other)
+        }
 
     @ParameterizedTest
     @MethodSource("equalsMutableTriangleArgs")
     fun equalsReturnsCorrectValue(
         triangle: MutableTriangle, other: MutableTriangle, expected: Boolean
-    ) = assertEquals(expected, triangle.equals(other))
+    ) = assertImmutabilityOf(triangle) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, triangle.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(triangle: MutableTriangle, other: MutableTriangle) =
-        assertEquals(triangle.hashCode(), other.hashCode())
+        assertImmutabilityOf(triangle) {
+            assertImmutabilityOf(other) {
+                assertEquals(triangle.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(triangle: MutableTriangle, expected: String) =
-        assertEquals(expected, triangle.toString())
+        assertImmutabilityOf(triangle) {
+            assertEquals(expected, triangle.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -102,8 +160,12 @@ class TriangleTests {
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<Vector2F>,
         expectedComponent3: Wrapper<Vector2F>
-    ) {
-        val (actualComponent1, actualComponent2, actualComponent3) = triangle
+    ) = assertImmutabilityOf(triangle) {
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: Vector2F,
+            actualComponent3: Vector2F
+        ) = triangle
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -147,6 +209,50 @@ class TriangleTests {
                 Wrapper(Vector2F(8f, -2.535898f)),
                 Wrapper(Vector2F(10f, -6f)),
                 Wrapper(Vector2F(6f, -6f))
+            ),
+        )
+
+        @JvmStatic
+        fun centroidArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
+                Wrapper(Vector2F(-0.3333333f, 3f))
+            ),
+            Arguments.of(
+                Triangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f))
+            ),
+            Arguments.of(
+                Triangle(
+                    Vector2F(8f, -2.535898f),
+                    Vector2F(10f, -6f),
+                    Vector2F(6f, -6f)
+                ),
+                Wrapper(Vector2F(8f, -4.8453f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
+            ),
+            Arguments.of(
+                Triangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
+            ),
+            Arguments.of(
+                Triangle(
+                    Vector2F(8f, -2.535898f),
+                    Vector2F(10f, -6f),
+                    Vector2F(6f, -6f)
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
             ),
         )
 
@@ -195,16 +301,20 @@ class TriangleTests {
         )
 
         @JvmStatic
-        fun centroidArgs(): List<Arguments> = listOf(
+        fun sideLengthsArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-0.3333333f, 3f))
+                6f,
+                3.1622777f,
+                5.8309517f
             ),
             Arguments.of(
                 Triangle(
                     Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                 ),
-                Wrapper(Vector2F(-1.3333333f, -2.6666667f))
+                4.1231055f,
+                5.0f,
+                7.615773f
             ),
             Arguments.of(
                 Triangle(
@@ -212,9 +322,14 @@ class TriangleTests {
                     Vector2F(10f, -6f),
                     Vector2F(6f, -6f)
                 ),
-                Wrapper(Vector2F(8f, -4.8453f))
+                4f,
+                4f,
+                4f
             ),
         )
+
+        @JvmStatic
+        fun positionArgs(): List<Arguments> = centroidArgs()
 
         @JvmStatic
         fun orthocenterArgs(): List<Arguments> = listOf(
@@ -714,7 +829,7 @@ class TriangleTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableTriangleArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableTriangleArgs() + listOf(
             Arguments.of(
                 MutableTriangle(
                     Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)

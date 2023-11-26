@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.*
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
@@ -15,7 +16,7 @@ class RegularPolygonTests {
     @MethodSource("constructorRegularTriangleArgs")
     fun constructorCreatesCorrectPolygon(
         triangle: MutableRegularTriangle, expected: MutableRegularPolygon
-    ) {
+    ) = assertImmutabilityOf(triangle) {
         val actual = MutableRegularPolygon(triangle)
         val trianglePointIterator = triangle.pointIterator()
 
@@ -31,19 +32,20 @@ class RegularPolygonTests {
 
     @ParameterizedTest
     @MethodSource("constructorSquareArgs")
-    fun constructorCreatesCorrectPolygon(square: MutableSquare, expected: MutableRegularPolygon) {
-        val actual = MutableRegularPolygon(square)
-        val trianglePointIterator = square.pointIterator()
+    fun constructorCreatesCorrectPolygon(square: MutableSquare, expected: MutableRegularPolygon) =
+        assertImmutabilityOf(square) {
+            val actual = MutableRegularPolygon(square)
+            val trianglePointIterator = square.pointIterator()
 
-        assertEquals(expected, actual)
+            assertEquals(expected, actual)
 
-        for (i in expected.points.indices) {
-            assertApproximation(expected.points[i], actual.points[i])
+            for (i in expected.points.indices) {
+                assertApproximation(expected.points[i], actual.points[i])
+            }
+            for (i in expected.points.indices) {
+                assertApproximation(expected.points[i], trianglePointIterator.nextVector2F())
+            }
         }
-        for (i in expected.points.indices) {
-            assertApproximation(expected.points[i], trianglePointIterator.nextVector2F())
-        }
-    }
 
     @Test
     fun constructorThrowsWhenSideCountIsLessThanTwo() {
@@ -65,10 +67,39 @@ class RegularPolygonTests {
     }
 
     @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(polygon: MutableRegularPolygon, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected.value, polygon.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(
+        polygon: MutableRegularPolygon, expected: Wrapper<ComplexF>
+    ) = assertImmutabilityOf(polygon) {
+        assertApproximation(expected.value, polygon.orientation)
+    }
+
+    @ParameterizedTest
+    @MethodSource("sideLengthArgs")
+    fun sideLengthReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected, polygon.sideLength)
+        }
+
+    @ParameterizedTest
+    @MethodSource("sideCountArgs")
+    fun sideCountReturnsCorrectValue(polygon: RegularPolygon, expected: Int) =
+        assertImmutabilityOf(polygon) {
+            assertEquals(expected, polygon.sideCount)
+        }
+
+    @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
         polygon: RegularPolygon, expectedPoints: Wrapper<Vector2FArray>
-    ) {
+    ) = assertImmutabilityOf(polygon) {
         assertEquals(expectedPoints.value.size, polygon.points.size)
 
         for (i in expectedPoints.value.indices) {
@@ -77,56 +108,69 @@ class RegularPolygonTests {
     }
 
     @ParameterizedTest
-    @MethodSource("sideLengthArgs")
-    fun sideLengthReturnsCorrectValue(polygon: RegularShape, expected: Float) =
-        assertApproximation(expected, polygon.sideLength)
-
-    @ParameterizedTest
-    @MethodSource("sideCountArgs")
-    fun sideCountReturnsCorrectValue(polygon: RegularShape, expected: Int) =
-        assertEquals(expected, polygon.sideCount)
-
-    @ParameterizedTest
-    @MethodSource("areaArgs")
-    fun areaReturnsCorrectValue(polygon: RegularShape, expected: Float) =
-        assertApproximation(expected, polygon.area)
-
-    @ParameterizedTest
-    @MethodSource("perimeterArgs")
-    fun perimeterReturnsCorrectValue(polygon: RegularShape, expected: Float) =
-        assertApproximation(expected, polygon.perimeter)
-
-    @ParameterizedTest
-    @MethodSource("interiorAngleArgs")
-    fun interiorAngleReturnsCorrectValue(polygon: RegularShape, expected: Wrapper<AngleF>) =
-        assertApproximation(expected.value, polygon.interiorAngle)
-
-    @ParameterizedTest
-    @MethodSource("exteriorAngleArgs")
-    fun exteriorAngleReturnsCorrectValue(polygon: RegularShape, expected: Wrapper<AngleF>) =
-        assertApproximation(expected.value, polygon.exteriorAngle)
-
-    @ParameterizedTest
     @MethodSource("inradiusArgs")
-    fun inradiusReturnsCorrectValue(polygon: RegularShape, expected: Float) =
-        assertApproximation(expected, polygon.inradius)
+    fun inradiusReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected, polygon.inradius)
+        }
 
     @ParameterizedTest
     @MethodSource("circumradiusArgs")
-    fun circumradiusReturnsCorrectValue(polygon: RegularShape, expected: Float) =
-        assertApproximation(expected, polygon.circumradius)
+    fun circumradiusReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected, polygon.circumradius)
+        }
+
+    @ParameterizedTest
+    @MethodSource("areaArgs")
+    fun areaReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected, polygon.area)
+        }
+
+    @ParameterizedTest
+    @MethodSource("perimeterArgs")
+    fun perimeterReturnsCorrectValue(polygon: RegularPolygon, expected: Float) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected, polygon.perimeter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("interiorAngleArgs")
+    fun interiorAngleReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<AngleF>) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected.value, polygon.interiorAngle)
+        }
+
+    @ParameterizedTest
+    @MethodSource("exteriorAngleArgs")
+    fun exteriorAngleReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<AngleF>) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected.value, polygon.exteriorAngle)
+        }
+
+    @ParameterizedTest
+    @MethodSource("positionArgs")
+    fun positionReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected.value, polygon.position)
+        }
 
     @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, polygon.closestPointTo(point.value))
+    ) = assertImmutabilityOf(polygon) {
+        assertApproximation(expected.value, polygon.closestPointTo(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Boolean
-    ) = assertEquals(expected, polygon.contains(point.value))
+    ) = assertImmutabilityOf(polygon) {
+        assertEquals(expected, polygon.contains(point.value))
+    }
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -137,53 +181,75 @@ class RegularPolygonTests {
         sideLength: Float,
         sideCount: Int,
         expected: RegularPolygon
-    ) = assertEquals(expected, polygon.copy(center.value, orientation.value, sideLength, sideCount))
+    ) = assertEquals(
+        expected, polygon.copy(center.value, orientation.value, sideLength, sideCount)
+    )
 
     @ParameterizedTest
-    @MethodSource("equalsArgs")
+    @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(
         polygon: MutableRegularPolygon, other: Any?, expected: Boolean
-    ) = assertEquals(expected, polygon == other)
+    ) = assertImmutabilityOf(polygon) {
+        assertEquals(expected, polygon == other)
+    }
 
     @ParameterizedTest
     @MethodSource("equalsMutableRegularPolygonArgs")
     fun equalsReturnsCorrectValue(
         polygon: MutableRegularPolygon, other: MutableRegularPolygon, expected: Boolean
-    ) = assertEquals(expected, polygon.equals(other))
+    ) = assertImmutabilityOf(polygon) {
+        assertImmutabilityOf(other) {
+            assertEquals(expected, polygon.equals(other))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("hashCodeArgs")
     fun hashCodeReturnsCorrectValue(polygon: MutableRegularPolygon, other: MutableRegularPolygon) =
-        assertEquals(polygon.hashCode(), other.hashCode())
+        assertImmutabilityOf(polygon) {
+            assertImmutabilityOf(other) {
+                assertEquals(polygon.hashCode(), other.hashCode())
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("toStringArgs")
     fun toStringReturnsCorrectValue(polygon: MutableRegularPolygon, expected: String) =
-        assertEquals(expected, polygon.toString())
+        assertImmutabilityOf(polygon) {
+            assertEquals(expected, polygon.toString())
+        }
 
     @ParameterizedTest
     @MethodSource("toRegularTriangleOrNullArgs")
     fun toRegularTriangleOrNullReturnsCorrectValue(
         polygon: RegularPolygon, expected: RegularTriangle?
-    ) = assertEquals(expected, polygon.toRegularTriangleOrNull())
+    ) = assertImmutabilityOf(polygon) {
+        assertEquals(expected, polygon.toRegularTriangleOrNull())
+    }
 
     @ParameterizedTest
     @MethodSource("toMutableRegularTriangleOrNullArgs")
     fun toMutableRegularTriangleOrNullReturnsCorrectValue(
         polygon: MutableRegularPolygon, expected: MutableRegularTriangle?
-    ) = assertEquals(expected, polygon.toMutableRegularTriangleOrNull())
+    ) = assertImmutabilityOf(polygon) {
+        assertEquals(expected, polygon.toMutableRegularTriangleOrNull())
+    }
 
     @ParameterizedTest
     @MethodSource("toSquareOrNullArgs")
     fun toSquareOrNullReturnsCorrectValue(
         polygon: RegularPolygon, expected: Square?
-    ) = assertEquals(expected, polygon.toSquareOrNull())
+    ) = assertImmutabilityOf(polygon) {
+        assertEquals(expected, polygon.toSquareOrNull())
+    }
 
     @ParameterizedTest
     @MethodSource("toMutableSquareOrNullArgs")
     fun toMutableSquareOrNullReturnsCorrectValue(
         polygon: MutableRegularPolygon, expected: MutableSquare?
-    ) = assertEquals(expected, polygon.toMutableSquareOrNull())
+    ) = assertImmutabilityOf(polygon) {
+        assertEquals(expected, polygon.toMutableSquareOrNull())
+    }
 
     @ParameterizedTest
     @MethodSource("componentsArgs")
@@ -193,8 +259,13 @@ class RegularPolygonTests {
         expectedComponent2: Wrapper<ComplexF>,
         expectedComponent3: Float,
         expectedComponent4: Int,
-    ) {
-        val (actualComponent1, actualComponent2, actualComponent3, actualComponent4) = polygon
+    ) = assertImmutabilityOf(polygon) {
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float,
+            actualComponent4: Int
+        ) = polygon
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
@@ -273,127 +344,46 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
+        fun centerArgs(): List<Arguments> = listOf(
             Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
-                ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(17.236069f, 1f),
-                        Vector2F(16.618034f, 2.902113f),
-                        Vector2F(15.0f, 4.0776834f),
-                        Vector2F(13.0f, 4.0776834f),
-                        Vector2F(11.381966f, 2.902113f),
-                        Vector2F(10.763932f, 1f),
-                        Vector2F(11.381966f, -0.90211296f),
-                        Vector2F(13.0f, -2.0776834f),
-                        Vector2F(15.0f, -2.0776834f),
-                        Vector2F(16.618034f, -0.9021131f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     Vector2F(0f, 8f),
                     ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(-2.9939773f, 6.2714257f),
-                        Vector2F(-0.5152612f, 4.5814657f),
-                        Vector2F(2.3514576f, 5.4657316f),
-                        Vector2F(3.4474807f, 8.258353f),
-                        Vector2F(1.9474803f, 10.856429f),
-                        Vector2F(-1.0190125f, 11.303556f),
-                        Vector2F(-3.218168f, 9.263038f),
-                    ).toVector2FArray()
-                )
+                Wrapper(Vector2F(0f, 8f))
             ),
             Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                MutableRegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(-4.968911f, 3.75f),
-                        Vector2F(-8f, 5.5f),
-                        Vector2F(-11.031089f, 3.75f),
-                        Vector2F(-11.031089f, 0.25f),
-                        Vector2F(-8f, -1.5f),
-                        Vector2F(-4.968911f, 0.25f),
-                    ).toVector2FArray()
-                )
+                Wrapper(Vector2F(14f, 1f))
+            ),
+        )
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
             ),
             Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                MutableRegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(-9.906004f, -5.5939965f),
-                        Vector2F(-10.531742f, -9.544749f),
-                        Vector2F(-6.9677157f, -11.360712f),
-                        Vector2F(-4.1392884f, -8.532285f),
-                        Vector2F(-5.9552507f, -4.9682584f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
-                ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(4.8284273f, -7.5f),
-                        Vector2F(2f, -4.6715727f),
-                        Vector2F(-0.82842684f, -7.5f),
-                        Vector2F(2f, -10.328426f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
-                ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(8.367007f, -8.132993f),
-                        Vector2F(12.23071f, -7.097717f),
-                        Vector2F(9.402283f, -4.26929f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
-                ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(8.068149f, 5.982362f),
-                        Vector2F(11.931851f, 7.017638f),
-                    ).toVector2FArray()
-                )
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f)))
             ),
         )
 
@@ -528,6 +518,265 @@ class RegularPolygonTests {
                     sideCount = 2
                 ),
                 2
+            ),
+        )
+
+        @JvmStatic
+        fun pointsArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(17.236069f, 1f),
+                        Vector2F(16.618034f, 2.902113f),
+                        Vector2F(15.0f, 4.0776834f),
+                        Vector2F(13.0f, 4.0776834f),
+                        Vector2F(11.381966f, 2.902113f),
+                        Vector2F(10.763932f, 1f),
+                        Vector2F(11.381966f, -0.90211296f),
+                        Vector2F(13.0f, -2.0776834f),
+                        Vector2F(15.0f, -2.0776834f),
+                        Vector2F(16.618034f, -0.9021131f),
+                    ).toVector2FArray()
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(-2.9939773f, 6.2714257f),
+                        Vector2F(-0.5152612f, 4.5814657f),
+                        Vector2F(2.3514576f, 5.4657316f),
+                        Vector2F(3.4474807f, 8.258353f),
+                        Vector2F(1.9474803f, 10.856429f),
+                        Vector2F(-1.0190125f, 11.303556f),
+                        Vector2F(-3.218168f, 9.263038f),
+                    ).toVector2FArray()
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(-8f, 2f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                    sideLength = 3.5f,
+                    sideCount = 6
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(-4.968911f, 3.75f),
+                        Vector2F(-8f, 5.5f),
+                        Vector2F(-11.031089f, 3.75f),
+                        Vector2F(-11.031089f, 0.25f),
+                        Vector2F(-8f, -1.5f),
+                        Vector2F(-4.968911f, 0.25f),
+                    ).toVector2FArray()
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(-9.906004f, -5.5939965f),
+                        Vector2F(-10.531742f, -9.544749f),
+                        Vector2F(-6.9677157f, -11.360712f),
+                        Vector2F(-4.1392884f, -8.532285f),
+                        Vector2F(-5.9552507f, -4.9682584f),
+                    ).toVector2FArray()
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(4.8284273f, -7.5f),
+                        Vector2F(2f, -4.6715727f),
+                        Vector2F(-0.82842684f, -7.5f),
+                        Vector2F(2f, -10.328426f),
+                    ).toVector2FArray()
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(10f, -6.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(8.367007f, -8.132993f),
+                        Vector2F(12.23071f, -7.097717f),
+                        Vector2F(9.402283f, -4.26929f),
+                    ).toVector2FArray()
+                )
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(10f, 6.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                    sideLength = 4f,
+                    sideCount = 2
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2F(8.068149f, 5.982362f),
+                        Vector2F(11.931851f, 7.017638f),
+                    ).toVector2FArray()
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun inradiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                3.077684f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                3.114782f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(-8f, 2f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                    sideLength = 3.5f,
+                    sideCount = 6
+                ),
+                3.031089f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                ),
+                2.752764f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                2f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(10f, -6.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                ),
+                1.1547005f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(10f, 6.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                    sideLength = 4f,
+                    sideCount = 2
+                ),
+                0f
+            ),
+        )
+
+        @JvmStatic
+        fun circumradiusArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                3.236068f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                3.457147f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(-8f, 2f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                    sideLength = 3.5f,
+                    sideCount = 6
+                ),
+                3.5f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                ),
+                3.402603f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                2.828427f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(10f, -6.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                ),
+                2.309401f
+            ),
+            Arguments.of(
+                RegularPolygon(
+                    Vector2F(10f, 6.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                    sideLength = 4f,
+                    sideCount = 2
+                ),
+                2f
             ),
         )
 
@@ -800,138 +1049,7 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun inradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
-                ),
-                3.077684f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
-                ),
-                3.114782f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
-                ),
-                3.031089f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
-                ),
-                2.752764f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
-                ),
-                2f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
-                ),
-                1.1547005f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
-                ),
-                0f
-            ),
-        )
-
-        @JvmStatic
-        fun circumradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
-                ),
-                3.236068f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
-                ),
-                3.457147f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
-                ),
-                3.5f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
-                ),
-                3.402603f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
-                ),
-                2.828427f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
-                ),
-                2.309401f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
-                ),
-                2f
-            ),
-        )
+        fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
@@ -1688,7 +1806,7 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun equalsArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(
+        fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(
             Arguments.of(
                 MutableRegularPolygon(
                     Vector2F(0f, 8f),

@@ -17,17 +17,17 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
     override val pointB: Vector2F
         get() = _pointB
 
-    override val center: Vector2F
-        get() = (_pointA + _pointB) * 0.5f
-
-    override val length: Float
-        get() = _pointA.distanceTo(_pointB)
-
     override val position: Vector2F
         get() = (_pointA + _pointB) * 0.5f
 
     override val orientation: ComplexF
         get() = (_pointA - _pointB).normalized.toComplexF()
+
+    override val center: Vector2F
+        get() = (_pointA + _pointB) * 0.5f
+
+    override val length: Float
+        get() = _pointA.distanceTo(_pointB)
 
     override fun movedBy(offset: Vector2F) =
         MutableLineSegment(_pointA + offset, _pointB + offset)
