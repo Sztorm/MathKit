@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultSquare
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -212,135 +213,193 @@ class SquareTests {
         fun clone(square: Square) = square.copy()
 
         @JvmStatic
-        fun centerArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableSquare(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
-                ),
-                Wrapper(Vector2F(3f, 1f))
-            ),
-            Arguments.of(
-                MutableSquare(
-                    center = Vector2F(8f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                    sideLength = 3f
-                ),
-                Wrapper(Vector2F(8f, -2f))
-            ),
-        )
+        fun List<Arguments>.mapSquaresToDefaultSquares() = map { args ->
+            val argArray = args.get().map {
+                if (it is Square) DefaultSquare(it.center, it.orientation, it.sideLength)
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableSquare(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+        fun centerArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(3f, 1f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)))
-            ),
-            Arguments.of(
-                MutableSquare(
-                    center = Vector2F(8f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                    sideLength = 3f
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(Vector2F(8f, -2f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f)))
-            ),
-        )
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun sideLengthArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 3f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun orientationArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)))
                 ),
-                3f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f)))
                 ),
-                4f
-            ),
-        )
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
-                Wrapper(Vector2F(1.5f, 1.5f)),
-                Wrapper(Vector2F(-1.5f, 1.5f)),
-                Wrapper(Vector2F(-1.5f, -1.5f)),
-                Wrapper(Vector2F(1.5f, -1.5f))
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+        fun sideLengthArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 3f
                 ),
-                Wrapper(Vector2F(2.267949f, 3.732051f)),
-                Wrapper(Vector2F(0.2679491f, 0.26794904f)),
-                Wrapper(Vector2F(3.732051f, -1.7320509f)),
-                Wrapper(Vector2F(5.732051f, 1.7320509f))
-            ),
-        )
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    3f
+                ),
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    4f
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 9f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun pointsArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    Wrapper(Vector2F(1.5f, 1.5f)),
+                    Wrapper(Vector2F(-1.5f, 1.5f)),
+                    Wrapper(Vector2F(-1.5f, -1.5f)),
+                    Wrapper(Vector2F(1.5f, -1.5f))
                 ),
-                9f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(2.267949f, 3.732051f)),
+                    Wrapper(Vector2F(0.2679491f, 0.26794904f)),
+                    Wrapper(Vector2F(3.732051f, -1.7320509f)),
+                    Wrapper(Vector2F(5.732051f, 1.7320509f))
                 ),
-                16f
-            ),
-        )
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 12f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun areaArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 9f
                 ),
-                12f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    9f
                 ),
-                16f
-            ),
-        )
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    16f
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun perimeterArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 12f
+                ),
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    12f
+                ),
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    16f
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun widthArgs(): List<Arguments> = sideLengthArgs()
@@ -349,101 +408,134 @@ class SquareTests {
         fun heightArgs(): List<Arguments> = sideLengthArgs()
 
         @JvmStatic
-        fun sideCountArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 4
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun sideCountArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 4
                 ),
-                4
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    4
                 ),
-                4
-            ),
-        )
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    4
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun interiorAngleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
-                Wrapper(AngleF.fromDegrees(90f))
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun interiorAngleArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    Wrapper(AngleF.fromDegrees(90f))
                 ),
-                Wrapper(AngleF.fromDegrees(90f))
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(AngleF.fromDegrees(90f))
                 ),
-                Wrapper(AngleF.fromDegrees(90f))
-            ),
-        )
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(90f))
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun exteriorAngleArgs(): List<Arguments> = interiorAngleArgs()
 
         @JvmStatic
-        fun inradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 1.5f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun inradiusArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    1.5f
                 ),
-                1.5f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    1.5f
                 ),
-                2f
-            ),
-        )
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    2f
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun circumradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
-                2.12132f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
-                    sideLength = 3f
+        fun circumradiusArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    2.12132f
                 ),
-                2.12132f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
+                        sideLength = 3f
+                    ),
+                    2.12132f
                 ),
-                2.828427f
-            ),
-        )
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    2.828427f
+                ),
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
@@ -462,7 +554,7 @@ class SquareTests {
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
-            return listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     square,
                     Wrapper(Vector2F(3.9823222f, 2.7014322f)),
@@ -569,6 +661,12 @@ class SquareTests {
                     Wrapper(center)
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
         }
 
         @Suppress("UNUSED_VARIABLE")
@@ -585,7 +683,7 @@ class SquareTests {
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
-            return listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(square, Wrapper(Vector2F(3.9823222f, 2.7014322f)), true),
                 Arguments.of(square, Wrapper(Vector2F(4.017678f, 2.7626696f)), false),
                 Arguments.of(square, Wrapper(Vector2F(2.28089f, 3.6837547f)), true),
@@ -604,56 +702,70 @@ class SquareTests {
                 Arguments.of(square, Wrapper(Vector2F(5.780347f, 1.7449918f)), false),
                 Arguments.of(square, Wrapper(center), true),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+        fun copyArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(3f, 1f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                    4f,
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    )
                 ),
-                Wrapper(Vector2F(3f, 1f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
-                4f,
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
-                )
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(8f, -2f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                    3f,
+                    Square(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 3f
+                    )
                 ),
-                Wrapper(Vector2F(8f, -2f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
-                3f,
-                Square(
-                    center = Vector2F(8f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 3f
-                )
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(8f, -2f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                    3f,
+                    Square(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    )
                 ),
-                Wrapper(Vector2F(8f, -2f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
-                3f,
-                Square(
-                    center = Vector2F(8f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                    sideLength = 3f
-                )
-            ),
-        )
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableSquareArgs() + listOf(
@@ -753,27 +865,35 @@ class SquareTests {
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Square(
-                    center = Vector2F(3f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                    sideLength = 4f
+        fun componentsArgs(): List<Arguments> {
+            val mutableSquareArgs = listOf(
+                Arguments.of(
+                    Square(
+                        center = Vector2F(3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(3f, 1f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                    4f
                 ),
-                Wrapper(Vector2F(3f, 1f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
-                4f
-            ),
-            Arguments.of(
-                Square(
-                    center = Vector2F(8f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                    sideLength = 3f
+                Arguments.of(
+                    Square(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(Vector2F(8f, -2f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                    3f
                 ),
-                Wrapper(Vector2F(8f, -2f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
-                3f
-            ),
-        )
+            )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableSquareArgs,
+                defaultSquareArgs
+            ).flatten()
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.utils.assertEquals
+import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -671,13 +672,14 @@ class TransformableTests {
                     *it.get()
                 )
             }
-            val squareArgs = SquareTests.positionArgs().map {
+            val mutableSquareArgs = SquareTests.positionArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = TriangleTests.positionArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -694,7 +696,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -945,7 +948,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -977,6 +980,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1012,7 +1016,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -1263,7 +1268,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1295,6 +1300,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1332,19 +1338,28 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
 
         @JvmStatic
-        fun moveByArgs(): List<Arguments> = movedByArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun moveByArgs(): List<Arguments> = movedByArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
-        fun moveToArgs(): List<Arguments> = movedToArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun moveToArgs(): List<Arguments> = movedToArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
@@ -1405,13 +1420,14 @@ class TransformableTests {
                     *it.get()
                 )
             }
-            val squareArgs = SquareTests.orientationArgs().map {
+            val mutableSquareArgs = SquareTests.orientationArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = TriangleTests.orientationArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1428,7 +1444,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -1685,7 +1702,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -1717,6 +1734,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1754,7 +1772,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -2021,7 +2040,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -2053,6 +2072,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -2090,7 +2110,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -2626,7 +2647,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -2692,6 +2713,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -2759,7 +2781,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -3299,7 +3322,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -3365,6 +3388,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -3432,7 +3456,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -3449,47 +3474,79 @@ class TransformableTests {
             }
 
         @JvmStatic
-        fun rotateByAngleFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun rotateByAngleFArgs(): List<Arguments> = rotatedByAngleFArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
-        fun rotateByComplexFArgs(): List<Arguments> = rotatedByComplexFArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun rotateByComplexFArgs(): List<Arguments> = rotatedByComplexFArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
-        fun rotateToAngleFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun rotateToAngleFArgs(): List<Arguments> = rotatedToAngleFArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
-        fun rotateToComplexFArgs(): List<Arguments> = rotatedToComplexFArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun rotateToComplexFArgs(): List<Arguments> = rotatedToComplexFArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
         fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> =
-            rotatedAroundPointByVector2FAngleFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            rotatedAroundPointByVector2FAngleFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
-            rotatedAroundPointByVector2FComplexFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            rotatedAroundPointByVector2FComplexFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> =
-            rotatedAroundPointToVector2FAngleFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            rotatedAroundPointToVector2FAngleFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
-            rotatedAroundPointToVector2FComplexFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            rotatedAroundPointToVector2FComplexFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
@@ -3968,7 +4025,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -4030,6 +4087,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -4091,7 +4149,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -4724,7 +4783,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -4806,6 +4865,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -4883,19 +4943,28 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
 
         @JvmStatic
-        fun scaleByArgs(): List<Arguments> = scaledByArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun scaleByArgs(): List<Arguments> = scaledByArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
-        fun dilateByArgs(): List<Arguments> = dilatedByArgs().map { args ->
-            Arguments.of(*args.get().drop(1).toTypedArray())
+        fun dilateByArgs(): List<Arguments> = dilatedByArgs().mapNotNull { args ->
+            val argArray: Array<Any?> = args.get()
+
+            if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                Arguments.of(*argArray.drop(1).toTypedArray())
+            } else null
         }
 
         @JvmStatic
@@ -5168,7 +5237,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -5202,6 +5271,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -5241,7 +5311,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -5809,7 +5880,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -5879,6 +5950,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -5950,7 +6022,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -6234,7 +6307,7 @@ class TransformableTests {
                     )
                 ),
             )
-            val squareArgs = listOf(
+            val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
@@ -6268,6 +6341,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -6307,7 +6381,8 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                squareArgs,
+                mutableSquareArgs,
+                defaultSquareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -6325,38 +6400,62 @@ class TransformableTests {
 
         @JvmStatic
         fun transformByVector2FAngleFArgs(): List<Arguments> =
-            transformedByVector2FAngleFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            transformedByVector2FAngleFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun transformByVector2FComplexFArgs(): List<Arguments> =
-            transformedByVector2FComplexFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            transformedByVector2FComplexFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun transformByVector2FAngleFFloatArgs(): List<Arguments> =
-            transformedByVector2FAngleFFloatArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            transformedByVector2FAngleFFloatArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun transformByVector2FComplexFFloatArgs(): List<Arguments> =
-            transformedByVector2FComplexFFloatArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            transformedByVector2FComplexFFloatArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun transformToVector2FAngleFArgs(): List<Arguments> =
-            transformedToVector2FAngleFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            transformedToVector2FAngleFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
 
         @JvmStatic
         fun transformToVector2FComplexFArgs(): List<Arguments> =
-            transformedToVector2FComplexFArgs().map { args ->
-                Arguments.of(*args.get().drop(1).toTypedArray())
+            transformedToVector2FComplexFArgs().mapNotNull { args ->
+                val argArray: Array<Any?> = args.get()
+
+                if (argArray.all { it !is Transformable || it is MutableTransformable }) {
+                    Arguments.of(*argArray.drop(1).toTypedArray())
+                } else null
             }
     }
 }
