@@ -212,10 +212,20 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): MutableRay =
-        transformedBy(offset, ComplexF.fromAngle(rotation))
+        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): MutableRay =
-        transformedBy(offset, rotation)
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): MutableRay {
+        val dirX: Float = _direction.x
+        val dirY: Float = _direction.y
+        val factorSign: Float = 1f.withSign(factor)
+        val rotR: Float = rotation.real * factorSign
+        val rotI: Float = rotation.imaginary * factorSign
+
+        return MutableRay(
+            origin = _origin + offset,
+            direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+        )
+    }
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): MutableRay =
         MutableRay(position, direction = ComplexF.fromAngle(orientation).toVector2F())
@@ -237,10 +247,18 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     }
 
     override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation))
+        transformBy(offset, ComplexF.fromAngle(rotation), factor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
-        transformBy(offset, rotation)
+    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+        val dirX: Float = _direction.x
+        val dirY: Float = _direction.y
+        val factorSign: Float = 1f.withSign(factor)
+        val rotR: Float = rotation.real * factorSign
+        val rotI: Float = rotation.imaginary * factorSign
+
+        _origin += offset
+        _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+    }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) {
         _origin = position

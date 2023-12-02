@@ -857,23 +857,33 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerRadius
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        MutableRoundedRectangle(
-            _center + offset,
-            _orientation * ComplexF.fromAngle(rotation),
-            _width * factor,
-            _height * factor,
-            _cornerRadius * factor
-        )
+    override fun transformedBy(
+        offset: Vector2F, rotation: AngleF, factor: Float
+    ): MutableRoundedRectangle {
+        val absFactor: Float = factor.absoluteValue
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
-        MutableRoundedRectangle(
+        return MutableRoundedRectangle(
             _center + offset,
-            _orientation * rotation,
-            _width * factor,
-            _height * factor,
-            _cornerRadius * factor
+            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
+            _width * absFactor,
+            _height * absFactor,
+            _cornerRadius * absFactor
         )
+    }
+
+    override fun transformedBy(
+        offset: Vector2F, rotation: ComplexF, factor: Float
+    ): MutableRoundedRectangle {
+        val absFactor: Float = factor.absoluteValue
+
+        return MutableRoundedRectangle(
+            _center + offset,
+            _orientation * rotation * 1f.withSign(factor),
+            _width * absFactor,
+            _height * absFactor,
+            _cornerRadius * absFactor
+        )
+    }
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) = MutableRoundedRectangle(
         position, ComplexF.fromAngle(orientation), _width, _height, _cornerRadius
@@ -898,13 +908,15 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val i0 = _orientation.imaginary
         val r1 = rotation.real
         val i1 = rotation.imaginary
-        val rotR: Float = r0 * r1 - i0 * i1
-        val rotI: Float = i0 * r1 + r0 * i1
-        val width: Float = _width * factor
-        val height: Float = _height * factor
+        val absFactor: Float = factor.absoluteValue
+        val factorSign: Float = 1f.withSign(factor)
+        val rotR: Float = (r0 * r1 - i0 * i1) * factorSign
+        val rotI: Float = (i0 * r1 + r0 * i1) * factorSign
+        val width: Float = _width * absFactor
+        val height: Float = _height * absFactor
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
-        val cornerRadius: Float = _cornerRadius * factor
+        val cornerRadius: Float = _cornerRadius * absFactor
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
         val addendA: Float = rotR * halfWidthMinusRadius

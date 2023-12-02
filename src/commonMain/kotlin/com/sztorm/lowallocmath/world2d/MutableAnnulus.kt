@@ -233,20 +233,29 @@ class MutableAnnulus(
         _center + offset, _orientation * rotation, _outerRadius, _innerRadius
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableAnnulus(
-        _center + offset,
-        _orientation * ComplexF.fromAngle(rotation),
-        _outerRadius * factor,
-        _innerRadius * factor
-    )
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): MutableAnnulus {
+        val absFactor: Float = factor.absoluteValue
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
-        MutableAnnulus(
+        return MutableAnnulus(
             _center + offset,
-            _orientation * rotation,
-            _outerRadius * factor,
-            _innerRadius * factor
+            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
+            _outerRadius * absFactor,
+            _innerRadius * absFactor
         )
+    }
+
+    override fun transformedBy(
+        offset: Vector2F, rotation: ComplexF, factor: Float
+    ): MutableAnnulus {
+        val absFactor: Float = factor.absoluteValue
+
+        return MutableAnnulus(
+            _center + offset,
+            _orientation * rotation * 1f.withSign(factor),
+            _outerRadius * absFactor,
+            _innerRadius * absFactor
+        )
+    }
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
         MutableAnnulus(position, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius)
@@ -266,10 +275,12 @@ class MutableAnnulus(
         transformBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+        val absFactor: Float = factor.absoluteValue
+
         _center += offset
-        _orientation *= rotation
-        _outerRadius *= factor
-        _innerRadius *= factor
+        _orientation *= rotation * 1f.withSign(factor)
+        _outerRadius *= absFactor
+        _innerRadius *= absFactor
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =

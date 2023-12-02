@@ -390,15 +390,15 @@ class MutableSquare : Square, MutableTransformable {
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableSquare(
         _center + offset,
-        _orientation * ComplexF.fromAngle(rotation),
-        _sideLength * factor
+        _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
+        _sideLength * factor.absoluteValue
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
         MutableSquare(
             _center + offset,
-            _orientation * rotation,
-            _sideLength * factor
+            _orientation * rotation * 1f.withSign(factor),
+            _sideLength * factor.absoluteValue
         )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
@@ -423,9 +423,10 @@ class MutableSquare : Square, MutableTransformable {
         val i0 = _orientation.imaginary
         val r1 = rotation.real
         val i1 = rotation.imaginary
-        val rotR: Float = r0 * r1 - i0 * i1
-        val rotI: Float = i0 * r1 + r0 * i1
-        val sideLength: Float = _sideLength * factor
+        val factorSign: Float = 1f.withSign(factor)
+        val rotR: Float = (r0 * r1 - i0 * i1) * factorSign
+        val rotI: Float = (i0 * r1 + r0 * i1) * factorSign
+        val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (rotR + rotI)
         val addendB: Float = halfSideLength * (rotR - rotI)

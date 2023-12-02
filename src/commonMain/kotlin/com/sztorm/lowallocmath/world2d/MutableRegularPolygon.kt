@@ -464,9 +464,9 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val points: Vector2FArray = _points.copyOf()
         val (cX: Float, cY: Float) = _center
         val f: Float = 1f - factor
+        val absFactor: Float = factor.absoluteValue
         val addendX: Float = cX * f
         val addendY: Float = cY * f
-        val absFactor: Float = factor.absoluteValue
 
         for (i in 0 until points.size) {
             val (pX: Float, pY: Float) = points[i]
@@ -582,8 +582,10 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val cX: Float = pcX + offset.x
         val cY: Float = pcY + offset.y
         val (rotR: Float, rotI: Float) = rotation
-        val addendX: Float = cX * (1f - factor)
-        val addendY: Float = cY * (1f - factor)
+        val f: Float = 1f - factor
+        val absFactor: Float = factor.absoluteValue
+        val addendX: Float = cX * f
+        val addendY: Float = cY * f
 
         for (i in 0 until points.size) {
             val p1X: Float = points[i].x - pcX
@@ -594,11 +596,11 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         }
         return MutableRegularPolygon(
             Vector2F(cX, cY),
-            _orientation * rotation,
-            _sideLength * factor,
+            _orientation * rotation * 1f.withSign(factor),
+            _sideLength * absFactor,
             points,
-            _inradius * factor,
-            _circumradius * factor
+            _inradius * absFactor,
+            _circumradius * absFactor
         )
     }
 
@@ -654,8 +656,10 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val cX: Float = pcX + offset.x
         val cY: Float = pcY + offset.y
         val (rotR: Float, rotI: Float) = rotation
-        val addendX: Float = cX * (1f - factor)
-        val addendY: Float = cY * (1f - factor)
+        val f: Float = 1f - factor
+        val absFactor: Float = factor.absoluteValue
+        val addendX: Float = cX * f
+        val addendY: Float = cY * f
 
         for (i in 0 until points.size) {
             val p1X: Float = points[i].x - pcX
@@ -665,10 +669,10 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             points[i] = Vector2F(addendX + p2X * factor, addendY + p2Y * factor)
         }
         _center = Vector2F(cX, cY)
-        _orientation *= rotation
-        _sideLength *= factor
-        _circumradius *= factor
-        _inradius *= factor
+        _orientation *= rotation * 1f.withSign(factor)
+        _sideLength *= absFactor
+        _circumradius *= absFactor
+        _inradius *= absFactor
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =

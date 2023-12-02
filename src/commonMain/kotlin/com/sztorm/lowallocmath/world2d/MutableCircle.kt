@@ -212,15 +212,15 @@ class MutableCircle(
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableCircle(
         _center + offset,
-        _orientation * ComplexF.fromAngle(rotation),
-        _radius * factor
+        _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
+        _radius * factor.absoluteValue
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
         MutableCircle(
             _center + offset,
-            _orientation * rotation,
-            _radius * factor
+            _orientation * rotation * 1f.withSign(factor),
+            _radius * factor.absoluteValue
         )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
@@ -242,8 +242,8 @@ class MutableCircle(
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
         _center += offset
-        _orientation *= rotation
-        _radius *= factor
+        _orientation *= rotation * 1f.withSign(factor)
+        _radius *= factor.absoluteValue
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =

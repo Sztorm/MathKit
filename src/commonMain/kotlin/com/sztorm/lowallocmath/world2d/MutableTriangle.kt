@@ -580,6 +580,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         val targetPosX: Float = cX + oX
         val targetPosY: Float = cY + oY
         val f: Float = 1f - factor
+        val factorSign: Float = 1f.withSign(factor)
         val addendX: Float = targetPosX * f
         val addendY: Float = targetPosY * f
 
@@ -598,8 +599,8 @@ class MutableTriangle : Triangle, MutableTransformable {
             ),
             Vector2F(targetPosX, targetPosY),
             ComplexF(
-                startRotR * rotR - startRotI * rotI,
-                startRotI * rotR + startRotR * rotI
+                (startRotR * rotR - startRotI * rotI) * factorSign,
+                (startRotI * rotR + startRotR * rotI) * factorSign
             )
         )
     }
@@ -675,6 +676,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         val targetPosX: Float = cX + oX
         val targetPosY: Float = cY + oY
         val f: Float = 1f - factor
+        val factorSign: Float = 1f.withSign(factor)
         val addendX: Float = targetPosX * f
         val addendY: Float = targetPosY * f
         _pointA = Vector2F(
@@ -691,7 +693,8 @@ class MutableTriangle : Triangle, MutableTransformable {
         )
         _centroid = Vector2F(targetPosX, targetPosY)
         _orientation = ComplexF(
-            startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
+            (startRotR * rotR - startRotI * rotI) * factorSign,
+            (startRotI * rotR + startRotR * rotI) * factorSign
         )
     }
 
