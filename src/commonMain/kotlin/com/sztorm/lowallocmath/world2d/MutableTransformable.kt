@@ -9,21 +9,19 @@ interface MutableTransformable : Transformable {
 
     fun moveTo(position: Vector2F)
 
-    fun rotateBy(rotation: AngleF) = rotateBy(ComplexF.fromAngle(rotation))
+    fun rotateBy(rotation: AngleF)
 
     fun rotateBy(rotation: ComplexF)
 
-    fun rotateTo(orientation: AngleF) = rotateTo(ComplexF.fromAngle(orientation))
+    fun rotateTo(orientation: AngleF)
 
     fun rotateTo(orientation: ComplexF)
 
-    fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
+    fun rotateAroundPointBy(point: Vector2F, rotation: AngleF)
 
     fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF)
 
-    fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
+    fun rotateAroundPointTo(point: Vector2F, orientation: AngleF)
 
     fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF)
 
@@ -31,18 +29,15 @@ interface MutableTransformable : Transformable {
 
     fun dilateBy(point: Vector2F, factor: Float)
 
-    fun transformBy(offset: Vector2F, rotation: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(rotation))
+    fun transformBy(offset: Vector2F, rotation: AngleF)
 
     fun transformBy(offset: Vector2F, rotation: ComplexF)
 
-    fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation), factor)
+    fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float)
 
     fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float)
 
-    fun transformTo(position: Vector2F, orientation: AngleF) =
-        transformTo(position, ComplexF.fromAngle(orientation))
+    fun transformTo(position: Vector2F, orientation: AngleF)
 
     fun transformTo(position: Vector2F, orientation: ComplexF)
 }
