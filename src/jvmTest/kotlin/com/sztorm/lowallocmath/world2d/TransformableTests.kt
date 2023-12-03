@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.utils.assertEquals
+import com.sztorm.lowallocmath.world2d.AnnulusTests.Companion.mapAnnulusesToDefaultAnnuluses
 import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -616,13 +617,14 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val annulusArgs = AnnulusTests.positionArgs().map {
+            val mutableAnnulusArgs = AnnulusTests.positionArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = CircleTests.positionArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -688,7 +690,8 @@ class TransformableTests {
                 )
             }
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -704,7 +707,7 @@ class TransformableTests {
 
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -740,6 +743,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1008,7 +1012,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -1024,7 +1029,7 @@ class TransformableTests {
 
         @JvmStatic
         fun movedToArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1060,6 +1065,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1330,7 +1336,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -1364,13 +1371,14 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val annulusArgs = AnnulusTests.orientationArgs().map {
+            val mutableAnnulusArgs = AnnulusTests.orientationArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = CircleTests.orientationArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1436,7 +1444,8 @@ class TransformableTests {
                 )
             }
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -1452,7 +1461,7 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1488,6 +1497,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1764,7 +1774,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -1790,7 +1801,7 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -1826,6 +1837,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -2102,7 +2114,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -2128,7 +2141,7 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -2202,6 +2215,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -2773,7 +2787,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -2800,7 +2815,7 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -2874,6 +2889,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -3448,7 +3464,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -3551,7 +3568,7 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -3621,6 +3638,7 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -4141,7 +4159,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -4157,7 +4176,7 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -4249,6 +4268,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -4935,7 +4955,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -4969,7 +4990,7 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -5007,6 +5028,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -5303,7 +5325,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -5330,7 +5353,7 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -5408,6 +5431,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -6014,7 +6038,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -6041,7 +6066,7 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val annulusArgs = listOf(
+            val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
@@ -6079,6 +6104,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -6373,7 +6399,8 @@ class TransformableTests {
                 ),
             )
             return listOf(
-                annulusArgs,
+                mutableAnnulusArgs,
+                defaultAnnulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,

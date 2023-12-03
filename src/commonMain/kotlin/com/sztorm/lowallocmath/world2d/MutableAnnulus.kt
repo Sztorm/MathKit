@@ -294,8 +294,7 @@ class MutableAnnulus(
     override fun closestPointTo(point: Vector2F): Vector2F {
         val outerRadius: Float = _outerRadius
         val innerRadius: Float = _innerRadius
-        val cx: Float = _center.x
-        val cy: Float = _center.y
+        val (cx: Float, cy: Float) = _center
         val dx: Float = cx - point.x
         val dy: Float = cy - point.y
         val distance: Float = sqrt(dx * dx + dy * dy)
