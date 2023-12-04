@@ -4,7 +4,6 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
-import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
@@ -138,13 +137,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD += offset
     }
 
-    override fun rotatedBy(rotation: AngleF): MutableRectangle =
-        MutableRectangle(_center, _orientation * ComplexF.fromAngle(rotation), _width, _height)
+    override fun rotatedBy(rotation: AngleF) = MutableRectangle(
+        _center, _orientation * ComplexF.fromAngle(rotation), _width, _height
+    )
 
     override fun rotatedBy(rotation: ComplexF) =
         MutableRectangle(_center, _orientation * rotation, _width, _height)
 
-    override fun rotatedTo(orientation: AngleF): MutableRectangle =
+    override fun rotatedTo(orientation: AngleF) =
         MutableRectangle(_center, ComplexF.fromAngle(orientation), _width, _height)
 
     override fun rotatedTo(orientation: ComplexF) =
@@ -158,14 +158,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
         val (startRotR: Float, startRotI: Float) = _orientation
+        val halfWidth: Float = _width * 0.5f
+        val halfHeight: Float = _height * 0.5f
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
         val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
         val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
         val targetRotR: Float = startRotR * rotR - startRotI * rotI
         val targetRotI: Float = startRotI * rotR + startRotR * rotI
-        val halfWidth: Float = _width * 0.5f
-        val halfHeight: Float = _height * 0.5f
         val addendX1: Float = targetRotR * halfWidth
         val addendX1A: Float = targetCenterX + addendX1
         val addendX1B: Float = targetCenterX - addendX1
@@ -284,14 +284,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
         val (startRotR: Float, startRotI: Float) = _orientation
+        val halfWidth: Float = _width * 0.5f
+        val halfHeight: Float = _height * 0.5f
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
         val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
         val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
         val targetRotR: Float = startRotR * rotR - startRotI * rotI
         val targetRotI: Float = startRotI * rotR + startRotR * rotI
-        val halfWidth: Float = _width * 0.5f
-        val halfHeight: Float = _height * 0.5f
         val addendX1: Float = targetRotR * halfWidth
         val addendX1A: Float = targetCenterX + addendX1
         val addendX1B: Float = targetCenterX - addendX1
@@ -455,11 +455,15 @@ class MutableRectangle : Rectangle, MutableTransformable {
     }
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRectangle(
-        _center + offset, _orientation * ComplexF.fromAngle(rotation), _width, _height
+        _center + offset,
+        _orientation * ComplexF.fromAngle(rotation),
+        _width,
+        _height
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
-        MutableRectangle(_center + offset, _orientation * rotation, _width, _height)
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableRectangle(
+        _center + offset, _orientation * rotation, _width, _height
+    )
 
     override fun transformedBy(
         offset: Vector2F, rotation: AngleF, factor: Float
@@ -560,29 +564,28 @@ class MutableRectangle : Rectangle, MutableTransformable {
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
+        val center: Vector2F = _center
+        val orientation: ComplexF = _orientation
         val halfWidth: Float = _width * 0.5f
         val halfHeight: Float = _height * 0.5f
-        val center: Vector2F = _center
-        val rotation: ComplexF = _orientation
-        val p1 = ComplexF.conjugate(rotation) *
+        val p1 = ComplexF.conjugate(orientation) *
                 ComplexF(point.x - center.x, point.y - center.y)
-        val p1X: Float = p1.real
-        val p1Y: Float = p1.imaginary
+        val (p1X: Float, p1Y: Float) = p1
         val p2 = ComplexF(
-            if (abs(p1X) > halfWidth) halfWidth.withSign(p1X) else p1X,
-            if (abs(p1Y) > halfHeight) halfHeight.withSign(p1Y) else p1Y
+            if (p1X.absoluteValue > halfWidth) halfWidth.withSign(p1X) else p1X,
+            if (p1Y.absoluteValue > halfHeight) halfHeight.withSign(p1Y) else p1Y
         )
-        return center + (rotation * p2).toVector2F()
+        return center + (orientation * p2).toVector2F()
     }
 
     override operator fun contains(point: Vector2F): Boolean {
+        val center: Vector2F = _center
         val halfWidth: Float = _width * 0.5f
         val halfHeight: Float = _height * 0.5f
-        val center: Vector2F = _center
         val p1 = ComplexF.conjugate(_orientation) *
                 ComplexF(point.x - center.x, point.y - center.y)
 
-        return (abs(p1.real) <= halfWidth) and (abs(p1.imaginary) <= halfHeight)
+        return (p1.real.absoluteValue <= halfWidth) and (p1.imaginary.absoluteValue <= halfHeight)
     }
 
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)

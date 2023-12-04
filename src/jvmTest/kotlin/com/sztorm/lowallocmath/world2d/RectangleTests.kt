@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultRectangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -176,191 +177,262 @@ class RectangleTests {
         fun clone(rectangle: Rectangle) = rectangle.copy()
 
         @JvmStatic
-        fun centerArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-1f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    width = 3f,
-                    height = 5f
-                ),
-                Wrapper(Vector2F(-1f, -2f))
-            ),
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
-                ),
-                Wrapper(Vector2F(-2f, 4f))
-            ),
-        )
+        fun List<Arguments>.mapRectanglesToDefaultRectangles() = map { args ->
+            val argArray = args.get().map {
+                if (it is Rectangle) DefaultRectangle(
+                    it.center, it.orientation, it.width, it.height
+                )
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-1f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    width = 3f,
-                    height = 5f
+        fun centerArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, -2f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
-            ),
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(-2f, 4f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun widthArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-1f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    width = 3f,
-                    height = 5f
+        fun orientationArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
                 ),
-                3f
-            ),
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
                 ),
-                4f
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun heightArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-1f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    width = 3f,
-                    height = 5f
+        fun widthArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    3f
                 ),
-                5f
-            ),
-            Arguments.of(
-                MutableRectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    4f
                 ),
-                2f
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 4f,
-                    height = 2f
+        fun heightArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    5f
                 ),
-                Wrapper(Vector2F(2f, 1f)),
-                Wrapper(Vector2F(-2f, 1f)),
-                Wrapper(Vector2F(-2f, -1f)),
-                Wrapper(Vector2F(2f, -1f))
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    2f
                 ),
-                Wrapper(Vector2F(-1.292893f, 6.12132f)),
-                Wrapper(Vector2F(-4.12132f, 3.292893f)),
-                Wrapper(Vector2F(-2.707107f, 1.87868f)),
-                Wrapper(Vector2F(0.12132f, 4.707107f))
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-1f, -2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    width = 3f,
-                    height = 5f
-                ),
-                Wrapper(Vector2F(-3.915063f, -1.950962f)),
-                Wrapper(Vector2F(-2.415063f, -4.549038f)),
-                Wrapper(Vector2F(1.915063f, -2.049038f)),
-                Wrapper(Vector2F(0.415063f, 0.549038f))
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 4f,
-                    height = 2f
+        fun pointsArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(2f, 1f)),
+                    Wrapper(Vector2F(-2f, 1f)),
+                    Wrapper(Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(2f, -1f))
                 ),
-                8f
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(-1.292893f, 6.12132f)),
+                    Wrapper(Vector2F(-4.12132f, 3.292893f)),
+                    Wrapper(Vector2F(-2.707107f, 1.87868f)),
+                    Wrapper(Vector2F(0.12132f, 4.707107f))
                 ),
-                8f
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, width = 1.5f, height = 3f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-1f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        width = 3f,
+                        height = 5f
+                    ),
+                    Wrapper(Vector2F(-3.915063f, -1.950962f)),
+                    Wrapper(Vector2F(-2.415063f, -4.549038f)),
+                    Wrapper(Vector2F(1.915063f, -2.049038f)),
+                    Wrapper(Vector2F(0.415063f, 0.549038f))
                 ),
-                4.5f
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 4f,
-                    height = 2f
+        fun areaArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 4f,
+                        height = 2f
+                    ),
+                    8f
                 ),
-                12f
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    8f
                 ),
-                12f
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 1.5f,
-                    height = 3f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 1.5f,
+                        height = 3f
+                    ),
+                    4.5f
                 ),
-                9f
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun perimeterArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 4f,
+                        height = 2f
+                    ),
+                    12f
+                ),
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    12f
+                ),
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 1.5f,
+                        height = 3f
+                    ),
+                    9f
+                ),
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
@@ -372,47 +444,75 @@ class RectangleTests {
             val pointC = Vector2F(-1f, 3f)
             val pointD = Vector2F(3f, 5f)
             val a = (pointA.y - pointB.y) / (pointA.x - pointB.x)
-            val rectangle = Rectangle(
+            val rectangle = MutableRectangle(
                 center = (pointB + pointD) * 0.5f,
                 orientation = ComplexF.fromAngle(AngleF.atan(a)),
                 width = pointA.distanceTo(pointB),
                 height = pointB.distanceTo(pointC)
             )
-            return listOf(
+            val mutableRectangleArgs = listOf(
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(4.5f, 7f)), Wrapper(Vector2F(2.5f, 6f))
+                    rectangle,
+                    Wrapper(Vector2F(4.5f, 7f)),
+                    Wrapper(Vector2F(2.5f, 6f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(2.1f, 7.1f)), Wrapper(Vector2F(2f, 7f))
+                    rectangle,
+                    Wrapper(Vector2F(2.1f, 7.1f)),
+                    Wrapper(Vector2F(2f, 7f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(0.5f, 8f)), Wrapper(Vector2F(1.2f, 6.6f))
+                    rectangle,
+                    Wrapper(Vector2F(0.5f, 8f)),
+                    Wrapper(Vector2F(1.2f, 6.6f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(-5f, 6f)), Wrapper(Vector2F(-2f, 5f))
+                    rectangle,
+                    Wrapper(Vector2F(-5f, 6f)),
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(-3.5f, 3f)), Wrapper(Vector2F(-1.5f, 4f))
+                    rectangle,
+                    Wrapper(Vector2F(-3.5f, 3f)),
+                    Wrapper(Vector2F(-1.5f, 4f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(-0.1f, 1f)), Wrapper(Vector2F(-1f, 3f))
+                    rectangle,
+                    Wrapper(Vector2F(-0.1f, 1f)),
+                    Wrapper(Vector2F(-1f, 3f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(1.5f, 3f)), Wrapper(Vector2F(1f, 4f))
+                    rectangle,
+                    Wrapper(Vector2F(1.5f, 3f)),
+                    Wrapper(Vector2F(1f, 4f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(5f, 4f)), Wrapper(Vector2F(3f, 5f))
+                    rectangle,
+                    Wrapper(Vector2F(5f, 4f)),
+                    Wrapper(Vector2F(3f, 5f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(1.2f, 6.5f)), Wrapper(Vector2F(1.2f, 6.5f))
+                    rectangle,
+                    Wrapper(Vector2F(1.2f, 6.5f)),
+                    Wrapper(Vector2F(1.2f, 6.5f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(-1f, 3.1f)), Wrapper(Vector2F(-1f, 3.1f))
+                    rectangle,
+                    Wrapper(Vector2F(-1f, 3.1f)),
+                    Wrapper(Vector2F(-1f, 3.1f))
                 ),
                 Arguments.of(
-                    rectangle, Wrapper(Vector2F(-1.4f, 4f)), Wrapper(Vector2F(-1.4f, 4f))
+                    rectangle,
+                    Wrapper(Vector2F(-1.4f, 4f)),
+                    Wrapper(Vector2F(-1.4f, 4f))
                 ),
             )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -422,13 +522,13 @@ class RectangleTests {
             val pointC = Vector2F(-1f, 3f)
             val pointD = Vector2F(3f, 5f)
             val a = (pointA.y - pointB.y) / (pointA.x - pointB.x)
-            val rectangle = Rectangle(
+            val rectangle = MutableRectangle(
                 center = (pointB + pointD) * 0.5f,
                 orientation = ComplexF.fromAngle(AngleF.atan(a)),
                 width = pointA.distanceTo(pointB),
                 height = pointB.distanceTo(pointC)
             )
-            return listOf(
+            val mutableRectangleArgs = listOf(
                 Arguments.of(
                     rectangle, Wrapper(Vector2F(1.2f, 6.5f)), true
                 ),
@@ -448,21 +548,21 @@ class RectangleTests {
                     rectangle, Wrapper(Vector2F(-1.6f, 4f)), false
                 ),
                 Arguments.of(
-                    Rectangle(
+                    MutableRectangle(
                         center = Vector2F.ZERO, orientation = ComplexF.ONE, width = 4f, height = 2f
                     ),
                     Wrapper(Vector2F(-1.9f, -0.9f)),
                     true
                 ),
                 Arguments.of(
-                    Rectangle(
+                    MutableRectangle(
                         center = Vector2F.ZERO, orientation = ComplexF.ONE, width = 4f, height = 2f
                     ),
                     Wrapper(Vector2F(-2.1f, -1f)),
                     false
                 ),
                 Arguments.of(
-                    Rectangle(
+                    MutableRectangle(
                         center = Vector2F(-2f, 4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 4f,
@@ -472,7 +572,7 @@ class RectangleTests {
                     true
                 ),
                 Arguments.of(
-                    Rectangle(
+                    MutableRectangle(
                         center = Vector2F(-2f, 4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         width = 4f,
@@ -482,65 +582,79 @@ class RectangleTests {
                     false
                 ),
             )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+        fun copyArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(-2f, 4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    4f,
+                    2f,
+                    Rectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    )
                 ),
-                Wrapper(Vector2F(-2f, 4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                4f,
-                2f,
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
-                )
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(-2.5f, 1f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    4f,
+                    1f,
+                    Rectangle(
+                        center = Vector2F(-2.5f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 1f
+                    )
                 ),
-                Wrapper(Vector2F(-2.5f, 1f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                4f,
-                1f,
-                Rectangle(
-                    center = Vector2F(-2.5f, 1f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 1f
-                )
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                    1f,
+                    3f,
+                    Rectangle(
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        width = 1f,
+                        height = 3f
+                    )
                 ),
-                Wrapper(Vector2F(0f, 8f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
-                1f,
-                3f,
-                Rectangle(
-                    center = Vector2F(0f, 8f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    width = 1f,
-                    height = 3f
-                )
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRectangleArgs() + listOf(
@@ -552,6 +666,36 @@ class RectangleTests {
                     height = 2f
                 ),
                 null,
+                false
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                DefaultRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                DefaultRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2.1f
+                ),
                 false
             ),
         )
@@ -653,31 +797,39 @@ class RectangleTests {
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(-2f, 4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 4f,
-                    height = 2f
+        fun componentsArgs(): List<Arguments> {
+            val mutableRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(-2f, 4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 4f,
+                        height = 2f
+                    ),
+                    Wrapper(Vector2F(-2f, 4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    4f,
+                    2f
                 ),
-                Wrapper(Vector2F(-2f, 4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                4f,
-                2f
-            ),
-            Arguments.of(
-                Rectangle(
-                    center = Vector2F(0f, 8f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    width = 1f,
-                    height = 3f
+                Arguments.of(
+                    MutableRectangle(
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        width = 1f,
+                        height = 3f
+                    ),
+                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                    1f,
+                    3f
                 ),
-                Wrapper(Vector2F(0f, 8f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
-                1f,
-                3f
-            ),
-        )
+            )
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
     }
 }

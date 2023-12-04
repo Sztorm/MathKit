@@ -183,7 +183,7 @@ interface LineSegment : Transformable {
         val addendX: Float = cX * f
         val addendY: Float = cY * f
 
-        return MutableLineSegment(
+        return copy(
             pointA = Vector2F(paX * factor + addendX, paY * factor + addendY),
             pointB = Vector2F(pbX * factor + addendX, pbY * factor + addendY)
         )
@@ -197,7 +197,7 @@ interface LineSegment : Transformable {
         val addendX: Float = pX * f
         val addendY: Float = pY * f
 
-        return MutableLineSegment(
+        return copy(
             pointA = Vector2F(paX * factor + addendX, paY * factor + addendY),
             pointB = Vector2F(pbX * factor + addendX, pbY * factor + addendY)
         )
@@ -217,7 +217,7 @@ interface LineSegment : Transformable {
         val targetPosX: Float = cX + oX
         val targetPosY: Float = cY + oY
 
-        return MutableLineSegment(
+        return copy(
             pointA = Vector2F(
                 pcaX * rotR - pcaY * rotI + targetPosX,
                 pcaY * rotR + pcaX * rotI + targetPosY
@@ -254,7 +254,7 @@ interface LineSegment : Transformable {
         val addendX: Float = targetPosX * f
         val addendY: Float = targetPosY * f
 
-        return MutableLineSegment(
+        return copy(
             pointA = Vector2F(
                 (pcaX * rotR - pcaY * rotI + targetPosX) * factor + addendX,
                 (pcaY * rotR + pcaX * rotI + targetPosY) * factor + addendY
@@ -281,7 +281,7 @@ interface LineSegment : Transformable {
         val pabY: Float = pbY - paY
         val halfLength: Float = sqrt(pabX * pabX + pabY * pabY) * 0.5f
 
-        return MutableLineSegment(
+        return copy(
             pointA = Vector2F(pX + halfLength * rotR, pY + halfLength * rotI),
             pointB = Vector2F(pX - halfLength * rotR, pY - halfLength * rotI)
         )

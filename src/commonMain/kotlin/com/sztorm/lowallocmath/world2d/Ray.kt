@@ -48,7 +48,7 @@ interface Ray : Transformable {
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
 
-        return MutableRay(
+        return copy(
             origin = Vector2F(
                 cpDiffX * rotR - cpDiffY * rotI + pX, cpDiffY * rotR + cpDiffX * rotI + pY
             ),
@@ -132,7 +132,7 @@ interface Ray : Transformable {
         val rotR: Float = rotation.real * factorSign
         val rotI: Float = rotation.imaginary * factorSign
 
-        return MutableRay(
+        return copy(
             origin = origin + offset,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
         )
