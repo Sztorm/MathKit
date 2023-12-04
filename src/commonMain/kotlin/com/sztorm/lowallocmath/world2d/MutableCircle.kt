@@ -183,8 +183,8 @@ class MutableCircle(
 
         return MutableCircle(
             center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY)),
-            orientation * 1f.withSign(factor),
-            radius * factor.absoluteValue
+            _orientation * 1f.withSign(factor),
+            _radius * factor.absoluteValue
         )
     }
 
@@ -256,8 +256,7 @@ class MutableCircle(
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val radius: Float = _radius
-        val cx: Float = _center.x
-        val cy: Float = _center.y
+        val (cx: Float, cy: Float) = _center
         val dx: Float = point.x - cx
         val dy: Float = point.y - cy
         val distance: Float = sqrt(dx * dx + dy * dy)

@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultCircle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -185,348 +186,533 @@ class CircleTests {
         fun clone(circle: Circle) = circle.copy()
 
         @JvmStatic
-        fun centerArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableCircle(
-                    center = Vector2F(1f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                    radius = 4f
-                ),
-                Wrapper(Vector2F(1f, 2f))
-            ),
-            Arguments.of(
-                MutableCircle(
-                    center = Vector2F(-1f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                    radius = 5f
-                ),
-                Wrapper(Vector2F(-1f, 7f))
-            ),
-        )
+        fun List<Arguments>.mapCirclesToDefaultCircles() = map { args ->
+            val argArray = args.get().map {
+                if (it is Circle) DefaultCircle(it.center, it.orientation, it.radius)
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableCircle(
-                    center = Vector2F(1f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                    radius = 4f
+        fun centerArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(1f, 2f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
-            ),
-            Arguments.of(
-                MutableCircle(
-                    center = Vector2F(-1f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                    radius = 5f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-1f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, 7f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f)))
-            ),
-        )
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun radiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableCircle(
-                    center = Vector2F(1f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                    radius = 4f
+        fun orientationArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
                 ),
-                4f
-            ),
-            Arguments.of(
-                MutableCircle(
-                    center = Vector2F(-1f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                    radius = 5f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-1f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f)))
                 ),
-                5f
-            ),
-        )
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f), 50.2655f
-            ),
-            Arguments.of(
-                Circle(
-                    center = Vector2F(1f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                    radius = 4f
+        fun radiusArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    4f
                 ),
-                50.2655f
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 19.635f
-            ),
-        )
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-1f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    ),
+                    5f
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f), 25.1327f
-            ),
-            Arguments.of(
-                Circle(
-                    center = Vector2F(1f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                    radius = 4f
+        fun areaArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    50.2655f
                 ),
-                25.1327f
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 15.708f
-            ),
-        )
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    50.2655f
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f
+                    ),
+                    19.635f
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun diameterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f), 8f
-            ),
-            Arguments.of(
-                Circle(
-                    center = Vector2F(1f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
-                    radius = 4f
-                ), 8f
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f), 5f
-            ),
-        )
+        fun perimeterArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    25.1327f
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    25.1327f
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f
+                    ),
+                    15.708f
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun diameterArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    8f
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(1f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        radius = 4f
+                    ),
+                    8f
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 2.5f
+                    ),
+                    5f
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
-        fun closestPointToArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F.ZERO),
-                Wrapper(Vector2F.ZERO)
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F(-2.1f, 0f)),
-                Wrapper(Vector2F(-2f, 0f))
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F(-2f, 4f)),
-                Wrapper(Vector2F(-0.828429f, 2.828429f))
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F(6f, -4f)),
-                Wrapper(Vector2F(4.828429f, -2.828429f))
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F(0f, 2f)),
-                Wrapper(Vector2F(0f, 2f))
-            ),
-        )
+        fun closestPointToArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Wrapper(Vector2F.ZERO),
+                    Wrapper(Vector2F.ZERO)
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Wrapper(Vector2F(-2.1f, 0f)),
+                    Wrapper(Vector2F(-2f, 0f))
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Wrapper(Vector2F(-2f, 4f)),
+                    Wrapper(Vector2F(-0.828429f, 2.828429f))
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Wrapper(Vector2F(6f, -4f)),
+                    Wrapper(Vector2F(4.828429f, -2.828429f))
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Wrapper(Vector2F(0f, 2f)),
+                    Wrapper(Vector2F(0f, 2f))
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun intersectsAnnulusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F(-2f, 2f), orientation = ComplexF.ONE, radius = 1.01f),
-                Annulus(
-                    center = Vector2F(-1f, 2f),
-                    orientation = ComplexF.ONE,
-                    outerRadius = 4f,
-                    innerRadius = 2f
+        fun intersectsAnnulusArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-2f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 1.01f
+                    ),
+                    Annulus(
+                        center = Vector2F(-1f, 2f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    true
                 ),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(-2f, 2f), orientation = ComplexF.ONE, radius = 0.99f),
-                Annulus(
-                    center = Vector2F(-1f, 2f),
-                    orientation = ComplexF.ONE,
-                    outerRadius = 4f,
-                    innerRadius = 2f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-2f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 0.99f
+                    ),
+                    Annulus(
+                        center = Vector2F(-1f, 2f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    false
                 ),
-                false
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(-6f, 2f), orientation = ComplexF.ONE, radius = 1.01f),
-                Annulus(
-                    center = Vector2F(-1f, 2f),
-                    orientation = ComplexF.ONE,
-                    outerRadius = 4f,
-                    innerRadius = 2f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-6f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 1.01f
+                    ),
+                    Annulus(
+                        center = Vector2F(-1f, 2f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    true
                 ),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(-6f, 2f), orientation = ComplexF.ONE, radius = 0.99f),
-                Annulus(
-                    center = Vector2F(-1f, 2f),
-                    orientation = ComplexF.ONE,
-                    outerRadius = 4f,
-                    innerRadius = 2f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-6f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 0.99f
+                    ),
+                    Annulus(
+                        center = Vector2F(-1f, 2f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    false
                 ),
-                false
-            ),
-        )
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun intersectsCircleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 3f),
-                false
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(3.99f, 4f), orientation = ComplexF.ONE, radius = 4f),
-                true
-            ),
-        )
+        fun intersectsCircleArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F(3.99f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    true
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun containsVector2FArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F.ZERO),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F(3.99f, 0f)),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Wrapper(Vector2F(4.01f, 0f)),
-                false
-            ),
-        )
+        fun containsVector2FArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    Wrapper(Vector2F.ZERO),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    Wrapper(Vector2F(3.99f, 0f)),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    Wrapper(Vector2F(4.01f, 0f)),
+                    false
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun containsAnnulusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Annulus(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    outerRadius = 3.99f,
-                    innerRadius = 2f
+        fun containsAnnulusArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    Annulus(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        outerRadius = 3.99f,
+                        innerRadius = 2f
+                    ),
+                    true
                 ),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Annulus(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    outerRadius = 4.01f,
-                    innerRadius = 2f
+                Arguments.of(
+                    MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
+                    Annulus(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4.01f,
+                        innerRadius = 2f
+                    ),
+                    false
                 ),
-                false
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Annulus(
-                    center = Vector2F(4f, 0f),
-                    orientation = ComplexF.ONE,
-                    outerRadius = 1.99f,
-                    innerRadius = 1f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Annulus(
+                        center = Vector2F(4f, 0f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 1.99f,
+                        innerRadius = 1f
+                    ),
+                    true
                 ),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Annulus(
-                    center = Vector2F(4f, 0f),
-                    orientation = ComplexF.ONE,
-                    outerRadius = 2.01f,
-                    innerRadius = 1f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Annulus(
+                        center = Vector2F(4f, 0f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 2.01f,
+                        innerRadius = 1f
+                    ),
+                    false
                 ),
-                false
-            ),
-        )
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun containsCircleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 3.99f),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4.01f),
-                false
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 1.99f),
-                true
-            ),
-            Arguments.of(
-                Circle(center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f),
-                Circle(center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 2.01f),
-                false
-            ),
-        )
+        fun containsCircleArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 3.99f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4.01f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 1.99f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    Circle(
+                        center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 2.01f
+                    ),
+                    false
+                ),
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(
-                    center = Vector2F(2f, 0f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
-                    radius = 4f
+        fun copyArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(2f, 0f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-78f))),
+                    4f,
+                    Circle(
+                        center = Vector2F(2f, 0f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                        radius = 4f
+                    )
                 ),
-                Wrapper(Vector2F(2f, 0f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-78f))),
-                4f,
-                Circle(
-                    center = Vector2F(2f, 0f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
-                    radius = 4f
-                )
-            ),
-            Arguments.of(
-                Circle(
-                    center = Vector2F(2f, 0f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
-                    radius = 4f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(2f, 0f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-78f))),
+                    5f,
+                    Circle(
+                        center = Vector2F(2f, 0f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                        radius = 5f
+                    )
                 ),
-                Wrapper(Vector2F(2f, 0f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-78f))),
-                5f,
-                Circle(
-                    center = Vector2F(2f, 0f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
-                    radius = 5f
-                )
-            ),
-            Arguments.of(
-                Circle(
-                    center = Vector2F(2f, 0f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                    radius = 4f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(-1f, 7f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
+                    5f,
+                    Circle(
+                        center = Vector2F(-1f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    )
                 ),
-                Wrapper(Vector2F(-1f, 7f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
-                5f,
-                Circle(
-                    center = Vector2F(-1f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                    radius = 5f
-                )
-            ),
-        )
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(
@@ -626,27 +812,35 @@ class CircleTests {
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Circle(
-                    center = Vector2F(2f, 0f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
-                    radius = 4f
+        fun componentsArgs(): List<Arguments> {
+            val mutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(2f, 0f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                        radius = 4f
+                    ),
+                    Wrapper(Vector2F(2f, 0f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-78f))),
+                    4f
                 ),
-                Wrapper(Vector2F(2f, 0f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-78f))),
-                4f
-            ),
-            Arguments.of(
-                Circle(
-                    center = Vector2F(-1f, 7f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(244f)),
-                    radius = 5f
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-1f, 7f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                        radius = 5f
+                    ),
+                    Wrapper(Vector2F(-1f, 7f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
+                    5f
                 ),
-                Wrapper(Vector2F(-1f, 7f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
-                5f
-            ),
-        )
+            )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
     }
 }

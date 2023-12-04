@@ -7,6 +7,7 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.utils.assertEquals
 import com.sztorm.lowallocmath.world2d.AnnulusTests.Companion.mapAnnulusesToDefaultAnnuluses
+import com.sztorm.lowallocmath.world2d.CircleTests.Companion.mapCirclesToDefaultCircles
 import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -617,14 +618,13 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val mutableAnnulusArgs = AnnulusTests.positionArgs().map {
+            val annulusArgs = AnnulusTests.positionArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = CircleTests.positionArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -674,14 +674,13 @@ class TransformableTests {
                     *it.get()
                 )
             }
-            val mutableSquareArgs = SquareTests.positionArgs().map {
+            val squareArgs = SquareTests.positionArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = TriangleTests.positionArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -690,8 +689,7 @@ class TransformableTests {
                 )
             }
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
+                annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -699,8 +697,7 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                mutableSquareArgs,
-                defaultSquareArgs,
+                squareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -744,7 +741,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -776,6 +773,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -1014,7 +1012,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -1066,7 +1065,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -1098,6 +1097,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -1338,7 +1338,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -1371,14 +1372,13 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val mutableAnnulusArgs = AnnulusTests.orientationArgs().map {
+            val annulusArgs = AnnulusTests.orientationArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
                     AnnulusTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val circleArgs = CircleTests.orientationArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1428,14 +1428,13 @@ class TransformableTests {
                     *it.get()
                 )
             }
-            val mutableSquareArgs = SquareTests.orientationArgs().map {
+            val squareArgs = SquareTests.orientationArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
                     SquareTests.Companion::areApproximatelyEqual,
                     *it.get()
                 )
             }
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val triangleArgs = TriangleTests.orientationArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1444,8 +1443,7 @@ class TransformableTests {
                 )
             }
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
+                annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -1453,8 +1451,7 @@ class TransformableTests {
                 regularPolygonArgs,
                 regularTriangleArgs,
                 roundedRectangleArgs,
-                mutableSquareArgs,
-                defaultSquareArgs,
+                squareArgs,
                 triangleArgs
             ).flatten()
         }
@@ -1498,7 +1495,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -1530,6 +1527,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -1776,7 +1774,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -1838,7 +1837,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -1870,6 +1869,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -2116,7 +2116,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -2216,7 +2217,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -2282,6 +2283,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -2789,7 +2791,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -2890,7 +2893,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -2956,6 +2959,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -3466,7 +3470,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -3639,7 +3644,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -3701,6 +3706,7 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -4161,7 +4167,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -4269,7 +4276,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -4351,6 +4358,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -4957,7 +4965,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -5029,7 +5038,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -5063,6 +5072,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -5327,7 +5337,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -5432,7 +5443,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -5502,6 +5513,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -6040,7 +6052,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
@@ -6105,7 +6118,7 @@ class TransformableTests {
                 ),
             )
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-            val circleArgs = listOf(
+            val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
                     CircleTests.Companion::areApproximatelyEqual,
@@ -6139,6 +6152,7 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
             val lineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
@@ -6401,7 +6415,8 @@ class TransformableTests {
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
-                circleArgs,
+                mutableCircleArgs,
+                defaultCircleArgs,
                 lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
