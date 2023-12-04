@@ -38,10 +38,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         rotatedBy(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): MutableRay {
-        val dirX: Float = _direction.x
-        val dirY: Float = _direction.y
-        val rotR: Float = rotation.real
-        val rotI: Float = rotation.imaginary
+        val (dirX: Float, dirY: Float) = _direction
+        val (rotR: Float, rotI: Float) = rotation
 
         return MutableRay(
             _origin,
@@ -90,8 +88,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         if (centerToPointDist > 0.00001f) {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
-            val startRotR: Float = _direction.x
-            val startRotI: Float = _direction.y
+            val (startRotR: Float, startRotI: Float) = _direction
             val r0: Float = pointRotR * startRotR + pointRotI * startRotI
             val i0: Float = pointRotR * startRotI - pointRotI * startRotR
 
@@ -109,10 +106,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     override fun rotateBy(rotation: AngleF) = rotateBy(ComplexF.fromAngle(rotation))
 
     override fun rotateBy(rotation: ComplexF) {
-        val dirX: Float = _direction.x
-        val dirY: Float = _direction.y
-        val rotR: Float = rotation.real
-        val rotI: Float = rotation.imaginary
+        val (dirX: Float, dirY: Float) = _direction
+        val (rotR: Float, rotI: Float) = rotation
 
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
     }
@@ -158,8 +153,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         if (centerToPointDist > 0.00001f) {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
-            val startRotR: Float = _direction.x
-            val startRotI: Float = _direction.y
+            val (startRotR: Float, startRotI: Float) = _direction
             val r0: Float = pointRotR * startRotR + pointRotI * startRotI
             val i0: Float = pointRotR * startRotI - pointRotI * startRotR
 
@@ -200,10 +194,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         transformedBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF): MutableRay {
-        val dirX: Float = _direction.x
-        val dirY: Float = _direction.y
-        val rotR: Float = rotation.real
-        val rotI: Float = rotation.imaginary
+        val (dirX: Float, dirY: Float) = _direction
+        val (rotR: Float, rotI: Float) = rotation
 
         return MutableRay(
             origin = _origin + offset,
@@ -215,8 +207,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         transformedBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): MutableRay {
-        val dirX: Float = _direction.x
-        val dirY: Float = _direction.y
+        val (dirX: Float, dirY: Float) = _direction
         val factorSign: Float = 1f.withSign(factor)
         val rotR: Float = rotation.real * factorSign
         val rotI: Float = rotation.imaginary * factorSign
@@ -237,10 +228,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         transformBy(offset, ComplexF.fromAngle(rotation))
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF) {
-        val dirX: Float = _direction.x
-        val dirY: Float = _direction.y
-        val rotR: Float = rotation.real
-        val rotI: Float = rotation.imaginary
+        val (dirX: Float, dirY: Float) = _direction
+        val (rotR: Float, rotI: Float) = rotation
 
         _origin += offset
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
@@ -250,8 +239,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         transformBy(offset, ComplexF.fromAngle(rotation), factor)
 
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
-        val dirX: Float = _direction.x
-        val dirY: Float = _direction.y
+        val (dirX: Float, dirY: Float) = _direction
         val factorSign: Float = 1f.withSign(factor)
         val rotR: Float = rotation.real * factorSign
         val rotI: Float = rotation.imaginary * factorSign
@@ -271,19 +259,23 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
-        val op: Vector2F = point - _origin
-        val t: Float = op dot _direction
+        val origin: Vector2F = _origin
+        val direction: Vector2F = _direction
+        val op: Vector2F = point - origin
+        val t: Float = op dot direction
 
-        return if (t <= 0f) _origin
-        else _origin + _direction * t
+        return if (t <= 0f) origin
+        else origin + direction * t
     }
 
     override operator fun contains(point: Vector2F): Boolean {
-        val op: Vector2F = point - _origin
-        val t: Float = op dot _direction
+        val origin: Vector2F = _origin
+        val direction: Vector2F = _direction
+        val op: Vector2F = point - origin
+        val t: Float = op dot direction
         val closestPoint: Vector2F =
-            if (t <= 0f) _origin
-            else _origin + _direction * t
+            if (t <= 0f) origin
+            else origin + direction * t
 
         return closestPoint.isApproximately(point)
     }
