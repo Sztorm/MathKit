@@ -77,7 +77,7 @@ class Vector2FIteratorTests {
 
     companion object {
         @JvmStatic
-        fun iteratorsAndIndices(): List<Arguments> {
+        fun iteratorAndIndexArgs(): List<Arguments> {
             val arrayArgs = Vector2FArrayTests.arrays().map {
                 val array = (it.get()[0] as Wrapper<*>).value as Vector2FArray
 
@@ -132,16 +132,18 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ polygon.pointIterator() }, 0..polygon.points.lastIndex)
             }
-            return arrayArgs +
-                    listArgs +
-                    subListArgs +
-                    lineSegmentArgs +
-                    triangleArgs +
-                    regularTriangleArgs +
-                    rectangleArgs +
-                    squareArgs +
-                    roundedRectangleArgs +
-                    regularPolygonArgs
+            return listOf(
+                arrayArgs,
+                listArgs,
+                subListArgs,
+                lineSegmentArgs,
+                triangleArgs,
+                regularTriangleArgs,
+                rectangleArgs,
+                squareArgs,
+                roundedRectangleArgs,
+                regularPolygonArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -255,28 +257,30 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ polygon.pointIterator() }, polygon.points)
             }
-            return arrayArgs +
-                    listArgs +
-                    subListArgs +
-                    lineSegmentArgs +
-                    triangleArgs +
-                    regularTriangleArgs +
-                    rectangleArgs +
-                    squareArgs +
-                    roundedRectangleArgs +
-                    regularPolygonArgs
+            return listOf(
+                arrayArgs,
+                listArgs,
+                subListArgs,
+                lineSegmentArgs,
+                triangleArgs,
+                regularTriangleArgs,
+                rectangleArgs,
+                squareArgs,
+                roundedRectangleArgs,
+                regularPolygonArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun nextExceptionArgs(): List<Arguments> = iteratorsAndIndices()
+        fun nextExceptionArgs(): List<Arguments> = iteratorAndIndexArgs()
 
         @JvmStatic
         fun nextVector2FArgs(): List<Arguments> = nextArgs()
 
         @JvmStatic
-        fun nextVector2FExceptionArgs(): List<Arguments> = iteratorsAndIndices()
+        fun nextVector2FExceptionArgs(): List<Arguments> = iteratorAndIndexArgs()
 
         @JvmStatic
-        fun hasNextArgs(): List<Arguments> = iteratorsAndIndices()
+        fun hasNextArgs(): List<Arguments> = iteratorAndIndexArgs()
     }
 }
