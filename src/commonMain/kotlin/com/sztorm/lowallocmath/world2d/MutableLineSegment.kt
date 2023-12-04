@@ -483,35 +483,37 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
-        val ab: Vector2F = _pointB - _pointA
+        val pointA: Vector2F = _pointA
+        val ab: Vector2F = _pointB - pointA
         val epsilon = 0.00001f
 
         if ((abs(ab.x) <= epsilon) and (abs(ab.y) <= epsilon)) {
-            return _pointA
+            return pointA
         }
-        val ap: Vector2F = point - _pointA
+        val ap: Vector2F = point - pointA
         val t: Float = (ab dot ap) / (ab dot ab)
         val tClamped: Float = when {
             t < 0f -> 0f
             t > 1f -> 1f
             else -> t
         }
-        return _pointA + ab * tClamped
+        return pointA + ab * tClamped
     }
 
     override operator fun contains(point: Vector2F): Boolean {
-        val ab: Vector2F = _pointB - _pointA
+        val pointA: Vector2F = _pointA
+        val ab: Vector2F = _pointB - pointA
         val epsilon = 0.00001f
 
         if ((abs(ab.x) <= epsilon) and (abs(ab.y) <= epsilon)) {
-            return _pointA.isApproximately(point)
+            return pointA.isApproximately(point)
         }
-        val ap: Vector2F = point - _pointA
+        val ap: Vector2F = point - pointA
         val t: Float = (ab dot ap) / (ab dot ab)
 
         return if ((t < 0f) or (t > 1f)) false
         else {
-            val closestPoint: Vector2F = _pointA + ab * t
+            val closestPoint: Vector2F = pointA + ab * t
 
             return closestPoint.isApproximately(point)
         }

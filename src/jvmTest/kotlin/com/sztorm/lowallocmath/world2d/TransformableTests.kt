@@ -8,6 +8,7 @@ import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.utils.assertEquals
 import com.sztorm.lowallocmath.world2d.AnnulusTests.Companion.mapAnnulusesToDefaultAnnuluses
 import com.sztorm.lowallocmath.world2d.CircleTests.Companion.mapCirclesToDefaultCircles
+import com.sztorm.lowallocmath.world2d.LineSegmentTests.Companion.mapLineSegmentsToDefaultLineSegments
 import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -774,7 +775,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -790,6 +791,8 @@ class TransformableTests {
                     MutableLineSegment(Vector2F(-3.5f, 3f), Vector2F(-1.5f, -1f)),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1014,7 +1017,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -1098,7 +1102,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -1114,6 +1118,8 @@ class TransformableTests {
                     MutableLineSegment(Vector2F(-0.5f, 2f), Vector2F(1.5f, -2f)),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1340,7 +1346,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -1528,7 +1535,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -1550,6 +1557,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1776,7 +1785,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -1870,7 +1880,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -1892,6 +1902,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -2118,7 +2130,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -2284,7 +2297,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -2330,6 +2343,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -2793,7 +2808,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -2960,7 +2976,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -3006,6 +3022,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -3472,7 +3490,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -3707,7 +3726,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -3739,6 +3758,8 @@ class TransformableTests {
                     MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-4f, 3f)),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -4169,7 +4190,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -4359,7 +4381,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -4401,6 +4423,8 @@ class TransformableTests {
                     MutableLineSegment(Vector2F(-5f, 5f), Vector2F(-1f, -3f)),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -4967,7 +4991,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -5073,7 +5098,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -5097,6 +5122,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -5339,7 +5366,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -5514,7 +5542,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -5564,6 +5592,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -6054,7 +6084,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -6153,7 +6184,7 @@ class TransformableTests {
                 ),
             )
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-            val lineSegmentArgs = listOf(
+            val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
                     LineSegmentTests.Companion::areApproximatelyEqual,
@@ -6177,6 +6208,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
             val rayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -6417,7 +6450,8 @@ class TransformableTests {
                 defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
-                lineSegmentArgs,
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
