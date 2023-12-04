@@ -725,6 +725,32 @@ class CircleTests {
                 null,
                 false
             ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    radius = 4f
+                ),
+                DefaultCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    radius = 4f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    radius = 4f
+                ),
+                DefaultCircle(
+                    center = Vector2F(2f, 0.1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    radius = 4f
+                ),
+                false
+            ),
         )
 
         @JvmStatic

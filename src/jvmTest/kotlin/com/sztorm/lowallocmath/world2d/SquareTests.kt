@@ -282,10 +282,13 @@ class SquareTests {
         fun sideLengthArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 3f
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
+                    3f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -293,7 +296,7 @@ class SquareTests {
                     3f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -313,14 +316,16 @@ class SquareTests {
         fun pointsArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
                     Wrapper(Vector2F(1.5f, 1.5f)),
                     Wrapper(Vector2F(-1.5f, 1.5f)),
                     Wrapper(Vector2F(-1.5f, -1.5f)),
                     Wrapper(Vector2F(1.5f, -1.5f))
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -343,10 +348,13 @@ class SquareTests {
         fun areaArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 9f
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
+                    9f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -354,7 +362,7 @@ class SquareTests {
                     9f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -374,10 +382,13 @@ class SquareTests {
         fun perimeterArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 12f
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
+                    12f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -385,7 +396,7 @@ class SquareTests {
                     12f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -411,10 +422,13 @@ class SquareTests {
         fun sideCountArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f), 4
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
+                    4
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -422,7 +436,7 @@ class SquareTests {
                     4
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -442,11 +456,13 @@ class SquareTests {
         fun interiorAngleArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
                     Wrapper(AngleF.fromDegrees(90f))
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -454,7 +470,7 @@ class SquareTests {
                     Wrapper(AngleF.fromDegrees(90f))
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -477,11 +493,13 @@ class SquareTests {
         fun inradiusArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
                     1.5f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -489,7 +507,7 @@ class SquareTests {
                     1.5f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -509,11 +527,13 @@ class SquareTests {
         fun circumradiusArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
+                    MutableSquare(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                    ),
                     2.12132f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F.ZERO,
                         orientation = ComplexF.fromAngle(AngleF.fromRadians(-240f)),
                         sideLength = 3f
@@ -521,7 +541,7 @@ class SquareTests {
                     2.12132f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -548,7 +568,7 @@ class SquareTests {
             val pointC = Vector2F(3.732051f, -1.7320509f)
             val pointD = Vector2F(5.732051f, 1.7320509f)
             val center: Vector2F = (pointA + pointC) * 0.5f
-            val square = Square(
+            val square = MutableSquare(
                 center,
                 orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
@@ -677,7 +697,7 @@ class SquareTests {
             val pointC = Vector2F(3.732051f, -1.7320509f)
             val pointD = Vector2F(5.732051f, 1.7320509f)
             val center: Vector2F = (pointA + pointC) * 0.5f
-            val square = Square(
+            val square = MutableSquare(
                 center,
                 orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
@@ -714,7 +734,7 @@ class SquareTests {
         fun copyArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -729,7 +749,7 @@ class SquareTests {
                     )
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -744,7 +764,7 @@ class SquareTests {
                     )
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -776,6 +796,32 @@ class SquareTests {
                     sideLength = 4f
                 ),
                 null,
+                false
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                DefaultSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                ),
+                DefaultSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4.1f
+                ),
                 false
             ),
         )
@@ -868,7 +914,7 @@ class SquareTests {
         fun componentsArgs(): List<Arguments> {
             val mutableSquareArgs = listOf(
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                         sideLength = 4f
@@ -878,7 +924,7 @@ class SquareTests {
                     4f
                 ),
                 Arguments.of(
-                    Square(
+                    MutableSquare(
                         center = Vector2F(8f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                         sideLength = 3f

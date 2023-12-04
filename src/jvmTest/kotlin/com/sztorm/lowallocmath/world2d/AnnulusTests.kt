@@ -942,6 +942,36 @@ class AnnulusTests {
                 null,
                 false
             ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                DefaultAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                DefaultAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 3.9f,
+                    innerRadius = 2f
+                ),
+                false
+            ),
         )
 
         @JvmStatic
