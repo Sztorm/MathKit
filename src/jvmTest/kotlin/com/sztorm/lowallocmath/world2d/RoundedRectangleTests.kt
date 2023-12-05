@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultRoundedRectangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -222,304 +223,397 @@ class RoundedRectangleTests {
         fun clone(rectangle: RoundedRectangle) = rectangle.copy()
 
         @JvmStatic
-        fun centerArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
-                ),
-                Wrapper(Vector2F(-3f, -4f))
-            ),
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
-                ),
-                Wrapper(Vector2F(6f, -4f))
-            ),
-        )
+        fun List<Arguments>.mapRoundedRectanglesToDefaultRoundedRectangles() = map { args ->
+            val argArray = args.get().map {
+                if (it is RoundedRectangle) DefaultRoundedRectangle(
+                    it.center, it.orientation, it.width, it.height, it.cornerRadius
+                )
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun centerArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f)))
-            ),
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(Vector2F(6f, -4f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun widthArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun orientationArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f)))
                 ),
-                8f
-            ),
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f)))
                 ),
-                3f
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun heightArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun widthArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    8f
                 ),
-                4f
-            ),
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    3f
                 ),
-                4f
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun cornerRadiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun heightArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    4f
                 ),
-                1f
-            ),
-            Arguments.of(
-                MutableRoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    4f
                 ),
-                1.5f
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun cornerRadiusArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    1f
                 ),
-                Wrapper(Vector2F(3f, 2f)),
-                Wrapper(Vector2F(-3f, 2f)),
-                Wrapper(Vector2F(-4f, 1f)),
-                Wrapper(Vector2F(-4f, -1f)),
-                Wrapper(Vector2F(-3f, -2f)),
-                Wrapper(Vector2F(3f, -2f)),
-                Wrapper(Vector2F(4f, -1f)),
-                Wrapper(Vector2F(4f, 1f))
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    1.5f
                 ),
-                Wrapper(Vector2F(0.2320509f, -5.5980763f)),
-                Wrapper(Vector2F(-2.767949f, -0.40192366f)),
-                Wrapper(Vector2F(-4.1339746f, -0.03589821f)),
-                Wrapper(Vector2F(-5.8660254f, -1.0358982f)),
-                Wrapper(Vector2F(-6.232051f, -2.4019237f)),
-                Wrapper(Vector2F(-3.232051f, -7.5980763f)),
-                Wrapper(Vector2F(-1.8660256f, -7.964102f)),
-                Wrapper(Vector2F(-0.13397455f, -6.964102f))
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
-                ),
-                Wrapper(Vector2F(4.5857863f, -2.5857863f)),
-                Wrapper(Vector2F(4.5857863f, -2.5857863f)),
-                Wrapper(Vector2F(4.5857863f, -4.7071066f)),
-                Wrapper(Vector2F(5.2928934f, -5.4142137f)),
-                Wrapper(Vector2F(7.4142137f, -5.4142137f)),
-                Wrapper(Vector2F(7.4142137f, -5.4142137f)),
-                Wrapper(Vector2F(7.4142137f, -3.2928934f)),
-                Wrapper(Vector2F(6.7071066f, -2.5857863f))
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun cornerCentersArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun pointsArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(3f, 2f)),
+                    Wrapper(Vector2F(-3f, 2f)),
+                    Wrapper(Vector2F(-4f, 1f)),
+                    Wrapper(Vector2F(-4f, -1f)),
+                    Wrapper(Vector2F(-3f, -2f)),
+                    Wrapper(Vector2F(3f, -2f)),
+                    Wrapper(Vector2F(4f, -1f)),
+                    Wrapper(Vector2F(4f, 1f))
                 ),
-                Wrapper(Vector2F(3f, 1f)),
-                Wrapper(Vector2F(-3f, 1f)),
-                Wrapper(Vector2F(-3f, -1f)),
-                Wrapper(Vector2F(3f, -1f))
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(0.2320509f, -5.5980763f)),
+                    Wrapper(Vector2F(-2.767949f, -0.40192366f)),
+                    Wrapper(Vector2F(-4.1339746f, -0.03589821f)),
+                    Wrapper(Vector2F(-5.8660254f, -1.0358982f)),
+                    Wrapper(Vector2F(-6.232051f, -2.4019237f)),
+                    Wrapper(Vector2F(-3.232051f, -7.5980763f)),
+                    Wrapper(Vector2F(-1.8660256f, -7.964102f)),
+                    Wrapper(Vector2F(-0.13397455f, -6.964102f))
                 ),
-                Wrapper(Vector2F(-0.63397455f, -6.0980763f)),
-                Wrapper(Vector2F(-3.6339746f, -0.90192366f)),
-                Wrapper(Vector2F(-5.3660254f, -1.9019237f)),
-                Wrapper(Vector2F(-2.3660254f, -7.0980763f))
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(Vector2F(4.5857863f, -2.5857863f)),
+                    Wrapper(Vector2F(4.5857863f, -2.5857863f)),
+                    Wrapper(Vector2F(4.5857863f, -4.7071066f)),
+                    Wrapper(Vector2F(5.2928934f, -5.4142137f)),
+                    Wrapper(Vector2F(7.4142137f, -5.4142137f)),
+                    Wrapper(Vector2F(7.4142137f, -5.4142137f)),
+                    Wrapper(Vector2F(7.4142137f, -3.2928934f)),
+                    Wrapper(Vector2F(6.7071066f, -2.5857863f))
                 ),
-                Wrapper(Vector2F(5.6464467f, -3.6464467f)),
-                Wrapper(Vector2F(5.6464467f, -3.6464467f)),
-                Wrapper(Vector2F(6.3535533f, -4.3535533f)),
-                Wrapper(Vector2F(6.3535533f, -4.3535533f))
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun cornerCentersArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(3f, 1f)),
+                    Wrapper(Vector2F(-3f, 1f)),
+                    Wrapper(Vector2F(-3f, -1f)),
+                    Wrapper(Vector2F(3f, -1f))
                 ),
-                31.14159f
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-0.63397455f, -6.0980763f)),
+                    Wrapper(Vector2F(-3.6339746f, -0.90192366f)),
+                    Wrapper(Vector2F(-5.3660254f, -1.9019237f)),
+                    Wrapper(Vector2F(-2.3660254f, -7.0980763f))
                 ),
-                31.14159f
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(Vector2F(5.6464467f, -3.6464467f)),
+                    Wrapper(Vector2F(5.6464467f, -3.6464467f)),
+                    Wrapper(Vector2F(6.3535533f, -4.3535533f)),
+                    Wrapper(Vector2F(6.3535533f, -4.3535533f))
                 ),
-                10.0685835f
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun areaArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    31.14159f
                 ),
-                22.28319f
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    31.14159f
                 ),
-                22.28319f
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 4f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    10.0685835f
                 ),
-                11.424778f
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun perimeterArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F.ZERO,
+                        orientation = ComplexF.ONE,
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    22.28319f
+                ),
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    22.28319f
+                ),
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 4f,
+                        cornerRadius = 1.5f
+                    ),
+                    11.424778f
+                ),
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
-            val rectangle = RoundedRectangle(
+            val rectangle = MutableRoundedRectangle(
                 center = Vector2F(-3f, -4f),
                 orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                 width = 8f,
                 height = 4f,
                 cornerRadius = 1f
             )
-            return listOf(
+            val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     rectangle,
                     Wrapper(Vector2F(0.14544821f, -6.5480766f)),
@@ -686,18 +780,25 @@ class RoundedRectangleTests {
                     Wrapper(rectangle.center)
                 ),
             )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
         }
 
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
-            val rectangle = RoundedRectangle(
+            val rectangle = MutableRoundedRectangle(
                 center = Vector2F(-3f, -4f),
                 orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                 width = 8f,
                 height = 4f,
                 cornerRadius = 1f
             )
-            return listOf(
+            val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     rectangle, Wrapper(Vector2F(0.14544821f, -6.5480766f)), true
                 ),
@@ -798,74 +899,90 @@ class RoundedRectangleTests {
                     rectangle, Wrapper(rectangle.center), true
                 ),
             )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun copyArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                    8f,
+                    4f,
+                    1f,
+                    RoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    )
                 ),
-                Wrapper(Vector2F(-3f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
-                8f,
-                4f,
-                1f,
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
-                )
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    8f,
+                    5f,
+                    1.5f,
+                    RoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 8f,
+                        height = 5f,
+                        cornerRadius = 1.5f
+                    )
                 ),
-                Wrapper(Vector2F(-3f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                8f,
-                5f,
-                1.5f,
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 8f,
-                    height = 5f,
-                    cornerRadius = 1.5f
-                )
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
-                ),
-                Wrapper(Vector2F(6f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                3f,
-                5f,
-                1.5f,
-                RoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 5f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(6f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    3f,
+                    5f,
+                    1.5f,
+                    RoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 5f,
+                        cornerRadius = 1.5f
+                    )
                 )
             )
-        )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRoundedRectangleArgs() + listOf(
@@ -878,6 +995,40 @@ class RoundedRectangleTests {
                     cornerRadius = 1f
                 ),
                 null,
+                false
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                DefaultRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                DefaultRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60.1f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
                 false
             ),
         )
@@ -991,35 +1142,44 @@ class RoundedRectangleTests {
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(-3f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                    width = 8f,
-                    height = 4f,
-                    cornerRadius = 1f
+        fun componentsArgs(): List<Arguments> {
+            val mutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    Wrapper(Vector2F(-3f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                    8f,
+                    4f,
+                    1f
                 ),
-                Wrapper(Vector2F(-3f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
-                8f,
-                4f,
-                1f
-            ),
-            Arguments.of(
-                RoundedRectangle(
-                    center = Vector2F(6f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    width = 3f,
-                    height = 5f,
-                    cornerRadius = 1.5f
+                Arguments.of(
+                    MutableRoundedRectangle(
+                        center = Vector2F(6f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        width = 3f,
+                        height = 5f,
+                        cornerRadius = 1.5f
+                    ),
+                    Wrapper(Vector2F(6f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    3f,
+                    5f,
+                    1.5f
                 ),
-                Wrapper(Vector2F(6f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                3f,
-                5f,
-                1.5f
-            ),
-        )
+            )
+            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRoundedRectangleArgs,
+                defaultRoundedRectangleArgs
+            ).flatten()
+        }
     }
 }

@@ -1015,10 +1015,9 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
         val p1 = ComplexF.conjugate(rotation) *
                 ComplexF(point.x - center.x, point.y - center.y)
-        val p1X: Float = p1.real
-        val p1Y: Float = p1.imaginary
-        val p1XAbs: Float = abs(p1X)
-        val p1YAbs: Float = abs(p1Y)
+        val (p1X: Float, p1Y: Float) = p1
+        val p1XAbs: Float = p1X.absoluteValue
+        val p1YAbs: Float = p1Y.absoluteValue
         val cornerCenterX: Float = halfWidthMinusRadius.withSign(p1X)
         val cornerCenterY: Float = halfHeightMinusRadius.withSign(p1Y)
         val dx: Float = p1X - cornerCenterX
@@ -1062,10 +1061,9 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
         val p1 = ComplexF.conjugate(rotation) *
                 ComplexF(point.x - center.x, point.y - center.y)
-        val p1X: Float = p1.real
-        val p1Y: Float = p1.imaginary
-        val p1XAbs: Float = abs(p1X)
-        val p1YAbs: Float = abs(p1Y)
+        val (p1X: Float, p1Y: Float) = p1
+        val p1XAbs: Float = p1X.absoluteValue
+        val p1YAbs: Float = p1Y.absoluteValue
         val cornerCenterX: Float = halfWidthMinusRadius.withSign(p1X)
         val cornerCenterY: Float = halfHeightMinusRadius.withSign(p1Y)
         val dx: Float = p1X - cornerCenterX
