@@ -160,8 +160,9 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC += offset
     }
 
-    override fun rotatedBy(rotation: AngleF) =
-        MutableRegularTriangle(_center, _orientation * ComplexF.fromAngle(rotation), _sideLength)
+    override fun rotatedBy(rotation: AngleF) = MutableRegularTriangle(
+        _center, _orientation * ComplexF.fromAngle(rotation), _sideLength
+    )
 
     override fun rotatedBy(rotation: ComplexF) =
         MutableRegularTriangle(_center, _orientation * rotation, _sideLength)
@@ -523,11 +524,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
-        val halfSideLength: Float = _sideLength * 0.5f
-        val inradius: Float = this.inradius
-        val rotation: ComplexF = _orientation
+        val sideLength: Float = _sideLength
+        val halfSideLength: Float = 0.5f * sideLength
+        val inradius: Float = 0.28867513f * sideLength
+        val orientation: ComplexF = _orientation
         val center: Vector2F = _center
-        val p1 = ComplexF.conjugate(rotation) *
+        val p1 = ComplexF.conjugate(orientation) *
                 ComplexF(point.x - center.x, point.y - center.y)
         val p1X: Float = p1.real
         val p1Y: Float = p1.imaginary
@@ -541,11 +543,11 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
             if (p1X.absoluteValue >= halfSideLength) {
                 val vertexPoint = ComplexF(halfSideLength.withSign(p1X), -inradius)
 
-                return (rotation * vertexPoint).toVector2F() + center
+                return (orientation * vertexPoint).toVector2F() + center
             }
             val edgePoint = ComplexF(p1X, -inradius)
 
-            return (rotation * edgePoint).toVector2F() + center
+            return (orientation * edgePoint).toVector2F() + center
         }
         val add120DegRotation = ComplexF(-0.5f, -(0.8660254f.withSign(p1X)))
         val p2: ComplexF = add120DegRotation * p1
@@ -558,12 +560,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         if (p2X.absoluteValue >= halfSideLength) {
             val vertexPoint = ComplexF(halfSideLength.withSign(p2X), -inradius)
 
-            return (ComplexF.conjugate(add120DegRotation) * rotation * vertexPoint)
+            return (ComplexF.conjugate(add120DegRotation) * orientation * vertexPoint)
                 .toVector2F() + center
         }
         val edgePoint = ComplexF(p2X, -inradius)
 
-        return (ComplexF.conjugate(add120DegRotation) * rotation * edgePoint)
+        return (ComplexF.conjugate(add120DegRotation) * orientation * edgePoint)
             .toVector2F() + center
     }
 

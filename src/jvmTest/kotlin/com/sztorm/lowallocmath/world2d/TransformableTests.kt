@@ -11,6 +11,7 @@ import com.sztorm.lowallocmath.world2d.CircleTests.Companion.mapCirclesToDefault
 import com.sztorm.lowallocmath.world2d.LineSegmentTests.Companion.mapLineSegmentsToDefaultLineSegments
 import com.sztorm.lowallocmath.world2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.world2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
+import com.sztorm.lowallocmath.world2d.RegularTriangleTests.Companion.mapRegularTrianglesToDefaultRegularTriangles
 import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -917,6 +918,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -1029,6 +1032,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -1248,6 +1252,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -1362,6 +1368,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -1691,6 +1698,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -1805,6 +1814,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -2040,6 +2050,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -2154,6 +2166,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -2616,6 +2629,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -2836,6 +2851,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -3302,6 +3318,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -3522,6 +3540,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -4020,6 +4039,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -4226,6 +4247,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -4765,6 +4787,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -5031,6 +5055,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -5290,6 +5315,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -5410,6 +5437,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -5900,6 +5928,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -6132,6 +6162,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
@@ -6382,6 +6413,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
@@ -6502,6 +6535,7 @@ class TransformableTests {
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
                 mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,

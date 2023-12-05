@@ -6,6 +6,7 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultRegularTriangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -234,289 +235,400 @@ class RegularTriangleTests {
         fun clone(triangle: RegularTriangle) = triangle.copy()
 
         @JvmStatic
-        fun centerArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
-                ),
-                Wrapper(Vector2F.ZERO)
-            ),
-            Arguments.of(
-                MutableRegularTriangle(
-                    center = Vector2F(5f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                    sideLength = 3f
-                ),
-                Wrapper(Vector2F(5f, 7f))
-            ),
-            Arguments.of(
-                MutableRegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
-                ),
-                Wrapper(Vector2F(3.1547005f, -4f))
-            ),
-        )
+        fun List<Arguments>.mapRegularTrianglesToDefaultRegularTriangles() = map { args ->
+            val argArray = args.get().map {
+                if (it is RegularTriangle) DefaultRegularTriangle(
+                    it.center, it.orientation, it.sideLength
+                )
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun centerArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    Wrapper(Vector2F.ZERO)
                 ),
-                Wrapper(ComplexF.ONE)
-            ),
-            Arguments.of(
-                MutableRegularTriangle(
-                    center = Vector2F(5f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                    sideLength = 3f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(Vector2F(5f, 7f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f)))
-            ),
-            Arguments.of(
-                MutableRegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(3.1547005f, -4f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f)))
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun sideLengthArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun orientationArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    Wrapper(ComplexF.ONE)
                 ),
-                5.773503f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f)))
                 ),
-                5.773503f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f)))
                 ),
-                4f
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun sideLengthArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    5.773503f
                 ),
-                Wrapper(Vector2F(0f, 3.3333333f)),
-                Wrapper(Vector2F(-2.886751f, -1.6666667f)),
-                Wrapper(Vector2F(2.886751f, -1.6666667f))
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    5.773503f
                 ),
-                Wrapper(Vector2F(5.464102f, -4f)),
-                Wrapper(Vector2F(2f, -2f)),
-                Wrapper(Vector2F(2f, -6f))
-            ),
-        )
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    4f
+                ),
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun pointsArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    Wrapper(Vector2F(0f, 3.3333333f)),
+                    Wrapper(Vector2F(-2.886751f, -1.6666667f)),
+                    Wrapper(Vector2F(2.886751f, -1.6666667f))
                 ),
-                14.433758f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(Vector2F(5.464102f, -4f)),
+                    Wrapper(Vector2F(2f, -2f)),
+                    Wrapper(Vector2F(2f, -6f))
                 ),
-                14.433758f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
-                ),
-                6.928203f
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun areaArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    14.433758f
                 ),
-                17.320509f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    14.433758f
                 ),
-                17.320509f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    6.928203f
                 ),
-                12f
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun perimeterArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    17.320509f
+                ),
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    17.320509f
+                ),
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    12f
+                ),
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun sideLengthsArgs(): List<Arguments> = sideLengthArgs()
 
         @JvmStatic
-        fun sideCountArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun sideCountArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    3
                 ),
-                3
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    3
                 ),
-                3
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    3
                 ),
-                3
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun interiorAngleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun interiorAngleArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    Wrapper(AngleF.fromDegrees(60f))
                 ),
-                Wrapper(AngleF.fromDegrees(60f))
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    Wrapper(AngleF.fromDegrees(60f))
                 ),
-                Wrapper(AngleF.fromDegrees(60f))
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(60f))
                 ),
-                Wrapper(AngleF.fromDegrees(60f))
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun exteriorAngleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun exteriorAngleArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    Wrapper(AngleF.fromDegrees(120f))
                 ),
-                Wrapper(AngleF.fromDegrees(120f))
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    Wrapper(AngleF.fromDegrees(120f))
                 ),
-                Wrapper(AngleF.fromDegrees(120f))
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    Wrapper(AngleF.fromDegrees(120f))
                 ),
-                Wrapper(AngleF.fromDegrees(120f))
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun inradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun inradiusArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    1.6666667f
                 ),
-                1.6666667f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    1.6666667f
                 ),
-                1.6666667f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    1.1547005f
                 ),
-                1.1547005f
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun circumradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+        fun circumradiusArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
+                    ),
+                    3.3333333f
                 ),
-                3.3333333f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    3.3333333f
                 ),
-                3.3333333f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(3.1547005f, -4f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
-                    sideLength = 4f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(3.1547005f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                        sideLength = 4f
+                    ),
+                    2.309401f
                 ),
-                2.309401f
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
@@ -539,13 +651,13 @@ class RegularTriangleTests {
             val pointB = Vector2F(2f, -2f)
             val pointC = Vector2F(2f, -6f)
             val center: Vector2F = (pointA + pointB + pointC) / 3f
-            val triangle = RegularTriangle(
+            val triangle = MutableRegularTriangle(
                 center,
                 orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
-            return listOf(
+            val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     triangle,
                     Wrapper(Vector2F(6f, -3.25f)),
@@ -642,6 +754,13 @@ class RegularTriangleTests {
                     Wrapper(center)
                 ),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
         }
 
         @JvmStatic
@@ -650,13 +769,13 @@ class RegularTriangleTests {
             val pointB = Vector2F(2f, -2f)
             val pointC = Vector2F(2f, -6f)
             val center: Vector2F = (pointA + pointB + pointC) / 3f
-            val triangle = RegularTriangle(
+            val triangle = MutableRegularTriangle(
                 center,
                 orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
                         ComplexF(pointA.x - center.x, pointA.y - center.y).normalized,
                 sideLength = pointA.distanceTo(pointB)
             )
-            return listOf(
+            val mutableRegularTriangleArgs = listOf(
                 Arguments.of(triangle, Wrapper(Vector2F(5.364102f, -4f)), true),
                 Arguments.of(triangle, Wrapper(Vector2F(5.564102f, -4f)), false),
                 Arguments.of(triangle, Wrapper(Vector2F(3.682051f, -3.0866027f)), true),
@@ -671,56 +790,72 @@ class RegularTriangleTests {
                 Arguments.of(triangle, Wrapper(Vector2F(3.7820508f, -5.0866027f)), false),
                 Arguments.of(triangle, Wrapper(center), true),
             )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+        fun copyArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                    5.773503f,
+                    RegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    )
                 ),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
-                5.773503f,
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
-                )
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                    5.773503f,
+                    RegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 5.773503f
+                    )
                 ),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
-                5.773503f,
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                    sideLength = 5.773503f
-                )
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    Wrapper(Vector2F(5f, 7f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                    3f,
+                    RegularTriangle(
+                        center = Vector2F(5f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    )
                 ),
-                Wrapper(Vector2F(5f, 7f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
-                3f,
-                RegularTriangle(
-                    center = Vector2F(5f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                    sideLength = 3f
-                )
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(
@@ -731,6 +866,32 @@ class RegularTriangleTests {
                     sideLength = 5.773503f
                 ),
                 null,
+                false
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                DefaultRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                DefaultRegularTriangle(
+                    center = Vector2F(-4.1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
                 false
             ),
         )
@@ -820,27 +981,36 @@ class RegularTriangleTests {
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(-4f, 2f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                    sideLength = 5.773503f
+        fun componentsArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(-4f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                        sideLength = 5.773503f
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                    5.773503f
                 ),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
-                5.773503f
-            ),
-            Arguments.of(
-                RegularTriangle(
-                    center = Vector2F(5f, 7f),
-                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                    sideLength = 3f
+                Arguments.of(
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, 7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    Wrapper(Vector2F(5f, 7f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                    3f
                 ),
-                Wrapper(Vector2F(5f, 7f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
-                3f
-            ),
-        )
+            )
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
     }
 }
