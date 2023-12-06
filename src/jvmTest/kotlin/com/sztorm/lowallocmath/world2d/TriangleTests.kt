@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultTriangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -185,221 +186,321 @@ class TriangleTests {
         fun clone(triangle: Triangle) = triangle.copy()
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(Vector2F(2f, 2f)),
-                Wrapper(Vector2F(1f, 5f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                ),
-                Wrapper(Vector2F(-2f, 1f)),
-                Wrapper(Vector2F(-3f, -3f)),
-                Wrapper(Vector2F(1f, -6f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
-                ),
-                Wrapper(Vector2F(8f, -2.535898f)),
-                Wrapper(Vector2F(10f, -6f)),
-                Wrapper(Vector2F(6f, -6f))
-            ),
-        )
+        fun List<Arguments>.mapTrianglesToDefaultTriangles() = map { args ->
+            val argArray = args.get().map {
+                if (it is Triangle) DefaultTriangle(it.pointA, it.pointB, it.pointC)
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
-        fun centroidArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-0.3333333f, 3f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun pointsArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(Vector2F(2f, 2f)),
+                    Wrapper(Vector2F(1f, 5f))
                 ),
-                Wrapper(Vector2F(-1.3333333f, -2.6666667f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-2f, 1f)),
+                    Wrapper(Vector2F(-3f, -3f)),
+                    Wrapper(Vector2F(1f, -6f))
                 ),
-                Wrapper(Vector2F(8f, -4.8453f))
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    Wrapper(Vector2F(8f, -2.535898f)),
+                    Wrapper(Vector2F(10f, -6f)),
+                    Wrapper(Vector2F(6f, -6f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun centroidArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-0.3333333f, 3f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    Wrapper(Vector2F(8f, -4.8453f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                9f
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun orientationArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
                 ),
-                9.5f
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
                 ),
-                6.928203f
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                14.99323f
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun areaArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    9f
                 ),
-                16.73888f
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    9.5f
                 ),
-                12f
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    6.928203f
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun sideLengthsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                6f,
-                3.1622777f,
-                5.8309517f
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun perimeterArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    14.99323f
                 ),
-                4.1231055f,
-                5.0f,
-                7.615773f
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    16.73888f
                 ),
-                4f,
-                4f,
-                4f
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    12f
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun sideLengthsArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    6f,
+                    3.1622777f,
+                    5.8309517f
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    4.1231055f,
+                    5.0f,
+                    7.615773f
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    4f,
+                    4f,
+                    4f
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centroidArgs()
 
         @JvmStatic
-        fun orthocenterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(1f, 3.6666667f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun orthocenterArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(1f, 3.6666667f))
                 ),
-                Wrapper(Vector2F(-5.947368f, -4.263158f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-5.947368f, -4.263158f))
                 ),
-                Wrapper(Vector2F(8f, -4.8453f))
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    Wrapper(Vector2F(8f, -4.8453f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun incenterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(0.3343371f, 3.200542f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun incenterArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(0.3343371f, 3.200542f))
                 ),
-                Wrapper(Vector2F(-1.7160178f, -2.544134f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(-1.7160178f, -2.544134f))
                 ),
-                Wrapper(Vector2F(8f, -4.8453f))
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    Wrapper(Vector2F(8f, -4.8453f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun circumcenterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-1f, 2.6666667f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+        fun circumcenterArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-1f, 2.6666667f))
                 ),
-                Wrapper(Vector2F(0.9736842f, -1.868421f))
-            ),
-            Arguments.of(
-                Triangle(
-                    Vector2F(8f, -2.535898f),
-                    Vector2F(10f, -6f),
-                    Vector2F(6f, -6f)
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    ),
+                    Wrapper(Vector2F(0.9736842f, -1.868421f))
                 ),
-                Wrapper(Vector2F(8f, -4.8453f))
-            ),
-        )
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(8f, -2.535898f),
+                        Vector2F(10f, -6f),
+                        Vector2F(6f, -6f)
+                    ),
+                    Wrapper(Vector2F(8f, -4.8453f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
-            val triangleA = Triangle(
+            val triangleA = MutableTriangle(
                 Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
             )
             val triangleAArgs = listOf(
@@ -506,7 +607,7 @@ class TriangleTests {
                     triangleA, Wrapper(triangleA.circumcenter), Wrapper(triangleA.circumcenter)
                 ),
             )
-            val triangleB = Triangle(
+            val triangleB = MutableTriangle(
                 Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
             )
             val triangleBArgs = listOf(
@@ -617,7 +718,7 @@ class TriangleTests {
                     Wrapper(Vector2F(-0.5f, -2.5f))
                 ),
             )
-            val triangleC = Triangle(
+            val triangleC = MutableTriangle(
                 Vector2F(8f, -2.535898f),
                 Vector2F(10f, -6f),
                 Vector2F(6f, -6f)
@@ -726,12 +827,22 @@ class TriangleTests {
                     triangleC, Wrapper(triangleC.circumcenter), Wrapper(triangleC.circumcenter)
                 ),
             )
-            return triangleAArgs + triangleBArgs + triangleCArgs
+            val mutableTriangleArgs = listOf(
+                triangleAArgs,
+                triangleBArgs,
+                triangleCArgs
+            ).flatten()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
         }
 
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
-            val triangleA = Triangle(
+            val triangleA = MutableTriangle(
                 Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
             )
             val triangleAArgs = listOf(
@@ -752,7 +863,7 @@ class TriangleTests {
                 Arguments.of(triangleA, Wrapper(triangleA.incenter), true),
                 Arguments.of(triangleA, Wrapper(triangleA.circumcenter), true),
             )
-            val triangleB = Triangle(
+            val triangleB = MutableTriangle(
                 Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
             )
             val triangleBArgs = listOf(
@@ -773,7 +884,7 @@ class TriangleTests {
                 Arguments.of(triangleB, Wrapper(triangleB.incenter), true),
                 Arguments.of(triangleB, Wrapper(triangleB.circumcenter), false),
             )
-            val triangleC = Triangle(
+            val triangleC = MutableTriangle(
                 Vector2F(8f, -2.535898f),
                 Vector2F(10f, -6f),
                 Vector2F(6f, -6f)
@@ -796,37 +907,61 @@ class TriangleTests {
                 Arguments.of(triangleC, Wrapper(triangleC.incenter), true),
                 Arguments.of(triangleC, Wrapper(triangleC.circumcenter), true),
             )
-            return triangleAArgs + triangleBArgs + triangleCArgs
+            val mutableTriangleArgs = listOf(
+                triangleAArgs,
+                triangleBArgs,
+                triangleCArgs
+            ).flatten()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(Vector2F(2f, 2f)),
-                Wrapper(Vector2F(1f, 5f)),
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f))
-            ),
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(Vector2F(-3f, -3f)),
-                Wrapper(Vector2F(1f, -6f)),
-                Triangle(
-                    Vector2F(-4f, 2f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                )
-            ),
-            Arguments.of(
-                Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)),
-                Wrapper(Vector2F(-2f, 1f)),
-                Wrapper(Vector2F(-3f, -3f)),
-                Wrapper(Vector2F(1f, -6f)),
-                Triangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                )
-            ),
-        )
+        fun copyArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(Vector2F(2f, 2f)),
+                    Wrapper(Vector2F(1f, 5f)),
+                    Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(Vector2F(-3f, -3f)),
+                    Wrapper(Vector2F(1f, -6f)),
+                    Triangle(
+                        Vector2F(-4f, 2f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    )
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    ),
+                    Wrapper(Vector2F(-2f, 1f)),
+                    Wrapper(Vector2F(-3f, -3f)),
+                    Wrapper(Vector2F(1f, -6f)),
+                    Triangle(
+                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    )
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableTriangleArgs() + listOf(
@@ -835,6 +970,24 @@ class TriangleTests {
                     Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
                 ),
                 null,
+                false
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                DefaultTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                DefaultTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1.1f, 5f)
+                ),
                 false
             ),
         )

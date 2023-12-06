@@ -14,6 +14,7 @@ import com.sztorm.lowallocmath.world2d.RectangleTests.Companion.mapRectanglesToD
 import com.sztorm.lowallocmath.world2d.RegularTriangleTests.Companion.mapRegularTrianglesToDefaultRegularTriangles
 import com.sztorm.lowallocmath.world2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
+import com.sztorm.lowallocmath.world2d.TriangleTests.Companion.mapTrianglesToDefaultTriangles
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -1022,6 +1023,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -1040,7 +1043,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -1361,6 +1365,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -1379,7 +1385,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -1810,6 +1817,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -1828,7 +1837,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -2165,6 +2175,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -2183,7 +2195,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -2853,6 +2866,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -2871,7 +2886,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -3545,6 +3561,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -3563,7 +3581,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -4255,6 +4274,8 @@ class TransformableTests {
                     ),
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -4273,7 +4294,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -5066,6 +5088,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -5084,7 +5108,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -5451,6 +5476,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -5469,7 +5496,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -6179,6 +6207,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -6197,7 +6227,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
@@ -6555,6 +6586,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs,
@@ -6573,7 +6606,8 @@ class TransformableTests {
                 defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
-                mutableTriangleArgs
+                mutableTriangleArgs,
+                defaultTriangleArgs
             ).flatten()
         }
 
