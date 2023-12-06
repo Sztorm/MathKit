@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.*
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.world2d.utils.DefaultRegularPolygon
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -68,18 +69,17 @@ class RegularPolygonTests {
 
     @ParameterizedTest
     @MethodSource("centerArgs")
-    fun centerReturnsCorrectValue(polygon: MutableRegularPolygon, expected: Wrapper<Vector2F>) =
+    fun centerReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<Vector2F>) =
         assertImmutabilityOf(polygon) {
             assertApproximation(expected.value, polygon.center)
         }
 
     @ParameterizedTest
     @MethodSource("orientationArgs")
-    fun orientationReturnsCorrectValue(
-        polygon: MutableRegularPolygon, expected: Wrapper<ComplexF>
-    ) = assertImmutabilityOf(polygon) {
-        assertApproximation(expected.value, polygon.orientation)
-    }
+    fun orientationReturnsCorrectValue(polygon: RegularPolygon, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(polygon) {
+            assertApproximation(expected.value, polygon.orientation)
+        }
 
     @ParameterizedTest
     @MethodSource("sideLengthArgs")
@@ -280,14 +280,26 @@ class RegularPolygonTests {
                     a.orientation.isApproximately(b.orientation) and
                     a.sideLength.isApproximately(b.sideLength) and
                     (a.points.size == b.points.size) and
-                    a.points
-                        .mapIndexed { index, point -> point.isApproximately(b.points[index]) }
-                        .all { it } and
+                    a.points.foldIndexed(true) { index, acc, point ->
+                        acc and point.isApproximately(b.points[index])
+                    } and
                     a.circumradius.isApproximately(b.circumradius) and
                     a.inradius.isApproximately(b.inradius)
 
         @JvmStatic
         fun clone(polygon: RegularPolygon) = polygon.copy()
+
+        @JvmStatic
+        fun List<Arguments>.mapRegularPolygonsToDefaultRegularPolygons() = map { args ->
+            val argArray = args.get().map {
+                if (it is RegularPolygon) DefaultRegularPolygon(
+                    it.center, it.orientation, it.sideLength, it.sideCount
+                )
+                else it
+            }.toTypedArray()
+
+            Arguments.of(*argArray)
+        }
 
         @JvmStatic
         fun constructorRegularTriangleArgs(): List<Arguments> = listOf(
@@ -344,728 +356,827 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun centerArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+        fun centerArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0f, 8f))
                 ),
-                Wrapper(Vector2F(0f, 8f))
-            ),
-            Arguments.of(
-                MutableRegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(Vector2F(14f, 1f))
                 ),
-                Wrapper(Vector2F(14f, 1f))
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+        fun orientationArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
-            ),
-            Arguments.of(
-                MutableRegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f)))
                 ),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f)))
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun sideLengthArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun sideLengthArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    2f
                 ),
-                2f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    3f
                 ),
-                3f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    3.5f
                 ),
-                3.5f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    4f
                 ),
-                4f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    4f
                 ),
-                4f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    4f
                 ),
-                4f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    4f
                 ),
-                4f
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun sideCountArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun sideCountArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    10
                 ),
-                10
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    7
                 ),
-                7
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    6
                 ),
-                6
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    5
                 ),
-                5
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    4
                 ),
-                4
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    3
                 ),
-                3
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    2
                 ),
-                2
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun pointsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun pointsArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(17.236069f, 1f),
+                            Vector2F(16.618034f, 2.902113f),
+                            Vector2F(15.0f, 4.0776834f),
+                            Vector2F(13.0f, 4.0776834f),
+                            Vector2F(11.381966f, 2.902113f),
+                            Vector2F(10.763932f, 1f),
+                            Vector2F(11.381966f, -0.90211296f),
+                            Vector2F(13.0f, -2.0776834f),
+                            Vector2F(15.0f, -2.0776834f),
+                            Vector2F(16.618034f, -0.9021131f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(17.236069f, 1f),
-                        Vector2F(16.618034f, 2.902113f),
-                        Vector2F(15.0f, 4.0776834f),
-                        Vector2F(13.0f, 4.0776834f),
-                        Vector2F(11.381966f, 2.902113f),
-                        Vector2F(10.763932f, 1f),
-                        Vector2F(11.381966f, -0.90211296f),
-                        Vector2F(13.0f, -2.0776834f),
-                        Vector2F(15.0f, -2.0776834f),
-                        Vector2F(16.618034f, -0.9021131f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(-2.9939773f, 6.2714257f),
+                            Vector2F(-0.5152612f, 4.5814657f),
+                            Vector2F(2.3514576f, 5.4657316f),
+                            Vector2F(3.4474807f, 8.258353f),
+                            Vector2F(1.9474803f, 10.856429f),
+                            Vector2F(-1.0190125f, 11.303556f),
+                            Vector2F(-3.218168f, 9.263038f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(-2.9939773f, 6.2714257f),
-                        Vector2F(-0.5152612f, 4.5814657f),
-                        Vector2F(2.3514576f, 5.4657316f),
-                        Vector2F(3.4474807f, 8.258353f),
-                        Vector2F(1.9474803f, 10.856429f),
-                        Vector2F(-1.0190125f, 11.303556f),
-                        Vector2F(-3.218168f, 9.263038f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(-4.968911f, 3.75f),
+                            Vector2F(-8f, 5.5f),
+                            Vector2F(-11.031089f, 3.75f),
+                            Vector2F(-11.031089f, 0.25f),
+                            Vector2F(-8f, -1.5f),
+                            Vector2F(-4.968911f, 0.25f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(-4.968911f, 3.75f),
-                        Vector2F(-8f, 5.5f),
-                        Vector2F(-11.031089f, 3.75f),
-                        Vector2F(-11.031089f, 0.25f),
-                        Vector2F(-8f, -1.5f),
-                        Vector2F(-4.968911f, 0.25f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(-9.906004f, -5.5939965f),
+                            Vector2F(-10.531742f, -9.544749f),
+                            Vector2F(-6.9677157f, -11.360712f),
+                            Vector2F(-4.1392884f, -8.532285f),
+                            Vector2F(-5.9552507f, -4.9682584f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(-9.906004f, -5.5939965f),
-                        Vector2F(-10.531742f, -9.544749f),
-                        Vector2F(-6.9677157f, -11.360712f),
-                        Vector2F(-4.1392884f, -8.532285f),
-                        Vector2F(-5.9552507f, -4.9682584f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(4.8284273f, -7.5f),
+                            Vector2F(2f, -4.6715727f),
+                            Vector2F(-0.82842684f, -7.5f),
+                            Vector2F(2f, -10.328426f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(4.8284273f, -7.5f),
-                        Vector2F(2f, -4.6715727f),
-                        Vector2F(-0.82842684f, -7.5f),
-                        Vector2F(2f, -10.328426f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(8.367007f, -8.132993f),
+                            Vector2F(12.23071f, -7.097717f),
+                            Vector2F(9.402283f, -4.26929f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(8.367007f, -8.132993f),
-                        Vector2F(12.23071f, -7.097717f),
-                        Vector2F(9.402283f, -4.26929f),
-                    ).toVector2FArray()
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    Wrapper(
+                        arrayOf(
+                            Vector2F(8.068149f, 5.982362f),
+                            Vector2F(11.931851f, 7.017638f),
+                        ).toVector2FArray()
+                    )
                 ),
-                Wrapper(
-                    arrayOf(
-                        Vector2F(8.068149f, 5.982362f),
-                        Vector2F(11.931851f, 7.017638f),
-                    ).toVector2FArray()
-                )
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun inradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun inradiusArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    3.077684f
                 ),
-                3.077684f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    3.114782f
                 ),
-                3.114782f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    3.031089f
                 ),
-                3.031089f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    2.752764f
                 ),
-                2.752764f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    2f
                 ),
-                2f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    1.1547005f
                 ),
-                1.1547005f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    0f
                 ),
-                0f
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun circumradiusArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun circumradiusArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    3.236068f
                 ),
-                3.236068f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    3.457147f
                 ),
-                3.457147f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    3.5f
                 ),
-                3.5f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    3.402603f
                 ),
-                3.402603f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    2.828427f
                 ),
-                2.828427f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    2.309401f
                 ),
-                2.309401f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    2f
                 ),
-                2f
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun areaArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun areaArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    30.77684f
                 ),
-                30.77684f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    32.70521f
                 ),
-                32.70521f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    31.82643f
                 ),
-                31.82643f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    27.52764f
                 ),
-                27.52764f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    16f
                 ),
-                16f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    6.928203f
                 ),
-                6.928203f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    0f
                 ),
-                0f
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun perimeterArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun perimeterArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    20f
                 ),
-                20f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    21f
                 ),
-                21f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    21f
                 ),
-                21f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    20f
                 ),
-                20f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    16f
                 ),
-                16f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    12f
                 ),
-                12f
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    8f
                 ),
-                8f
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun interiorAngleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun interiorAngleArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(AngleF.fromDegrees(144f))
                 ),
-                Wrapper(AngleF.fromDegrees(144f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(AngleF.fromDegrees(128.5714f))
                 ),
-                Wrapper(AngleF.fromDegrees(128.5714f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    Wrapper(AngleF.fromDegrees(120f))
                 ),
-                Wrapper(AngleF.fromDegrees(120f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    Wrapper(AngleF.fromDegrees(108f))
                 ),
-                Wrapper(AngleF.fromDegrees(108f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    Wrapper(AngleF.fromDegrees(90f))
                 ),
-                Wrapper(AngleF.fromDegrees(90f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    Wrapper(AngleF.fromDegrees(60f))
                 ),
-                Wrapper(AngleF.fromDegrees(60f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    Wrapper(AngleF.fromDegrees(0f))
                 ),
-                Wrapper(AngleF.fromDegrees(0f))
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
-        fun exteriorAngleArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
-                    sideLength = 2f,
-                    sideCount = 10
+        fun exteriorAngleArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(14f, 1f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        sideLength = 2f,
+                        sideCount = 10
+                    ),
+                    Wrapper(AngleF.fromDegrees(36f))
                 ),
-                Wrapper(AngleF.fromDegrees(36f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(AngleF.fromDegrees(51.42857f))
                 ),
-                Wrapper(AngleF.fromDegrees(51.42857f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-8f, 2f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
-                    sideLength = 3.5f,
-                    sideCount = 6
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-8f, 2f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        sideLength = 3.5f,
+                        sideCount = 6
+                    ),
+                    Wrapper(AngleF.fromDegrees(60f))
                 ),
-                Wrapper(AngleF.fromDegrees(60f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    Wrapper(AngleF.fromDegrees(72f))
                 ),
-                Wrapper(AngleF.fromDegrees(72f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    Wrapper(AngleF.fromDegrees(90f))
                 ),
-                Wrapper(AngleF.fromDegrees(90f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, -6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                    sideLength = 4f,
-                    sideCount = 3
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, -6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    ),
+                    Wrapper(AngleF.fromDegrees(120f))
                 ),
-                Wrapper(AngleF.fromDegrees(120f))
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(10f, 6.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(195f)),
-                    sideLength = 4f,
-                    sideCount = 2
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(10f, 6.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        sideLength = 4f,
+                        sideCount = 2
+                    ),
+                    Wrapper(AngleF.fromDegrees(180f))
                 ),
-                Wrapper(AngleF.fromDegrees(180f))
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
-            val decagon = RegularPolygon(
+            val decagon = MutableRegularPolygon(
                 Vector2F(14f, 1f),
                 ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                 sideLength = 2f,
                 sideCount = 10
             )
-            val heptagon = RegularPolygon(
+            val heptagon = MutableRegularPolygon(
                 Vector2F(0f, 8f),
                 ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                 sideLength = 3f,
                 sideCount = 7
             )
-            val digon = RegularPolygon(
+            val digon = MutableRegularPolygon(
                 Vector2F(10f, 6.5f),
                 ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                 sideLength = 4f,
@@ -1472,24 +1583,35 @@ class RegularPolygonTests {
                     Wrapper(Vector2F(10f, 6.5f))
                 ),
             )
-            return decagonArgs + heptagonArgs + digonArgs
+            val mutableRegularPolygonArgs = listOf(
+                decagonArgs,
+                heptagonArgs,
+                digonArgs
+            ).flatten()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
         }
 
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
-            val decagon = RegularPolygon(
+            val decagon = MutableRegularPolygon(
                 Vector2F(14f, 1f),
                 ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                 sideLength = 2f,
                 sideCount = 10
             )
-            val heptagon = RegularPolygon(
+            val heptagon = MutableRegularPolygon(
                 Vector2F(0f, 8f),
                 ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                 sideLength = 3f,
                 sideCount = 7
             )
-            val digon = RegularPolygon(
+            val digon = MutableRegularPolygon(
                 Vector2F(10f, 6.5f),
                 ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                 sideLength = 4f,
@@ -1744,66 +1866,86 @@ class RegularPolygonTests {
                     digon, Wrapper(Vector2F(10f, 6.5f)), true
                 ),
             )
-            return decagonArgs + heptagonArgs + digonArgs
+            val mutableRegularPolygonArgs = listOf(
+                decagonArgs,
+                heptagonArgs,
+                digonArgs
+            ).flatten()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
         }
 
         @JvmStatic
-        fun copyArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+        fun copyArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    Wrapper(Vector2F(-7.5f, -8f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    4f,
+                    5,
+                    RegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    )
                 ),
-                Wrapper(Vector2F(-7.5f, -8f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                4f,
-                5,
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    Wrapper(Vector2F(2f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                    4f,
+                    3,
+                    RegularPolygon(
+                        Vector2F(2f, -4f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 3
+                    )
                 ),
-                Wrapper(Vector2F(2f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                4f,
-                3,
-                RegularPolygon(
-                    Vector2F(2f, -4f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 3
-                )
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                    sideLength = 4f,
-                    sideCount = 5
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(-7.5f, -8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        sideLength = 4f,
+                        sideCount = 5
+                    ),
+                    Wrapper(Vector2F(2f, -4f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                    2f,
+                    3,
+                    RegularPolygon(
+                        Vector2F(2f, -4f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                        sideLength = 2f,
+                        sideCount = 3
+                    )
                 ),
-                Wrapper(Vector2F(2f, -4f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
-                2f,
-                3,
-                RegularPolygon(
-                    Vector2F(2f, -4f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                    sideLength = 2f,
-                    sideCount = 3
-                )
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(
@@ -1815,6 +1957,66 @@ class RegularPolygonTests {
                     sideCount = 7
                 ),
                 null,
+                false
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                DefaultRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                DefaultRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120.1f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                false
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                DefaultRegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                true
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 4
+                ),
+                DefaultRegularPolygon(
+                    Vector2F(2f, -7.5f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                ),
                 false
             ),
         )
@@ -1946,7 +2148,17 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun toRegularTriangleOrNullArgs(): List<Arguments> = toMutableRegularTriangleOrNullArgs()
+        fun toRegularTriangleOrNullArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = toMutableRegularTriangleOrNullArgs()
+
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun toMutableRegularTriangleOrNullArgs(): List<Arguments> = listOf(
@@ -1969,24 +2181,24 @@ class RegularPolygonTests {
                 null
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     center = Vector2F.ZERO,
                     orientation = ComplexF.ONE,
                     sideLength = 5.773503f,
                     sideCount = 3
                 ),
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
                 )
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     center = Vector2F(3.1547005f, -4f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f,
                     sideCount = 3
                 ),
-                RegularTriangle(
+                MutableRegularTriangle(
                     center = Vector2F(3.1547005f, -4f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
                     sideLength = 4f
@@ -1995,7 +2207,16 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun toSquareOrNullArgs(): List<Arguments> = toMutableSquareOrNullArgs()
+        fun toSquareOrNullArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = toMutableSquareOrNullArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
 
         @JvmStatic
         fun toMutableSquareOrNullArgs(): List<Arguments> = listOf(
@@ -2018,22 +2239,24 @@ class RegularPolygonTests {
                 null
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     center = Vector2F.ZERO,
                     orientation = ComplexF.ONE,
                     sideLength = 3f,
                     sideCount = 4
                 ),
-                Square(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f)
+                MutableSquare(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f
+                )
             ),
             Arguments.of(
-                RegularPolygon(
+                MutableRegularPolygon(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
-                Square(
+                MutableSquare(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
@@ -2042,31 +2265,40 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                    sideLength = 3f,
-                    sideCount = 7
+        fun componentsArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = listOf(
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(0f, 8f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        sideLength = 3f,
+                        sideCount = 7
+                    ),
+                    Wrapper(Vector2F(0f, 8f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                    3f,
+                    7
                 ),
-                Wrapper(Vector2F(0f, 8f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
-                3f,
-                7
-            ),
-            Arguments.of(
-                RegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                    sideLength = 4f,
-                    sideCount = 4
+                Arguments.of(
+                    MutableRegularPolygon(
+                        Vector2F(2f, -7.5f),
+                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        sideLength = 4f,
+                        sideCount = 4
+                    ),
+                    Wrapper(Vector2F(2f, -7.5f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
+                    4f,
+                    4
                 ),
-                Wrapper(Vector2F(2f, -7.5f)),
-                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
-                4f,
-                4
-            ),
-        )
+            )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
     }
 }

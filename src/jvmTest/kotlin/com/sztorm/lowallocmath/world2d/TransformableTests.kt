@@ -11,6 +11,7 @@ import com.sztorm.lowallocmath.world2d.CircleTests.Companion.mapCirclesToDefault
 import com.sztorm.lowallocmath.world2d.LineSegmentTests.Companion.mapLineSegmentsToDefaultLineSegments
 import com.sztorm.lowallocmath.world2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.world2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
+import com.sztorm.lowallocmath.world2d.RegularPolygonTests.Companion.mapRegularPolygonsToDefaultRegularPolygons
 import com.sztorm.lowallocmath.world2d.RegularTriangleTests.Companion.mapRegularTrianglesToDefaultRegularTriangles
 import com.sztorm.lowallocmath.world2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.world2d.SquareTests.Companion.mapSquaresToDefaultSquares
@@ -888,6 +889,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -1037,6 +1040,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -1228,6 +1232,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -1379,6 +1385,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -1680,6 +1687,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -1831,6 +1840,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -2038,6 +2048,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -2189,6 +2201,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -2589,6 +2602,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -2880,6 +2895,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -3284,6 +3300,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -3575,6 +3593,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -4015,6 +4034,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -4288,6 +4309,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -4749,6 +4771,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -5102,6 +5126,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -5331,6 +5356,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -5490,6 +5517,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -5914,6 +5942,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -6221,6 +6251,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
@@ -6441,6 +6472,8 @@ class TransformableTests {
                     )
                 ),
             )
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
@@ -6600,6 +6633,7 @@ class TransformableTests {
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs,
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs,
                 mutableRoundedRectangleArgs,
