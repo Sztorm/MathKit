@@ -66,6 +66,11 @@ class ComplexFTests {
     ) = assertEquals(expected, complex.value.isApproximately(other.value, epsilon))
 
     @ParameterizedTest
+    @MethodSource("dotArgs")
+    fun dotReturnsCorrectValue(a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Float) =
+        assertApproximation(expected, a.value dot b.value)
+
+    @ParameterizedTest
     @MethodSource("powComplexArgs")
     fun powComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
@@ -358,6 +363,25 @@ class ComplexFTests {
                 Wrapper(ComplexF(3.00004f, 3.99995f)),
                 0.00001f,
                 false
+            ),
+        )
+
+        @JvmStatic
+        fun dotArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(0f, 4f)),
+                16f
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(1f, -2f)),
+                Wrapper(ComplexF(-4f, 0.4f)),
+                -4.8f
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF.ZERO),
+                0f
             ),
         )
 

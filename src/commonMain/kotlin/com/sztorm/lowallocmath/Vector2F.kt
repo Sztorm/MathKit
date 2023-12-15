@@ -87,9 +87,9 @@ value class Vector2F internal constructor(internal val data: Long) {
      */
     inline val normalized: Vector2F
         get() {
-            val magnitude = this.magnitude
+            val length: Float = this.length
 
-            return if (magnitude > 0.00001f) this / magnitude
+            return if (length > 0.00001f) this / length
             else ZERO
         }
 

@@ -134,6 +134,9 @@ value class ComplexF internal constructor(internal val data: Long) {
         real.isApproximately(other.real, epsilon) and
                 imaginary.isApproximately(other.imaginary, epsilon)
 
+    /** Returns the dot product of this and [other] complex number. **/
+    inline infix fun dot(other: ComplexF): Float = real * other.real + imaginary * other.imaginary
+
     /** Returns this complex number to the power of [x]. **/
     fun pow(x: ComplexF): ComplexF {
         if (x == ZERO) {
