@@ -387,5 +387,35 @@ value class ComplexF internal constructor(internal val data: Long) {
                 ComplexF(i.absoluteValue / (2 * t), 1f.withSign(i) * t)
             }
         }
+
+        /**
+         * Returns a spherical linear interpolation of two rotations [a] and [b] with interpolator
+         * value of [t].
+         *
+         * The [a] and [b] arguments are expected to be normalized.
+         *
+         * The function always returns the shortest interpolation path between [a] and [b].
+         *
+         * The angular velocity of interpolation is constant, given constant velocity of [t].
+         *
+         * The function does not clamp the [t] parameter, however the most accurate results are
+         * returned when [t] is in range of 0..1.
+         */
+        @JvmStatic
+        @Suppress("SpellCheckingInspection")
+        fun slerp(a: ComplexF, b: ComplexF, t: Float): ComplexF {
+            val (aR: Float, aI: Float) = a
+            val (bR: Float, bI: Float) = b
+            val cR: Float = aR * bR + aI * bI
+            val cI: Float = aR * bI - aI * bR
+            val mag: Float = sqrt(cR * cR + cI * cI)
+            val phase: Float = atan2(cI, cR)
+            val rho: Float = t * phase
+            val p: Float = mag.pow(t)
+            val dR: Float = p * cos(rho)
+            val dI: Float = p * sin(rho)
+
+            return ComplexF(aR * dR - aI * dI, aI * dR + aR * dI)
+        }
     }
 }

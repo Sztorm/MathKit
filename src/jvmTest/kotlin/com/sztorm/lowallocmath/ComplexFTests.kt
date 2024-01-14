@@ -157,6 +157,13 @@ class ComplexFTests {
     fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, ComplexF.sqrt(complex.value), tolerance = 0.001f)
 
+    @Suppress("SpellCheckingInspection")
+    @ParameterizedTest
+    @MethodSource("slerpArgs")
+    fun slerpReturnsCorrectValue(
+        a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, t: Float, expected: Wrapper<ComplexF>
+    ) = assertApproximation(expected.value, ComplexF.slerp(a.value, b.value, t))
+
     @ParameterizedTest
     @MethodSource("plusComplexArgs")
     fun unaryPlusOperatorReturnsCorrectValue(
@@ -585,6 +592,528 @@ class ComplexFTests {
                 Wrapper(ComplexF(1.41421f, -1.41421f))
             ),
         )
+
+        @Suppress("SpellCheckingInspection")
+        @JvmStatic
+        fun slerpArgs(): List<Arguments> {
+            fun createArgumentList(
+                aDegreesArray: FloatArray,
+                bDegreesArray: FloatArray,
+                tArray: FloatArray,
+                expectedDegreesArray: FloatArray
+            ): List<Arguments> {
+                require(aDegreesArray.size == bDegreesArray.size)
+                require(aDegreesArray.size == tArray.size)
+                require(aDegreesArray.size == expectedDegreesArray.size)
+
+                return Array<Arguments>(aDegreesArray.size) { i ->
+                    Arguments.of(
+                        Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(aDegreesArray[i]))),
+                        Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(bDegreesArray[i]))),
+                        tArray[i],
+                        Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(expectedDegreesArray[i])))
+                    )
+                }.asList()
+            }
+
+            fun swapped(args: Arguments) = args.get().let { argArray ->
+                Arguments.of(
+                    argArray[1],
+                    argArray[0],
+                    1f - argArray[2] as Float,
+                    argArray[3]
+                )
+            }
+
+            val argsT0 = listOf(
+                // @formatter:off
+                createArgumentList(
+                    floatArrayOf(  0f,    0f),
+                    floatArrayOf(0.5f, -0.5f),
+                    floatArrayOf(  0f,    0f),
+                    floatArrayOf(  0f,    0f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f, 20f, 40f, 60f,  80f, 100f, 120f, 140f, 160f),
+                    floatArrayOf(20f, 40f, 60f, 80f, 100f, 120f, 140f, 160f, 180f),
+                    floatArrayOf( 0f,  0f,  0f,  0f,   0f,   0f,   0f,   0f,   0f),
+                    floatArrayOf( 0f, 20f, 40f, 60f,  80f, 100f, 120f, 140f, 160f)
+                ),
+                createArgumentList(
+                    floatArrayOf(180f, 200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f),
+                    floatArrayOf(200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f, 360f),
+                    floatArrayOf(  0f,   0f,   0f,   0f,   0f,   0f,   0f,   0f,   0f),
+                    floatArrayOf(180f, 200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, -20f, -40f, -60f,  -80f, -100f, -120f, -140f, -160f),
+                    floatArrayOf(-20f, -40f, -60f, -80f, -100f, -120f, -140f, -160f, -180f),
+                    floatArrayOf(  0f,   0f,   0f,   0f,    0f,    0f,    0f,    0f,    0f),
+                    floatArrayOf(  0f, -20f, -40f, -60f,  -80f, -100f, -120f, -140f, -160f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-180f, -200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f),
+                    floatArrayOf(-200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f, -360f),
+                    floatArrayOf(   0f,    0f,    0f,    0f,    0f,    0f,    0f,    0f,    0f),
+                    floatArrayOf(-180f, -200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f,  40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f),
+                    floatArrayOf(40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f, 360f),
+                    floatArrayOf( 0f,   0f,   0f,   0f,   0f,   0f,   0f,   0f,   0f),
+                    floatArrayOf( 0f,  40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f),
+                    floatArrayOf(-40f, -80f, -120f, -160f, -200f, -240f, -280f, -320f, -360f),
+                    floatArrayOf(  0f,   0f,    0f,    0f,    0f,    0f,    0f,    0f,    0f),
+                    floatArrayOf(  0f, -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f,  60f, 120f, 180f, 240f, 300f),
+                    floatArrayOf(60f, 120f, 180f, 240f, 300f, 360f),
+                    floatArrayOf( 0f,   0f,   0f,   0f,   0f,   0f),
+                    floatArrayOf( 0f,  60f, 120f, 180f, 240f, 300f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  -60f, -120f, -180f, -240f, -300f),
+                    floatArrayOf(-60f, -120f, -180f, -240f, -300f, -360f),
+                    floatArrayOf(  0f,    0f,    0f,    0f,    0f,    0f),
+                    floatArrayOf(  0f,  -60f, -120f, -180f, -240f, -300f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f,  90f, 180f, 270f,  -0f, - 90f, -180f, -270f),
+                    floatArrayOf(90f, 180f, 270f, 360f, -90f, -180f, -270f, -360f),
+                    floatArrayOf( 0f,   0f,   0f,   0f,   0f,    0f,    0f,    0f),
+                    floatArrayOf( 0f,  90f, 180f, 270f,  -0f, - 90f, -180f, -270f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, 120f, 240f,    0f, -120f, -240f),
+                    floatArrayOf(120f, 240f, 360f, -120f, -240f, -360f),
+                    floatArrayOf(  0f,   0f,   0f,    0f,    0f,    0f),
+                    floatArrayOf(  0f, 120f, 240f,    0f, -120f, -240f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, 90.0001f, 180.0001f, 270.0001f),
+                    floatArrayOf(   180f,     270f,      360f,       90f),
+                    floatArrayOf(     0f,       0f,        0f,        0f),
+                    floatArrayOf(0.0001f, 90.0001f, 180.0001f, 270.0001f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, -90.0001f, -180.0001f, -270.0001f),
+                    floatArrayOf(   -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(      0f,        0f,         0f,         0f),
+                    floatArrayOf(-0.0001f, -90.0001f, -180.0001f, -270.0001f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, 89.9999f, 179.9999f, 269.9999f),
+                    floatArrayOf(    180f,     270f,      360f,       90f),
+                    floatArrayOf(      0f,       0f,        0f,        0f),
+                    floatArrayOf(-0.0001f, 89.9999f, 179.9999f, 269.9999f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, -89.9999f, -179.9999f, -269.9999f),
+                    floatArrayOf(  -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(     0f,        0f,         0f,         0f),
+                    floatArrayOf(0.0001f, -89.9999f, -179.9999f, -269.9999f)
+                ),
+                // @formatter:on
+            ).flatten()
+            val argsT0Swapped = argsT0.map(::swapped)
+            val argsT25 = listOf(
+                // @formatter:off
+                createArgumentList(
+                    floatArrayOf(    0f,      0f),
+                    floatArrayOf(  0.5f,   -0.5f),
+                    floatArrayOf( 0.25f,   0.25f),
+                    floatArrayOf(0.125f, -0.125f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,   20f,   40f,   60f,   80f,  100f,  120f,  140f,  160f),
+                    floatArrayOf(  20f,   40f,   60f,   80f,  100f,  120f,  140f,  160f,  180f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf(   5f,   25f,   45f,   65f,   85f,  105f,  125f,  145f,  165f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 180f,  200f,  220f,  240f,  260f,  280f,  300f,  320f,  340f),
+                    floatArrayOf( 200f,  220f,  240f,  260f,  280f,  300f,  320f,  340f,  360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf( 185f,  205f,  225f,  245f,  265f,  285f,  305f,  325f,  345f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  -20f,  -40f,  -60f,  -80f, -100f, -120f, -140f, -160f),
+                    floatArrayOf( -20f,  -40f,  -60f,  -80f, -100f, -120f, -140f, -160f, -180f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf(  -5f,  -25f,  -45f,  -65f,  -85f, -105f, -125f, -145f, -165f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-180f, -200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f),
+                    floatArrayOf(-200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f, -360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf(-185f, -205f, -225f, -245f, -265f, -285f, -305f, -325f, -345f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,   40f,   80f,  120f,  160f,  200f,  240f,  280f,  320f),
+                    floatArrayOf(  40f,   80f,  120f,  160f,  200f,  240f,  280f,  320f,  360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf(  10f,   50f,   90f,  130f,  170f,  210f,  250f,  290f,  330f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f),
+                    floatArrayOf( -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f, -360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf( -10f,  -50f,  -90f, -130f, -170f, -210f, -250f, -290f, -330f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,   60f,  120f,  180f,  240f,  300f),
+                    floatArrayOf(  60f,  120f,  180f,  240f,  300f,  360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf(  15f,   75f,  135f,  195f,  255f,  315f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  -60f, -120f, -180f, -240f, -300f),
+                    floatArrayOf( -60f, -120f, -180f, -240f, -300f, -360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f, 0.25f, 0.25f, 0.25f),
+                    floatArrayOf( -15f,  -75f, -135f, -195f, -255f, -315f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,    90f,   180f,   270f,    -0f,   - 90f,   -180f,   -270f),
+                    floatArrayOf(  90f,   180f,   270f,   360f,   -90f,   -180f,   -270f,   -360f),
+                    floatArrayOf(0.25f,  0.25f,  0.25f,  0.25f,  0.25f,   0.25f,   0.25f,   0.25f),
+                    floatArrayOf(22.5f, 112.5f, 202.5f, 292.5f, -22.5f, -112.5f, -202.5f, -292.5f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  120f,  240f,     0f,  -120f,  -240f),
+                    floatArrayOf( 120f,  240f,  360f,  -120f,  -240f,  -360f),
+                    floatArrayOf(0.25f, 0.25f, 0.25f,  0.25f,  0.25f,  0.25f),
+                    floatArrayOf(  30f,  150f,  270f,   -30f,  -150f,  -270f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, 90.0001f, 180.0001f, 270.0001f),
+                    floatArrayOf(   180f,     270f,      360f,       90f),
+                    floatArrayOf(  0.25f,    0.25f,     0.25f,     0.25f),
+                    floatArrayOf(    45f,     135f,      225f,      315f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, -90.0001f, -180.0001f, -270.0001f),
+                    floatArrayOf(   -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(   0.25f,     0.25f,      0.25f,      0.25f),
+                    floatArrayOf(    -45f,     -135f,      -225f,      -315f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, 89.9999f, 179.9999f, 269.9999f),
+                    floatArrayOf(    180f,     270f,      360f,       90f),
+                    floatArrayOf(   0.25f,    0.25f,     0.25f,     0.25f),
+                    floatArrayOf(    -45f,      45f,      135f,      225f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, -89.9999f, -179.9999f, -269.9999f),
+                    floatArrayOf(  -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(  0.25f,     0.25f,      0.25f,      0.25f),
+                    floatArrayOf(    45f,      -45f,      -135f,      -225f)
+                ),
+                // @formatter:on
+            ).flatten()
+            val argsT25Swapped = argsT25.map(::swapped)
+            val argsT50 = listOf(
+                // @formatter:off
+                createArgumentList(
+                    floatArrayOf(   0f,     0f),
+                    floatArrayOf( 0.5f,  -0.5f),
+                    floatArrayOf( 0.5f,   0.5f),
+                    floatArrayOf(0.25f, -0.25f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  20f,  40f,  60f,  80f, 100f, 120f, 140f, 160f),
+                    floatArrayOf( 20f,  40f,  60f,  80f, 100f, 120f, 140f, 160f, 180f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f),
+                    floatArrayOf( 10f,  30f,  50f,  70f,  90f, 110f, 130f, 150f, 170f)
+                ),
+                createArgumentList(
+                    floatArrayOf(180f, 200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f),
+                    floatArrayOf(200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f, 360f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f),
+                    floatArrayOf(190f, 210f, 230f, 250f, 270f, 290f, 310f, 330f, 350f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, -20f, -40f, -60f,  -80f, -100f, -120f, -140f, -160f),
+                    floatArrayOf(-20f, -40f, -60f, -80f, -100f, -120f, -140f, -160f, -180f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f),
+                    floatArrayOf(-10f, -30f, -50f, -70f,  -90f, -110f, -130f, -150f, -170f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-180f, -200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f),
+                    floatArrayOf(-200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f, -360f),
+                    floatArrayOf( 0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f),
+                    floatArrayOf(-190f, -210f, -230f, -250f, -270f, -290f, -310f, -330f, -350f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f),
+                    floatArrayOf( 40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f, 360f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f),
+                    floatArrayOf( 20f,  60f, 100f, 140f, 180f, 220f, 260f, 300f, 340f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f),
+                    floatArrayOf(-40f, -80f, -120f, -160f, -200f, -240f, -280f, -320f, -360f),
+                    floatArrayOf(0.5f, 0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f),
+                    floatArrayOf(-20f, -60f, -100f, -140f, -180f, -220f, -260f, -300f, -340f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  60f, 120f, 180f, 240f, 300f),
+                    floatArrayOf( 60f, 120f, 180f, 240f, 300f, 360f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f),
+                    floatArrayOf( 30f,  90f, 150f, 210f, 270f, 330f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  -60f, -120f, -180f, -240f, -300f),
+                    floatArrayOf(-60f, -120f, -180f, -240f, -300f, -360f),
+                    floatArrayOf(0.5f,  0.5f,  0.5f,  0.5f,  0.5f,  0.5f),
+                    floatArrayOf(-30f,  -90f, -150f, -210f, -270f,  -330f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  90f, 180f, 270f,  -0f, - 90f, -180f, -270f),
+                    floatArrayOf( 90f, 180f, 270f, 360f, -90f, -180f, -270f, -360f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f, 0.5f, 0.5f,  0.5f,  0.5f,  0.5f),
+                    floatArrayOf( 45f, 135f, 225f, 315f, -45f, -135f, -225f, -315f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, 120f, 240f,    0f, -120f, -240f),
+                    floatArrayOf(120f, 240f, 360f, -120f, -240f, -360f),
+                    floatArrayOf(0.5f, 0.5f, 0.5f,  0.5f,  0.5f,  0.5f),
+                    floatArrayOf( 60f, 180f, 300f,  -60f, -180f, -300f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, 90.0001f, 180.0001f, 270.0001f),
+                    floatArrayOf(   180f,     270f,      360f,       90f),
+                    floatArrayOf(   0.5f,     0.5f,      0.5f,      0.5f),
+                    floatArrayOf(    90f,     180f,      270f,        0f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, -90.0001f, -180.0001f, -270.0001f),
+                    floatArrayOf(   -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(    0.5f,      0.5f,       0.5f,       0.5f),
+                    floatArrayOf(    -90f,     -180f,      -270f,         0f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, 89.9999f, 179.9999f, 269.9999f),
+                    floatArrayOf(    180f,     270f,      360f,       90f),
+                    floatArrayOf(    0.5f,     0.5f,      0.5f,      0.5f),
+                    floatArrayOf(    -90f,       0f,       90f,      180f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, -89.9999f, -179.9999f, -269.9999f),
+                    floatArrayOf(  -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(   0.5f,      0.5f,       0.5f,       0.5f),
+                    floatArrayOf(    90f,        0f,       -90f,      -180f)
+                ),
+                // @formatter:on
+            ).flatten()
+            val argsT50Swapped = argsT50.map(::swapped)
+            val argsT75 = listOf(
+                // @formatter:off
+                createArgumentList(
+                    floatArrayOf(    0f,      0f),
+                    floatArrayOf(  0.5f,   -0.5f),
+                    floatArrayOf( 0.75f,   0.75f),
+                    floatArrayOf(0.375f, -0.375f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,   20f,   40f,   60f,   80f,  100f,  120f,  140f,  160f),
+                    floatArrayOf(  20f,   40f,   60f,   80f,  100f,  120f,  140f,  160f,  180f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf(  15f,   35f,   55f,   75f,   95f,  115f,  135f,  155f,  175f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 180f,  200f,  220f,  240f,  260f,  280f,  300f,  320f,  340f),
+                    floatArrayOf( 200f,  220f,  240f,  260f,  280f,  300f,  320f,  340f,  360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf( 195f,  215f,  235f,  255f,  275f,  295f,  315f,  335f,  355f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  -20f,  -40f,  -60f,  -80f, -100f, -120f, -140f, -160f),
+                    floatArrayOf( -20f,  -40f,  -60f,  -80f, -100f, -120f, -140f, -160f, -180f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf( -15f,  -35f,  -55f,  -75f,  -95f, -115f, -135f, -155f, -175f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-180f, -200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f),
+                    floatArrayOf(-200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f, -360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf(-195f, -215f, -235f, -255f, -275f, -295f, -315f, -335f, -355f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,   40f,   80f,  120f,  160f,  200f,  240f,  280f,  320f),
+                    floatArrayOf(  40f,   80f,  120f,  160f,  200f,  240f,  280f,  320f,  360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf(  30f,   70f,  110f,  150f,  190f,  230f,  270f,  310f,  350f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f),
+                    floatArrayOf( -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f, -360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf( -30f,  -70f, -110f, -150f, -190f, -230f, -270f, -310f, -350f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,   60f,  120f,  180f,  240f,  300f),
+                    floatArrayOf(  60f,  120f,  180f,  240f,  300f,  360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf(  45f,  105f,  165f,  225f,  285f,  345f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  -60f, -120f, -180f, -240f, -300f),
+                    floatArrayOf( -60f, -120f, -180f, -240f, -300f, -360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f, 0.75f, 0.75f, 0.75f),
+                    floatArrayOf( -45f, -105f, -165f, -225f, -285f, -345f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,    90f,   180f,   270f,    -0f,   - 90f,   -180f,   -270f),
+                    floatArrayOf(  90f,   180f,   270f,   360f,   -90f,   -180f,   -270f,   -360f),
+                    floatArrayOf(0.75f,  0.75f,  0.75f,  0.75f,  0.75f,   0.75f,    0.75f,  0.75f),
+                    floatArrayOf(67.5f, 157.5f, 247.5f, 337.5f, -67.5f, -157.5f, -247.5f, -337.5f)
+                ),
+                createArgumentList(
+                    floatArrayOf(   0f,  120f,  240f,     0f,  -120f,  -240f),
+                    floatArrayOf( 120f,  240f,  360f,  -120f,  -240f,  -360f),
+                    floatArrayOf(0.75f, 0.75f, 0.75f,  0.75f,  0.75f,  0.75f),
+                    floatArrayOf(  90f,  210f,  330f,   -90f,  -210f,  -330f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, 90.0001f, 180.0001f, 270.0001f),
+                    floatArrayOf(   180f,     270f,      360f,       90f),
+                    floatArrayOf(  0.75f,    0.75f,     0.75f,     0.75f),
+                    floatArrayOf(   135f,     225f,      315f,       45f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, -90.0001f, -180.0001f, -270.0001f),
+                    floatArrayOf(   -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(   0.75f,     0.75f,      0.75f,      0.75f),
+                    floatArrayOf(   -135f,     -225f,      -315f,       -45f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, 89.9999f, 179.9999f, 269.9999f),
+                    floatArrayOf(    180f,     270f,      360f,       90f),
+                    floatArrayOf(   0.75f,    0.75f,     0.75f,     0.75f),
+                    floatArrayOf(   -135f,     -45f,       45f,      135f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, -89.9999f, -179.9999f, -269.9999f),
+                    floatArrayOf(  -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(  0.75f,     0.75f,      0.75f,      0.75f),
+                    floatArrayOf(   135f,       45f,       -45f,      -135f)
+                ),
+                // @formatter:on
+            ).flatten()
+            val argsT75Swapped = argsT75.map(::swapped)
+            val argsT100 = listOf(
+                // @formatter:off
+                createArgumentList(
+                    floatArrayOf(  0f,    0f),
+                    floatArrayOf(0.5f, -0.5f),
+                    floatArrayOf(  1f,    1f),
+                    floatArrayOf(0.5f, -0.5f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f, 20f, 40f, 60f,  80f, 100f, 120f, 140f, 160f),
+                    floatArrayOf(20f, 40f, 60f, 80f, 100f, 120f, 140f, 160f, 180f),
+                    floatArrayOf( 1f,  1f,  1f,  1f,   1f,   1f,   1f,   1f,   1f),
+                    floatArrayOf(20f, 40f, 60f, 80f, 100f, 120f, 140f, 160f, 180f)
+                ),
+                createArgumentList(
+                    floatArrayOf(180f, 200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f),
+                    floatArrayOf(200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f, 360f),
+                    floatArrayOf(  1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f),
+                    floatArrayOf(200f, 220f, 240f, 260f, 280f, 300f, 320f, 340f, 360f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, -20f, -40f, -60f,  -80f, -100f, -120f, -140f, -160f),
+                    floatArrayOf(-20f, -40f, -60f, -80f, -100f, -120f, -140f, -160f, -180f),
+                    floatArrayOf(  1f,   1f,   1f,   1f,    1f,    1f,    1f,    1f,    1f),
+                    floatArrayOf(-20f, -40f, -60f, -80f, -100f, -120f, -140f, -160f, -180f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-180f, -200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f),
+                    floatArrayOf(-200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f, -360f),
+                    floatArrayOf(   1f,    1f,    1f,    1f,    1f,    1f,    1f,    1f,    1f),
+                    floatArrayOf(-200f, -220f, -240f, -260f, -280f, -300f, -320f, -340f, -360f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f,  40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f),
+                    floatArrayOf(40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f, 360f),
+                    floatArrayOf( 1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f),
+                    floatArrayOf(40f,  80f, 120f, 160f, 200f, 240f, 280f, 320f, 360f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, -40f,  -80f, -120f, -160f, -200f, -240f, -280f, -320f),
+                    floatArrayOf(-40f, -80f, -120f, -160f, -200f, -240f, -280f, -320f, -360f),
+                    floatArrayOf(  1f,   1f,    1f,    1f,    1f,    1f,    1f,    1f,    1f),
+                    floatArrayOf(-40f, -80f, -120f, -160f, -200f, -240f, -280f, -320f, -360f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f,  60f, 120f, 180f, 240f, 300f),
+                    floatArrayOf(60f, 120f, 180f, 240f, 300f, 360f),
+                    floatArrayOf( 1f,   1f,   1f,   1f,   1f,   1f),
+                    floatArrayOf(60f, 120f, 180f, 240f, 300f, 360f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f,  -60f, -120f, -180f, -240f, -300f),
+                    floatArrayOf(-60f, -120f, -180f, -240f, -300f, -360f),
+                    floatArrayOf(  1f,    1f,    1f,    1f,    1f,    1f),
+                    floatArrayOf(-60f, -120f, -180f, -240f, -300f, -360f)
+                ),
+                createArgumentList(
+                    floatArrayOf( 0f,  90f, 180f, 270f,  -0f, - 90f, -180f, -270f),
+                    floatArrayOf(90f, 180f, 270f, 360f, -90f, -180f, -270f, -360f),
+                    floatArrayOf( 1f,   1f,   1f,   1f,   1f,    1f,    1f,    1f),
+                    floatArrayOf(90f, 180f, 270f, 360f, -90f, -180f, -270f, -360f)
+                ),
+                createArgumentList(
+                    floatArrayOf(  0f, 120f, 240f,    0f, -120f, -240f),
+                    floatArrayOf(120f, 240f, 360f, -120f, -240f, -360f),
+                    floatArrayOf(  1f,   1f,   1f,    1f,    1f,    1f),
+                    floatArrayOf(120f, 240f, 360f, -120f, -240f, -360f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, 90.0001f, 180.0001f, 270.0001f),
+                    floatArrayOf(   180f,     270f,      360f,       90f),
+                    floatArrayOf(     1f,       1f,        1f,        1f),
+                    floatArrayOf(   180f,     270f,      360f,       90f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, -90.0001f, -180.0001f, -270.0001f),
+                    floatArrayOf(   -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(      1f,        1f,         1f,         1f),
+                    floatArrayOf(   -180f,     -270f,      -360f,       -90f)
+                ),
+                createArgumentList(
+                    floatArrayOf(-0.0001f, 89.9999f, 179.9999f, 269.9999f),
+                    floatArrayOf(    180f,     270f,      360f,       90f),
+                    floatArrayOf(      1f,       1f,        1f,        1f),
+                    floatArrayOf(    180f,     270f,      360f,       90f)
+                ),
+                createArgumentList(
+                    floatArrayOf(0.0001f, -89.9999f, -179.9999f, -269.9999f),
+                    floatArrayOf(  -180f,     -270f,      -360f,       -90f),
+                    floatArrayOf(     1f,        1f,         1f,         1f),
+                    floatArrayOf(  -180f,     -270f,      -360f,       -90f)
+                ),
+                // @formatter:on
+            ).flatten()
+            val argsT100Swapped = argsT100.map(::swapped)
+
+            return listOf(
+                argsT0,
+                argsT0Swapped,
+                argsT25,
+                argsT25Swapped,
+                argsT50,
+                argsT50Swapped,
+                argsT75,
+                argsT75Swapped,
+                argsT100,
+                argsT100Swapped
+            ).flatten()
+        }
 
         @JvmStatic
         fun plusComplexArgs(): List<Arguments> = listOf(
