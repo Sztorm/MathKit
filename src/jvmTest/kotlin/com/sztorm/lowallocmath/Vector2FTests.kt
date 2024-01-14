@@ -50,6 +50,12 @@ class Vector2FTests {
         assertApproximation(expected.value, vector.value.normalized)
 
     @ParameterizedTest
+    @MethodSource("normalizedOrElseArgs")
+    fun normalizedOrElseReturnsCorrectValue(
+        vector: Wrapper<Vector2F>, defaultValue: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, vector.value.normalizedOrElse(defaultValue.value))
+
+    @ParameterizedTest
     @MethodSource("squaredDistanceToArgs")
     fun squaredDistanceToReturnsCorrectValue(
         vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Float
@@ -275,6 +281,30 @@ class Vector2FTests {
             ),
             Arguments.of(
                 Wrapper(Vector2F(0.000001f, 0.000001f)), Wrapper(Vector2F.ZERO)
+            ),
+        )
+
+        @JvmStatic
+        fun normalizedOrElseArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(3f, 4f)),
+                Wrapper(Vector2F(1f, 0f)),
+                Wrapper(Vector2F(0.6f, 0.8f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(1f, -2f)),
+                Wrapper(Vector2F(1f, 0f)),
+                Wrapper(Vector2F(0.4472136f, -0.8944272f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(0.000001f, 0.000001f)),
+                Wrapper(Vector2F(1f, 0f)),
+                Wrapper(Vector2F(1f, 0f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(0.000001f, 0.000001f)),
+                Wrapper(Vector2F(0f, 1f)),
+                Wrapper(Vector2F(0f, 1f))
             ),
         )
 
