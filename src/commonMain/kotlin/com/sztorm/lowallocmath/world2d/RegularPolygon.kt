@@ -272,7 +272,7 @@ interface RegularPolygon : RegularShape, Transformable {
         val rot1 = ComplexF.fromAngle(
             AngleF((sideCount and 1) * (-halfExteriorAngle) + -exteriorAngle * index)
         )
-        val rot1Conj = ComplexF.conjugate(rot1)
+        val rot1Conj = rot1.conjugate
         val p2: ComplexF = rot1 * rot90Deg * p1
         val (p2X, p2Y) = p2
 
@@ -293,7 +293,7 @@ interface RegularPolygon : RegularShape, Transformable {
     operator fun contains(point: Vector2F): Boolean {
         val sideCount: Int = this.sideCount
         val orientation: ComplexF = this.orientation
-        val rotConj = ComplexF.conjugate(orientation)
+        val rotConj: ComplexF = orientation.conjugate
         val halfSideLength: Float = sideLength * 0.5f
         val center: Vector2F = center
 

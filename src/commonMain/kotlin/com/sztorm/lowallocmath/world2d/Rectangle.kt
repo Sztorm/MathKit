@@ -220,28 +220,33 @@ interface Rectangle : RectangleShape, Transformable {
     )
 
     fun closestPointTo(point: Vector2F): Vector2F {
-        val center: Vector2F = this.center
-        val orientation: ComplexF = this.orientation
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
-        val p1 = ComplexF.conjugate(orientation) *
-                ComplexF(point.x - center.x, point.y - center.y)
-        val (p1X: Float, p1Y: Float) = p1
-        val p2 = ComplexF(
-            if (p1X.absoluteValue > halfWidth) halfWidth.withSign(p1X) else p1X,
-            if (p1Y.absoluteValue > halfHeight) halfHeight.withSign(p1Y) else p1Y
-        )
-        return center + (orientation * p2).toVector2F()
+        val (pX: Float, pY: Float) = point
+        val pcDiffX: Float = pX - cX
+        val pcDiffY: Float = pY - cY
+        val p1X: Float = rotR * pcDiffX + rotI * pcDiffY
+        val p1Y: Float = rotR * pcDiffY - rotI * pcDiffX
+        val p2X: Float = if (p1X.absoluteValue > halfWidth) halfWidth.withSign(p1X) else p1X
+        val p2Y: Float = if (p1Y.absoluteValue > halfHeight) halfHeight.withSign(p1Y) else p1Y
+
+        return Vector2F(rotR * p2X - rotI * p2Y + cX, rotI * p2X + rotR * p2Y + cY)
     }
 
     operator fun contains(point: Vector2F): Boolean {
-        val center: Vector2F = this.center
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
-        val p1 = ComplexF.conjugate(orientation) *
-                ComplexF(point.x - center.x, point.y - center.y)
+        val (pX: Float, pY: Float) = point
+        val pcDiffX: Float = pX - cX
+        val pcDiffY: Float = pY - cY
+        val p1X: Float = rotR * pcDiffX + rotI * pcDiffY
+        val p1Y: Float = rotR * pcDiffY - rotI * pcDiffX
 
-        return (p1.real.absoluteValue <= halfWidth) and (p1.imaginary.absoluteValue <= halfHeight)
+        return (p1X.absoluteValue <= halfWidth) and (p1Y.absoluteValue <= halfHeight)
     }
 
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)

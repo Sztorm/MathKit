@@ -388,14 +388,14 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     )
 
     fun closestPointTo(point: Vector2F): Vector2F {
-        val orientation: ComplexF = orientation
         val center: Vector2F = center
+        val orientation: ComplexF = orientation
         val cornerRadius: Float = cornerRadius
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
-        val p1 = ComplexF.conjugate(orientation) *
+        val p1: ComplexF = orientation.conjugate *
                 ComplexF(point.x - center.x, point.y - center.y)
         val (p1X: Float, p1Y: Float) = p1
         val p1XAbs: Float = p1X.absoluteValue
@@ -434,16 +434,18 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     }
 
     operator fun contains(point: Vector2F): Boolean {
-        val orientation: ComplexF = orientation
-        val center: Vector2F = center
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
         val cornerRadius: Float = cornerRadius
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
-        val p1 = ComplexF.conjugate(orientation) *
-                ComplexF(point.x - center.x, point.y - center.y)
-        val (p1X: Float, p1Y: Float) = p1
+        val (pX: Float, pY: Float) = point
+        val cpDiffX: Float = pX - cX
+        val cpDiffY: Float = pY - cY
+        val p1X: Float = rotR * cpDiffX + rotI * cpDiffY
+        val p1Y: Float = rotR * cpDiffY - rotI * cpDiffX
         val p1XAbs: Float = p1X.absoluteValue
         val p1YAbs: Float = p1Y.absoluteValue
         val cornerCenterX: Float = halfWidthMinusRadius.withSign(p1X)

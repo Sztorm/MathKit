@@ -228,7 +228,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         val inradius: Float = 0.28867513f * sideLength
         val orientation: ComplexF = orientation
         val center: Vector2F = center
-        val p1 = ComplexF.conjugate(orientation) *
+        val p1: ComplexF = orientation.conjugate *
                 ComplexF(point.x - center.x, point.y - center.y)
         val p1X: Float = p1.real
         val p1Y: Float = p1.imaginary
@@ -259,22 +259,23 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         if (p2X.absoluteValue >= halfSideLength) {
             val vertexPoint = ComplexF(halfSideLength.withSign(p2X), -inradius)
 
-            return (ComplexF.conjugate(add120DegRotation) * orientation * vertexPoint)
-                .toVector2F() + center
+            return (add120DegRotation.conjugate * orientation * vertexPoint).toVector2F() + center
         }
         val edgePoint = ComplexF(p2X, -inradius)
 
-        return (ComplexF.conjugate(add120DegRotation) * orientation * edgePoint)
-            .toVector2F() + center
+        return (add120DegRotation.conjugate * orientation * edgePoint).toVector2F() + center
     }
 
     operator fun contains(point: Vector2F): Boolean {
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
         val sideLength: Float = sideLength
         val minusInradius: Float = -0.28867513f * sideLength // sqrt(3) / 6 * a
-        val p1 = ComplexF.conjugate(orientation) *
-                ComplexF(point.x - center.x, point.y - center.y)
-        val p1X: Float = p1.real
-        val p1Y: Float = p1.imaginary
+        val (pX: Float, pY: Float) = point
+        val cpDiffX: Float = pX - cX
+        val cpDiffY: Float = pY - cY
+        val p1X: Float = rotR * cpDiffX + rotI * cpDiffY
+        val p1Y: Float = rotR * cpDiffY - rotI * cpDiffX
         //yAB = sqrt(3) * x + (sqrt(3) / 3) * a
         //yAC = -sqrt(3) * x + (sqrt(3) / 3) * a
         val ax: Float = 1.7320508f * p1X

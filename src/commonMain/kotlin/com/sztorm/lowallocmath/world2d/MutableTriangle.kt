@@ -224,7 +224,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         val (bX: Float, bY: Float) = _pointB
         val (cX: Float, cY: Float) = _pointC
         val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = ComplexF.conjugate(_orientation) * orientation
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
         val caX: Float = aX - centroidX
         val caY: Float = aY - centroidY
         val cbX: Float = bX - centroidX
@@ -397,7 +397,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         val (bX: Float, bY: Float) = _pointB
         val (cX: Float, cY: Float) = _pointC
         val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = ComplexF.conjugate(_orientation) * orientation
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
         val caX: Float = aX - centroidX
         val caY: Float = aY - centroidY
         val cbX: Float = bX - centroidX
@@ -684,7 +684,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         val (bX: Float, bY: Float) = _pointB
         val (cX: Float, cY: Float) = _pointC
         val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = ComplexF.conjugate(_orientation) * orientation
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
         val (pX: Float, pY: Float) = position
         val caX: Float = aX - centroidX
         val caY: Float = aY - centroidY
@@ -786,7 +786,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         val (bX: Float, bY: Float) = _pointB
         val (cX: Float, cY: Float) = _pointC
         val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = ComplexF.conjugate(_orientation) * orientation
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
         val (pX: Float, pY: Float) = position
         val caX: Float = aX - centroidX
         val caY: Float = aY - centroidY
