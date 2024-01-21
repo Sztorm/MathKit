@@ -403,17 +403,42 @@ value class ComplexF internal constructor(internal val data: Long) {
         }
 
         /**
+         * Returns a normalized linear interpolation of two rotations [a] and [b] with interpolator
+         * value of [t].
+         *
+         * The [a] and [b] arguments are expected to be normalized.
+         * The [t] argument is expected to be in range of 0..1.
+         *
+         * Given the constant velocity of [t], the linear velocity of interpolation is
+         * constant, but the angular velocity is not.
+         *
+         * This function can be used as an approximation of [slerp] when angle between [a] and [b]
+         * is small.
+         */
+        @JvmStatic
+        @Suppress("SpellCheckingInspection")
+        fun nlerp(a: ComplexF, b: ComplexF, t: Float): ComplexF {
+            val (aR: Float, aI: Float) = a
+            val (bR: Float, bI: Float) = b
+            val cR: Float = Float.lerp(aR, bR, t)
+            val cI: Float = Float.lerp(aI, bI, t)
+            val magnitude: Float = sqrt(cR * cR + cI * cI)
+            println(magnitude)
+            return if (magnitude > 0.00001f) ComplexF(cR / magnitude, cI / magnitude)
+            else if (t < 0.5f) a else b
+        }
+
+        /**
          * Returns a spherical linear interpolation of two rotations [a] and [b] with interpolator
          * value of [t].
          *
          * The [a] and [b] arguments are expected to be normalized.
+         * The function does not clamp the [t] parameter, however the most accurate results are
+         * returned when [t] is in range of 0..1.
          *
          * The function always returns the shortest interpolation path between [a] and [b].
          *
          * The angular velocity of interpolation is constant, given constant velocity of [t].
-         *
-         * The function does not clamp the [t] parameter, however the most accurate results are
-         * returned when [t] is in range of 0..1.
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection")
