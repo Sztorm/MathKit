@@ -99,6 +99,10 @@ value class ComplexF internal constructor(internal val data: Long) {
     inline val phaseAngle: AngleF
         get() = AngleF(atan2(imaginary, real))
 
+    /** Returns the conjugate of this complex number. **/
+    inline val conjugate
+        get() = ComplexF(real, -imaginary)
+
     /**
      * Returns a normalized copy of this complex number if this complex number [magnitude] is large
      * enough to safely normalize. Else returns [ZERO].

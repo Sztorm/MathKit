@@ -45,6 +45,11 @@ class ComplexFTests {
         )
 
     @ParameterizedTest
+    @MethodSource("conjugateArgs")
+    fun conjugateReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, complex.value.conjugate)
+
+    @ParameterizedTest
     @MethodSource("normalizedArgs")
     fun normalizedReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, complex.value.normalized)
@@ -118,10 +123,10 @@ class ComplexFTests {
         assertApproximation(expected, ComplexF.abs(complex.value), tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("conjugateArgs")
-    fun conjugateReturnsCorrectValue(
+    @MethodSource("companionConjugateArgs")
+    fun companionConjugateReturnsCorrectValue(
         complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, ComplexF.conjugate(complex.value), tolerance = 0.001f)
+    ) = assertApproximation(expected.value, ComplexF.conjugate(complex.value))
 
     @ParameterizedTest
     @MethodSource("expArgs")
@@ -305,6 +310,18 @@ class ComplexFTests {
             ),
             Arguments.of(
                 Wrapper(ComplexF(0f, 0f)), Wrapper(AngleF.fromRadians(0f))
+            ),
+        )
+
+        @JvmStatic
+        fun conjugateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(ComplexF(3f, -4f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(3f, -4f)),
+                Wrapper(ComplexF(3f, 4f))
             ),
         )
 
@@ -523,16 +540,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun conjugateArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(ComplexF(3f, 4f)),
-                Wrapper(ComplexF(3f, -4f))
-            ),
-            Arguments.of(
-                Wrapper(ComplexF(3f, -4f)),
-                Wrapper(ComplexF(3f, 4f))
-            ),
-        )
+        fun companionConjugateArgs(): List<Arguments> = conjugateArgs()
 
         @JvmStatic
         fun expArgs(): List<Arguments> = listOf(
