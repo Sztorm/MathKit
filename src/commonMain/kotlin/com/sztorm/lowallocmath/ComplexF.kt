@@ -332,6 +332,10 @@ value class ComplexF internal constructor(internal val data: Long) {
         fun ln(value: ComplexF) =
             ComplexF(ln(value.absoluteValue), atan2(value.imaginary, value.real))
 
+        /** Returns the logarithm of the specified complex number to the given [base]. **/
+        @JvmStatic
+        fun log(value: ComplexF, base: Float) = ln(value) / ln(base)
+
         /** Returns the cosine of the specified complex number. **/
         @JvmStatic
         fun cos(value: ComplexF): ComplexF {
