@@ -150,6 +150,11 @@ class ComplexFTests {
         assertApproximation(expected.value, ComplexF.log10(complex.value))
 
     @ParameterizedTest
+    @MethodSource("log2Args")
+    fun log2ReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, ComplexF.log2(complex.value))
+
+    @ParameterizedTest
     @MethodSource("cosArgs")
     fun cosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, ComplexF.cos(complex.value), tolerance = 0.001f)
@@ -603,6 +608,18 @@ class ComplexFTests {
             Arguments.of(
                 Wrapper(ComplexF(0f, -4f)),
                 Wrapper(ComplexF(0.6020599f, -0.6821882f))
+            ),
+        )
+
+        @JvmStatic
+        fun log2Args(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 0.5f)),
+                Wrapper(ComplexF(1.04373f, 0.353430f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0f, -4f)),
+                Wrapper(ComplexF(2f, -2.26618f))
             ),
         )
 

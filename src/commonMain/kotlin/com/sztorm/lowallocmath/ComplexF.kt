@@ -279,6 +279,7 @@ value class ComplexF internal constructor(internal val data: Long) {
 
     companion object {
         private const val LN10_INVERTED = 0.4342945f
+        private const val LN2_INVERTED = 1.442695f
 
         /** The number of bits used to represent an instance of [ComplexF] in a binary form. **/
         const val SIZE_BITS: Int = 64
@@ -343,6 +344,13 @@ value class ComplexF internal constructor(internal val data: Long) {
         fun log10(value: ComplexF) = ComplexF(
             ln(value.absoluteValue) * LN10_INVERTED,
             atan2(value.imaginary, value.real) * LN10_INVERTED
+        )
+
+        /** Returns the binary logarithm (base 2) of the specified complex number. **/
+        @JvmStatic
+        fun log2(value: ComplexF) = ComplexF(
+            ln(value.absoluteValue) * LN2_INVERTED,
+            atan2(value.imaginary, value.real) * LN2_INVERTED
         )
 
         /** Returns the cosine of the specified complex number. **/
