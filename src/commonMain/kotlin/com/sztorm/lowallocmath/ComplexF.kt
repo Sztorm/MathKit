@@ -327,6 +327,11 @@ value class ComplexF internal constructor(internal val data: Long) {
             return ComplexF(rExp * cos(i), rExp * sin(i))
         }
 
+        /** Returns the natural logarithm (base `E`) of the specified complex number. **/
+        @JvmStatic
+        fun ln(value: ComplexF) =
+            ComplexF(ln(value.absoluteValue), atan2(value.imaginary, value.real))
+
         /** Returns the cosine of the specified complex number. **/
         @JvmStatic
         fun cos(value: ComplexF): ComplexF {

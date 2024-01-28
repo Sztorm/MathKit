@@ -134,6 +134,11 @@ class ComplexFTests {
         assertApproximation(expected.value, ComplexF.exp(complex.value), tolerance = 0.001f)
 
     @ParameterizedTest
+    @MethodSource("lnArgs")
+    fun lnReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, ComplexF.ln(complex.value))
+
+    @ParameterizedTest
     @MethodSource("cosArgs")
     fun cosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, ComplexF.cos(complex.value), tolerance = 0.001f)
@@ -551,6 +556,18 @@ class ComplexFTests {
             Arguments.of(
                 Wrapper(ComplexF(0f, -4f)),
                 Wrapper(ComplexF(-0.65364f, 0.7568f))
+            ),
+        )
+
+        @JvmStatic
+        fun lnArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 0.5f)),
+                Wrapper(ComplexF(0.7234595f, 0.2449787f))
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0f, -4f)),
+                Wrapper(ComplexF(1.3862944f, -1.5707963f))
             ),
         )
 
