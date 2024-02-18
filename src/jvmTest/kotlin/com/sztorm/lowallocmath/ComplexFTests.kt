@@ -195,6 +195,11 @@ class ComplexFTests {
         assertApproximation(expected.value, ComplexF.asin(complex.value), tolerance = 0.001f)
 
     @ParameterizedTest
+    @MethodSource("atanArgs")
+    fun atanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, ComplexF.atan(complex.value), tolerance = 0.001f)
+
+    @ParameterizedTest
     @MethodSource("sqrtArgs")
     fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, ComplexF.sqrt(complex.value), tolerance = 0.001f)
@@ -726,6 +731,18 @@ class ComplexFTests {
             Arguments.of(
                 Wrapper(ComplexF(0f, -4f)),
                 Wrapper(ComplexF(0f, -2.094713f))
+            ),
+        )
+
+        @JvmStatic
+        fun atanArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 0.5f)),
+                Wrapper(ComplexF(1.1265564f, 0.09641562f)),
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0.00001f, -4f)),
+                Wrapper(ComplexF(1.5707957f, -0.2554182f))
             ),
         )
 

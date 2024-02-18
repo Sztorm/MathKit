@@ -433,6 +433,16 @@ value class ComplexF internal constructor(internal val data: Long) {
             return ComplexF(bI, -bR)
         }
 
+        /** Returns the arc tangent of the specified complex number. **/
+        @JvmStatic
+        fun atan(value: ComplexF): ComplexF {
+            val (vR: Float, vI: Float) = value
+            val (aR: Float, aI: Float) = ln(ComplexF(1f + vI, -vR))
+            val (bR: Float, bI: Float) = ln(ComplexF(1f - vI, vR))
+
+            return ComplexF(-0.5f * (aI - bI), 0.5f * (aR - bR))
+        }
+
         /** Returns the square root of the specified complex number. **/
         @JvmStatic
         fun sqrt(value: ComplexF): ComplexF {
