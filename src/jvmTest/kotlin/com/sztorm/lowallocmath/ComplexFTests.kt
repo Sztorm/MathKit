@@ -185,6 +185,11 @@ class ComplexFTests {
         assertApproximation(expected.value, ComplexF.tanh(complex.value), tolerance = 0.001f)
 
     @ParameterizedTest
+    @MethodSource("acosArgs")
+    fun acosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, ComplexF.acos(complex.value), tolerance = 0.001f)
+
+    @ParameterizedTest
     @MethodSource("sqrtArgs")
     fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, ComplexF.sqrt(complex.value), tolerance = 0.001f)
@@ -692,6 +697,18 @@ class ComplexFTests {
             Arguments.of(
                 Wrapper(ComplexF(0f, -4f)),
                 Wrapper(ComplexF(0f, -1.15782f))
+            ),
+        )
+
+        @JvmStatic
+        fun acosArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 0.5f)),
+                Wrapper(ComplexF(0.277754f, -1.361801f)),
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0f, -4f)),
+                Wrapper(ComplexF(1.5707963f, 2.0947125f))
             ),
         )
 

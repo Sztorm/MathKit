@@ -411,6 +411,17 @@ value class ComplexF internal constructor(internal val data: Long) {
             return ComplexF(tan.imaginary, -tan.real)
         }
 
+        /** Returns the arc sine of the specified complex number. **/
+        @JvmStatic
+        fun acos(value: ComplexF): ComplexF {
+            val (vR: Float, vI: Float) = value
+            val (aR: Float, aI: Float) =
+                sqrt(ComplexF(vI * vI - vR * vR + 1f, vR * vI * -2f))
+            val (bR: Float, bI: Float) = ln(ComplexF(vR - aI, vI + aR))
+
+            return ComplexF(bI, -bR)
+        }
+
         /** Returns the square root of the specified complex number. **/
         @JvmStatic
         fun sqrt(value: ComplexF): ComplexF {
@@ -423,12 +434,12 @@ value class ComplexF internal constructor(internal val data: Long) {
             if (i == 0f) {
                 return ComplexF(sqrt(r), 0f)
             }
-            val t: Float = sqrt((r.absoluteValue + value.absoluteValue) / 2)
+            val t: Float = sqrt((r.absoluteValue + value.absoluteValue) * 0.5f)
 
             return if (r >= 0) {
-                ComplexF(t, i / (2 * t))
+                ComplexF(t, i / (2f * t))
             } else {
-                ComplexF(i.absoluteValue / (2 * t), 1f.withSign(i) * t)
+                ComplexF(i.absoluteValue / (2f * t), 1f.withSign(i) * t)
             }
         }
 
@@ -453,7 +464,7 @@ value class ComplexF internal constructor(internal val data: Long) {
             val cR: Float = Float.lerp(aR, bR, t)
             val cI: Float = Float.lerp(aI, bI, t)
             val magnitude: Float = sqrt(cR * cR + cI * cI)
-            println(magnitude)
+
             return if (magnitude > 0.00001f) ComplexF(cR / magnitude, cI / magnitude)
             else if (t < 0.5f) a else b
         }
