@@ -411,13 +411,24 @@ value class ComplexF internal constructor(internal val data: Long) {
             return ComplexF(tan.imaginary, -tan.real)
         }
 
-        /** Returns the arc sine of the specified complex number. **/
+        /** Returns the arc cosine of the specified complex number. **/
         @JvmStatic
         fun acos(value: ComplexF): ComplexF {
             val (vR: Float, vI: Float) = value
             val (aR: Float, aI: Float) =
                 sqrt(ComplexF(vI * vI - vR * vR + 1f, vR * vI * -2f))
             val (bR: Float, bI: Float) = ln(ComplexF(vR - aI, vI + aR))
+
+            return ComplexF(bI, -bR)
+        }
+
+        /** Returns the arc sine of the specified complex number. **/
+        @JvmStatic
+        fun asin(value: ComplexF): ComplexF {
+            val (vR: Float, vI: Float) = value
+            val (aR: Float, aI: Float) =
+                sqrt(ComplexF(vI * vI - vR * vR + 1f, vR * vI * -2f))
+            val (bR: Float, bI: Float) = ln(ComplexF(aR - vI, aI + vR))
 
             return ComplexF(bI, -bR)
         }

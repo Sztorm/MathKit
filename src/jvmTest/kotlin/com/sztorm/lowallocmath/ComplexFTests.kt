@@ -190,6 +190,11 @@ class ComplexFTests {
         assertApproximation(expected.value, ComplexF.acos(complex.value), tolerance = 0.001f)
 
     @ParameterizedTest
+    @MethodSource("asinArgs")
+    fun asinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, ComplexF.asin(complex.value), tolerance = 0.001f)
+
+    @ParameterizedTest
     @MethodSource("sqrtArgs")
     fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
         assertApproximation(expected.value, ComplexF.sqrt(complex.value), tolerance = 0.001f)
@@ -709,6 +714,18 @@ class ComplexFTests {
             Arguments.of(
                 Wrapper(ComplexF(0f, -4f)),
                 Wrapper(ComplexF(1.5707963f, 2.0947125f))
+            ),
+        )
+
+        @JvmStatic
+        fun asinArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(ComplexF(2f, 0.5f)),
+                Wrapper(ComplexF(1.2930421f, 1.3618009f)),
+            ),
+            Arguments.of(
+                Wrapper(ComplexF(0f, -4f)),
+                Wrapper(ComplexF(0f, -2.094713f))
             ),
         )
 
