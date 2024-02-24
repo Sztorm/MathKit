@@ -456,6 +456,31 @@ class MutableSquare : Square, MutableTransformable {
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
+    override fun interpolated(to: Square, by: Float) = MutableSquare(
+        center = Vector2F.lerp(center, to.center, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        sideLength = Float.lerp(sideLength, to.sideLength, by)
+    )
+
+    fun interpolate(from: Square, to: Square, by: Float) {
+        val center = Vector2F.lerp(from.center, to.center, by)
+        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
+        val sideLength = Float.lerp(from.sideLength, to.sideLength, by)
+        val (cX: Float, cY: Float) = center
+        val (oR: Float, oI: Float) = orientation
+        val halfSideLength: Float = sideLength * 0.5f
+        val addendA: Float = halfSideLength * (oR + oI)
+        val addendB: Float = halfSideLength * (oR - oI)
+
+        _center = center
+        _orientation = orientation
+        _sideLength = sideLength
+        _pointA = Vector2F(cX + addendB, cY + addendA)
+        _pointB = Vector2F(cX - addendA, cY + addendB)
+        _pointC = Vector2F(cX - addendB, cY - addendA)
+        _pointD = Vector2F(cX + addendA, cY - addendB)
+    }
+
     override fun closestPointTo(point: Vector2F): Vector2F {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _orientation
