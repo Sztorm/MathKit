@@ -9,11 +9,7 @@ class Vector2ISubList internal constructor(
     private val fromIndex: Int,
     toIndex: Int
 ) : List<Vector2I>, RandomAccess {
-    private val _size: Int
-
-    init {
-        _size = toIndex - fromIndex
-    }
+    private val _size: Int = toIndex - fromIndex
 
     override val size: Int
         get() = _size
@@ -114,6 +110,12 @@ class Vector2ISubList internal constructor(
      * Throws an [IndexOutOfBoundsException] if the size of this list is less than 5.
      */
     inline operator fun component5(): Vector2I = elementAt(4)
+
+    override fun toString(): String = this.joinToString(
+        prefix = "[",
+        postfix = "]",
+        separator = ", "
+    ) { it.toString() }
 
     override operator fun contains(element: Vector2I): Boolean = indexOf(element) >= 0
 

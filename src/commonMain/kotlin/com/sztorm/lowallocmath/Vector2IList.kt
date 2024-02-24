@@ -78,6 +78,8 @@ value class Vector2IList internal constructor(
      */
     inline operator fun component5(): Vector2I = elementAt(4)
 
+    override fun toString(): String = array.toString()
+
     override operator fun contains(element: Vector2I): Boolean = array.contains(element)
 
     override operator fun get(index: Int): Vector2I = array[index]

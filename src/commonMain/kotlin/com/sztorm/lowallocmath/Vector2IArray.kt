@@ -980,6 +980,12 @@ value class Vector2IArray private constructor(private val data: LongArray) : Col
         return result as Array<Vector2I>
     }
 
+    override fun toString(): String = data.joinToString(
+        prefix = "[",
+        postfix = "]",
+        separator = ", "
+    ) { Vector2I(it).toString() }
+
     /** Returns `true` if [element] is found in the array. **/
     override operator fun contains(element: Vector2I): Boolean = data.contains(element.data)
 

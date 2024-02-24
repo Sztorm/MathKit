@@ -99,6 +99,11 @@ class Vector2ISubListTests {
     }
 
     @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(list: Vector2ISubList, expected: String) =
+        assertEquals(expected, list.toString())
+
+    @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(
         list: Vector2ISubList, element: Wrapper<Vector2I>, expected: Boolean
@@ -303,6 +308,38 @@ class Vector2ISubListTests {
                 Vector2IArray(4).asList().subList(1, 4),
                 -1, 3,
                 IndexOutOfBoundsException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                arrayOf(
+                    Vector2I(1, 0),
+                    Vector2I(-5, 8),
+                    Vector2I(2, -9),
+                    Vector2I(3, 4)
+                ).toVector2IArray().asList().subList(0, 4),
+                "[${Vector2I(1, 0)}, ${Vector2I(-5, 8)}, " +
+                        "${Vector2I(2, -9)}, ${Vector2I(3, 4)}]"
+            ),
+            Arguments.of(
+                arrayOf(
+                    Vector2I(1, 0),
+                    Vector2I(-5, 8),
+                    Vector2I(2, -9),
+                    Vector2I(3, 4)
+                ).toVector2IArray().asList().subList(1, 3),
+                "[${Vector2I(-5, 8)}, ${Vector2I(2, -9)}]"
+            ),
+            Arguments.of(
+                arrayOf(
+                    Vector2I(1, 0),
+                    Vector2I(-5, 8),
+                    Vector2I(2, -9),
+                    Vector2I(3, 4)
+                ).toVector2IArray().asList().subList(0, 0),
+                "[]"
             ),
         )
 

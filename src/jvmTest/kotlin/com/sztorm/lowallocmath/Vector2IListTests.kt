@@ -105,6 +105,11 @@ class Vector2IListTests {
     }
 
     @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(list: Wrapper<Vector2IList>, expected: String) =
+        assertEquals(expected, list.value.toString())
+
+    @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(
         list: Wrapper<Vector2IList>, element: Wrapper<Vector2I>, expected: Boolean
@@ -286,6 +291,14 @@ class Vector2IListTests {
                 Wrapper(Vector2IArray(4).asList()), 2, 1, IllegalArgumentException::class.java
             ),
         )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = Vector2IArrayTests.toStringArgs().map {
+            val (wrappedArray, expected) = it.get()
+            val array = (wrappedArray as Wrapper<*>).value as Vector2IArray
+
+            Arguments.of(Wrapper(array.asList()), expected)
+        }
 
         @JvmStatic
         fun containsArgs(): List<Arguments> {

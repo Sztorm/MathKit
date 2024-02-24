@@ -733,6 +733,11 @@ class Vector2FArrayTests {
         assertContentEquals(expected, array.value.toTypedArray())
 
     @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(array: Wrapper<Vector2FArray>, expected: String) =
+        assertEquals(expected, array.value.toString())
+
+    @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(
         array: Wrapper<Vector2FArray>, element: Wrapper<Vector2F>, expected: Boolean
@@ -1599,13 +1604,13 @@ class Vector2FArrayTests {
         fun randomArgs(): List<Arguments> {
             val array = Array(10) { Vector2F(it.toFloat(), 0f) }
             val seeds = intArrayOf(1234, 5678)
-            val expectedVals = arrayOf(
+            val expectedValues = arrayOf(
                 array.random(Random(seeds[0])).let { Wrapper(Vector2F(it.x, it.y)) },
                 array.random(Random(seeds[1])).let { Wrapper(Vector2F(it.x, it.y)) },
             )
             return listOf(
-                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[0]), expectedVals[0]),
-                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[1]), expectedVals[1]),
+                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[0]), expectedValues[0]),
+                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[1]), expectedValues[1]),
             )
         }
 
@@ -1613,13 +1618,13 @@ class Vector2FArrayTests {
         fun randomOrNullArgs(): List<Arguments> {
             val array = Array(10) { Vector2F(it.toFloat(), 0f) }
             val seeds = intArrayOf(1234, 5678)
-            val expectedVals = arrayOf(
+            val expectedValues = arrayOf(
                 array.random(Random(seeds[0])).let { Wrapper(Vector2F(it.x, it.y)) },
                 array.random(Random(seeds[1])).let { Wrapper(Vector2F(it.x, it.y)) },
             )
             return listOf(
-                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[0]), expectedVals[0]),
-                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[1]), expectedVals[1]),
+                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[0]), expectedValues[0]),
+                Arguments.of(Wrapper(array.toVector2FArray()), Random(seeds[1]), expectedValues[1]),
                 Arguments.of(
                     Wrapper(Vector2FArray(0)),
                     Random(42),
@@ -2291,6 +2296,32 @@ class Vector2FArrayTests {
                 Wrapper(Vector2FArray(4) { Vector2F(it.toFloat(), 0f) }),
                 Array(4) { Vector2F(it.toFloat(), 0f) }
             ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    arrayOf(
+                        Vector2F(1f, 0f),
+                        Vector2F(-5f, 8f),
+                        Vector2F(2f, -9f),
+                        Vector2F(3f, 4f)
+                    ).toVector2FArray(),
+                ),
+                "[${Vector2F(1f, 0f)}, ${Vector2F(-5f, 8f)}, " +
+                        "${Vector2F(2f, -9f)}, ${Vector2F(3f, 4f)}]"
+            ),
+            Arguments.of(
+                Wrapper(
+                    arrayOf(
+                        Vector2F(1f, 2f), Vector2F(-2f, -1f), Vector2F(10f, 10f)
+                    ).toVector2FArray()
+                ),
+                "[${Vector2F(1f, 2f)}, ${Vector2F(-2f, -1f)}, " +
+                        "${Vector2F(10f, 10f)}]"
+            ),
+            Arguments.of(Wrapper(Vector2FArray(0)), "[]"),
         )
 
         @JvmStatic

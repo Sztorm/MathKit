@@ -78,6 +78,8 @@ value class Vector2FList internal constructor(
      */
     inline operator fun component5(): Vector2F = elementAt(4)
 
+    override fun toString(): String = array.toString()
+
     override operator fun contains(element: Vector2F): Boolean = array.contains(element)
 
     override operator fun get(index: Int): Vector2F = array[index]

@@ -733,6 +733,11 @@ class Vector2IArrayTests {
         assertContentEquals(expected, array.value.toTypedArray())
 
     @ParameterizedTest
+    @MethodSource("toStringArgs")
+    fun toStringReturnsCorrectValue(array: Wrapper<Vector2IArray>, expected: String) =
+        assertEquals(expected, array.value.toString())
+
+    @ParameterizedTest
     @MethodSource("containsArgs")
     fun containsReturnsCorrectValue(
         array: Wrapper<Vector2IArray>, element: Wrapper<Vector2I>, expected: Boolean
@@ -1599,13 +1604,13 @@ class Vector2IArrayTests {
         fun randomArgs(): List<Arguments> {
             val array = Array(10) { Vector2I(it, 0) }
             val seeds = intArrayOf(1234, 5678)
-            val expectedVals = arrayOf(
+            val expectedValues = arrayOf(
                 array.random(Random(seeds[0])).let { Wrapper(Vector2I(it.x, it.y)) },
                 array.random(Random(seeds[1])).let { Wrapper(Vector2I(it.x, it.y)) },
             )
             return listOf(
-                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[0]), expectedVals[0]),
-                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[1]), expectedVals[1]),
+                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[0]), expectedValues[0]),
+                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[1]), expectedValues[1]),
             )
         }
 
@@ -1613,13 +1618,13 @@ class Vector2IArrayTests {
         fun randomOrNullArgs(): List<Arguments> {
             val array = Array(10) { Vector2I(it, 0) }
             val seeds = intArrayOf(1234, 5678)
-            val expectedVals = arrayOf(
+            val expectedValues = arrayOf(
                 array.random(Random(seeds[0])).let { Wrapper(Vector2I(it.x, it.y)) },
                 array.random(Random(seeds[1])).let { Wrapper(Vector2I(it.x, it.y)) },
             )
             return listOf(
-                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[0]), expectedVals[0]),
-                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[1]), expectedVals[1]),
+                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[0]), expectedValues[0]),
+                Arguments.of(Wrapper(array.toVector2IArray()), Random(seeds[1]), expectedValues[1]),
                 Arguments.of(
                     Wrapper(Vector2IArray(0)),
                     Random(42),
@@ -2291,6 +2296,31 @@ class Vector2IArrayTests {
                 Wrapper(Vector2IArray(4) { Vector2I(it, 0) }),
                 Array(4) { Vector2I(it, 0) }
             ),
+        )
+
+        @JvmStatic
+        fun toStringArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    arrayOf(
+                        Vector2I(1, 0),
+                        Vector2I(-5, 8),
+                        Vector2I(2, -9),
+                        Vector2I(3, 4)
+                    ).toVector2IArray(),
+                ),
+                "[${Vector2I(1, 0)}, ${Vector2I(-5, 8)}, " +
+                        "${Vector2I(2, -9)}, ${Vector2I(3, 4)}]"
+            ),
+            Arguments.of(
+                Wrapper(
+                    arrayOf(
+                        Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
+                    ).toVector2IArray()
+                ),
+                "[${Vector2I(1, 2)}, ${Vector2I(-2, -1)}, ${Vector2I(10, 10)}]"
+            ),
+            Arguments.of(Wrapper(Vector2IArray(0)), "[]"),
         )
 
         @JvmStatic
