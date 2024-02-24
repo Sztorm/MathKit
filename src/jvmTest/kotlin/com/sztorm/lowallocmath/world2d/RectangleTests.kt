@@ -163,15 +163,16 @@ class RectangleTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: Rectangle, b: Rectangle): Boolean =
-            a.center.isApproximately(b.center) and
-                    a.orientation.isApproximately(b.orientation) and
-                    a.width.isApproximately(b.width) and
-                    a.height.isApproximately(b.height) and
-                    a.pointA.isApproximately(b.pointA) and
-                    a.pointB.isApproximately(b.pointB) and
-                    a.pointC.isApproximately(b.pointC) and
-                    a.pointD.isApproximately(b.pointD)
+        fun areApproximatelyEqual(
+            a: Rectangle, b: Rectangle, tolerance: Float = 0.00001f
+        ): Boolean = a.center.isApproximately(b.center, tolerance) and
+                a.orientation.isApproximately(b.orientation, tolerance) and
+                a.width.isApproximately(b.width, tolerance) and
+                a.height.isApproximately(b.height, tolerance) and
+                a.pointA.isApproximately(b.pointA, tolerance) and
+                a.pointB.isApproximately(b.pointB, tolerance) and
+                a.pointC.isApproximately(b.pointC, tolerance) and
+                a.pointD.isApproximately(b.pointD, tolerance)
 
         @JvmStatic
         fun clone(rectangle: Rectangle) = rectangle.copy()

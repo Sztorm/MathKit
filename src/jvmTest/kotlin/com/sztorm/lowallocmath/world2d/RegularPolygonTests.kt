@@ -275,16 +275,17 @@ class RegularPolygonTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: RegularPolygon, b: RegularPolygon): Boolean =
-            a.center.isApproximately(b.center) and
-                    a.orientation.isApproximately(b.orientation) and
-                    a.sideLength.isApproximately(b.sideLength) and
-                    (a.points.size == b.points.size) and
-                    a.points.foldIndexed(true) { index, acc, point ->
-                        acc and point.isApproximately(b.points[index])
-                    } and
-                    a.circumradius.isApproximately(b.circumradius) and
-                    a.inradius.isApproximately(b.inradius)
+        fun areApproximatelyEqual(
+            a: RegularPolygon, b: RegularPolygon, tolerance: Float = 0.00001f
+        ): Boolean = a.center.isApproximately(b.center, tolerance) and
+                a.orientation.isApproximately(b.orientation, tolerance) and
+                a.sideLength.isApproximately(b.sideLength, tolerance) and
+                (a.points.size == b.points.size) and
+                a.points.foldIndexed(true) { index, acc, point ->
+                    acc and point.isApproximately(b.points[index], tolerance)
+                } and
+                a.circumradius.isApproximately(b.circumradius, tolerance) and
+                a.inradius.isApproximately(b.inradius, tolerance)
 
         @JvmStatic
         fun clone(polygon: RegularPolygon) = polygon.copy()

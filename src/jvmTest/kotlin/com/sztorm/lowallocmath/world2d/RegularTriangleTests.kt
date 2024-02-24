@@ -223,13 +223,14 @@ class RegularTriangleTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: RegularTriangle, b: RegularTriangle): Boolean =
-            a.center.isApproximately(b.center) and
-                    a.orientation.isApproximately(b.orientation) and
-                    a.sideLength.isApproximately(b.sideLength) and
-                    a.pointA.isApproximately(b.pointA) and
-                    a.pointB.isApproximately(b.pointB) and
-                    a.pointC.isApproximately(b.pointC)
+        fun areApproximatelyEqual(
+            a: RegularTriangle, b: RegularTriangle, tolerance: Float = 0.00001f
+        ): Boolean = a.center.isApproximately(b.center, tolerance) and
+                a.orientation.isApproximately(b.orientation, tolerance) and
+                a.sideLength.isApproximately(b.sideLength, tolerance) and
+                a.pointA.isApproximately(b.pointA, tolerance) and
+                a.pointB.isApproximately(b.pointB, tolerance) and
+                a.pointC.isApproximately(b.pointC, tolerance)
 
         @JvmStatic
         fun clone(triangle: RegularTriangle) = triangle.copy()

@@ -628,70 +628,78 @@ class TransformableTests {
             val annulusArgs = AnnulusTests.positionArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val circleArgs = CircleTests.positionArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val lineSegmentArgs = LineSegmentTests.positionArgs().map {
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val rayArgs = RayTests.positionArgs().map {
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val rectangleArgs = RectangleTests.positionArgs().map {
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val regularPolygonArgs = RegularPolygonTests.positionArgs().map {
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val regularTriangleArgs = RegularTriangleTests.positionArgs().map {
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val roundedRectangleArgs = RoundedRectangleTests.positionArgs().map {
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val squareArgs = SquareTests.positionArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val triangleArgs = TriangleTests.positionArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
@@ -714,7 +722,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -731,7 +739,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -751,7 +759,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -766,7 +774,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -784,14 +792,18 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableLineSegment(Vector2F(-8f, 5f), Vector2F(-6f, 1f)),
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableLineSegment(Vector2F(-3.5f, 3f), Vector2F(-1.5f, -1f)),
@@ -802,14 +814,14 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRay(Vector2F(-8f, 5f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRay(Vector2F(-3.5f, 3f), Vector2F(0.7071068f, -0.7071068f)),
@@ -819,7 +831,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -836,7 +848,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -856,7 +868,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -873,7 +887,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -894,7 +910,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -909,7 +927,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -928,7 +948,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -947,7 +969,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -970,7 +994,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -985,7 +1009,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -1003,7 +1027,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -1014,7 +1038,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -1057,7 +1081,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -1074,7 +1098,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -1094,7 +1118,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -1109,7 +1133,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -1127,14 +1151,18 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableLineSegment(Vector2F(-5f, 4f), Vector2F(-3f, 0f)),
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableLineSegment(Vector2F(-0.5f, 2f), Vector2F(1.5f, -2f)),
@@ -1145,14 +1173,14 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableRay(Vector2F(-4f, 2f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableRay(Vector2F(0.5f, 0f), Vector2F(0.7071068f, -0.7071068f)),
@@ -1162,7 +1190,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1179,7 +1207,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1199,7 +1227,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1216,7 +1246,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1237,7 +1269,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -1252,7 +1286,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -1271,7 +1307,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -1290,7 +1328,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -1313,7 +1353,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -1328,7 +1368,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -1346,7 +1386,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -1359,7 +1399,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -1420,70 +1460,78 @@ class TransformableTests {
             val annulusArgs = AnnulusTests.orientationArgs().map {
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val circleArgs = CircleTests.orientationArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val lineSegmentArgs = LineSegmentTests.orientationArgs().map {
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val rayArgs = RayTests.orientationArgs().map {
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val rectangleArgs = RectangleTests.orientationArgs().map {
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val regularPolygonArgs = RegularPolygonTests.orientationArgs().map {
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val regularTriangleArgs = RegularTriangleTests.orientationArgs().map {
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val roundedRectangleArgs = RoundedRectangleTests.orientationArgs().map {
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     *it.get()
                 )
             }
             val squareArgs = SquareTests.orientationArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
             val triangleArgs = TriangleTests.orientationArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     *it.get()
                 )
             }
@@ -1506,7 +1554,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -1523,7 +1571,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -1543,7 +1591,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -1558,7 +1606,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -1576,7 +1624,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableLineSegment(
@@ -1586,7 +1636,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableLineSegment(
@@ -1600,14 +1652,14 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRay(Vector2F(-4f, 3f), Vector2F(1f, 0f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRay(Vector2F(-4f, 3f), Vector2F(-0.42261827f, 0.9063078f)),
@@ -1617,7 +1669,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1634,7 +1686,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1654,7 +1706,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1671,7 +1725,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1692,7 +1748,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -1707,7 +1765,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -1726,7 +1786,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -1745,7 +1807,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -1768,7 +1832,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -1783,7 +1847,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -1801,7 +1865,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -1814,7 +1878,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -1867,7 +1931,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -1884,7 +1948,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -1904,7 +1968,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -1919,7 +1983,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -1937,7 +2001,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableLineSegment(
@@ -1947,7 +2013,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableLineSegment(
@@ -1961,14 +2029,14 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.70710677f, 0.70710677f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableRay(Vector2F(-4f, 3f), Vector2F(-0.9396926f, 0.34202015f)),
@@ -1978,7 +2046,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -1995,7 +2063,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2015,7 +2083,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2032,7 +2102,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2053,7 +2125,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -2068,7 +2142,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -2087,7 +2163,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -2106,7 +2184,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -2129,7 +2209,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -2144,7 +2224,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -2162,7 +2242,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -2175,7 +2255,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -2228,7 +2308,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2246,7 +2326,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2264,7 +2344,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2282,7 +2362,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2303,7 +2383,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -2319,7 +2399,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -2335,7 +2415,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -2351,7 +2431,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -2370,7 +2450,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -2381,7 +2463,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -2392,7 +2476,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-3f, 1f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -2403,7 +2489,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-3f, 1f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -2418,7 +2506,7 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -2426,7 +2514,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -2437,7 +2525,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -2445,7 +2533,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -2456,7 +2544,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2474,7 +2562,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2492,7 +2580,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2510,7 +2598,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2531,7 +2619,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2549,7 +2639,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2567,7 +2659,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2585,7 +2679,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -2607,7 +2703,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -2623,7 +2721,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -2639,7 +2739,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -2655,7 +2757,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -2675,7 +2779,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -2695,7 +2801,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -2715,7 +2823,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -2735,7 +2845,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -2759,7 +2871,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -2775,7 +2887,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -2791,7 +2903,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -2807,7 +2919,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -2826,7 +2938,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -2840,7 +2952,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -2854,7 +2966,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -2868,7 +2980,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -2923,7 +3035,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2941,7 +3053,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2959,7 +3071,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2977,7 +3089,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -2998,7 +3110,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3014,7 +3126,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3030,7 +3142,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3046,7 +3158,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3065,7 +3177,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -3076,7 +3190,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -3087,7 +3203,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-3f, 1f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -3098,7 +3216,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-3f, 1f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -3113,7 +3233,7 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -3124,7 +3244,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -3135,7 +3255,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -3143,7 +3263,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -3154,7 +3274,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3172,7 +3292,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3190,7 +3310,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3208,7 +3328,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3229,7 +3349,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3247,7 +3369,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3265,7 +3389,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3283,7 +3409,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3305,7 +3433,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -3321,7 +3451,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -3337,7 +3469,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -3353,7 +3487,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -3373,7 +3509,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -3393,7 +3531,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -3413,7 +3553,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -3433,7 +3575,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -3457,7 +3601,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -3473,7 +3617,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -3489,7 +3633,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -3505,7 +3649,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -3524,7 +3668,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -3538,7 +3682,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -3552,7 +3696,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -3566,7 +3710,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -3697,7 +3841,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -3714,7 +3858,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -3731,7 +3875,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -3748,7 +3892,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -3768,7 +3912,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3783,7 +3927,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3798,7 +3942,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3813,7 +3957,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -3831,14 +3975,18 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     2f,
                     MutableLineSegment(Vector2F(-5f, 5f), Vector2F(-1f, -3f)),
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     0.3f,
                     MutableLineSegment(
@@ -3847,14 +3995,18 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     1f,
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     -1f,
                     MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-4f, 3f)),
@@ -3865,28 +4017,28 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     2f,
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     0.3f,
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     1f,
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     -1f,
                     MutableRay(Vector2F(-4f, 3f), Vector2F(-0.7071068f, 0.7071068f)),
@@ -3896,7 +4048,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3913,7 +4065,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3930,7 +4082,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3947,7 +4099,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3967,7 +4119,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -3984,7 +4138,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4001,7 +4157,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4018,7 +4176,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4039,7 +4199,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4054,7 +4216,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4069,7 +4233,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4084,7 +4250,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4103,7 +4271,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4122,7 +4292,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4141,7 +4313,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4160,7 +4334,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4183,7 +4359,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -4198,7 +4374,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -4213,7 +4389,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -4228,7 +4404,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -4246,7 +4422,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -4259,7 +4435,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -4272,7 +4448,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -4283,7 +4459,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -4326,7 +4502,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -4344,7 +4520,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -4362,7 +4538,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -4380,7 +4556,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -4398,7 +4574,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -4419,7 +4595,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -4435,7 +4611,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -4451,7 +4627,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -4467,7 +4643,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -4483,7 +4659,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -4502,7 +4678,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     2f,
@@ -4510,7 +4688,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     0.3f,
@@ -4518,7 +4698,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     1f,
@@ -4526,7 +4708,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(6f, -3f)),
                     -1f,
@@ -4534,7 +4718,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-3f, 1f)),
                     2f,
@@ -4546,7 +4732,7 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     2f,
@@ -4554,7 +4740,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     0.3f,
@@ -4562,7 +4748,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     1f,
@@ -4570,7 +4756,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(6f, -3f)),
                     -1f,
@@ -4578,7 +4764,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 3f)),
                     2f,
@@ -4589,7 +4775,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4607,7 +4793,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4625,7 +4811,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4643,7 +4829,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4661,7 +4847,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4682,7 +4868,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4700,7 +4888,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4718,7 +4908,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4736,7 +4928,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4754,7 +4948,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -4776,7 +4972,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4792,7 +4990,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4808,7 +5008,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4824,7 +5026,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4840,7 +5044,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -4860,7 +5066,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4880,7 +5088,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4900,7 +5110,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4920,7 +5132,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4940,7 +5154,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -4964,7 +5180,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -4980,7 +5196,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -4996,7 +5212,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -5012,7 +5228,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -5028,7 +5244,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -5047,7 +5263,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5061,7 +5277,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5075,7 +5291,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5087,7 +5303,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5099,7 +5315,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5161,7 +5377,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -5179,7 +5395,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -5200,7 +5416,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -5216,7 +5432,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -5235,7 +5451,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5246,7 +5464,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -5261,7 +5481,7 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5269,7 +5489,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -5282,7 +5502,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5300,7 +5520,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5321,7 +5541,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5339,7 +5561,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5361,7 +5585,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -5377,7 +5603,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -5397,7 +5625,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -5417,7 +5647,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -5441,7 +5673,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -5457,7 +5689,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -5476,7 +5708,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5490,7 +5722,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -5545,7 +5777,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -5564,7 +5796,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -5583,7 +5815,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -5602,7 +5834,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -5624,7 +5856,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -5641,7 +5873,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -5658,7 +5890,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -5675,7 +5907,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -5695,7 +5927,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5707,7 +5941,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -5719,7 +5955,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5731,7 +5969,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5747,7 +5987,7 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5756,7 +5996,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -5767,7 +6007,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5776,7 +6016,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -5788,7 +6028,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5807,7 +6047,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5826,7 +6066,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5845,7 +6085,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5867,7 +6107,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5886,7 +6128,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5905,7 +6149,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5924,7 +6170,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -5947,7 +6195,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -5964,7 +6214,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -5981,7 +6233,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -5998,7 +6252,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -6019,7 +6275,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -6040,7 +6298,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -6061,7 +6321,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -6082,7 +6344,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -6107,7 +6371,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -6124,7 +6388,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -6141,7 +6405,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -6158,7 +6422,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -6178,7 +6442,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -6193,7 +6457,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -6208,7 +6472,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -6223,7 +6487,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -6279,7 +6543,7 @@ class TransformableTests {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -6297,7 +6561,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     AnnulusTests.Companion::clone,
-                    AnnulusTests.Companion::areApproximatelyEqual,
+                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
@@ -6318,7 +6582,7 @@ class TransformableTests {
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -6334,7 +6598,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     CircleTests.Companion::clone,
-                    CircleTests.Companion::areApproximatelyEqual,
+                    { a: Circle, b: Circle -> CircleTests.areApproximatelyEqual(a, b) },
                     MutableCircle(
                         center = Vector2F(1f, 2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
@@ -6353,7 +6617,9 @@ class TransformableTests {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -6364,7 +6630,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     LineSegmentTests.Companion::clone,
-                    LineSegmentTests.Companion::areApproximatelyEqual,
+                    { a: LineSegment, b: LineSegment ->
+                        LineSegmentTests.areApproximatelyEqual(a, b)
+                    },
                     MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -6379,7 +6647,7 @@ class TransformableTests {
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
@@ -6387,7 +6655,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RayTests.Companion::clone,
-                    RayTests.Companion::areApproximatelyEqual,
+                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
                     MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
@@ -6398,7 +6666,7 @@ class TransformableTests {
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -6416,7 +6684,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RectangleTests.Companion::clone,
-                    RectangleTests.Companion::areApproximatelyEqual,
+                    { a: Rectangle, b: Rectangle -> RectangleTests.areApproximatelyEqual(a, b) },
                     MutableRectangle(
                         center = Vector2F(-1f, -2f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -6437,7 +6705,9 @@ class TransformableTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -6455,7 +6725,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularPolygonTests.Companion::clone,
-                    RegularPolygonTests.Companion::areApproximatelyEqual,
+                    { a: RegularPolygon, b: RegularPolygon ->
+                        RegularPolygonTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularPolygon(
                         Vector2F(0f, 8f),
                         ComplexF.fromAngle(AngleF.fromDegrees(120f)),
@@ -6477,7 +6749,9 @@ class TransformableTests {
             val mutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -6493,7 +6767,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RegularTriangleTests.Companion::clone,
-                    RegularTriangleTests.Companion::areApproximatelyEqual,
+                    { a: RegularTriangle, b: RegularTriangle ->
+                        RegularTriangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRegularTriangle(
                         center = Vector2F(5f, 7f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
@@ -6513,7 +6789,9 @@ class TransformableTests {
             val mutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -6533,7 +6811,9 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     RoundedRectangleTests.Companion::clone,
-                    RoundedRectangleTests.Companion::areApproximatelyEqual,
+                    { a: RoundedRectangle, b: RoundedRectangle ->
+                        RoundedRectangleTests.areApproximatelyEqual(a, b)
+                    },
                     MutableRoundedRectangle(
                         center = Vector2F(-3f, -4f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
@@ -6557,7 +6837,7 @@ class TransformableTests {
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -6573,7 +6853,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     SquareTests.Companion::clone,
-                    SquareTests.Companion::areApproximatelyEqual,
+                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
                     MutableSquare(
                         center = Vector2F(3f, 1f),
                         orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -6592,7 +6872,7 @@ class TransformableTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),
@@ -6606,7 +6886,7 @@ class TransformableTests {
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
-                    TriangleTests.Companion::areApproximatelyEqual,
+                    { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
                     ),

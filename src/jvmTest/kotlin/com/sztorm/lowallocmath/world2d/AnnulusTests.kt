@@ -192,11 +192,11 @@ class AnnulusTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: Annulus, b: Annulus): Boolean =
-            a.center.isApproximately(b.center) and
-                    a.orientation.isApproximately(b.orientation) and
-                    a.outerRadius.isApproximately(b.outerRadius) and
-                    a.innerRadius.isApproximately(b.innerRadius)
+        fun areApproximatelyEqual(a: Annulus, b: Annulus, tolerance: Float = 0.00001f): Boolean =
+            a.center.isApproximately(b.center, tolerance) and
+                    a.orientation.isApproximately(b.orientation, tolerance) and
+                    a.outerRadius.isApproximately(b.outerRadius, tolerance) and
+                    a.innerRadius.isApproximately(b.innerRadius, tolerance)
 
         @JvmStatic
         fun clone(annulus: Annulus) = annulus.copy()

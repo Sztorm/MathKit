@@ -175,12 +175,12 @@ class TriangleTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: Triangle, b: Triangle): Boolean =
-            a.pointA.isApproximately(b.pointA) and
-                    a.pointB.isApproximately(b.pointB) and
-                    a.pointC.isApproximately(b.pointC) and
-                    a.centroid.isApproximately(b.centroid) and
-                    a.orientation.isApproximately(b.orientation)
+        fun areApproximatelyEqual(a: Triangle, b: Triangle, tolerance: Float = 0.00001f): Boolean =
+            a.pointA.isApproximately(b.pointA, tolerance) and
+                    a.pointB.isApproximately(b.pointB, tolerance) and
+                    a.pointC.isApproximately(b.pointC, tolerance) and
+                    a.centroid.isApproximately(b.centroid, tolerance) and
+                    a.orientation.isApproximately(b.orientation, tolerance)
 
         @JvmStatic
         fun clone(triangle: Triangle) = triangle.copy()

@@ -126,8 +126,10 @@ class LineSegmentTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: LineSegment, b: LineSegment): Boolean =
-            a.pointA.isApproximately(b.pointA) and a.pointB.isApproximately(b.pointB)
+        fun areApproximatelyEqual(
+            a: LineSegment, b: LineSegment, tolerance: Float = 0.00001f
+        ): Boolean = a.pointA.isApproximately(b.pointA, tolerance) and
+                a.pointB.isApproximately(b.pointB, tolerance)
 
         @JvmStatic
         fun clone(lineSegment: LineSegment) = lineSegment.copy()

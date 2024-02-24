@@ -177,10 +177,10 @@ class CircleTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: Circle, b: Circle): Boolean =
-            a.center.isApproximately(b.center) and
-                    a.orientation.isApproximately(b.orientation) and
-                    a.radius.isApproximately(b.radius)
+        fun areApproximatelyEqual(a: Circle, b: Circle, tolerance: Float = 0.00001f): Boolean =
+            a.center.isApproximately(b.center, tolerance) and
+                    a.orientation.isApproximately(b.orientation, tolerance) and
+                    a.radius.isApproximately(b.radius, tolerance)
 
         @JvmStatic
         fun clone(circle: Circle) = circle.copy()

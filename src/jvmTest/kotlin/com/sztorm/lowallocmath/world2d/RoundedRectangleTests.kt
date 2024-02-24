@@ -200,24 +200,25 @@ class RoundedRectangleTests {
 
     companion object {
         @JvmStatic
-        fun areApproximatelyEqual(a: RoundedRectangle, b: RoundedRectangle): Boolean =
-            a.center.isApproximately(b.center) and
-                    a.orientation.isApproximately(b.orientation) and
-                    a.width.isApproximately(b.width) and
-                    a.height.isApproximately(b.height) and
-                    a.cornerRadius.isApproximately(b.cornerRadius) and
-                    a.pointA.isApproximately(b.pointA) and
-                    a.pointB.isApproximately(b.pointB) and
-                    a.pointC.isApproximately(b.pointC) and
-                    a.pointD.isApproximately(b.pointD) and
-                    a.pointE.isApproximately(b.pointE) and
-                    a.pointF.isApproximately(b.pointF) and
-                    a.pointG.isApproximately(b.pointG) and
-                    a.pointH.isApproximately(b.pointH) and
-                    a.cornerCenterA.isApproximately(b.cornerCenterA) and
-                    a.cornerCenterB.isApproximately(b.cornerCenterB) and
-                    a.cornerCenterC.isApproximately(b.cornerCenterC) and
-                    a.cornerCenterD.isApproximately(b.cornerCenterD)
+        fun areApproximatelyEqual(
+            a: RoundedRectangle, b: RoundedRectangle, tolerance: Float = 0.00001f
+        ): Boolean = a.center.isApproximately(b.center, tolerance) and
+                a.orientation.isApproximately(b.orientation, tolerance) and
+                a.width.isApproximately(b.width, tolerance) and
+                a.height.isApproximately(b.height, tolerance) and
+                a.cornerRadius.isApproximately(b.cornerRadius, tolerance) and
+                a.pointA.isApproximately(b.pointA, tolerance) and
+                a.pointB.isApproximately(b.pointB, tolerance) and
+                a.pointC.isApproximately(b.pointC, tolerance) and
+                a.pointD.isApproximately(b.pointD, tolerance) and
+                a.pointE.isApproximately(b.pointE, tolerance) and
+                a.pointF.isApproximately(b.pointF, tolerance) and
+                a.pointG.isApproximately(b.pointG, tolerance) and
+                a.pointH.isApproximately(b.pointH, tolerance) and
+                a.cornerCenterA.isApproximately(b.cornerCenterA, tolerance) and
+                a.cornerCenterB.isApproximately(b.cornerCenterB, tolerance) and
+                a.cornerCenterC.isApproximately(b.cornerCenterC, tolerance) and
+                a.cornerCenterD.isApproximately(b.cornerCenterD, tolerance)
 
         @JvmStatic
         fun clone(rectangle: RoundedRectangle) = rectangle.copy()
