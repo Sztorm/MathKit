@@ -423,7 +423,7 @@ class CircleTests {
                     center = Vector2F(1f, 2f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
                     radius = 4f
-                ),
+                )
             ),
             Arguments.of(
                 MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f),
@@ -461,7 +461,7 @@ class CircleTests {
                     center = Vector2F(-1f, 7f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
                     radius = 5f
-                ),
+                )
             ),
             Arguments.of(
                 MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f),

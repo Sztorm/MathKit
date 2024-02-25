@@ -567,7 +567,7 @@ class AnnulusTests {
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
                     outerRadius = 8f,
                     innerRadius = 1f
-                ),
+                )
             ),
             Arguments.of(
                 MutableAnnulus(

@@ -53,6 +53,30 @@ class LineSegmentTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(
+        lineSegment: LineSegment, to: LineSegment, by: Float, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, lineSegment.interpolated(to, by))
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        from: LineSegment,
+        to: LineSegment,
+        by: Float,
+        expected: MutableLineSegment
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, lineSegment.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         lineSegment: LineSegment, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -249,6 +273,52 @@ class LineSegmentTests {
                 defaultLineSegmentArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultLineSegmentArgs =
+                mutableLineSegmentArgs.mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                0.5f,
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+            ),
+            Arguments.of(
+                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                0f,
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+            ),
+            Arguments.of(
+                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                1f,
+                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f))
+            ),
+            Arguments.of(
+                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                0.5f,
+                MutableLineSegment(Vector2F(-3f, 4f), Vector2F(0f, 2f))
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {

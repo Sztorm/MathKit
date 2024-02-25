@@ -293,6 +293,11 @@ interface LineSegment : Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): LineSegment =
         transformedToImpl(position, orientation)
 
+    fun interpolated(to: LineSegment, by: Float): LineSegment = copy(
+        pointA = Vector2F.lerp(pointA, to.pointA, by),
+        pointB = Vector2F.lerp(pointB, to.pointB, by)
+    )
+
     fun closestPointTo(point: Vector2F): Vector2F {
         val pointA: Vector2F = this.pointA
         val ab: Vector2F = pointB - pointA

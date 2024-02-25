@@ -482,6 +482,16 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB = Vector2F(pX - halfLength * rotR, pY - halfLength * rotI)
     }
 
+    override fun interpolated(to: LineSegment, by: Float) = MutableLineSegment(
+        pointA = Vector2F.lerp(_pointA, to.pointA, by),
+        pointB = Vector2F.lerp(_pointB, to.pointB, by)
+    )
+
+    fun interpolate(from: LineSegment, to: LineSegment, by: Float) {
+        _pointA = Vector2F.lerp(from.pointA, to.pointA, by)
+        _pointB = Vector2F.lerp(from.pointB, to.pointB, by)
+    }
+
     override fun closestPointTo(point: Vector2F): Vector2F {
         val pointA: Vector2F = _pointA
         val ab: Vector2F = _pointB - pointA
