@@ -595,11 +595,7 @@ class SquareTests {
         @JvmStatic
         fun interpolateArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableSquare(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    sideLength = 1f
-                ),
+                MutableSquare(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -618,11 +614,7 @@ class SquareTests {
                 )
             ),
             Arguments.of(
-                MutableSquare(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    sideLength = 1f
-                ),
+                MutableSquare(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -641,11 +633,7 @@ class SquareTests {
                 )
             ),
             Arguments.of(
-                MutableSquare(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    sideLength = 1f
-                ),
+                MutableSquare(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
@@ -664,11 +652,7 @@ class SquareTests {
                 )
             ),
             Arguments.of(
-                MutableSquare(
-                    center = Vector2F.ZERO,
-                    orientation = ComplexF.ONE,
-                    sideLength = 1f
-                ),
+                MutableSquare(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f),
                 MutableSquare(
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),

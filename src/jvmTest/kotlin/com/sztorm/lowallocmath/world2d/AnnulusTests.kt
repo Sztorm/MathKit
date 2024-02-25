@@ -82,7 +82,7 @@ class AnnulusTests {
 
     @ParameterizedTest
     @MethodSource("interpolateArgs")
-    fun interpolateMutatesSquareCorrectly(
+    fun interpolateMutatesAnnulusCorrectly(
         annulus: MutableAnnulus, from: Annulus, to: Annulus, by: Float, expected: MutableAnnulus
     ) = assertImmutabilityOf(from) {
         assertImmutabilityOf(to) {
@@ -479,6 +479,7 @@ class AnnulusTests {
                 Arguments.of(*it.get().drop(1).toTypedArray())
             }
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
+
             return listOf(
                 mutableAnnulusArgs,
                 defaultAnnulusArgs

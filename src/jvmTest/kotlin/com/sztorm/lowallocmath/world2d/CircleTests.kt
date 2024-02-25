@@ -64,6 +64,25 @@ class CircleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(circle: Circle, to: Circle, by: Float, expected: Circle) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(to) {
+                assertApproximation(expected, circle.interpolated(to, by))
+            }
+        }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesCircleCorrectly(
+        circle: MutableCircle, from: Circle, to: Circle, by: Float, expected: MutableCircle
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, circle.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         circle: Circle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -371,6 +390,99 @@ class CircleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableCircleArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                0.5f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+            ),
+            Arguments.of(
+                MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+                0f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+                1f,
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+            ),
+            Arguments.of(
+                MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(-1f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(244f)),
+                    radius = 5f
+                ),
+                0.5f,
+                MutableCircle(
+                    center = Vector2F(0f, 4.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(167f)),
+                    radius = 4.5f
+                )
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
