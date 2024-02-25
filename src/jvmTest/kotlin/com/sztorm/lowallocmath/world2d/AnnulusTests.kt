@@ -71,6 +71,26 @@ class AnnulusTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(
+        annulus: Annulus, to: Annulus, by: Float, expected: Annulus
+    ) = assertImmutabilityOf(annulus) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, annulus.interpolated(to, by))
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesSquareCorrectly(
+        annulus: MutableAnnulus, from: Annulus, to: Annulus, by: Float, expected: MutableAnnulus
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, annulus.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         annulus: Annulus, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -452,6 +472,130 @@ class AnnulusTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableAnnulusArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
+            return listOf(
+                mutableAnnulusArgs,
+                defaultAnnulusArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    outerRadius = 1f,
+                    innerRadius = 0.5f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                0.5f,
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    outerRadius = 1f,
+                    innerRadius = 0.5f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                0f,
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    outerRadius = 1f,
+                    innerRadius = 0.5f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                1f,
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    outerRadius = 1f,
+                    innerRadius = 0.5f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                ),
+                0.5f,
+                MutableAnnulus(
+                    center = Vector2F(2.5f, 2.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-37.5f)),
+                    outerRadius = 6f,
+                    innerRadius = 1.5f
+                )
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {

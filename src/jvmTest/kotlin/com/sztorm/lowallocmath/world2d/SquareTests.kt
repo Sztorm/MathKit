@@ -615,7 +615,7 @@ class SquareTests {
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
-                ),
+                )
             ),
             Arguments.of(
                 MutableSquare(
@@ -638,7 +638,7 @@ class SquareTests {
                     center = Vector2F(3f, 1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
                     sideLength = 4f
-                ),
+                )
             ),
             Arguments.of(
                 MutableSquare(
@@ -661,7 +661,7 @@ class SquareTests {
                     center = Vector2F(8f, -2f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
                     sideLength = 3f
-                ),
+                )
             ),
             Arguments.of(
                 MutableSquare(
@@ -684,7 +684,7 @@ class SquareTests {
                     center = Vector2F(5.5f, -0.5f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(142.5f)),
                     sideLength = 3.5f
-                ),
+                )
             ),
         )
 

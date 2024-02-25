@@ -457,9 +457,9 @@ class MutableSquare : Square, MutableTransformable {
     }
 
     override fun interpolated(to: Square, by: Float) = MutableSquare(
-        center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
-        sideLength = Float.lerp(sideLength, to.sideLength, by)
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        sideLength = Float.lerp(_sideLength, to.sideLength, by)
     )
 
     fun interpolate(from: Square, to: Square, by: Float) {

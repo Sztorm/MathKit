@@ -5,6 +5,7 @@ package com.sztorm.lowallocmath.world2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.lerp
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
@@ -162,6 +163,13 @@ interface Annulus : AnnulusShape, Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): Annulus = copy(
         center = position,
         orientation = orientation
+    )
+
+    fun interpolated(to: Annulus, by: Float): Annulus = copy(
+        center = Vector2F.lerp(center, to.center, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        outerRadius = Float.lerp(outerRadius, to.outerRadius, by),
+        innerRadius = Float.lerp(innerRadius, to.innerRadius, by)
     )
 
     fun closestPointTo(point: Vector2F): Vector2F {
