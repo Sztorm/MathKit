@@ -258,6 +258,20 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction = orientation.toVector2F()
     }
 
+    override fun interpolated(to: Ray, by: Float) = MutableRay(
+        origin = Vector2F.lerp(_origin, to.origin, by),
+        direction = ComplexF
+            .slerp(_direction.toComplexF(), to.direction.toComplexF(), by)
+            .toVector2F()
+    )
+
+    fun interpolate(from: Ray, to: Ray, by: Float) {
+        _origin = Vector2F.lerp(from.origin, to.origin, by)
+        _direction = ComplexF
+            .slerp(from.direction.toComplexF(), to.direction.toComplexF(), by)
+            .toVector2F()
+    }
+
     override fun closestPointTo(point: Vector2F): Vector2F {
         val origin: Vector2F = _origin
         val direction: Vector2F = _direction

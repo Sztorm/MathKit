@@ -42,6 +42,25 @@ class RayTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(ray: Ray, to: Ray, by: Float, expected: Ray) =
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(to) {
+                assertApproximation(expected, ray.interpolated(to, by))
+            }
+        }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesRayCorrectly(
+        ray: MutableRay, from: Ray, to: Ray, by: Float, expected: MutableRay
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, ray.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         ray: Ray, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -203,6 +222,51 @@ class RayTests {
                 defaultRayArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableRayArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
+
+            return listOf(
+                mutableRayArgs,
+                defaultRayArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRay(origin = Vector2F.ZERO, direction = Vector2F(1f, 0f)),
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f)),
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f)),
+                0.5f,
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f))
+            ),
+            Arguments.of(
+                MutableRay(origin = Vector2F.ZERO, direction = Vector2F(1f, 0f)),
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f)),
+                MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                0f,
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f))
+            ),
+            Arguments.of(
+                MutableRay(origin = Vector2F.ZERO, direction = Vector2F(1f, 0f)),
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f)),
+                MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                1f,
+                MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f))
+            ),
+            Arguments.of(
+                MutableRay(origin = Vector2F.ZERO, direction = Vector2F(1f, 0f)),
+                MutableRay(Vector2F(3f, 2f), Vector2F(0f, 1f)),
+                MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
+                0.5f,
+                MutableRay(Vector2F(-0.5f, 2.5f), Vector2F(0.9238795f, 0.38268343f))
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {

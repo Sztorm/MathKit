@@ -154,6 +154,13 @@ interface Ray : Transformable {
         direction = orientation.toVector2F()
     )
 
+    fun interpolated(to: Ray, by: Float): Ray = copy(
+        origin = Vector2F.lerp(origin, to.origin, by),
+        direction = ComplexF
+            .slerp(direction.toComplexF(), to.direction.toComplexF(), by)
+            .toVector2F()
+    )
+
     fun closestPointTo(point: Vector2F): Vector2F {
         val origin: Vector2F = this.origin
         val direction: Vector2F = this.direction
