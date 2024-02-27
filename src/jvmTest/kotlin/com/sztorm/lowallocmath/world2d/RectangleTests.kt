@@ -79,6 +79,30 @@ class RectangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(
+        rectangle: Rectangle, to: Rectangle, by: Float, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, rectangle.interpolated(to, by))
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        from: Rectangle,
+        to: Rectangle,
+        by: Float,
+        expected: MutableRectangle
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, rectangle.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         rectangle: Rectangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -437,6 +461,131 @@ class RectangleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableRectangleArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    width = 1f,
+                    height = 0.5f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                0.5f,
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    width = 1f,
+                    height = 0.5f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                0f,
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    width = 1f,
+                    height = 0.5f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                1f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    width = 1f,
+                    height = 0.5f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                0.5f,
+                MutableRectangle(
+                    center = Vector2F(-1.5f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(82.5f)),
+                    width = 3.5f,
+                    height = 3.5f
+                )
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {

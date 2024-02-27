@@ -1,9 +1,6 @@
 package com.sztorm.lowallocmath.world2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
+import com.sztorm.lowallocmath.*
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
@@ -561,6 +558,40 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointB = Vector2F(addendX1B - addendX2, addendY1A - addendY2)
         _pointC = Vector2F(addendX1B + addendX2, addendY1B - addendY2)
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
+    }
+
+    override fun interpolated(to: Rectangle, by: Float) = MutableRectangle(
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        width = Float.lerp(_width, to.width, by),
+        height = Float.lerp(_height, to.height, by)
+    )
+
+    fun interpolate(from: Rectangle, to: Rectangle, by: Float) {
+        val center = Vector2F.lerp(from.center, to.center, by)
+        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
+        val width = Float.lerp(from.width, to.width, by)
+        val height = Float.lerp(from.height, to.height, by)
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val addendX1: Float = rotR * halfWidth
+        val addendX2: Float = rotI * halfHeight
+        val addendY1: Float = rotR * halfHeight
+        val addendY2: Float = rotI * halfWidth
+        val addendSumX1X2: Float = addendX1 + addendX2
+        val addendDiffX1X2: Float = addendX1 - addendX2
+        val addendSumY1Y2: Float = addendY1 + addendY2
+        val addendDiffY1Y2: Float = addendY1 - addendY2
+        _center = center
+        _orientation = orientation
+        _width = width
+        _height = height
+        _pointA = Vector2F(cX + addendDiffX1X2, cY + addendSumY1Y2)
+        _pointB = Vector2F(cX - addendSumX1X2, cY + addendDiffY1Y2)
+        _pointC = Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2)
+        _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {

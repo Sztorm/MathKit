@@ -471,7 +471,6 @@ class MutableSquare : Square, MutableTransformable {
         val halfSideLength: Float = sideLength * 0.5f
         val addendA: Float = halfSideLength * (oR + oI)
         val addendB: Float = halfSideLength * (oR - oI)
-
         _center = center
         _orientation = orientation
         _sideLength = sideLength
