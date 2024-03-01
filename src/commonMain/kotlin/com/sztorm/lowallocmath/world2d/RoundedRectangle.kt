@@ -1,9 +1,6 @@
 package com.sztorm.lowallocmath.world2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
+import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
 fun RoundedRectangle(
@@ -385,6 +382,14 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): RoundedRectangle = copy(
         center = position,
         orientation = orientation
+    )
+
+    fun interpolated(to: RoundedRectangle, by: Float): RoundedRectangle = copy(
+        center = Vector2F.lerp(center, to.center, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        width = Float.lerp(width, to.width, by),
+        height = Float.lerp(height, to.height, by),
+        cornerRadius = Float.lerp(cornerRadius, to.cornerRadius, by)
     )
 
     fun closestPointTo(point: Vector2F): Vector2F {

@@ -1,9 +1,6 @@
 package com.sztorm.lowallocmath.world2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
+import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
 class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
@@ -991,6 +988,65 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val addendDiffAD: Float = addendA - addendD
         _center = position
         _orientation = orientation
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
+
+    override fun interpolated(to: RoundedRectangle, by: Float) = MutableRoundedRectangle(
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        width = Float.lerp(_width, to.width, by),
+        height = Float.lerp(_height, to.height, by),
+        cornerRadius = Float.lerp(_cornerRadius, to.cornerRadius, by)
+    )
+
+    fun interpolate(from: RoundedRectangle, to: RoundedRectangle, by: Float) {
+        val center = Vector2F.lerp(from.center, to.center, by)
+        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
+        val width = Float.lerp(from.width, to.width, by)
+        val height = Float.lerp(from.height, to.height, by)
+        val cornerRadius = Float.lerp(from.cornerRadius, to.cornerRadius, by)
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val addendA: Float = rotR * halfWidthMinusRadius
+        val addendB: Float = rotI * halfWidthMinusRadius
+        val addendC: Float = rotR * halfHeightMinusRadius
+        val addendD: Float = rotI * halfHeightMinusRadius
+        val addendE: Float = rotR * halfWidth
+        val addendF: Float = rotI * halfWidth
+        val addendG: Float = rotR * halfHeight
+        val addendH: Float = rotI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _center = center
+        _orientation = orientation
+        _width = width
+        _height = height
+        _cornerRadius = cornerRadius
         _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
         _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
         _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
