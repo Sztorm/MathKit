@@ -452,6 +452,12 @@ interface Triangle : TriangleShape, Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): Triangle =
         transformedToImpl(position, orientation)
 
+    fun interpolated(to: Triangle, by: Float): Triangle = copy(
+        pointA = Vector2F.lerp(pointA, to.pointA, by),
+        pointB = Vector2F.lerp(pointB, to.pointB, by),
+        pointC = Vector2F.lerp(pointC, to.pointC, by)
+    )
+
     fun closestPointTo(point: Vector2F): Vector2F {
         val a: Vector2F = pointA
         val b: Vector2F = pointB

@@ -19,8 +19,8 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointA = pointA
         _pointB = pointB
         _pointC = pointC
-        _centroid = (_pointA + _pointB + _pointC) * 0.3333333f
-        _orientation = (_pointA - centroid).normalized.toComplexF()
+        _centroid = (pointA + pointB + pointC) * 0.3333333f
+        _orientation = (pointA - _centroid).normalized.toComplexF()
     }
 
     private constructor(
@@ -799,6 +799,23 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointC = Vector2F(ccX * rotR - ccY * rotI + pX, ccY * rotR + ccX * rotI + pY)
         _centroid = position
         _orientation = orientation
+    }
+
+    override fun interpolated(to: Triangle, by: Float) = MutableTriangle(
+        pointA = Vector2F.lerp(_pointA, to.pointA, by),
+        pointB = Vector2F.lerp(_pointB, to.pointB, by),
+        pointC = Vector2F.lerp(_pointC, to.pointC, by)
+    )
+
+    fun interpolate(from: Triangle, to: Triangle, by: Float) {
+        val pointA = Vector2F.lerp(from.pointA, to.pointA, by)
+        val pointB = Vector2F.lerp(from.pointB, to.pointB, by)
+        val pointC = Vector2F.lerp(from.pointC, to.pointC, by)
+        _pointA = pointA
+        _pointB = pointB
+        _pointC = pointC
+        _centroid = (pointA + pointB + pointC) * 0.3333333f
+        _orientation = (pointA - _centroid).normalized.toComplexF()
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {

@@ -96,6 +96,30 @@ class TriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(
+        triangle: Triangle, to: Triangle, by: Float, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, triangle.interpolated(to, by))
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        from: Triangle,
+        to: Triangle,
+        by: Float,
+        expected: MutableTriangle
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, triangle.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         triangle: Triangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -497,6 +521,85 @@ class TriangleTests {
                 defaultTriangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableTriangleArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                ),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                0.5f,
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                ),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                MutableTriangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                ),
+                0f,
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                ),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                MutableTriangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                ),
+                1f,
+                MutableTriangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                ),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                MutableTriangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                ),
+                0.5f,
+                MutableTriangle(
+                    Vector2F(-3f, 1.5f),
+                    Vector2F(-0.5f, -0.5f),
+                    Vector2F(1f, -0.5f)
+                )
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
