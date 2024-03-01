@@ -142,6 +142,30 @@ class RegularTriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("interpolatedArgs")
+    fun interpolatedReturnsCorrectValue(
+        triangle: RegularTriangle, to: RegularTriangle, by: Float, expected: RegularTriangle
+    ) = assertImmutabilityOf(triangle) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, triangle.interpolated(to, by))
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("interpolateArgs")
+    fun interpolateMutatesRegularTriangleCorrectly(
+        triangle: MutableRegularTriangle,
+        from: RegularTriangle,
+        to: RegularTriangle,
+        by: Float,
+        expected: MutableRegularTriangle
+    ) = assertImmutabilityOf(from) {
+        assertImmutabilityOf(to) {
+            assertApproximation(expected, triangle.apply { interpolate(from, to, by) })
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         triangle: RegularTriangle, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -645,6 +669,108 @@ class RegularTriangleTests {
 
         @JvmStatic
         fun circumcenterArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun interpolatedArgs(): List<Arguments> {
+            val mutableRegularTriangleArgs = interpolateArgs().map {
+                Arguments.of(*it.get().drop(1).toTypedArray())
+            }
+            val defaultRegularTriangleArgs = mutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRegularTriangleArgs,
+                defaultRegularTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun interpolateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                0.5f,
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                0f,
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                1f,
+                MutableRegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(3.1547005f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-90f)),
+                    sideLength = 4f
+                ),
+                0.5f,
+                MutableRegularTriangle(
+                    center = Vector2F(-0.4226498f, -1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                    sideLength = 4.886752f
+                )
+            ),
+        )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {

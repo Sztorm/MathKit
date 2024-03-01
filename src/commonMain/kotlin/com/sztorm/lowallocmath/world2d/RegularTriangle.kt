@@ -1,9 +1,6 @@
 package com.sztorm.lowallocmath.world2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
+import com.sztorm.lowallocmath.*
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
@@ -220,6 +217,12 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularTriangle = copy(
         center = position,
         orientation = orientation
+    )
+
+    fun interpolated(to: RegularTriangle, by: Float): RegularTriangle = copy(
+        center = Vector2F.lerp(center, to.center, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        sideLength = Float.lerp(sideLength, to.sideLength, by)
     )
 
     fun closestPointTo(point: Vector2F): Vector2F {

@@ -523,6 +523,33 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
+    override fun interpolated(to: RegularTriangle, by: Float) = MutableRegularTriangle(
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        sideLength = Float.lerp(_sideLength, to.sideLength, by)
+    )
+
+    fun interpolate(from: RegularTriangle, to: RegularTriangle, by: Float) {
+        val center = Vector2F.lerp(from.center, to.center, by)
+        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
+        val sideLength = Float.lerp(from.sideLength, to.sideLength, by)
+        val (cX: Float, cY: Float) = center
+        val (rotR: Float, rotI: Float) = orientation
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = rotI * inradius + cX
+        val addendX2: Float = rotR * halfSideLength
+        val addendY1: Float = rotI * halfSideLength
+        val addendY2: Float = rotR * inradius - cY
+        _center = center
+        _orientation = orientation
+        _sideLength = sideLength
+        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
     override fun closestPointTo(point: Vector2F): Vector2F {
         val sideLength: Float = _sideLength
         val halfSideLength: Float = 0.5f * sideLength
