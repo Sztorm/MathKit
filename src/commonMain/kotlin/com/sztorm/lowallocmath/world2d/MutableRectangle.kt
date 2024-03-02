@@ -17,13 +17,13 @@ class MutableRectangle : Rectangle, MutableTransformable {
 
     constructor(center: Vector2F, orientation: ComplexF, width: Float, height: Float) {
         val (cX: Float, cY: Float) = center
-        val (rotR: Float, rotI: Float) = orientation
+        val (oR: Float, oI: Float) = orientation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
-        val addendX1: Float = rotR * halfWidth
-        val addendX2: Float = rotI * halfHeight
-        val addendY1: Float = rotR * halfHeight
-        val addendY2: Float = rotI * halfWidth
+        val addendX1: Float = oR * halfWidth
+        val addendX2: Float = oI * halfHeight
+        val addendY1: Float = oR * halfHeight
+        val addendY2: Float = oI * halfWidth
         val addendSumX1X2: Float = addendX1 + addendX2
         val addendDiffX1X2: Float = addendX1 - addendX2
         val addendSumY1Y2: Float = addendY1 + addendY2
@@ -560,26 +560,17 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
 
-    override fun interpolated(to: Rectangle, by: Float) = MutableRectangle(
-        center = Vector2F.lerp(_center, to.center, by),
-        orientation = ComplexF.slerp(_orientation, to.orientation, by),
-        width = Float.lerp(_width, to.width, by),
-        height = Float.lerp(_height, to.height, by)
-    )
-
-    fun interpolate(from: Rectangle, to: Rectangle, by: Float) {
-        val center = Vector2F.lerp(from.center, to.center, by)
-        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
-        val width = Float.lerp(from.width, to.width, by)
-        val height = Float.lerp(from.height, to.height, by)
+    private inline fun setInternal(
+        center: Vector2F, orientation: ComplexF, width: Float, height: Float
+    ) {
         val (cX: Float, cY: Float) = center
-        val (rotR: Float, rotI: Float) = orientation
+        val (oR: Float, oI: Float) = orientation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
-        val addendX1: Float = rotR * halfWidth
-        val addendX2: Float = rotI * halfHeight
-        val addendY1: Float = rotR * halfHeight
-        val addendY2: Float = rotI * halfWidth
+        val addendX1: Float = oR * halfWidth
+        val addendX2: Float = oI * halfHeight
+        val addendY1: Float = oR * halfHeight
+        val addendY2: Float = oI * halfWidth
         val addendSumX1X2: Float = addendX1 + addendX2
         val addendDiffX1X2: Float = addendX1 - addendX2
         val addendSumY1Y2: Float = addendY1 + addendY2
@@ -593,6 +584,27 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointC = Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2)
         _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
     }
+
+    fun set(
+        center: Vector2F = this.center,
+        orientation: ComplexF = this.orientation,
+        width: Float = this.width,
+        height: Float = this.height
+    ) = setInternal(center, orientation, width, height)
+
+    override fun interpolated(to: Rectangle, by: Float) = MutableRectangle(
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        width = Float.lerp(_width, to.width, by),
+        height = Float.lerp(_height, to.height, by)
+    )
+
+    fun interpolate(from: Rectangle, to: Rectangle, by: Float) = setInternal(
+        center = Vector2F.lerp(from.center, to.center, by),
+        orientation = ComplexF.slerp(from.orientation, to.orientation, by),
+        width = Float.lerp(from.width, to.width, by),
+        height = Float.lerp(from.height, to.height, by)
+    )
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val (cX: Float, cY: Float) = _center
