@@ -42,6 +42,15 @@ class RayTests {
         }
 
     @ParameterizedTest
+    @MethodSource("setArgs")
+    fun setMutatesRayCorrectly(
+        ray: MutableRay,
+        origin: Wrapper<Vector2F>,
+        direction: Wrapper<Vector2F>,
+        expected: MutableRay
+    ) = assertEquals(expected, ray.apply { set(origin.value, direction.value) })
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(ray: Ray, to: Ray, by: Float, expected: Ray) =
         assertImmutabilityOf(ray) {
@@ -222,6 +231,28 @@ class RayTests {
                 defaultRayArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun setArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
+                Wrapper(Vector2F(-2f, 5f)),
+                Wrapper(Vector2F(1f, 0f)),
+                MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f))
+            ),
+            Arguments.of(
+                MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
+                Wrapper(Vector2F(-4f, 3f)),
+                Wrapper(Vector2F(1f, 0f)),
+                MutableRay(Vector2F(-4f, 3f), Vector2F(1f, 0f))
+            ),
+            Arguments.of(
+                MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
+                Wrapper(Vector2F(-4f, 3f)),
+                Wrapper(Vector2F(1f, -1f).normalized),
+                MutableRay(Vector2F(-4f, 3f), Vector2F(1f, -1f).normalized)
+            ),
+        )
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -574,26 +605,7 @@ class RayTests {
 
         @JvmStatic
         fun copyArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
-                    Wrapper(Vector2F(-2f, 5f)),
-                    Wrapper(Vector2F(1f, 0f)),
-                    Ray(Vector2F(-2f, 5f), Vector2F(1f, 0f))
-                ),
-                Arguments.of(
-                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(Vector2F(1f, 0f)),
-                    Ray(Vector2F(-4f, 3f), Vector2F(1f, 0f))
-                ),
-                Arguments.of(
-                    MutableRay(Vector2F(-2f, 5f), Vector2F(1f, 0f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(Vector2F(1f, -1f).normalized),
-                    Ray(Vector2F(-4f, 3f), Vector2F(1f, -1f).normalized)
-                ),
-            )
+            val mutableRayArgs = setArgs()
             val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
 
             return listOf(

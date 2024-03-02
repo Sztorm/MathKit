@@ -258,6 +258,14 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction = orientation.toVector2F()
     }
 
+    private inline fun setInternal(origin: Vector2F, direction: Vector2F) {
+        _origin = origin
+        _direction = direction
+    }
+
+    fun set(origin: Vector2F = this.origin, direction: Vector2F = this.direction) =
+        setInternal(origin, direction)
+
     override fun interpolated(to: Ray, by: Float) = MutableRay(
         origin = Vector2F.lerp(_origin, to.origin, by),
         direction = ComplexF
