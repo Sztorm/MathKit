@@ -16,10 +16,10 @@ class MutableSquare : Square, MutableTransformable {
 
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float) {
         val (cX: Float, cY: Float) = center
-        val (rotR: Float, rotI: Float) = orientation
+        val (oR: Float, oI: Float) = orientation
         val halfSideLength: Float = sideLength * 0.5f
-        val addendA: Float = halfSideLength * (rotR + rotI)
-        val addendB: Float = halfSideLength * (rotR - rotI)
+        val addendA: Float = halfSideLength * (oR + oI)
+        val addendB: Float = halfSideLength * (oR - oI)
         _center = center
         _orientation = orientation
         _sideLength = sideLength

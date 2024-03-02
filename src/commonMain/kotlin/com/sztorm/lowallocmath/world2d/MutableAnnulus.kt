@@ -292,6 +292,22 @@ class MutableAnnulus(
         _orientation = orientation
     }
 
+    private inline fun setInternal(
+        center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
+    ) {
+        _center = center
+        _orientation = orientation
+        _outerRadius = outerRadius
+        _innerRadius = innerRadius
+    }
+
+    fun set(
+        center: Vector2F = this.center,
+        orientation: ComplexF = this.orientation,
+        outerRadius: Float = this.outerRadius,
+        innerRadius: Float = this.innerRadius
+    ) = setInternal(center, orientation, outerRadius, innerRadius)
+
     override fun interpolated(to: Annulus, by: Float) = MutableAnnulus(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),

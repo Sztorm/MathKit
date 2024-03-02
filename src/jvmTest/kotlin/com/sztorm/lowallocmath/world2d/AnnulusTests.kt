@@ -71,6 +71,20 @@ class AnnulusTests {
         }
 
     @ParameterizedTest
+    @MethodSource("setArgs")
+    fun setMutatesAnnulusCorrectly(
+        annulus: MutableAnnulus,
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float,
+        expected: MutableAnnulus
+    ) = assertEquals(
+        expected,
+        annulus.apply { set(center.value, orientation.value, outerRadius, innerRadius) }
+    )
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         annulus: Annulus, to: Annulus, by: Float, expected: Annulus
@@ -472,6 +486,64 @@ class AnnulusTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun setArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                Wrapper(Vector2F(-1f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
+                4f,
+                2f,
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                Wrapper(Vector2F(6f, 3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
+                4f,
+                1f,
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 1f
+                )
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                Wrapper(Vector2F(6f, 3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
+                8f,
+                1f,
+                MutableAnnulus(
+                    center = Vector2F(6f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
+                    outerRadius = 8f,
+                    innerRadius = 1f
+                )
+            ),
+        )
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -1011,62 +1083,7 @@ class AnnulusTests {
 
         @JvmStatic
         fun copyArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
-                    4f,
-                    2f,
-                    Annulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, 3f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
-                    4f,
-                    1f,
-                    Annulus(
-                        center = Vector2F(6f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, 3f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
-                    8f,
-                    1f,
-                    Annulus(
-                        center = Vector2F(6f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(330f)),
-                        outerRadius = 8f,
-                        innerRadius = 1f
-                    )
-                ),
-            )
+            val mutableAnnulusArgs = setArgs()
             val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
 
             return listOf(
