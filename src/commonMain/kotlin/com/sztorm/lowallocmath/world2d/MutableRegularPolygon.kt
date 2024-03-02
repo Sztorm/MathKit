@@ -14,18 +14,16 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     private var _circumradius: Float
 
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int) {
-        val points: Vector2FArray
-        val halfSideLength: Float = 0.5f * sideLength
-
         if (sideCount < 3) {
             if (sideCount < 2) {
                 throw IllegalArgumentException(
                     "Minimum required side count to create a polygon is 2."
                 )
             }
-            val (rotR: Float, rotI: Float) = orientation
-            val offset = Vector2F(rotR * halfSideLength, rotI * halfSideLength)
-            points = Vector2FArray(sideCount)
+            val (oR: Float, oI: Float) = orientation
+            val halfSideLength: Float = 0.5f * sideLength
+            val offset = Vector2F(oR * halfSideLength, oI * halfSideLength)
+            val points = Vector2FArray(sideCount)
             points[0] = center + offset
             points[1] = center - offset
             _inradius = 0f
@@ -36,7 +34,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _points = points
             return
         }
-        points = Vector2FArray(sideCount)
+        val points = Vector2FArray(sideCount)
+        val halfSideLength: Float = 0.5f * sideLength
         val isSideCountEven: Boolean = sideCount and 1 == 0
         val halfCount: Int = sideCount / 2
         val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
@@ -698,6 +697,85 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _center = position
         _orientation = orientation
     }
+
+    private inline fun setInternal(
+        center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int
+    ) {
+        if (sideCount < 3) {
+            if (sideCount < 2) {
+                throw IllegalArgumentException(
+                    "Minimum required side count to create a polygon is 2."
+                )
+            }
+            val (oR: Float, oI: Float) = orientation
+            val halfSideLength: Float = 0.5f * sideLength
+            val offset = Vector2F(oR * halfSideLength, oI * halfSideLength)
+            val points: Vector2FArray =
+                if (sideCount == points.size) _points
+                else Vector2FArray(sideCount)
+            points[0] = center + offset
+            points[1] = center - offset
+            _inradius = 0f
+            _circumradius = halfSideLength
+            _center = center
+            _orientation = orientation
+            _sideLength = sideLength
+            _points = points
+            return
+        }
+        val points: Vector2FArray =
+            if (sideCount == points.size) _points
+            else Vector2FArray(sideCount)
+        val halfSideLength: Float = 0.5f * sideLength
+        val isSideCountEven: Boolean = sideCount and 1 == 0
+        val halfCount: Int = sideCount / 2
+        val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
+        val halfExteriorAngle: Float = exteriorAngle * 0.5f
+        val exteriorRotation = ComplexF(cos(exteriorAngle), sin(exteriorAngle))
+
+        if (isSideCountEven) {
+            val inradius: Float = halfSideLength / tan(halfExteriorAngle)
+            points[0] = Vector2F(halfSideLength, inradius)
+            points[1] = Vector2F(-halfSideLength, inradius)
+
+            for (i in 2..halfCount) {
+                points[i] = (exteriorRotation * points[i - 1].toComplexF()).toVector2F()
+            }
+            for (i in halfCount + 1 until sideCount) {
+                val oppositePoint: Vector2F = points[sideCount - i + 1]
+                points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
+            }
+            _inradius = inradius
+            _circumradius = halfSideLength / sin(halfExteriorAngle)
+        } else {
+            val circumradius: Float = halfSideLength / sin(halfExteriorAngle)
+            points[0] = Vector2F(0f, circumradius)
+
+            for (i in 1..halfCount) {
+                points[i] = (exteriorRotation * points[i - 1].toComplexF()).toVector2F()
+            }
+            for (i in (halfCount + 1) until sideCount) {
+                val oppositePoint: Vector2F = points[sideCount - i]
+                points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
+            }
+            _inradius = halfSideLength / tan(halfExteriorAngle)
+            _circumradius = circumradius
+        }
+        for (i in 0 until sideCount) {
+            points[i] = center + (orientation * points[i].toComplexF()).toVector2F()
+        }
+        _center = center
+        _orientation = orientation
+        _sideLength = sideLength
+        _points = points
+    }
+
+    fun set(
+        center: Vector2F = this.center,
+        orientation: ComplexF = this.orientation,
+        sideLength: Float = this.sideLength,
+        sideCount: Int = this.sideCount
+    ) = setInternal(center, orientation, sideLength, sideCount)
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val sideCount: Int = this.sideCount

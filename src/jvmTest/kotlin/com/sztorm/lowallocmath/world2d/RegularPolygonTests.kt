@@ -157,6 +157,20 @@ class RegularPolygonTests {
         }
 
     @ParameterizedTest
+    @MethodSource("setArgs")
+    fun setMutatesRegularPolygonCorrectly(
+        polygon: MutableRegularPolygon,
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int,
+        expected: MutableRegularPolygon
+    ) = assertEquals(
+        expected,
+        polygon.apply { set(center.value, orientation.value, sideLength, sideCount) }
+    )
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -1164,6 +1178,64 @@ class RegularPolygonTests {
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
+        fun setArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                ),
+                Wrapper(Vector2F(-7.5f, -8f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                4f,
+                5,
+                MutableRegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                ),
+                Wrapper(Vector2F(2f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                4f,
+                3,
+                MutableRegularPolygon(
+                    Vector2F(2f, -4f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 3
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    Vector2F(-7.5f, -8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 4f,
+                    sideCount = 5
+                ),
+                Wrapper(Vector2F(2f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                2f,
+                3,
+                MutableRegularPolygon(
+                    Vector2F(2f, -4f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    sideLength = 2f,
+                    sideCount = 3
+                )
+            ),
+        )
+
+        @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
             val decagon = MutableRegularPolygon(
                 Vector2F(14f, 1f),
@@ -1883,62 +1955,7 @@ class RegularPolygonTests {
 
         @JvmStatic
         fun copyArgs(): List<Arguments> {
-            val mutableRegularPolygonArgs = listOf(
-                Arguments.of(
-                    MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f,
-                        sideCount = 5
-                    ),
-                    Wrapper(Vector2F(-7.5f, -8f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    4f,
-                    5,
-                    RegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f,
-                        sideCount = 5
-                    )
-                ),
-                Arguments.of(
-                    MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f,
-                        sideCount = 5
-                    ),
-                    Wrapper(Vector2F(2f, -4f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
-                    4f,
-                    3,
-                    RegularPolygon(
-                        Vector2F(2f, -4f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f,
-                        sideCount = 3
-                    )
-                ),
-                Arguments.of(
-                    MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f,
-                        sideCount = 5
-                    ),
-                    Wrapper(Vector2F(2f, -4f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
-                    2f,
-                    3,
-                    RegularPolygon(
-                        Vector2F(2f, -4f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        sideLength = 2f,
-                        sideCount = 3
-                    )
-                ),
-            )
+            val mutableRegularPolygonArgs = setArgs()
             val defaultRegularPolygonArgs = mutableRegularPolygonArgs
                 .mapRegularPolygonsToDefaultRegularPolygons()
 
