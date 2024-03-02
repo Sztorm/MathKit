@@ -419,10 +419,10 @@ class MutableSquare : Square, MutableTransformable {
     override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
         val cX: Float = _center.x + offset.x
         val cY: Float = _center.y + offset.y
-        val r0 = _orientation.real
-        val i0 = _orientation.imaginary
-        val r1 = rotation.real
-        val i1 = rotation.imaginary
+        val r0: Float = _orientation.real
+        val i0: Float = _orientation.imaginary
+        val r1: Float = rotation.real
+        val i1: Float = rotation.imaginary
         val factorSign: Float = 1f.withSign(factor)
         val rotR: Float = (r0 * r1 - i0 * i1) * factorSign
         val rotI: Float = (i0 * r1 + r0 * i1) * factorSign
@@ -456,16 +456,7 @@ class MutableSquare : Square, MutableTransformable {
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
-    override fun interpolated(to: Square, by: Float) = MutableSquare(
-        center = Vector2F.lerp(_center, to.center, by),
-        orientation = ComplexF.slerp(_orientation, to.orientation, by),
-        sideLength = Float.lerp(_sideLength, to.sideLength, by)
-    )
-
-    fun interpolate(from: Square, to: Square, by: Float) {
-        val center = Vector2F.lerp(from.center, to.center, by)
-        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
-        val sideLength = Float.lerp(from.sideLength, to.sideLength, by)
+    private inline fun setInternal(center: Vector2F, orientation: ComplexF, sideLength: Float) {
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
         val halfSideLength: Float = sideLength * 0.5f
@@ -479,6 +470,24 @@ class MutableSquare : Square, MutableTransformable {
         _pointC = Vector2F(cX - addendB, cY - addendA)
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
+
+    fun set(
+        center: Vector2F = this.center,
+        orientation: ComplexF = this.orientation,
+        sideLength: Float = this.sideLength
+    ) = setInternal(center, orientation, sideLength)
+
+    override fun interpolated(to: Square, by: Float) = MutableSquare(
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        sideLength = Float.lerp(_sideLength, to.sideLength, by)
+    )
+
+    fun interpolate(from: Square, to: Square, by: Float) = setInternal(
+        center = Vector2F.lerp(from.center, to.center, by),
+        orientation = ComplexF.slerp(from.orientation, to.orientation, by),
+        sideLength = Float.lerp(from.sideLength, to.sideLength, by)
+    )
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val (cX: Float, cY: Float) = _center
