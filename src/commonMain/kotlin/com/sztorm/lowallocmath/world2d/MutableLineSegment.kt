@@ -482,6 +482,14 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB = Vector2F(pX - halfLength * rotR, pY - halfLength * rotI)
     }
 
+    private inline fun setInternal(pointA: Vector2F, pointB: Vector2F) {
+        _pointA = pointA
+        _pointB = pointB
+    }
+
+    fun set(pointA: Vector2F = this.pointA, pointB: Vector2F = this.pointB) =
+        setInternal(pointA, pointB)
+
     override fun interpolated(to: LineSegment, by: Float) = MutableLineSegment(
         pointA = Vector2F.lerp(_pointA, to.pointA, by),
         pointB = Vector2F.lerp(_pointB, to.pointB, by)

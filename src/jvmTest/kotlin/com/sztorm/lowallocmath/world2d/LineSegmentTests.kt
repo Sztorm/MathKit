@@ -53,6 +53,15 @@ class LineSegmentTests {
         }
 
     @ParameterizedTest
+    @MethodSource("setArgs")
+    fun setMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        pointA: Wrapper<Vector2F>,
+        pointB: Wrapper<Vector2F>,
+        expected: MutableLineSegment
+    ) = assertEquals(expected, lineSegment.apply { set(pointA.value, pointB.value) })
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         lineSegment: LineSegment, to: LineSegment, by: Float, expected: LineSegment
@@ -273,6 +282,28 @@ class LineSegmentTests {
                 defaultLineSegmentArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun setArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                Wrapper(Vector2F(-2f, 5f)),
+                Wrapper(Vector2F(2f, 5f)),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+            ),
+            Arguments.of(
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                Wrapper(Vector2F(-2f, 5f)),
+                Wrapper(Vector2F(-2f, -1f)),
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(-2f, -1f))
+            ),
+            Arguments.of(
+                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                Wrapper(Vector2F(-4f, 3f)),
+                Wrapper(Vector2F(-2f, -1f)),
+                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f))
+            ),
+        )
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -845,26 +876,7 @@ class LineSegmentTests {
 
         @JvmStatic
         fun copyArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(Vector2F(-2f, 5f)),
-                    Wrapper(Vector2F(2f, 5f)),
-                    LineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(Vector2F(-2f, 5f)),
-                    Wrapper(Vector2F(-2f, -1f)),
-                    LineSegment(Vector2F(-2f, 5f), Vector2F(-2f, -1f))
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(Vector2F(-2f, -1f)),
-                    LineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f))
-                ),
-            )
+            val mutableLineSegmentArgs = setArgs()
             val defaultLineSegmentArgs = mutableLineSegmentArgs
                 .mapLineSegmentsToDefaultLineSegments()
 
