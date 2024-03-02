@@ -255,6 +255,18 @@ class MutableCircle(
         _orientation = orientation
     }
 
+    private inline fun setInternal(center: Vector2F, orientation: ComplexF, radius: Float) {
+        _center = center
+        _orientation = orientation
+        _radius = radius
+    }
+
+    fun set(
+        center: Vector2F = this.center,
+        orientation: ComplexF = this.orientation,
+        radius: Float = this.radius
+    ) = setInternal(center, orientation, radius)
+
     override fun interpolated(to: Circle, by: Float) = MutableCircle(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
