@@ -142,6 +142,16 @@ class RegularTriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("setArgs")
+    fun setMutatesRegularTriangleCorrectly(
+        triangle: MutableRegularTriangle,
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        expected: MutableRegularTriangle
+    ) = assertEquals(expected, triangle.apply { set(center.value, orientation.value, sideLength) })
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         triangle: RegularTriangle, to: RegularTriangle, by: Float, expected: RegularTriangle
@@ -671,6 +681,55 @@ class RegularTriangleTests {
         fun circumcenterArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
+        fun setArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
+                5.773503f,
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                5.773503f,
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                ),
+                Wrapper(Vector2F(5f, 7f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                3f,
+                MutableRegularTriangle(
+                    center = Vector2F(5f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                    sideLength = 3f
+                )
+            ),
+        )
+
+        @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
             val mutableRegularTriangleArgs = interpolateArgs().map {
                 Arguments.of(*it.get().drop(1).toTypedArray())
@@ -928,53 +987,7 @@ class RegularTriangleTests {
 
         @JvmStatic
         fun copyArgs(): List<Arguments> {
-            val mutableRegularTriangleArgs = listOf(
-                Arguments.of(
-                    MutableRegularTriangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                        sideLength = 5.773503f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f))),
-                    5.773503f,
-                    RegularTriangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                        sideLength = 5.773503f
-                    )
-                ),
-                Arguments.of(
-                    MutableRegularTriangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                        sideLength = 5.773503f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
-                    5.773503f,
-                    RegularTriangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 5.773503f
-                    )
-                ),
-                Arguments.of(
-                    MutableRegularTriangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
-                        sideLength = 5.773503f
-                    ),
-                    Wrapper(Vector2F(5f, 7f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
-                    3f,
-                    RegularTriangle(
-                        center = Vector2F(5f, 7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    )
-                ),
-            )
+            val mutableRegularTriangleArgs = setArgs()
             val defaultRegularTriangleArgs = mutableRegularTriangleArgs
                 .mapRegularTrianglesToDefaultRegularTriangles()
 
