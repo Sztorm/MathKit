@@ -26,19 +26,19 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
     ) {
         val (cX: Float, cY: Float) = center
-        val (rotR: Float, rotI: Float) = orientation
+        val (oR: Float, oI: Float) = orientation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
-        val addendA: Float = rotR * halfWidthMinusRadius
-        val addendB: Float = rotI * halfWidthMinusRadius
-        val addendC: Float = rotR * halfHeightMinusRadius
-        val addendD: Float = rotI * halfHeightMinusRadius
-        val addendE: Float = rotR * halfWidth
-        val addendF: Float = rotI * halfWidth
-        val addendG: Float = rotR * halfHeight
-        val addendH: Float = rotI * halfHeight
+        val addendA: Float = oR * halfWidthMinusRadius
+        val addendB: Float = oI * halfWidthMinusRadius
+        val addendC: Float = oR * halfHeightMinusRadius
+        val addendD: Float = oI * halfHeightMinusRadius
+        val addendE: Float = oR * halfWidth
+        val addendF: Float = oI * halfWidth
+        val addendG: Float = oR * halfHeight
+        val addendH: Float = oI * halfHeight
         val addendSumAH: Float = addendA + addendH
         val addendSumBG: Float = addendB + addendG
         val addendSumCF: Float = addendC + addendF
@@ -1002,34 +1002,23 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
     }
 
-    override fun interpolated(to: RoundedRectangle, by: Float) = MutableRoundedRectangle(
-        center = Vector2F.lerp(_center, to.center, by),
-        orientation = ComplexF.slerp(_orientation, to.orientation, by),
-        width = Float.lerp(_width, to.width, by),
-        height = Float.lerp(_height, to.height, by),
-        cornerRadius = Float.lerp(_cornerRadius, to.cornerRadius, by)
-    )
-
-    fun interpolate(from: RoundedRectangle, to: RoundedRectangle, by: Float) {
-        val center = Vector2F.lerp(from.center, to.center, by)
-        val orientation = ComplexF.slerp(from.orientation, to.orientation, by)
-        val width = Float.lerp(from.width, to.width, by)
-        val height = Float.lerp(from.height, to.height, by)
-        val cornerRadius = Float.lerp(from.cornerRadius, to.cornerRadius, by)
+    private inline fun setInternal(
+        center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
+    ) {
         val (cX: Float, cY: Float) = center
-        val (rotR: Float, rotI: Float) = orientation
+        val (oR: Float, oI: Float) = orientation
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
-        val addendA: Float = rotR * halfWidthMinusRadius
-        val addendB: Float = rotI * halfWidthMinusRadius
-        val addendC: Float = rotR * halfHeightMinusRadius
-        val addendD: Float = rotI * halfHeightMinusRadius
-        val addendE: Float = rotR * halfWidth
-        val addendF: Float = rotI * halfWidth
-        val addendG: Float = rotR * halfHeight
-        val addendH: Float = rotI * halfHeight
+        val addendA: Float = oR * halfWidthMinusRadius
+        val addendB: Float = oI * halfWidthMinusRadius
+        val addendC: Float = oR * halfHeightMinusRadius
+        val addendD: Float = oI * halfHeightMinusRadius
+        val addendE: Float = oR * halfWidth
+        val addendF: Float = oI * halfWidth
+        val addendG: Float = oR * halfHeight
+        val addendH: Float = oI * halfHeight
         val addendSumAH: Float = addendA + addendH
         val addendSumBG: Float = addendB + addendG
         val addendSumCF: Float = addendC + addendF
@@ -1060,6 +1049,30 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
         _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
     }
+
+    fun set(
+        center: Vector2F = this.center,
+        orientation: ComplexF = this.orientation,
+        width: Float = this.width,
+        height: Float = this.height,
+        cornerRadius: Float = this.cornerRadius
+    ) = setInternal(center, orientation, width, height, cornerRadius)
+
+    override fun interpolated(to: RoundedRectangle, by: Float) = MutableRoundedRectangle(
+        center = Vector2F.lerp(_center, to.center, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        width = Float.lerp(_width, to.width, by),
+        height = Float.lerp(_height, to.height, by),
+        cornerRadius = Float.lerp(_cornerRadius, to.cornerRadius, by)
+    )
+
+    fun interpolate(from: RoundedRectangle, to: RoundedRectangle, by: Float) = setInternal(
+        center = Vector2F.lerp(from.center, to.center, by),
+        orientation = ComplexF.slerp(from.orientation, to.orientation, by),
+        width = Float.lerp(from.width, to.width, by),
+        height = Float.lerp(from.height, to.height, by),
+        cornerRadius = Float.lerp(from.cornerRadius, to.cornerRadius, by)
+    )
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val center: Vector2F = _center
