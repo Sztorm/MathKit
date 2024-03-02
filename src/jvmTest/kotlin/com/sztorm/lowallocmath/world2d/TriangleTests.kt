@@ -96,6 +96,16 @@ class TriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("setArgs")
+    fun setMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        pointA: Wrapper<Vector2F>,
+        pointB: Wrapper<Vector2F>,
+        pointC: Wrapper<Vector2F>,
+        expected: MutableTriangle
+    ) = assertEquals(expected, triangle.apply { set(pointA.value, pointB.value, pointC.value) })
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         triangle: Triangle, to: Triangle, by: Float, expected: Triangle
@@ -521,6 +531,43 @@ class TriangleTests {
                 defaultTriangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun setArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(Vector2F(2f, 2f)),
+                Wrapper(Vector2F(1f, 5f)),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(Vector2F(-3f, -3f)),
+                Wrapper(Vector2F(1f, -6f)),
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                ),
+                Wrapper(Vector2F(-2f, 1f)),
+                Wrapper(Vector2F(-3f, -3f)),
+                Wrapper(Vector2F(1f, -6f)),
+                MutableTriangle(
+                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                )
+            ),
+        )
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -1025,39 +1072,7 @@ class TriangleTests {
 
         @JvmStatic
         fun copyArgs(): List<Arguments> {
-            val mutableTriangleArgs = listOf(
-                Arguments.of(
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(Vector2F(2f, 2f)),
-                    Wrapper(Vector2F(1f, 5f)),
-                    Triangle(Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f))
-                ),
-                Arguments.of(
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(Vector2F(-3f, -3f)),
-                    Wrapper(Vector2F(1f, -6f)),
-                    Triangle(
-                        Vector2F(-4f, 2f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    )
-                ),
-                Arguments.of(
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
-                    Wrapper(Vector2F(-2f, 1f)),
-                    Wrapper(Vector2F(-3f, -3f)),
-                    Wrapper(Vector2F(1f, -6f)),
-                    Triangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    )
-                ),
-            )
+            val mutableTriangleArgs = setArgs()
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
