@@ -8,12 +8,41 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.world2d.utils.DefaultAnnulus
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class AnnulusTests {
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableAnnulus(center.value, orientation.value, outerRadius, innerRadius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorDoesNotThrowExceptionArgs")
+    fun constructorDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float
+    ) {
+        assertDoesNotThrow {
+            MutableAnnulus(center.value, orientation.value, outerRadius, innerRadius)
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("centerArgs")
     fun centerReturnsCorrectValue(annulus: Annulus, expected: Wrapper<Vector2F>) =
@@ -83,6 +112,45 @@ class AnnulusTests {
         expected,
         annulus.apply { set(center.value, orientation.value, outerRadius, innerRadius) }
     )
+
+    @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val annulus = MutableAnnulus(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            outerRadius = 1f,
+            innerRadius = 0.5f
+        )
+        assertThrows(expectedExceptionClass) {
+            annulus.set(center.value, orientation.value, outerRadius, innerRadius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float
+    ) {
+        val annulus = MutableAnnulus(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            outerRadius = 1f,
+            innerRadius = 0.5f
+        )
+        assertDoesNotThrow {
+            annulus.set(center.value, orientation.value, outerRadius, innerRadius)
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("interpolatedArgs")
@@ -246,6 +314,60 @@ class AnnulusTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                2f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                -1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                -0.5f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                2.1f,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                0f
+            ),
+        )
 
         @JvmStatic
         fun centerArgs(): List<Arguments> {
@@ -544,6 +666,13 @@ class AnnulusTests {
                 )
             ),
         )
+
+        @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {

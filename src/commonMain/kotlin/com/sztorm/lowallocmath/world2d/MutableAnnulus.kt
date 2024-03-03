@@ -11,13 +11,33 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
-class MutableAnnulus(
-    center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
-) : Annulus, MutableTransformable {
-    private var _center: Vector2F = center
-    private var _orientation: ComplexF = orientation
-    private var _outerRadius: Float = outerRadius
-    private var _innerRadius: Float = innerRadius
+class MutableAnnulus : Annulus, MutableTransformable {
+    private var _center: Vector2F
+    private var _orientation: ComplexF
+    private var _outerRadius: Float
+    private var _innerRadius: Float
+
+    constructor(center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float) {
+        throwWhenConstructorArgumentsAreIllegal(outerRadius, innerRadius)
+        _center = center
+        _orientation = orientation
+        _outerRadius = outerRadius
+        _innerRadius = innerRadius
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private constructor(
+        center: Vector2F,
+        orientation: ComplexF,
+        outerRadius: Float,
+        innerRadius: Float,
+        tag: Any?
+    ) {
+        _center = center
+        _orientation = orientation
+        _outerRadius = outerRadius
+        _innerRadius = innerRadius
+    }
 
     override val center: Vector2F
         get() = _center
@@ -43,11 +63,12 @@ class MutableAnnulus(
     override val position: Vector2F
         get() = _center
 
-    override fun movedBy(offset: Vector2F) =
-        MutableAnnulus(_center + offset, _orientation, _outerRadius, _innerRadius)
+    override fun movedBy(offset: Vector2F) = MutableAnnulus(
+        _center + offset, _orientation, _outerRadius, _innerRadius, tag = null
+    )
 
     override fun movedTo(position: Vector2F) =
-        MutableAnnulus(position, _orientation, _outerRadius, _innerRadius)
+        MutableAnnulus(position, _orientation, _outerRadius, _innerRadius, tag = null)
 
     override fun moveBy(offset: Vector2F) {
         _center += offset
@@ -58,17 +79,23 @@ class MutableAnnulus(
     }
 
     override fun rotatedBy(rotation: AngleF) = MutableAnnulus(
-        _center, _orientation * ComplexF.fromAngle(rotation), _outerRadius, _innerRadius
+        _center,
+        _orientation * ComplexF.fromAngle(rotation),
+        _outerRadius,
+        _innerRadius,
+        tag = null
     )
 
-    override fun rotatedBy(rotation: ComplexF) =
-        MutableAnnulus(_center, _orientation * rotation, _outerRadius, _innerRadius)
+    override fun rotatedBy(rotation: ComplexF) = MutableAnnulus(
+        _center, _orientation * rotation, _outerRadius, _innerRadius, tag = null
+    )
 
-    override fun rotatedTo(orientation: AngleF) =
-        MutableAnnulus(_center, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius)
+    override fun rotatedTo(orientation: AngleF) = MutableAnnulus(
+        _center, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius, tag = null
+    )
 
     override fun rotatedTo(orientation: ComplexF) =
-        MutableAnnulus(_center, orientation, _outerRadius, _innerRadius)
+        MutableAnnulus(_center, orientation, _outerRadius, _innerRadius, tag = null)
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableAnnulus =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
@@ -91,7 +118,8 @@ class MutableAnnulus(
                 startRotI * rotR + startRotR * rotI
             ),
             _outerRadius,
-            _innerRadius
+            _innerRadius,
+            tag = null
         )
     }
 
@@ -116,10 +144,11 @@ class MutableAnnulus(
                 ),
                 ComplexF(startRotR, -startRotI) * _orientation * orientation,
                 _outerRadius,
-                _innerRadius
+                _innerRadius,
+                tag = null
             )
         } else {
-            MutableAnnulus(_center, orientation, _outerRadius, _innerRadius)
+            MutableAnnulus(_center, orientation, _outerRadius, _innerRadius, tag = null)
         }
     }
 
@@ -189,7 +218,8 @@ class MutableAnnulus(
             _center,
             _orientation * 1f.withSign(factor),
             _outerRadius * absFactor,
-            _innerRadius * absFactor
+            _innerRadius * absFactor,
+            tag = null
         )
     }
 
@@ -202,7 +232,8 @@ class MutableAnnulus(
             center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY)),
             orientation * 1f.withSign(factor),
             _outerRadius * absFactor,
-            _innerRadius * absFactor
+            _innerRadius * absFactor,
+            tag = null
         )
     }
 
@@ -227,11 +258,16 @@ class MutableAnnulus(
         _center + offset,
         _orientation * ComplexF.fromAngle(rotation),
         _outerRadius,
-        _innerRadius
+        _innerRadius,
+        tag = null
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableAnnulus(
-        _center + offset, _orientation * rotation, _outerRadius, _innerRadius
+        _center + offset,
+        _orientation * rotation,
+        _outerRadius,
+        _innerRadius,
+        tag = null
     )
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): MutableAnnulus {
@@ -241,7 +277,8 @@ class MutableAnnulus(
             _center + offset,
             _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
             _outerRadius * absFactor,
-            _innerRadius * absFactor
+            _innerRadius * absFactor,
+            tag = null
         )
     }
 
@@ -254,15 +291,17 @@ class MutableAnnulus(
             _center + offset,
             _orientation * rotation * 1f.withSign(factor),
             _outerRadius * absFactor,
-            _innerRadius * absFactor
+            _innerRadius * absFactor,
+            tag = null
         )
     }
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF) =
-        MutableAnnulus(position, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius)
+    override fun transformedTo(position: Vector2F, orientation: AngleF) = MutableAnnulus(
+        position, ComplexF.fromAngle(orientation), _outerRadius, _innerRadius, tag = null
+    )
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableAnnulus(position, orientation, _outerRadius, _innerRadius)
+        MutableAnnulus(position, orientation, _outerRadius, _innerRadius, tag = null)
 
     override fun transformBy(offset: Vector2F, rotation: AngleF) =
         transformBy(offset, ComplexF.fromAngle(rotation))
@@ -306,13 +345,17 @@ class MutableAnnulus(
         orientation: ComplexF = this.orientation,
         outerRadius: Float = this.outerRadius,
         innerRadius: Float = this.innerRadius
-    ) = setInternal(center, orientation, outerRadius, innerRadius)
+    ) {
+        throwWhenConstructorArgumentsAreIllegal(outerRadius, innerRadius)
+        setInternal(center, orientation, outerRadius, innerRadius)
+    }
 
     override fun interpolated(to: Annulus, by: Float) = MutableAnnulus(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
         outerRadius = Float.lerp(_outerRadius, to.outerRadius, by),
-        innerRadius = Float.lerp(_innerRadius, to.innerRadius, by)
+        innerRadius = Float.lerp(_innerRadius, to.innerRadius, by),
+        tag = null
     )
 
     fun interpolate(from: Annulus, to: Annulus, by: Float) {
@@ -393,7 +436,7 @@ class MutableAnnulus(
 
     override fun copy(
         center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
-    ) = MutableAnnulus(center, orientation, outerRadius, innerRadius)
+    ) = MutableAnnulus(center, orientation, outerRadius, innerRadius, tag = null)
 
     override fun equals(other: Any?): Boolean = other is Annulus &&
             _center == other.center &&
@@ -430,4 +473,24 @@ class MutableAnnulus(
     override operator fun component3(): Float = _outerRadius
 
     override operator fun component4(): Float = _innerRadius
+
+    companion object {
+        private inline fun throwWhenConstructorArgumentsAreIllegal(
+            outerRadius: Float, innerRadius: Float
+        ) {
+            if (outerRadius < 0f) {
+                throw IllegalArgumentException(
+                    "outerRadius must be greater than or equal to zero."
+                )
+            }
+            if (innerRadius < 0f) {
+                throw IllegalArgumentException(
+                    "innerRadius must be greater than or equal to zero."
+                )
+            }
+            if (innerRadius > outerRadius) {
+                throw IllegalArgumentException("innerRadius must be less than outerRadius.")
+            }
+        }
+    }
 }
