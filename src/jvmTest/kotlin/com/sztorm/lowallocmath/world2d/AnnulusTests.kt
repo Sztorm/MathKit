@@ -238,6 +238,45 @@ class AnnulusTests {
     )
 
     @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val annulus = MutableAnnulus(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            outerRadius = 1f,
+            innerRadius = 0.5f
+        )
+        assertThrows(expectedExceptionClass) {
+            annulus.copy(center.value, orientation.value, outerRadius, innerRadius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float
+    ) {
+        val annulus = MutableAnnulus(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            outerRadius = 1f,
+            innerRadius = 0.5f
+        )
+        assertDoesNotThrow {
+            annulus.copy(center.value, orientation.value, outerRadius, innerRadius)
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(annulus: MutableAnnulus, other: Any?, expected: Boolean) =
         assertImmutabilityOf(annulus) {
@@ -349,6 +388,12 @@ class AnnulusTests {
 
         @JvmStatic
         fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                1f
+            ),
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
                 Wrapper(ComplexF.ONE),
@@ -1220,6 +1265,13 @@ class AnnulusTests {
                 defaultAnnulusArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(

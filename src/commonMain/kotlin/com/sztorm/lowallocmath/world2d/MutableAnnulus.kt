@@ -436,7 +436,7 @@ class MutableAnnulus : Annulus, MutableTransformable {
 
     override fun copy(
         center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
-    ) = MutableAnnulus(center, orientation, outerRadius, innerRadius, tag = null)
+    ) = MutableAnnulus(center, orientation, outerRadius, innerRadius)
 
     override fun equals(other: Any?): Boolean = other is Annulus &&
             _center == other.center &&
