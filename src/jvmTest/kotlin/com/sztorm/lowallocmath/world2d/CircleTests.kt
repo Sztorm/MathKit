@@ -8,12 +8,39 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.world2d.utils.DefaultCircle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class CircleTests {
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        radius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableCircle(center.value, orientation.value, radius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorDoesNotThrowExceptionArgs")
+    fun constructorDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        radius: Float,
+    ) {
+        assertDoesNotThrow {
+            MutableCircle(center.value, orientation.value, radius)
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("centerArgs")
     fun centerReturnsCorrectValue(circle: Circle, expected: Wrapper<Vector2F>) =
@@ -72,6 +99,35 @@ class CircleTests {
         radius: Float,
         expected: MutableCircle
     ) = assertEquals(expected, circle.apply { set(center.value, orientation.value, radius) })
+
+    @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        radius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val circle = MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f)
+
+        assertThrows(expectedExceptionClass) {
+            circle.set(center.value, orientation.value, radius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        radius: Float,
+    ) {
+        val circle = MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f)
+
+        assertDoesNotThrow {
+            circle.set(center.value, orientation.value, radius)
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("interpolatedArgs")
@@ -154,6 +210,35 @@ class CircleTests {
     ) = assertEquals(expected, circle.copy(center.value, orientation.value, radius))
 
     @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        radius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val circle = MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f)
+
+        assertThrows(expectedExceptionClass) {
+            circle.copy(center.value, orientation.value, radius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        radius: Float,
+    ) {
+        val circle = MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f)
+
+        assertDoesNotThrow {
+            circle.copy(center.value, orientation.value, radius)
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("equalsAnyArgs")
     fun equalsReturnsCorrectValue(circle: MutableCircle, other: Any?, expected: Boolean) =
         assertImmutabilityOf(circle) {
@@ -223,6 +308,36 @@ class CircleTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -0.1f,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f
+            ),
+        )
 
         @JvmStatic
         fun centerArgs(): List<Arguments> {
@@ -544,6 +659,13 @@ class CircleTests {
         )
 
         @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
+
+        @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
             val mutableCircleArgs = listOf(
                 Arguments.of(
@@ -838,6 +960,13 @@ class CircleTests {
                 defaultCircleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(

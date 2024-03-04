@@ -9,12 +9,24 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
-class MutableCircle(
-    center: Vector2F, orientation: ComplexF, radius: Float
-) : Circle, MutableTransformable {
-    private var _center: Vector2F = center
-    private var _orientation: ComplexF = orientation
-    private var _radius: Float = radius
+class MutableCircle : Circle, MutableTransformable {
+    private var _center: Vector2F
+    private var _orientation: ComplexF
+    private var _radius: Float
+
+    constructor(center: Vector2F, orientation: ComplexF, radius: Float) {
+        throwWhenConstructorArgumentIsIllegal(radius)
+        _center = center
+        _orientation = orientation
+        _radius = radius
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private constructor(center: Vector2F, orientation: ComplexF, radius: Float, tag: Any?) {
+        _center = center
+        _orientation = orientation
+        _radius = radius
+    }
 
     override val center: Vector2F
         get() = _center
@@ -38,10 +50,10 @@ class MutableCircle(
         get() = _center
 
     override fun movedBy(offset: Vector2F) =
-        MutableCircle(_center + offset, _orientation, _radius)
+        MutableCircle(_center + offset, _orientation, _radius, tag = null)
 
     override fun movedTo(position: Vector2F) =
-        MutableCircle(position, _orientation, _radius)
+        MutableCircle(position, _orientation, _radius, tag = null)
 
     override fun moveBy(offset: Vector2F) {
         _center += offset
@@ -51,16 +63,18 @@ class MutableCircle(
         _center = position
     }
 
-    override fun rotatedBy(rotation: AngleF) =
-        MutableCircle(_center, _orientation * ComplexF.fromAngle(rotation), _radius)
+    override fun rotatedBy(rotation: AngleF) = MutableCircle(
+        _center, _orientation * ComplexF.fromAngle(rotation), _radius, tag = null
+    )
 
     override fun rotatedBy(rotation: ComplexF) =
-        MutableCircle(_center, _orientation * rotation, _radius)
+        MutableCircle(_center, _orientation * rotation, _radius, tag = null)
 
     override fun rotatedTo(orientation: AngleF) =
-        MutableCircle(_center, ComplexF.fromAngle(orientation), _radius)
+        MutableCircle(_center, ComplexF.fromAngle(orientation), _radius, tag = null)
 
-    override fun rotatedTo(orientation: ComplexF) = MutableCircle(_center, orientation, _radius)
+    override fun rotatedTo(orientation: ComplexF) =
+        MutableCircle(_center, orientation, _radius, tag = null)
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableCircle =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
@@ -74,15 +88,16 @@ class MutableCircle(
         val cpDiffY: Float = cY - pY
 
         return MutableCircle(
-            Vector2F(
+            center = Vector2F(
                 cpDiffX * rotR - cpDiffY * rotI + pX,
                 cpDiffY * rotR + cpDiffX * rotI + pY
             ),
-            ComplexF(
+            orientation = ComplexF(
                 startRotR * rotR - startRotI * rotI,
                 startRotI * rotR + startRotR * rotI
             ),
-            _radius
+            _radius,
+            tag = null
         )
     }
 
@@ -102,14 +117,15 @@ class MutableCircle(
             val startRotI: Float = cpDiffY / centerToPointDist
 
             MutableCircle(
-                Vector2F(
+                center = Vector2F(
                     rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
                 ),
-                ComplexF(startRotR, -startRotI) * _orientation * orientation,
-                _radius
+                orientation = ComplexF(startRotR, -startRotI) * _orientation * orientation,
+                _radius,
+                tag = null
             )
         } else {
-            MutableCircle(_center, orientation, _radius)
+            MutableCircle(_center, orientation, _radius, tag = null)
         }
     }
 
@@ -175,7 +191,8 @@ class MutableCircle(
     override fun scaledBy(factor: Float) = MutableCircle(
         _center,
         _orientation * 1f.withSign(factor),
-        _radius * factor.absoluteValue
+        _radius * factor.absoluteValue,
+        tag = null
     )
 
     override fun dilatedBy(point: Vector2F, factor: Float): MutableCircle {
@@ -185,7 +202,8 @@ class MutableCircle(
         return MutableCircle(
             center = Vector2F(pX + factor * (cX - pX), pY + factor * (cY - pY)),
             _orientation * 1f.withSign(factor),
-            _radius * factor.absoluteValue
+            _radius * factor.absoluteValue,
+            tag = null
         )
     }
 
@@ -205,30 +223,34 @@ class MutableCircle(
     override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableCircle(
         _center + offset,
         _orientation * ComplexF.fromAngle(rotation),
-        _radius
+        _radius,
+        tag = null
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
-        MutableCircle(_center + offset, _orientation * rotation, _radius)
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableCircle(
+        _center + offset, _orientation * rotation, _radius, tag = null
+    )
 
     override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableCircle(
         _center + offset,
         _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-        _radius * factor.absoluteValue
+        _radius * factor.absoluteValue,
+        tag = null
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
         MutableCircle(
             _center + offset,
             _orientation * rotation * 1f.withSign(factor),
-            _radius * factor.absoluteValue
+            _radius * factor.absoluteValue,
+            tag = null
         )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
-        MutableCircle(position, ComplexF.fromAngle(orientation), _radius)
+        MutableCircle(position, ComplexF.fromAngle(orientation), _radius, tag = null)
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableCircle(position, orientation, _radius)
+        MutableCircle(position, orientation, _radius, tag = null)
 
     override fun transformBy(offset: Vector2F, rotation: AngleF) =
         transformBy(offset, ComplexF.fromAngle(rotation))
@@ -265,12 +287,16 @@ class MutableCircle(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
         radius: Float = this.radius
-    ) = setInternal(center, orientation, radius)
+    ) {
+        throwWhenConstructorArgumentIsIllegal(radius)
+        setInternal(center, orientation, radius)
+    }
 
     override fun interpolated(to: Circle, by: Float) = MutableCircle(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
-        radius = Float.lerp(_radius, to.radius, by)
+        radius = Float.lerp(_radius, to.radius, by),
+        tag = null
     )
 
     fun interpolate(from: Circle, to: Circle, by: Float) {
@@ -342,4 +368,12 @@ class MutableCircle(
     override operator fun component2(): ComplexF = _orientation
 
     override operator fun component3(): Float = _radius
+
+    companion object {
+        private inline fun throwWhenConstructorArgumentIsIllegal(radius: Float) {
+            if (radius < 0f) {
+                throw IllegalArgumentException("radius must be greater than or equal to zero.")
+            }
+        }
+    }
 }
