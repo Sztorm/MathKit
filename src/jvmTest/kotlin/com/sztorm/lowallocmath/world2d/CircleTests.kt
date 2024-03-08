@@ -32,9 +32,7 @@ class CircleTests {
     @ParameterizedTest
     @MethodSource("constructorDoesNotThrowExceptionArgs")
     fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>,
-        orientation: Wrapper<ComplexF>,
-        radius: Float,
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, radius: Float,
     ) {
         assertDoesNotThrow {
             MutableCircle(center.value, orientation.value, radius)
@@ -118,9 +116,7 @@ class CircleTests {
     @ParameterizedTest
     @MethodSource("setDoesNotThrowExceptionArgs")
     fun setDoesNotThrowException(
-        center: Wrapper<Vector2F>,
-        orientation: Wrapper<ComplexF>,
-        radius: Float,
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, radius: Float,
     ) {
         val circle = MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f)
 
@@ -227,9 +223,7 @@ class CircleTests {
     @ParameterizedTest
     @MethodSource("copyDoesNotThrowExceptionArgs")
     fun copyDoesNotThrowException(
-        center: Wrapper<Vector2F>,
-        orientation: Wrapper<ComplexF>,
-        radius: Float,
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, radius: Float,
     ) {
         val circle = MutableCircle(center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 1f)
 

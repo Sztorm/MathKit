@@ -16,6 +16,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
     private var _pointD: Vector2F
 
     constructor(center: Vector2F, orientation: ComplexF, width: Float, height: Float) {
+        throwWhenConstructorArgumentsAreIllegal(width, height)
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
         val halfWidth: Float = width * 0.5f
@@ -134,18 +135,18 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD += offset
     }
 
-    override fun rotatedBy(rotation: AngleF) = MutableRectangle(
+    override fun rotatedBy(rotation: AngleF) = createInternal(
         _center, _orientation * ComplexF.fromAngle(rotation), _width, _height
     )
 
     override fun rotatedBy(rotation: ComplexF) =
-        MutableRectangle(_center, _orientation * rotation, _width, _height)
+        createInternal(_center, _orientation * rotation, _width, _height)
 
     override fun rotatedTo(orientation: AngleF) =
-        MutableRectangle(_center, ComplexF.fromAngle(orientation), _width, _height)
+        createInternal(_center, ComplexF.fromAngle(orientation), _width, _height)
 
     override fun rotatedTo(orientation: ComplexF) =
-        MutableRectangle(_center, orientation, _width, _height)
+        createInternal(_center, orientation, _width, _height)
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRectangle =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
@@ -359,7 +360,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override fun scaledBy(factor: Float): MutableRectangle {
         val absFactor: Float = factor.absoluteValue
 
-        return MutableRectangle(
+        return createInternal(
             _center,
             _orientation * 1f.withSign(factor),
             _width * absFactor,
@@ -451,14 +452,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRectangle(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF) = createInternal(
         _center + offset,
         _orientation * ComplexF.fromAngle(rotation),
         _width,
         _height
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableRectangle(
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = createInternal(
         _center + offset, _orientation * rotation, _width, _height
     )
 
@@ -467,7 +468,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
     ): MutableRectangle {
         val absFactor: Float = factor.absoluteValue
 
-        return MutableRectangle(
+        return createInternal(
             _center + offset,
             _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
             _width * absFactor,
@@ -480,7 +481,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
     ): MutableRectangle {
         val absFactor: Float = factor.absoluteValue
 
-        return MutableRectangle(
+        return createInternal(
             _center + offset,
             _orientation * rotation * 1f.withSign(factor),
             _width * absFactor,
@@ -489,10 +490,10 @@ class MutableRectangle : Rectangle, MutableTransformable {
     }
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
-        MutableRectangle(position, ComplexF.fromAngle(orientation), _width, _height)
+        createInternal(position, ComplexF.fromAngle(orientation), _width, _height)
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableRectangle(position, orientation, _width, _height)
+        createInternal(position, orientation, _width, _height)
 
     override fun transformBy(offset: Vector2F, rotation: AngleF) =
         transformTo(_center + offset, _orientation * ComplexF.fromAngle(rotation))
@@ -590,9 +591,12 @@ class MutableRectangle : Rectangle, MutableTransformable {
         orientation: ComplexF = this.orientation,
         width: Float = this.width,
         height: Float = this.height
-    ) = setInternal(center, orientation, width, height)
+    ) {
+        throwWhenConstructorArgumentsAreIllegal(width, height)
+        setInternal(center, orientation, width, height)
+    }
 
-    override fun interpolated(to: Rectangle, by: Float) = MutableRectangle(
+    override fun interpolated(to: Rectangle, by: Float) = createInternal(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
         width = Float.lerp(_width, to.width, by),
@@ -676,6 +680,45 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override operator fun component3(): Float = _width
 
     override operator fun component4(): Float = _height
+
+    companion object {
+        private inline fun throwWhenConstructorArgumentsAreIllegal(width: Float, height: Float) {
+            if (width < 0f) {
+                throw IllegalArgumentException("width must be greater than or equal to zero.")
+            }
+            if (height < 0f) {
+                throw IllegalArgumentException("height must be greater than or equal to zero.")
+            }
+        }
+
+        private inline fun createInternal(
+            center: Vector2F, orientation: ComplexF, width: Float, height: Float
+        ): MutableRectangle {
+            val (cX: Float, cY: Float) = center
+            val (oR: Float, oI: Float) = orientation
+            val halfWidth: Float = width * 0.5f
+            val halfHeight: Float = height * 0.5f
+            val addendX1: Float = oR * halfWidth
+            val addendX2: Float = oI * halfHeight
+            val addendY1: Float = oR * halfHeight
+            val addendY2: Float = oI * halfWidth
+            val addendSumX1X2: Float = addendX1 + addendX2
+            val addendDiffX1X2: Float = addendX1 - addendX2
+            val addendSumY1Y2: Float = addendY1 + addendY2
+            val addendDiffY1Y2: Float = addendY1 - addendY2
+
+            return MutableRectangle(
+                center,
+                orientation,
+                width,
+                height,
+                pointA = Vector2F(cX + addendDiffX1X2, cY + addendSumY1Y2),
+                pointB = Vector2F(cX - addendSumX1X2, cY + addendDiffY1Y2),
+                pointC = Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2),
+                pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
+            )
+        }
+    }
 
     private class PointIterator(
         private val rectangle: MutableRectangle,

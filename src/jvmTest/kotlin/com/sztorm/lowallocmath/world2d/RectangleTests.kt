@@ -8,12 +8,38 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.world2d.utils.DefaultRectangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class RectangleTests {
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableRectangle(center.value, orientation.value, width, height)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorDoesNotThrowExceptionArgs")
+    fun constructorDoesNotThrowException(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, width: Float, height: Float,
+    ) {
+        assertDoesNotThrow {
+            MutableRectangle(center.value, orientation.value, width, height)
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("centerArgs")
     fun centerReturnsCorrectValue(rectangle: Rectangle, expected: Wrapper<Vector2F>) =
@@ -93,6 +119,42 @@ class RectangleTests {
     )
 
     @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val rectangle = MutableRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f
+        )
+        assertThrows(expectedExceptionClass) {
+            rectangle.set(center.value, orientation.value, width, height)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, width: Float, height: Float,
+    ) {
+        val rectangle = MutableRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f
+        )
+        assertDoesNotThrow {
+            rectangle.set(center.value, orientation.value, width, height)
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         rectangle: Rectangle, to: Rectangle, by: Float, expected: Rectangle
@@ -142,6 +204,42 @@ class RectangleTests {
         height: Float,
         expected: Rectangle
     ) = assertEquals(expected, rectangle.copy(center.value, orientation.value, width, height))
+
+    @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val rectangle = MutableRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f
+        )
+        assertThrows(expectedExceptionClass) {
+            rectangle.copy(center.value, orientation.value, width, height)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, width: Float, height: Float,
+    ) {
+        val rectangle = MutableRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f
+        )
+        assertDoesNotThrow {
+            rectangle.copy(center.value, orientation.value, width, height)
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -226,6 +324,59 @@ class RectangleTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                2f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                -2f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                -0.5f,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                0f
+            ),
+        )
 
         @JvmStatic
         fun centerArgs(): List<Arguments> {
@@ -535,6 +686,13 @@ class RectangleTests {
         )
 
         @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
+
+        @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
             val mutableRectangleArgs = interpolateArgs().map {
                 Arguments.of(*it.get().drop(1).toTypedArray())
@@ -822,6 +980,13 @@ class RectangleTests {
                 defaultRectangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRectangleArgs() + listOf(
