@@ -8,12 +8,43 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.world2d.utils.DefaultRoundedRectangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class RoundedRectangleTests {
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableRoundedRectangle(center.value, orientation.value, width, height, cornerRadius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorDoesNotThrowExceptionArgs")
+    fun constructorDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float
+    ) {
+        assertDoesNotThrow {
+            MutableRoundedRectangle(center.value, orientation.value, width, height, cornerRadius)
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("centerArgs")
     fun centerReturnsCorrectValue(rectangle: RoundedRectangle, expected: Wrapper<Vector2F>) =
@@ -124,6 +155,49 @@ class RoundedRectangleTests {
     )
 
     @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val rectangle = MutableRoundedRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f,
+            cornerRadius = 0.1f
+        )
+        assertThrows(expectedExceptionClass) {
+            rectangle.set(center.value, orientation.value, width, height, cornerRadius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float
+    ) {
+        val rectangle = MutableRoundedRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f,
+            cornerRadius = 0.1f
+        )
+        assertDoesNotThrow {
+            rectangle.set(center.value, orientation.value, width, height, cornerRadius)
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         rectangle: RoundedRectangle, to: RoundedRectangle, by: Float, expected: RoundedRectangle
@@ -176,6 +250,49 @@ class RoundedRectangleTests {
     ) = assertEquals(
         expected, rectangle.copy(center.value, orientation.value, width, height, cornerRadius)
     )
+
+    @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val rectangle = MutableRoundedRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f,
+            cornerRadius = 0.1f
+        )
+        assertThrows(expectedExceptionClass) {
+            rectangle.copy(center.value, orientation.value, width, height, cornerRadius)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float
+    ) {
+        val rectangle = MutableRoundedRectangle(
+            center = Vector2F.ZERO,
+            orientation = ComplexF.ONE,
+            width = 1f,
+            height = 0.5f,
+            cornerRadius = 0.1f
+        )
+        assertDoesNotThrow {
+            rectangle.copy(center.value, orientation.value, width, height, cornerRadius)
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -273,6 +390,90 @@ class RoundedRectangleTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                2f,
+                0.25f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                -2f,
+                0.25f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                -0.25f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                -2f,
+                -0.25f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0.51f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                1f,
+                0.51f,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0.25f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0.5f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                0f,
+                0f
+            ),
+        )
 
         @JvmStatic
         fun centerArgs(): List<Arguments> {
@@ -712,6 +913,13 @@ class RoundedRectangleTests {
         )
 
         @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
+
+        @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
             val mutableRoundedRectangleArgs = interpolateArgs().map {
                 Arguments.of(*it.get().drop(1).toTypedArray())
@@ -771,14 +979,14 @@ class RoundedRectangleTests {
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
-                    cornerRadius = 1f
+                    cornerRadius = 1.5f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(6f, -1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 2f,
-                    cornerRadius = 1.5f
+                    cornerRadius = 1f
                 ),
                 0f,
                 MutableRoundedRectangle(
@@ -786,7 +994,7 @@ class RoundedRectangleTests {
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
-                    cornerRadius = 1f
+                    cornerRadius = 1.5f
                 )
             ),
             Arguments.of(
@@ -802,14 +1010,14 @@ class RoundedRectangleTests {
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
-                    cornerRadius = 1f
+                    cornerRadius = 1.5f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(6f, -1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 2f,
-                    cornerRadius = 1.5f
+                    cornerRadius = 1f
                 ),
                 1f,
                 MutableRoundedRectangle(
@@ -817,7 +1025,7 @@ class RoundedRectangleTests {
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 2f,
-                    cornerRadius = 1.5f
+                    cornerRadius = 1f
                 )
             ),
             Arguments.of(
@@ -833,14 +1041,14 @@ class RoundedRectangleTests {
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
                     width = 8f,
                     height = 4f,
-                    cornerRadius = 1f
+                    cornerRadius = 1.5f
                 ),
                 MutableRoundedRectangle(
                     center = Vector2F(6f, -1f),
                     orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     width = 3f,
                     height = 2f,
-                    cornerRadius = 1.5f
+                    cornerRadius = 1f
                 ),
                 0.5f,
                 MutableRoundedRectangle(
@@ -1168,6 +1376,13 @@ class RoundedRectangleTests {
                 defaultRoundedRectangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRoundedRectangleArgs() + listOf(

@@ -25,6 +25,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     constructor(
         center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
     ) {
+        throwWhenConstructorArgumentsAreIllegal(width, height, cornerRadius)
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
         val halfWidth: Float = width * 0.5f
@@ -254,25 +255,18 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterD += offset
     }
 
-    override fun rotatedBy(rotation: AngleF) = MutableRoundedRectangle(
+    override fun rotatedBy(rotation: AngleF) = createInternal(
         _center, _orientation * ComplexF.fromAngle(rotation), _width, _height, _cornerRadius
     )
 
-    override fun rotatedBy(rotation: ComplexF) = MutableRoundedRectangle(
-        _center, _orientation * rotation, _width, _height, _cornerRadius
-    )
+    override fun rotatedBy(rotation: ComplexF) =
+        createInternal(_center, _orientation * rotation, _width, _height, _cornerRadius)
 
     override fun rotatedTo(orientation: AngleF) =
-        MutableRoundedRectangle(
-            _center,
-            ComplexF.fromAngle(orientation),
-            _width,
-            _height,
-            _cornerRadius
-        )
+        createInternal(_center, ComplexF.fromAngle(orientation), _width, _height, _cornerRadius)
 
     override fun rotatedTo(orientation: ComplexF) =
-        MutableRoundedRectangle(_center, orientation, _width, _height, _cornerRadius)
+        createInternal(_center, orientation, _width, _height, _cornerRadius)
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRoundedRectangle =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
@@ -673,7 +667,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     override fun scaledBy(factor: Float): MutableRoundedRectangle {
         val absFactor: Float = factor.absoluteValue
 
-        return MutableRoundedRectangle(
+        return createInternal(
             _center,
             _orientation * 1f.withSign(factor),
             _width * absFactor,
@@ -838,7 +832,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRoundedRectangle(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF) = createInternal(
         _center + offset,
         _orientation * ComplexF.fromAngle(rotation),
         _width,
@@ -846,7 +840,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerRadius
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableRoundedRectangle(
+    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = createInternal(
         _center + offset,
         _orientation * rotation,
         _width,
@@ -859,7 +853,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     ): MutableRoundedRectangle {
         val absFactor: Float = factor.absoluteValue
 
-        return MutableRoundedRectangle(
+        return createInternal(
             _center + offset,
             _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
             _width * absFactor,
@@ -873,7 +867,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     ): MutableRoundedRectangle {
         val absFactor: Float = factor.absoluteValue
 
-        return MutableRoundedRectangle(
+        return createInternal(
             _center + offset,
             _orientation * rotation * 1f.withSign(factor),
             _width * absFactor,
@@ -882,12 +876,12 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         )
     }
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF) = MutableRoundedRectangle(
+    override fun transformedTo(position: Vector2F, orientation: AngleF) = createInternal(
         position, ComplexF.fromAngle(orientation), _width, _height, _cornerRadius
     )
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableRoundedRectangle(position, orientation, _width, _height, _cornerRadius)
+        createInternal(position, orientation, _width, _height, _cornerRadius)
 
     override fun transformBy(offset: Vector2F, rotation: AngleF) =
         transformTo(_center + offset, _orientation * ComplexF.fromAngle(rotation))
@@ -1056,9 +1050,12 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         width: Float = this.width,
         height: Float = this.height,
         cornerRadius: Float = this.cornerRadius
-    ) = setInternal(center, orientation, width, height, cornerRadius)
+    ) {
+        throwWhenConstructorArgumentsAreIllegal(width, height, cornerRadius)
+        setInternal(center, orientation, width, height, cornerRadius)
+    }
 
-    override fun interpolated(to: RoundedRectangle, by: Float) = MutableRoundedRectangle(
+    override fun interpolated(to: RoundedRectangle, by: Float) = createInternal(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
         width = Float.lerp(_width, to.width, by),
@@ -1202,6 +1199,86 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     override operator fun component4(): Float = _height
 
     override operator fun component5(): Float = _cornerRadius
+
+    companion object {
+        private inline fun throwWhenConstructorArgumentsAreIllegal(
+            width: Float, height: Float, cornerRadius: Float
+        ) {
+            if (width < 0f) {
+                throw IllegalArgumentException("width must be greater than or equal to zero.")
+            }
+            if (height < 0f) {
+                throw IllegalArgumentException("height must be greater than or equal to zero.")
+            }
+            if (cornerRadius < 0f) {
+                throw IllegalArgumentException(
+                    "cornerRadius must be greater than or equal to zero."
+                )
+            }
+            val halfShortestSize: Float = min(width, height) * 0.5f
+
+            if (cornerRadius > halfShortestSize) {
+                throw IllegalArgumentException(
+                    "cornerRadius must be less than half of width and less than half of height."
+                )
+            }
+        }
+
+        private inline fun createInternal(
+            center: Vector2F,
+            orientation: ComplexF,
+            width: Float,
+            height: Float,
+            cornerRadius: Float
+        ): MutableRoundedRectangle {
+            val (cX: Float, cY: Float) = center
+            val (oR: Float, oI: Float) = orientation
+            val halfWidth: Float = width * 0.5f
+            val halfHeight: Float = height * 0.5f
+            val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+            val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+            val addendA: Float = oR * halfWidthMinusRadius
+            val addendB: Float = oI * halfWidthMinusRadius
+            val addendC: Float = oR * halfHeightMinusRadius
+            val addendD: Float = oI * halfHeightMinusRadius
+            val addendE: Float = oR * halfWidth
+            val addendF: Float = oI * halfWidth
+            val addendG: Float = oR * halfHeight
+            val addendH: Float = oI * halfHeight
+            val addendSumAH: Float = addendA + addendH
+            val addendSumBG: Float = addendB + addendG
+            val addendSumCF: Float = addendC + addendF
+            val addendSumED: Float = addendE + addendD
+            val addendSumBC: Float = addendB + addendC
+            val addendSumAD: Float = addendA + addendD
+            val addendDiffAH: Float = addendA - addendH
+            val addendDiffBG: Float = addendB - addendG
+            val addendDiffCF: Float = addendC - addendF
+            val addendDiffED: Float = addendE - addendD
+            val addendDiffBC: Float = addendB - addendC
+            val addendDiffAD: Float = addendA - addendD
+
+            return MutableRoundedRectangle(
+                center,
+                orientation,
+                width,
+                height,
+                cornerRadius,
+                pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG),
+                pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG),
+                pointC = Vector2F(cX - addendSumED, cY + addendDiffCF),
+                pointD = Vector2F(cX - addendDiffED, cY - addendSumCF),
+                pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG),
+                pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG),
+                pointG = Vector2F(cX + addendSumED, cY - addendDiffCF),
+                pointH = Vector2F(cX + addendDiffED, cY + addendSumCF),
+                cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC),
+                cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC),
+                cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC),
+                cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+            )
+        }
+    }
 
     private class CornerCenterIterator(
         private val rectangle: MutableRoundedRectangle,
