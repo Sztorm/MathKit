@@ -8,12 +8,37 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.world2d.utils.DefaultRegularTriangle
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 class RegularTriangleTests {
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableRegularTriangle(center.value, orientation.value, sideLength)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorDoesNotThrowExceptionArgs")
+    fun constructorDoesNotThrowException(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
+    ) {
+        assertDoesNotThrow {
+            MutableRegularTriangle(center.value, orientation.value, sideLength)
+        }
+    }
+
     @ParameterizedTest
     @MethodSource("centerArgs")
     fun centerReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
@@ -152,6 +177,35 @@ class RegularTriangleTests {
     ) = assertEquals(expected, triangle.apply { set(center.value, orientation.value, sideLength) })
 
     @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val triangle = MutableRegularTriangle(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+        )
+        assertThrows(expectedExceptionClass) {
+            triangle.set(center.value, orientation.value, sideLength)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
+    ) {
+        val triangle = MutableRegularTriangle(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+        )
+        assertDoesNotThrow {
+            triangle.set(center.value, orientation.value, sideLength)
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("interpolatedArgs")
     fun interpolatedReturnsCorrectValue(
         triangle: RegularTriangle, to: RegularTriangle, by: Float, expected: RegularTriangle
@@ -200,6 +254,35 @@ class RegularTriangleTests {
         sideLength: Float,
         expected: RegularTriangle
     ) = assertEquals(expected, triangle.copy(center.value, orientation.value, sideLength))
+
+    @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val triangle = MutableRegularTriangle(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+        )
+        assertThrows(expectedExceptionClass) {
+            triangle.copy(center.value, orientation.value, sideLength)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
+    ) {
+        val triangle = MutableRegularTriangle(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f
+        )
+        assertDoesNotThrow {
+            triangle.copy(center.value, orientation.value, sideLength)
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -280,6 +363,36 @@ class RegularTriangleTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -0.1f,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f
+            ),
+        )
 
         @JvmStatic
         fun centerArgs(): List<Arguments> {
@@ -730,6 +843,13 @@ class RegularTriangleTests {
         )
 
         @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
+
+        @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
             val mutableRegularTriangleArgs = interpolateArgs().map {
                 Arguments.of(*it.get().drop(1).toTypedArray())
@@ -996,6 +1116,13 @@ class RegularTriangleTests {
                 defaultRegularTriangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(

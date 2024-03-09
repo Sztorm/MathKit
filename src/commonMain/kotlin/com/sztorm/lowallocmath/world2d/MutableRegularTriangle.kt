@@ -17,6 +17,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     internal var _pointC: Vector2F
 
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float) {
+        throwWhenConstructorArgumentIsIllegal(sideLength)
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
         val halfSideLength: Float = sideLength * 0.5f
@@ -160,18 +161,17 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC += offset
     }
 
-    override fun rotatedBy(rotation: AngleF) = MutableRegularTriangle(
-        _center, _orientation * ComplexF.fromAngle(rotation), _sideLength
-    )
+    override fun rotatedBy(rotation: AngleF) =
+        createInternal(_center, _orientation * ComplexF.fromAngle(rotation), _sideLength)
 
     override fun rotatedBy(rotation: ComplexF) =
-        MutableRegularTriangle(_center, _orientation * rotation, _sideLength)
+        createInternal(_center, _orientation * rotation, _sideLength)
 
     override fun rotatedTo(orientation: AngleF) =
-        MutableRegularTriangle(_center, ComplexF.fromAngle(orientation), _sideLength)
+        createInternal(_center, ComplexF.fromAngle(orientation), _sideLength)
 
     override fun rotatedTo(orientation: ComplexF) =
-        MutableRegularTriangle(_center, orientation, _sideLength)
+        createInternal(_center, orientation, _sideLength)
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRegularTriangle =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
@@ -371,7 +371,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         }
     }
 
-    override fun scaledBy(factor: Float) = MutableRegularTriangle(
+    override fun scaledBy(factor: Float) = createInternal(
         _center,
         orientation = _orientation * 1f.withSign(factor),
         sideLength = _sideLength * factor.absoluteValue
@@ -440,32 +440,31 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableRegularTriangle(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF) = createInternal(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _sideLength
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
-        MutableRegularTriangle(_center + offset, _orientation * rotation, _sideLength)
+        createInternal(_center + offset, _orientation * rotation, _sideLength)
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        MutableRegularTriangle(
-            _center + offset,
-            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-            _sideLength * factor.absoluteValue
-        )
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = createInternal(
+        _center + offset,
+        _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
+        _sideLength * factor.absoluteValue
+    )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
-        MutableRegularTriangle(
+        createInternal(
             _center + offset,
             _orientation * rotation * 1f.withSign(factor),
             _sideLength * factor.absoluteValue
         )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
-        MutableRegularTriangle(position, ComplexF.fromAngle(orientation), _sideLength)
+        createInternal(position, ComplexF.fromAngle(orientation), _sideLength)
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableRegularTriangle(position, orientation, _sideLength)
+        createInternal(position, orientation, _sideLength)
 
     override fun transformBy(offset: Vector2F, rotation: AngleF) =
         transformTo(_center + offset, _orientation * ComplexF.fromAngle(rotation))
@@ -545,9 +544,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength
-    ) = setInternal(center, orientation, sideLength)
+    ) {
+        throwWhenConstructorArgumentIsIllegal(sideLength)
+        setInternal(center, orientation, sideLength)
+    }
 
-    override fun interpolated(to: RegularTriangle, by: Float) = MutableRegularTriangle(
+    override fun interpolated(to: RegularTriangle, by: Float) = createInternal(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
         sideLength = Float.lerp(_sideLength, to.sideLength, by)
@@ -657,6 +659,37 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override operator fun component2(): ComplexF = _orientation
 
     override operator fun component3(): Float = _sideLength
+
+    companion object {
+        private inline fun throwWhenConstructorArgumentIsIllegal(sideLength: Float) {
+            if (sideLength < 0f) {
+                throw IllegalArgumentException("sideLength must be greater than or equal to zero.")
+            }
+        }
+
+        private inline fun createInternal(
+            center: Vector2F, orientation: ComplexF, sideLength: Float
+        ): MutableRegularTriangle {
+            val (cX: Float, cY: Float) = center
+            val (oR: Float, oI: Float) = orientation
+            val halfSideLength: Float = sideLength * 0.5f
+            val inradius: Float = 0.28867513f * sideLength
+            val circumradius: Float = inradius + inradius
+            val addendX1: Float = oI * inradius + cX
+            val addendX2: Float = oR * halfSideLength
+            val addendY1: Float = oI * halfSideLength
+            val addendY2: Float = oR * inradius - cY
+
+            return MutableRegularTriangle(
+                center,
+                orientation,
+                sideLength,
+                pointA = Vector2F(cX - oI * circumradius, cY + oR * circumradius),
+                pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2),
+                pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+            )
+        }
+    }
 
     private class PointIterator(
         private val triangle: MutableRegularTriangle,
