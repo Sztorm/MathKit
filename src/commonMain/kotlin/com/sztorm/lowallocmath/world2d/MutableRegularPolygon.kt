@@ -14,24 +14,22 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     private var _circumradius: Float
 
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int) {
+        throwWhenSideLengthValueIsIllegal(sideLength)
+
         if (sideCount < 3) {
-            if (sideCount < 2) {
-                throw IllegalArgumentException(
-                    "Minimum required side count to create a polygon is 2."
-                )
-            }
+            throwWhenSideCountValueIsIllegal(sideCount)
             val (oR: Float, oI: Float) = orientation
             val halfSideLength: Float = 0.5f * sideLength
             val offset = Vector2F(oR * halfSideLength, oI * halfSideLength)
             val points = Vector2FArray(sideCount)
             points[0] = center + offset
             points[1] = center - offset
-            _inradius = 0f
-            _circumradius = halfSideLength
             _center = center
             _orientation = orientation
             _sideLength = sideLength
             _points = points
+            _inradius = 0f
+            _circumradius = halfSideLength
             return
         }
         val points = Vector2FArray(sideCount)
@@ -41,9 +39,12 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
         val halfExteriorAngle: Float = exteriorAngle * 0.5f
         val exteriorRotation = ComplexF(cos(exteriorAngle), sin(exteriorAngle))
+        val inradius: Float
+        val circumradius: Float
 
         if (isSideCountEven) {
-            val inradius: Float = halfSideLength / tan(halfExteriorAngle)
+            inradius = halfSideLength / tan(halfExteriorAngle)
+            circumradius = halfSideLength / sin(halfExteriorAngle)
             points[0] = Vector2F(halfSideLength, inradius)
             points[1] = Vector2F(-halfSideLength, inradius)
 
@@ -54,10 +55,9 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 val oppositePoint: Vector2F = points[sideCount - i + 1]
                 points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
             }
-            _inradius = inradius
-            _circumradius = halfSideLength / sin(halfExteriorAngle)
         } else {
-            val circumradius: Float = halfSideLength / sin(halfExteriorAngle)
+            inradius = halfSideLength / tan(halfExteriorAngle)
+            circumradius = halfSideLength / sin(halfExteriorAngle)
             points[0] = Vector2F(0f, circumradius)
 
             for (i in 1..halfCount) {
@@ -67,8 +67,6 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 val oppositePoint: Vector2F = points[sideCount - i]
                 points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
             }
-            _inradius = halfSideLength / tan(halfExteriorAngle)
-            _circumradius = circumradius
         }
         for (i in 0 until sideCount) {
             points[i] = center + (orientation * points[i].toComplexF()).toVector2F()
@@ -77,6 +75,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _orientation = orientation
         _sideLength = sideLength
         _points = points
+        _inradius = inradius
+        _circumradius = circumradius
     }
 
     private constructor(
@@ -702,11 +702,6 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int
     ) {
         if (sideCount < 3) {
-            if (sideCount < 2) {
-                throw IllegalArgumentException(
-                    "Minimum required side count to create a polygon is 2."
-                )
-            }
             val (oR: Float, oI: Float) = orientation
             val halfSideLength: Float = 0.5f * sideLength
             val offset = Vector2F(oR * halfSideLength, oI * halfSideLength)
@@ -715,12 +710,12 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 else Vector2FArray(sideCount)
             points[0] = center + offset
             points[1] = center - offset
-            _inradius = 0f
-            _circumradius = halfSideLength
             _center = center
             _orientation = orientation
             _sideLength = sideLength
             _points = points
+            _inradius = 0f
+            _circumradius = halfSideLength
             return
         }
         val points: Vector2FArray =
@@ -732,9 +727,12 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
         val halfExteriorAngle: Float = exteriorAngle * 0.5f
         val exteriorRotation = ComplexF(cos(exteriorAngle), sin(exteriorAngle))
+        val inradius: Float
+        val circumradius: Float
 
         if (isSideCountEven) {
-            val inradius: Float = halfSideLength / tan(halfExteriorAngle)
+            inradius = halfSideLength / tan(halfExteriorAngle)
+            circumradius = halfSideLength / sin(halfExteriorAngle)
             points[0] = Vector2F(halfSideLength, inradius)
             points[1] = Vector2F(-halfSideLength, inradius)
 
@@ -745,10 +743,9 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 val oppositePoint: Vector2F = points[sideCount - i + 1]
                 points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
             }
-            _inradius = inradius
-            _circumradius = halfSideLength / sin(halfExteriorAngle)
         } else {
-            val circumradius: Float = halfSideLength / sin(halfExteriorAngle)
+            inradius = halfSideLength / tan(halfExteriorAngle)
+            circumradius = halfSideLength / sin(halfExteriorAngle)
             points[0] = Vector2F(0f, circumradius)
 
             for (i in 1..halfCount) {
@@ -758,8 +755,6 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
                 val oppositePoint: Vector2F = points[sideCount - i]
                 points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
             }
-            _inradius = halfSideLength / tan(halfExteriorAngle)
-            _circumradius = circumradius
         }
         for (i in 0 until sideCount) {
             points[i] = center + (orientation * points[i].toComplexF()).toVector2F()
@@ -768,6 +763,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _orientation = orientation
         _sideLength = sideLength
         _points = points
+        _inradius = inradius
+        _circumradius = circumradius
     }
 
     fun set(
@@ -775,7 +772,11 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength,
         sideCount: Int = this.sideCount
-    ) = setInternal(center, orientation, sideLength, sideCount)
+    ) {
+        throwWhenSideLengthValueIsIllegal(sideLength)
+        throwWhenSideCountValueIsIllegal(sideCount)
+        setInternal(center, orientation, sideLength, sideCount)
+    }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val sideCount: Int = this.sideCount
@@ -914,4 +915,18 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     override operator fun component3(): Float = _sideLength
 
     override operator fun component4(): Int = sideCount
+
+    companion object {
+        private inline fun throwWhenSideCountValueIsIllegal(sideCount: Int) {
+            if (sideCount < 2) {
+                throw IllegalArgumentException("sideCount must be greater than or equal to two.")
+            }
+        }
+
+        private inline fun throwWhenSideLengthValueIsIllegal(sideLength: Float) {
+            if (sideLength < 0f) {
+                throw IllegalArgumentException("sideLength must be greater than or equal to zero.")
+            }
+        }
+    }
 }

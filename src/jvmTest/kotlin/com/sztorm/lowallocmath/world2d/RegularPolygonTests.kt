@@ -5,8 +5,8 @@ import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.world2d.utils.DefaultRegularPolygon
 import com.sztorm.lowallocmath.world2d.utils.assertImmutabilityOf
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -48,22 +48,30 @@ class RegularPolygonTests {
             }
         }
 
-    @Test
-    fun constructorThrowsWhenSideCountIsLessThanTwo() {
-        assertThrows<IllegalArgumentException> {
-            RegularPolygon(
-                center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 2f, sideCount = 1
-            )
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableRegularPolygon(center.value, orientation.value, sideLength, sideCount)
         }
-        assertThrows<IllegalArgumentException> {
-            RegularPolygon(
-                center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 2f, sideCount = 0
-            )
-        }
-        assertThrows<IllegalArgumentException> {
-            RegularPolygon(
-                center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 2f, sideCount = -1
-            )
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorDoesNotThrowExceptionArgs")
+    fun constructorDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int
+    ) {
+        assertDoesNotThrow {
+            MutableRegularPolygon(center.value, orientation.value, sideLength, sideCount)
         }
     }
 
@@ -171,6 +179,39 @@ class RegularPolygonTests {
     )
 
     @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val polygon = MutableRegularPolygon(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f, sideCount = 3
+        )
+        assertThrows(expectedExceptionClass) {
+            polygon.set(center.value, orientation.value, sideLength, sideCount)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int
+    ) {
+        val polygon = MutableRegularPolygon(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f, sideCount = 3
+        )
+        assertDoesNotThrow {
+            polygon.set(center.value, orientation.value, sideLength, sideCount)
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("closestPointToArgs")
     fun closestPointToReturnsCorrectValue(
         polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
@@ -198,6 +239,39 @@ class RegularPolygonTests {
     ) = assertEquals(
         expected, polygon.copy(center.value, orientation.value, sideLength, sideCount)
     )
+
+    @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val polygon = MutableRegularPolygon(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f, sideCount = 3
+        )
+        assertThrows(expectedExceptionClass) {
+            polygon.copy(center.value, orientation.value, sideLength, sideCount)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int
+    ) {
+        val polygon = MutableRegularPolygon(
+            center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 1f, sideCount = 3
+        )
+        assertDoesNotThrow {
+            polygon.copy(center.value, orientation.value, sideLength, sideCount)
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -367,6 +441,73 @@ class RegularPolygonTests {
                     sideLength = 4f,
                     sideCount = 4
                 )
+            ),
+        )
+
+        @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                1,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                0,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                -1,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                2,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                1,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                2
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                3
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                4
             ),
         )
 
@@ -1236,6 +1377,13 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
+
+        @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
             val decagon = MutableRegularPolygon(
                 Vector2F(14f, 1f),
@@ -1964,6 +2112,13 @@ class RegularPolygonTests {
                 defaultRegularPolygonArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorDoesNotThrowExceptionArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(
