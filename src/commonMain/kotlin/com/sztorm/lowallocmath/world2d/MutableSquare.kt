@@ -15,6 +15,7 @@ class MutableSquare : Square, MutableTransformable {
     internal var _pointD: Vector2F
 
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float) {
+        throwWhenConstructorArgumentIsIllegal(sideLength)
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
         val halfSideLength: Float = sideLength * 0.5f
@@ -151,16 +152,16 @@ class MutableSquare : Square, MutableTransformable {
     }
 
     override fun rotatedBy(rotation: AngleF) =
-        MutableSquare(_center, _orientation * ComplexF.fromAngle(rotation), _sideLength)
+        createInternal(_center, _orientation * ComplexF.fromAngle(rotation), _sideLength)
 
     override fun rotatedBy(rotation: ComplexF) =
-        MutableSquare(_center, _orientation * rotation, _sideLength)
+        createInternal(_center, _orientation * rotation, _sideLength)
 
     override fun rotatedTo(orientation: AngleF) =
-        MutableSquare(_center, ComplexF.fromAngle(orientation), _sideLength)
+        createInternal(_center, ComplexF.fromAngle(orientation), _sideLength)
 
     override fun rotatedTo(orientation: ComplexF) =
-        MutableSquare(_center, orientation, _sideLength)
+        createInternal(_center, orientation, _sideLength)
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableSquare =
         rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
@@ -321,7 +322,7 @@ class MutableSquare : Square, MutableTransformable {
         }
     }
 
-    override fun scaledBy(factor: Float) = MutableSquare(
+    override fun scaledBy(factor: Float) = createInternal(
         _center,
         orientation = _orientation * 1f.withSign(factor),
         sideLength = _sideLength * factor.absoluteValue
@@ -381,31 +382,31 @@ class MutableSquare : Square, MutableTransformable {
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableSquare(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF) = createInternal(
         _center + offset, _orientation * ComplexF.fromAngle(rotation), _sideLength
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF) =
-        MutableSquare(_center + offset, _orientation * rotation, _sideLength)
+        createInternal(_center + offset, _orientation * rotation, _sideLength)
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableSquare(
+    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = createInternal(
         _center + offset,
         _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
         _sideLength * factor.absoluteValue
     )
 
     override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
-        MutableSquare(
+        createInternal(
             _center + offset,
             _orientation * rotation * 1f.withSign(factor),
             _sideLength * factor.absoluteValue
         )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF) =
-        MutableSquare(position, ComplexF.fromAngle(orientation), _sideLength)
+        createInternal(position, ComplexF.fromAngle(orientation), _sideLength)
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableSquare(position, orientation, _sideLength)
+        createInternal(position, orientation, _sideLength)
 
     override fun transformBy(offset: Vector2F, rotation: AngleF) =
         transformTo(_center + offset, _orientation * ComplexF.fromAngle(rotation))
@@ -475,9 +476,12 @@ class MutableSquare : Square, MutableTransformable {
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength
-    ) = setInternal(center, orientation, sideLength)
+    ) {
+        throwWhenConstructorArgumentIsIllegal(sideLength)
+        setInternal(center, orientation, sideLength)
+    }
 
-    override fun interpolated(to: Square, by: Float) = MutableSquare(
+    override fun interpolated(to: Square, by: Float) = createInternal(
         center = Vector2F.lerp(_center, to.center, by),
         orientation = ComplexF.slerp(_orientation, to.orientation, by),
         sideLength = Float.lerp(_sideLength, to.sideLength, by)
@@ -553,6 +557,34 @@ class MutableSquare : Square, MutableTransformable {
     override operator fun component2(): ComplexF = _orientation
 
     override operator fun component3(): Float = _sideLength
+
+    companion object {
+        private inline fun throwWhenConstructorArgumentIsIllegal(sideLength: Float) {
+            if (sideLength < 0f) {
+                throw IllegalArgumentException("sideLength must be greater than or equal to zero.")
+            }
+        }
+
+        private inline fun createInternal(
+            center: Vector2F, orientation: ComplexF, sideLength: Float
+        ): MutableSquare {
+            val (cX: Float, cY: Float) = center
+            val (oR: Float, oI: Float) = orientation
+            val halfSideLength: Float = sideLength * 0.5f
+            val addendA: Float = halfSideLength * (oR + oI)
+            val addendB: Float = halfSideLength * (oR - oI)
+
+            return MutableSquare(
+                center,
+                orientation,
+                sideLength,
+                pointA = Vector2F(cX + addendB, cY + addendA),
+                pointB = Vector2F(cX - addendA, cY + addendB),
+                pointC = Vector2F(cX - addendB, cY - addendA),
+                pointD = Vector2F(cX + addendA, cY - addendB)
+            )
+        }
+    }
 
     private class PointIterator(
         private val square: MutableSquare,
