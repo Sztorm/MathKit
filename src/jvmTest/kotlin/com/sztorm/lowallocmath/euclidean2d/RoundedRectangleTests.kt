@@ -17,6 +17,34 @@ import kotlin.test.assertEquals
 
 class RoundedRectangleTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectRoundedRectangle(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        width: Float,
+        height: Float,
+        cornerRadius: Float
+    ) {
+        val mutableRectangle = MutableRoundedRectangle(
+            center.value, orientation.value, width, height, cornerRadius
+        )
+        val rectangle = RoundedRectangle(
+            center.value, orientation.value, width, height, cornerRadius
+        )
+        assertEquals(center.value, mutableRectangle.center)
+        assertEquals(orientation.value, mutableRectangle.orientation)
+        assertEquals(width, mutableRectangle.width)
+        assertEquals(height, mutableRectangle.height)
+        assertEquals(cornerRadius, mutableRectangle.cornerRadius)
+
+        assertEquals(center.value, rectangle.center)
+        assertEquals(orientation.value, rectangle.orientation)
+        assertEquals(width, rectangle.width)
+        assertEquals(height, rectangle.height)
+        assertEquals(cornerRadius, rectangle.cornerRadius)
+    }
+
+    @ParameterizedTest
     @MethodSource("constructorThrowsExceptionArgs")
     fun constructorThrowsCorrectException(
         center: Wrapper<Vector2F>,
@@ -29,19 +57,8 @@ class RoundedRectangleTests {
         assertThrows(expectedExceptionClass) {
             MutableRoundedRectangle(center.value, orientation.value, width, height, cornerRadius)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>,
-        orientation: Wrapper<ComplexF>,
-        width: Float,
-        height: Float,
-        cornerRadius: Float
-    ) {
-        assertDoesNotThrow {
-            MutableRoundedRectangle(center.value, orientation.value, width, height, cornerRadius)
+        assertThrows(expectedExceptionClass) {
+            RoundedRectangle(center.value, orientation.value, width, height, cornerRadius)
         }
     }
 
@@ -392,6 +409,52 @@ class RoundedRectangleTests {
         }
 
         @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0.25f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f,
+                0.5f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                0f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-3f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+                8f,
+                4f,
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(6f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                3f,
+                4f,
+                1.5f
+            ),
+        )
+
+        @JvmStatic
         fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
@@ -440,38 +503,6 @@ class RoundedRectangleTests {
                 1f,
                 0.51f,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f,
-                2f,
-                0.25f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f,
-                2f,
-                0f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f,
-                2f,
-                0.5f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                0f,
-                0f
             ),
         )
 
@@ -916,8 +947,7 @@ class RoundedRectangleTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -1381,8 +1411,7 @@ class RoundedRectangleTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRoundedRectangleArgs() + listOf(

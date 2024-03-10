@@ -14,6 +14,21 @@ import kotlin.test.assertEquals
 
 class RayTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectRay(
+        origin: Wrapper<Vector2F>, direction: Wrapper<Vector2F>
+    ) {
+        val mutableRay = MutableRay(origin.value, direction.value)
+        val ray = Ray(origin.value, direction.value)
+
+        assertEquals(origin.value, mutableRay.origin)
+        assertEquals(direction.value, mutableRay.direction)
+
+        assertEquals(origin.value, ray.origin)
+        assertEquals(direction.value, ray.direction)
+    }
+
+    @ParameterizedTest
     @MethodSource("originArgs")
     fun originReturnsCorrectValue(ray: Ray, expected: Wrapper<Vector2F>) =
         assertImmutabilityOf(ray) {
@@ -156,6 +171,22 @@ class RayTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(-2f, 5f)),
+                Wrapper(Vector2F(1f, 0f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(3f, 2f)),
+                Wrapper(Vector2F(0f, 1f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-4f, 3f)),
+                Wrapper(Vector2F(1f, -1f).normalized)
+            ),
+        )
 
         @JvmStatic
         fun originArgs(): List<Arguments> {

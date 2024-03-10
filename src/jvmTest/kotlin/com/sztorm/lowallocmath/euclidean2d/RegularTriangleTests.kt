@@ -17,6 +17,23 @@ import kotlin.test.assertEquals
 
 class RegularTriangleTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectRegularTriangle(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
+    ) {
+        val mutableTriangle = MutableRegularTriangle(center.value, orientation.value, sideLength)
+        val triangle = RegularTriangle(center.value, orientation.value, sideLength)
+
+        assertEquals(center.value, mutableTriangle.center)
+        assertEquals(orientation.value, mutableTriangle.orientation)
+        assertEquals(sideLength, mutableTriangle.sideLength)
+
+        assertEquals(center.value, triangle.center)
+        assertEquals(orientation.value, triangle.orientation)
+        assertEquals(sideLength, triangle.sideLength)
+    }
+
+    @ParameterizedTest
     @MethodSource("constructorThrowsExceptionArgs")
     fun constructorThrowsCorrectException(
         center: Wrapper<Vector2F>,
@@ -27,15 +44,8 @@ class RegularTriangleTests {
         assertThrows(expectedExceptionClass) {
             MutableRegularTriangle(center.value, orientation.value, sideLength)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
-    ) {
-        assertDoesNotThrow {
-            MutableRegularTriangle(center.value, orientation.value, sideLength)
+        assertThrows(expectedExceptionClass) {
+            RegularTriangle(center.value, orientation.value, sideLength)
         }
     }
 
@@ -365,6 +375,30 @@ class RegularTriangleTests {
         }
 
         @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(5f, 7f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-40f))),
+                3f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(3.1547005f, -4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-90f))),
+                4f
+            ),
+        )
+
+        @JvmStatic
         fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
@@ -377,20 +411,6 @@ class RegularTriangleTests {
                 Wrapper(ComplexF.ONE),
                 -0.1f,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f
             ),
         )
 
@@ -846,8 +866,7 @@ class RegularTriangleTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -1121,8 +1140,7 @@ class RegularTriangleTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularTriangleArgs() + listOf(

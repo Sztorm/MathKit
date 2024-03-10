@@ -14,7 +14,31 @@ import kotlin.test.assertEquals
 
 class RegularPolygonTests {
     @ParameterizedTest
-    @MethodSource("constructorRegularTriangleArgs")
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectPolygon(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        sideLength: Float,
+        sideCount: Int
+    ) {
+        val mutablePolygon = MutableRegularPolygon(
+            center.value, orientation.value, sideLength, sideCount
+        )
+        val polygon = RegularPolygon(center.value, orientation.value, sideLength, sideCount)
+
+        assertEquals(center.value, mutablePolygon.center)
+        assertEquals(orientation.value, mutablePolygon.orientation)
+        assertEquals(sideLength, mutablePolygon.sideLength)
+        assertEquals(sideCount, mutablePolygon.sideCount)
+
+        assertEquals(center.value, polygon.center)
+        assertEquals(orientation.value, polygon.orientation)
+        assertEquals(sideLength, polygon.sideLength)
+        assertEquals(sideCount, polygon.sideCount)
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorMutableRegularTriangleArgs")
     fun constructorCreatesCorrectPolygon(
         triangle: MutableRegularTriangle, expected: MutableRegularPolygon
     ) = assertImmutabilityOf(triangle) {
@@ -32,7 +56,7 @@ class RegularPolygonTests {
     }
 
     @ParameterizedTest
-    @MethodSource("constructorSquareArgs")
+    @MethodSource("constructorMutableSquareArgs")
     fun constructorCreatesCorrectPolygon(square: MutableSquare, expected: MutableRegularPolygon) =
         assertImmutabilityOf(square) {
             val actual = MutableRegularPolygon(square)
@@ -60,18 +84,8 @@ class RegularPolygonTests {
         assertThrows(expectedExceptionClass) {
             MutableRegularPolygon(center.value, orientation.value, sideLength, sideCount)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>,
-        orientation: Wrapper<ComplexF>,
-        sideLength: Float,
-        sideCount: Int
-    ) {
-        assertDoesNotThrow {
-            MutableRegularPolygon(center.value, orientation.value, sideLength, sideCount)
+        assertThrows(expectedExceptionClass) {
+            RegularPolygon(center.value, orientation.value, sideLength, sideCount)
         }
     }
 
@@ -391,7 +405,47 @@ class RegularPolygonTests {
         }
 
         @JvmStatic
-        fun constructorRegularTriangleArgs(): List<Arguments> = listOf(
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                2
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                3
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                4
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                3f,
+                7
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(14f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-72f))),
+                2f,
+                10
+            ),
+        )
+
+        @JvmStatic
+        fun constructorMutableRegularTriangleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularTriangle(
                     center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 5.773503f
@@ -419,7 +473,7 @@ class RegularPolygonTests {
         )
 
         @JvmStatic
-        fun constructorSquareArgs(): List<Arguments> = listOf(
+        fun constructorMutableSquareArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableSquare(center = Vector2F.ZERO, orientation = ComplexF.ONE, sideLength = 3f),
                 MutableRegularPolygon(
@@ -480,34 +534,6 @@ class RegularPolygonTests {
                 -1f,
                 1,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f,
-                2
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                2
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                3
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                4
             ),
         )
 
@@ -1380,8 +1406,7 @@ class RegularPolygonTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
@@ -2117,8 +2142,7 @@ class RegularPolygonTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(

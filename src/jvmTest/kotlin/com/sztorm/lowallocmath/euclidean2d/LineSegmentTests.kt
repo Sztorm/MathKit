@@ -14,6 +14,21 @@ import kotlin.test.assertEquals
 
 class LineSegmentTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectLineSegment(
+        pointA: Wrapper<Vector2F>, pointB: Wrapper<Vector2F>
+    ) {
+        val mutableLineSegment = MutableLineSegment(pointA.value, pointB.value)
+        val lineSegment = LineSegment(pointA.value, pointB.value)
+
+        assertEquals(pointA.value, mutableLineSegment.pointA)
+        assertEquals(pointB.value, mutableLineSegment.pointB)
+
+        assertEquals(pointA.value, lineSegment.pointA)
+        assertEquals(pointB.value, lineSegment.pointB)
+    }
+
+    @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
         lineSegment: LineSegment,
@@ -176,6 +191,22 @@ class LineSegmentTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(-2f, 5f)),
+                Wrapper(Vector2F(2f, 5f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(3f, 2f)),
+                Wrapper(Vector2F(3f, -3f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-4f, 3f)),
+                Wrapper(Vector2F(-2f, -1f))
+            ),
+        )
 
         @JvmStatic
         fun pointsArgs(): List<Arguments> {

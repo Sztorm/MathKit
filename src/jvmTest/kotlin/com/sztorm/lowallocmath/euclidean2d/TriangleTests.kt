@@ -14,6 +14,23 @@ import kotlin.test.assertEquals
 
 class TriangleTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectTriangle(
+        pointA: Wrapper<Vector2F>, pointB: Wrapper<Vector2F>, pointC: Wrapper<Vector2F>
+    ) {
+        val mutableTriangle = MutableTriangle(pointA.value, pointB.value, pointC.value)
+        val triangle = Triangle(pointA.value, pointB.value, pointC.value)
+
+        assertEquals(pointA.value, mutableTriangle.pointA)
+        assertEquals(pointB.value, mutableTriangle.pointB)
+        assertEquals(pointC.value, mutableTriangle.pointC)
+
+        assertEquals(pointA.value, triangle.pointA)
+        assertEquals(pointB.value, triangle.pointB)
+        assertEquals(pointC.value, triangle.pointC)
+    }
+
+    @ParameterizedTest
     @MethodSource("pointsArgs")
     fun pointsReturnCorrectValues(
         triangle: Triangle,
@@ -228,6 +245,25 @@ class TriangleTests {
 
             Arguments.of(*argArray)
         }
+
+        @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(Vector2F(2f, 2f)),
+                Wrapper(Vector2F(1f, 5f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-2f, 1f)),
+                Wrapper(Vector2F(-3f, -3f)),
+                Wrapper(Vector2F(1f, -6f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(8f, -2.535898f)),
+                Wrapper(Vector2F(10f, -6f)),
+                Wrapper(Vector2F(6f, -6f))
+            ),
+        )
 
         @JvmStatic
         fun pointsArgs(): List<Arguments> {

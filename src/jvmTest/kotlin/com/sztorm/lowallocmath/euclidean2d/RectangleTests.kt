@@ -17,6 +17,25 @@ import kotlin.test.assertEquals
 
 class RectangleTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectRectangle(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, width: Float, height: Float,
+    ) {
+        val mutableRectangle = MutableRectangle(center.value, orientation.value, width, height)
+        val rectangle = Rectangle(center.value, orientation.value, width, height)
+
+        assertEquals(center.value, mutableRectangle.center)
+        assertEquals(orientation.value, mutableRectangle.orientation)
+        assertEquals(width, mutableRectangle.width)
+        assertEquals(height, mutableRectangle.height)
+
+        assertEquals(center.value, rectangle.center)
+        assertEquals(orientation.value, rectangle.orientation)
+        assertEquals(width, rectangle.width)
+        assertEquals(height, rectangle.height)
+    }
+
+    @ParameterizedTest
     @MethodSource("constructorThrowsExceptionArgs")
     fun constructorThrowsCorrectException(
         center: Wrapper<Vector2F>,
@@ -28,15 +47,8 @@ class RectangleTests {
         assertThrows(expectedExceptionClass) {
             MutableRectangle(center.value, orientation.value, width, height)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, width: Float, height: Float,
-    ) {
-        assertDoesNotThrow {
-            MutableRectangle(center.value, orientation.value, width, height)
+        assertThrows(expectedExceptionClass) {
+            Rectangle(center.value, orientation.value, width, height)
         }
     }
 
@@ -326,6 +338,46 @@ class RectangleTests {
         }
 
         @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                3f,
+                5f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-2f, 4f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(45f))),
+                4f,
+                2f
+            ),
+        )
+
+        @JvmStatic
         fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
@@ -347,34 +399,6 @@ class RectangleTests {
                 -1f,
                 -0.5f,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f,
-                2f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                2f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f,
-                0f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                0f
             ),
         )
 
@@ -689,8 +713,7 @@ class RectangleTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -985,8 +1008,7 @@ class RectangleTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRectangleArgs() + listOf(

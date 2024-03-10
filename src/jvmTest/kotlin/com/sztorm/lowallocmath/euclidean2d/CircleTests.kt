@@ -17,6 +17,23 @@ import kotlin.test.assertEquals
 
 class CircleTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectCircle(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, radius: Float,
+    ) {
+        val mutableCircle = MutableCircle(center.value, orientation.value, radius)
+        val circle = Circle(center.value, orientation.value, radius)
+
+        assertEquals(center.value, mutableCircle.center)
+        assertEquals(orientation.value, mutableCircle.orientation)
+        assertEquals(radius, mutableCircle.radius)
+
+        assertEquals(center.value, circle.center)
+        assertEquals(orientation.value, circle.orientation)
+        assertEquals(radius, circle.radius)
+    }
+
+    @ParameterizedTest
     @MethodSource("constructorThrowsExceptionArgs")
     fun constructorThrowsCorrectException(
         center: Wrapper<Vector2F>,
@@ -27,15 +44,8 @@ class CircleTests {
         assertThrows(expectedExceptionClass) {
             MutableCircle(center.value, orientation.value, radius)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, radius: Float,
-    ) {
-        assertDoesNotThrow {
-            MutableCircle(center.value, orientation.value, radius)
+        assertThrows(expectedExceptionClass) {
+            Circle(center.value, orientation.value, radius)
         }
     }
 
@@ -304,6 +314,30 @@ class CircleTests {
         }
 
         @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(1f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                4f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-1f, 7f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(244f))),
+                5f
+            ),
+        )
+
+        @JvmStatic
         fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
@@ -316,20 +350,6 @@ class CircleTests {
                 Wrapper(ComplexF.ONE),
                 -0.1f,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f
             ),
         )
 
@@ -656,8 +676,7 @@ class CircleTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
@@ -959,8 +978,7 @@ class CircleTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableCircleArgs() + listOf(

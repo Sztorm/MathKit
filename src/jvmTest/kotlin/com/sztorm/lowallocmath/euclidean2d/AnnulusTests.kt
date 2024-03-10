@@ -17,6 +17,30 @@ import kotlin.test.assertEquals
 
 class AnnulusTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectAnnulus(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        outerRadius: Float,
+        innerRadius: Float
+    ) {
+        val mutableAnnulus = MutableAnnulus(
+            center.value, orientation.value, outerRadius, innerRadius
+        )
+        val annulus = Annulus(center.value, orientation.value, outerRadius, innerRadius)
+
+        assertEquals(center.value, mutableAnnulus.center)
+        assertEquals(orientation.value, mutableAnnulus.orientation)
+        assertEquals(outerRadius, mutableAnnulus.outerRadius)
+        assertEquals(innerRadius, mutableAnnulus.innerRadius)
+
+        assertEquals(center.value, annulus.center)
+        assertEquals(orientation.value, annulus.orientation)
+        assertEquals(outerRadius, annulus.outerRadius)
+        assertEquals(innerRadius, annulus.innerRadius)
+    }
+
+    @ParameterizedTest
     @MethodSource("constructorThrowsExceptionArgs")
     fun constructorThrowsCorrectException(
         center: Wrapper<Vector2F>,
@@ -28,18 +52,8 @@ class AnnulusTests {
         assertThrows(expectedExceptionClass) {
             MutableAnnulus(center.value, orientation.value, outerRadius, innerRadius)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>,
-        orientation: Wrapper<ComplexF>,
-        outerRadius: Float,
-        innerRadius: Float
-    ) {
-        assertDoesNotThrow {
-            MutableAnnulus(center.value, orientation.value, outerRadius, innerRadius)
+        assertThrows(expectedExceptionClass) {
+            Annulus(center.value, orientation.value, outerRadius, innerRadius)
         }
     }
 
@@ -355,6 +369,46 @@ class AnnulusTests {
         }
 
         @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                2f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f,
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-1f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-45f))),
+                4f,
+                2f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(6f, 3f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(330f))),
+                8f,
+                1f
+            ),
+        )
+
+        @JvmStatic
         fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
@@ -383,34 +437,6 @@ class AnnulusTests {
                 2f,
                 2.1f,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                2f,
-                1f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                2f,
-                2f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                2f,
-                0f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f,
-                0f
             ),
         )
 
@@ -716,8 +742,7 @@ class AnnulusTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -1270,8 +1295,7 @@ class AnnulusTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableAnnulusArgs() + listOf(

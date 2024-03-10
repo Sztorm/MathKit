@@ -17,6 +17,23 @@ import kotlin.test.assertEquals
 
 class SquareTests {
     @ParameterizedTest
+    @MethodSource("constructorArgs")
+    fun constructorCreatesCorrectSquare(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
+    ) {
+        val mutableSquare = MutableSquare(center.value, orientation.value, sideLength)
+        val square = Square(center.value, orientation.value, sideLength)
+
+        assertEquals(center.value, mutableSquare.center)
+        assertEquals(orientation.value, mutableSquare.orientation)
+        assertEquals(sideLength, mutableSquare.sideLength)
+
+        assertEquals(center.value, square.center)
+        assertEquals(orientation.value, square.orientation)
+        assertEquals(sideLength, square.sideLength)
+    }
+
+    @ParameterizedTest
     @MethodSource("constructorThrowsExceptionArgs")
     fun constructorThrowsCorrectException(
         center: Wrapper<Vector2F>,
@@ -27,15 +44,8 @@ class SquareTests {
         assertThrows(expectedExceptionClass) {
             MutableSquare(center.value, orientation.value, sideLength)
         }
-    }
-
-    @ParameterizedTest
-    @MethodSource("constructorDoesNotThrowExceptionArgs")
-    fun constructorDoesNotThrowException(
-        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, sideLength: Float,
-    ) {
-        assertDoesNotThrow {
-            MutableSquare(center.value, orientation.value, sideLength)
+        assertThrows(expectedExceptionClass) {
+            Square(center.value, orientation.value, sideLength)
         }
     }
 
@@ -335,6 +345,30 @@ class SquareTests {
         }
 
         @JvmStatic
+        fun constructorArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                0f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(3f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+                4f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(8f, -2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-135f))),
+                3f
+            ),
+        )
+
+        @JvmStatic
         fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F.ZERO),
@@ -347,20 +381,6 @@ class SquareTests {
                 Wrapper(ComplexF.ONE),
                 -0.1f,
                 IllegalArgumentException::class.java
-            ),
-        )
-
-        @JvmStatic
-        fun constructorDoesNotThrowExceptionArgs(): List<Arguments> = listOf(
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                1f
-            ),
-            Arguments.of(
-                Wrapper(Vector2F.ZERO),
-                Wrapper(ComplexF.ONE),
-                0f
             ),
         )
 
@@ -755,8 +775,7 @@ class SquareTests {
         fun setThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -1036,8 +1055,7 @@ class SquareTests {
         fun copyThrowsExceptionArgs(): List<Arguments> = constructorThrowsExceptionArgs()
 
         @JvmStatic
-        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
-            constructorDoesNotThrowExceptionArgs()
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> = constructorArgs()
 
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableSquareArgs() + listOf(
