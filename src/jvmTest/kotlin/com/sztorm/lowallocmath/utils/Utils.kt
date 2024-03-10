@@ -4,7 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.isApproximately
-import com.sztorm.lowallocmath.world2d.*
+import com.sztorm.lowallocmath.euclidean2d.*
 import kotlin.math.sign
 import kotlin.test.assertTrue
 

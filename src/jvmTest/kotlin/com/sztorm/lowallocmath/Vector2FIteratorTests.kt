@@ -1,7 +1,7 @@
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
-import com.sztorm.lowallocmath.world2d.*
+import com.sztorm.lowallocmath.euclidean2d.*
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
