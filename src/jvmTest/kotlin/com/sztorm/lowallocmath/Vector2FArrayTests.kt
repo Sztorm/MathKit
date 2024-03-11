@@ -1,7 +1,10 @@
+@file:Suppress("UnusedImport")
+
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -14,6 +17,7 @@ import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.collections.forEach as forEachIterable
 
 class Vector2FArrayTests {
     @Test
@@ -89,13 +93,13 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("copyIntoThrowsExceptionArgs")
-    fun <T : Throwable> copyIntoThrowsCorrectException(
+    fun copyIntoThrowsCorrectException(
         array: Wrapper<Vector2FArray>,
         destination: Wrapper<Vector2FArray>,
         destinationOffset: Int,
         startIndex: Int,
         endIndex: Int,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.copyInto(
@@ -130,11 +134,11 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("copyOfRangeThrowsExceptionArgs")
-    fun <T : Throwable> copyOfRangeThrowsCorrectException(
+    fun copyOfRangeThrowsCorrectException(
         array: Wrapper<Vector2FArray>,
         fromIndex: Int,
         toIndex: Int,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.copyOfRange(fromIndex, toIndex)
@@ -242,12 +246,12 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("fillThrowsExceptionArgs")
-    fun <T : Throwable> fillThrowsCorrectException(
+    fun fillThrowsCorrectException(
         array: Wrapper<Vector2FArray>,
         element: Wrapper<Vector2F>,
         fromIndex: Int,
         toIndex: Int,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.fill(element.value, fromIndex, toIndex)
@@ -453,6 +457,17 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("randomOrNullArgs")
+    fun randomOrNullReturnsCorrectValue(array: Wrapper<Vector2FArray>) {
+        val randomOrNull: Vector2F? = assertDoesNotThrow {
+            array.value.randomOrNull()
+        }
+        if (array.value.isEmpty()) {
+            assertEquals(null, randomOrNull)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomOrNullRandomArgs")
     fun randomOrNullReturnsCorrectValue(
         array: Wrapper<Vector2FArray>, random: Random, expected: Wrapper<Vector2F?>
     ) = assertEquals(expected.value, array.value.randomOrNull(random))
@@ -478,11 +493,11 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("reverseRangeThrowsExceptionArgs")
-    fun <T : Throwable> reverseThrowsCorrectException(
+    fun reverseThrowsCorrectException(
         array: Wrapper<Vector2FArray>,
         fromIndex: Int,
         toIndex: Int,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.reverse(fromIndex, toIndex)
@@ -502,6 +517,14 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("shuffleArgs")
+    fun shuffleReturnsCorrectValue(array: Wrapper<Vector2FArray>) {
+        assertDoesNotThrow {
+            array.value.apply { shuffle() }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("shuffleRandomArgs")
     fun shuffleReturnsCorrectValue(
         array: Wrapper<Vector2FArray>, random: Random, expected: Wrapper<Vector2FArray>
     ) = assertContentEquals(expected.value, array.value.apply {
@@ -515,8 +538,8 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("singleThrowsExceptionArgs")
-    fun <T : Throwable> singleThrowsCorrectException(
-        array: Wrapper<Vector2FArray>, expectedExceptionClass: Class<T>
+    fun singleThrowsCorrectException(
+        array: Wrapper<Vector2FArray>, expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.single()
@@ -533,10 +556,10 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("singlePredicateThrowsExceptionArgs")
-    fun <T : Throwable> singleThrowsCorrectException(
+    fun singleThrowsCorrectException(
         array: Wrapper<Vector2FArray>,
         predicate: (Vector2F) -> Boolean,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.single(predicate)
@@ -565,8 +588,8 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("sliceRangeThrowsExceptionArgs")
-    fun <T : Throwable> sliceThrowsCorrectException(
-        array: Wrapper<Vector2FArray>, indices: IntRange, expectedExceptionClass: Class<T>
+    fun sliceThrowsCorrectException(
+        array: Wrapper<Vector2FArray>, indices: IntRange, expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.slice(indices)
@@ -581,8 +604,10 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("sliceIterableThrowsExceptionArgs")
-    fun <T : Throwable> sliceThrowsCorrectException(
-        array: Wrapper<Vector2FArray>, indices: Iterable<Int>, expectedExceptionClass: Class<T>
+    fun sliceThrowsCorrectException(
+        array: Wrapper<Vector2FArray>,
+        indices: Iterable<Int>,
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.slice(indices)
@@ -599,10 +624,10 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("sliceArrayCollectionThrowsExceptionArgs")
-    fun <T : Throwable> sliceArrayThrowsCorrectException(
+    fun sliceArrayThrowsCorrectException(
         array: Wrapper<Vector2FArray>,
         indices: Collection<Int>,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.sliceArray(indices)
@@ -617,8 +642,8 @@ class Vector2FArrayTests {
 
     @ParameterizedTest
     @MethodSource("sliceArrayRangeThrowsExceptionArgs")
-    fun <T : Throwable> sliceArrayThrowsCorrectException(
-        array: Wrapper<Vector2FArray>, indices: IntRange, expectedExceptionClass: Class<T>
+    fun sliceArrayThrowsCorrectException(
+        array: Wrapper<Vector2FArray>, indices: IntRange, expectedExceptionClass: Class<Throwable>
     ) {
         assertThrows(expectedExceptionClass) {
             array.value.sliceArray(indices)
@@ -1615,7 +1640,10 @@ class Vector2FArrayTests {
         }
 
         @JvmStatic
-        fun randomOrNullArgs(): List<Arguments> {
+        fun randomOrNullArgs(): List<Arguments> = arrays()
+
+        @JvmStatic
+        fun randomOrNullRandomArgs(): List<Arguments> {
             val array = Array(10) { Vector2F(it.toFloat(), 0f) }
             val seeds = intArrayOf(1234, 5678)
             val expectedValues = arrayOf(
@@ -1717,7 +1745,10 @@ class Vector2FArrayTests {
         fun reversedArrayArgs(): List<Arguments> = reverseArgs()
 
         @JvmStatic
-        fun shuffleArgs(): List<Arguments> {
+        fun shuffleArgs(): List<Arguments> = arrays()
+
+        @JvmStatic
+        fun shuffleRandomArgs(): List<Arguments> {
             val array = Vector2FArray(10) { Vector2F(it.toFloat(), 0f) }
             val seeds = intArrayOf(1234, 5678)
 

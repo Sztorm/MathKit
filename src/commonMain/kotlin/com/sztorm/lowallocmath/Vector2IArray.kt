@@ -2,11 +2,9 @@
     "ConvertTwoComparisonsToRangeCheck",
     "MemberVisibilityCanBePrivate",
     "OVERRIDE_BY_INLINE",
-    "ReplaceManualRangeWithIndicesCalls",
     "ReplaceRangeToWithUntil",
     "ReplaceSizeCheckWithIsNotEmpty",
     "ReplaceSizeZeroCheckWithIsEmpty",
-    "unused",
     "UseWithIndex",
 )
 
