@@ -1,5 +1,3 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "unused")
-
 package com.sztorm.lowallocmath
 
 import kotlin.jvm.JvmInline

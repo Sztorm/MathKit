@@ -1,12 +1,15 @@
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.math.PI
 import kotlin.math.sign
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AngleFTests {
     @ParameterizedTest
@@ -125,6 +128,33 @@ class AngleFTests {
     @MethodSource("angleDivFloatArgs")
     fun angleDivFloatReturnsCorrectValue(a: Wrapper<AngleF>, b: Float, expected: Wrapper<AngleF>) =
         assertTrue(expected.value.isApproximately(a.value / b))
+
+    @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(AngleF.SIZE_BITS, 32)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(AngleF.SIZE_BYTES, 4)
+
+    @Test
+    fun degreesInRadianReturnsCorrectValue() =
+        assertApproximation(AngleF.DEGREES_IN_RADIAN, 57.29578f)
+
+    @Test
+    fun radiansInDegreeReturnsCorrectValue() =
+        assertApproximation(AngleF.RADIANS_IN_DEGREE, 0.01745329f)
+
+    @Test
+    fun zeroReturnsCorrectValue() = assertEquals(AngleF.ZERO, AngleF.fromDegrees(0f))
+
+    @Test
+    fun rightReturnsCorrectValue() = assertEquals(AngleF.RIGHT, AngleF.fromDegrees(90f))
+
+    @Test
+    fun straightReturnsCorrectValue() =
+        assertEquals(AngleF.STRAIGHT, AngleF.fromDegrees(180f))
+
+    @Test
+    fun fullReturnsCorrectValue() = assertEquals(AngleF.FULL, AngleF.fromDegrees(360f))
 
     @ParameterizedTest
     @MethodSource("fromDegreesArgs")
