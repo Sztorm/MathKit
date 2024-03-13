@@ -2,26 +2,24 @@ package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.params.*
-import org.junit.jupiter.params.provider.*
-import kotlin.test.*
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
+import kotlin.test.Test
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 
 class Vector2FTests {
     @ParameterizedTest
-    @MethodSource("vectors")
-    fun basicPropertiesAreValid(vector: Wrapper<Vector2F>) {
-        val unwrappedVector: Vector2F = vector.value
-        val (x, y) = unwrappedVector
-
-        assertEquals(unwrappedVector.x.toRawBits(), x.toRawBits())
-        assertEquals(unwrappedVector.y.toRawBits(), y.toRawBits())
-        assertEquals(unwrappedVector.x.toRawBits(), unwrappedVector[0].toRawBits())
-        assertEquals(unwrappedVector.y.toRawBits(), unwrappedVector[1].toRawBits())
-        assertEquals(unwrappedVector.xy, Vector2F(x, y))
-        assertEquals(unwrappedVector.yx, Vector2F(y, x))
-        assertEquals(unwrappedVector.xx, Vector2F(x, x))
-        assertEquals(unwrappedVector.yy, Vector2F(y, y))
+    @MethodSource("vectorComponentsArgs")
+    fun vectorComponentsAreValid(vector: Wrapper<Vector2F>, expectedX: Float, expectedY: Float) {
+        assertEquals(expectedX, vector.value.x)
+        assertEquals(expectedY, vector.value.y)
+        assertEquals(Vector2F(expectedX, expectedY), vector.value.xy)
+        assertEquals(Vector2F(expectedY, expectedX), vector.value.yx)
+        assertEquals(Vector2F(expectedX, expectedX), vector.value.xx)
+        assertEquals(Vector2F(expectedY, expectedY), vector.value.yy)
     }
 
     @ParameterizedTest
@@ -121,6 +119,17 @@ class Vector2FTests {
     ) = assertEquals(expected.value, vector.value.copy(x, y))
 
     @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        vector: Wrapper<Vector2F>, expectedComponent1: Float, expectedComponent2: Float,
+    ) {
+        val (actualComponent1: Float, actualComponent2: Float) = vector.value
+
+        assertEquals(expectedComponent1, actualComponent1)
+        assertEquals(expectedComponent2, actualComponent2)
+    }
+
+    @ParameterizedTest
     @MethodSource("getArgs")
     fun getReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Collection<Float>) {
         val actual: List<Float> = listOf(vector.value[0], vector.value[1])
@@ -129,21 +138,22 @@ class Vector2FTests {
     }
 
     @ParameterizedTest
-    @MethodSource("vectors")
-    fun getThrowsWhenIndexIsOutOfBounds(vector: Wrapper<Vector2F>) {
-        assertThrows<IndexOutOfBoundsException> { vector.value[-1] }
-        assertThrows<IndexOutOfBoundsException> { vector.value[2] }
+    @MethodSource("getThrowsExceptionArgs")
+    fun getThrowsCorrectException(
+        vector: Wrapper<Vector2F>, index: Int, expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) { vector.value[index] }
     }
 
     @ParameterizedTest
     @MethodSource("plusVectorArgs")
     fun unaryPlusReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<Vector2F>) =
-        assertTrue(equalsBitwise(expected.value, +vector.value))
+        assertEquals(expected.value, +vector.value)
 
     @ParameterizedTest
     @MethodSource("minusVectorArgs")
     fun unaryMinusReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<Vector2F>) =
-        assertTrue(equalsBitwise(expected.value, -vector.value))
+        assertEquals(expected.value, -vector.value)
 
     @ParameterizedTest
     @MethodSource("vectorPlusVectorArgs")
@@ -186,6 +196,28 @@ class Vector2FTests {
     fun vectorDivFloatReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Float, expected: Wrapper<Vector2F>
     ) = assertApproximation(expected.value, a.value / b)
+
+    @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(Vector2F.SIZE_BITS, 64)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(Vector2F.SIZE_BYTES, 8)
+
+    @Test
+    fun zeroReturnsCorrectValue() = assertEquals(Vector2F.ZERO, Vector2F(0f, 0f))
+
+    @Test
+    fun oneReturnsCorrectValue() = assertEquals(Vector2F.ONE, Vector2F(1f, 1f))
+
+    @Test
+    fun positiveInfinityReturnsCorrectValue() = assertEquals(
+        Vector2F.POSITIVE_INFINITY, Vector2F(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
+
+    @Test
+    fun negativeInfinityReturnsCorrectValue() = assertEquals(
+        Vector2F.NEGATIVE_INFINITY, Vector2F(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY)
+    )
 
     @Suppress("SpellCheckingInspection")
     @ParameterizedTest
@@ -238,17 +270,17 @@ class Vector2FTests {
     )
 
     companion object {
-        /** Compares vectors bitwise. Useful when comparing NaNs. **/
         @JvmStatic
-        fun equalsBitwise(a: Vector2F, b: Vector2F) =
-            a.x.toRawBits() == b.x.toRawBits() && a.y.toRawBits() == b.y.toRawBits()
-
-        @JvmStatic
-        fun vectors(): List<Arguments> = listOf(
-            Arguments.of(Wrapper(Vector2F(2f, 4f))),
-            Arguments.of(Wrapper(Vector2F(2f, Float.NaN))),
-            Arguments.of(Wrapper(Vector2F(Float.NEGATIVE_INFINITY, -1f))),
-            Arguments.of(Wrapper(Vector2F(-1f, Float.POSITIVE_INFINITY))),
+        fun vectorComponentsArgs(): List<Arguments> = listOf(
+            Arguments.of(Wrapper(Vector2F(2f, 4f)), 2f, 4f),
+            Arguments.of(Wrapper(Vector2F(3f, -4f)), 3f, -4f),
+            Arguments.of(Wrapper(Vector2F(6f, -2f)), 6f, -2f),
+            Arguments.of(
+                Wrapper(Vector2F(Float.POSITIVE_INFINITY, -1f)), Float.POSITIVE_INFINITY, -1f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(2.5f, Float.NaN)), 2.5f, Float.NaN
+            ),
         )
 
         @JvmStatic
@@ -450,24 +482,18 @@ class Vector2FTests {
         @JvmStatic
         fun copyArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(Vector2F(2f, 4f)),
-                2f,
-                4f,
-                Wrapper(Vector2F(2f, 4f))
+                Wrapper(Vector2F(2f, 4f)), 2f, 4f, Wrapper(Vector2F(2f, 4f))
             ),
             Arguments.of(
-                Wrapper(Vector2F(2f, 4f)),
-                1f,
-                4f,
-                Wrapper(Vector2F(1f, 4f))
+                Wrapper(Vector2F(2f, 4f)), 1f, 4f, Wrapper(Vector2F(1f, 4f))
             ),
             Arguments.of(
-                Wrapper(Vector2F(2f, 4f)),
-                6f,
-                -2f,
-                Wrapper(Vector2F(6f, -2f))
+                Wrapper(Vector2F(2f, 4f)), 6f, -2f, Wrapper(Vector2F(6f, -2f))
             ),
         )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = vectorComponentsArgs()
 
         @JvmStatic
         fun getArgs(): List<Arguments> = listOf(
@@ -484,6 +510,19 @@ class Vector2FTests {
             Arguments.of(
                 Wrapper(Vector2F(-1f, Float.NEGATIVE_INFINITY)),
                 listOf(-1f, Float.NEGATIVE_INFINITY)
+            ),
+        )
+
+        @JvmStatic
+        fun getThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)), -1, IndexOutOfBoundsException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)), 2, IndexOutOfBoundsException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)), 3, IndexOutOfBoundsException::class.java
             ),
         )
 

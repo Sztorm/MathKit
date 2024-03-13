@@ -1,10 +1,11 @@
-@file:Suppress("unused")
-
 package com.sztorm.lowallocmath
 
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.sqrt
 
 /** Multiplies this vector by the [other] scalar. **/
 inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
@@ -252,7 +253,7 @@ value class Vector2F internal constructor(internal val data: Long) {
          *
          * @param [a] Source vector.
          * @param [b] Destination vector.
-         * @param [t] Interpolator vector with an expected range of (0, 0)..(1, 1).
+         * @param [t] Interpolator vector with expected ranges of (0..1, 0..1).
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection")
