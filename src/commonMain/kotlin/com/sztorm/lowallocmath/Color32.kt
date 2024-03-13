@@ -1,5 +1,3 @@
-@file:Suppress("MemberVisibilityCanBePrivate", "unused")
-
 package com.sztorm.lowallocmath
 
 import kotlin.jvm.JvmInline
@@ -73,7 +71,6 @@ value class Color32 private constructor(private val data: Int) {
         else throw IndexOutOfBoundsException("Index of $index is out of range of 0..3")
 
     companion object {
-
         /** The number of bits used to represent an instance of [Color32] in a binary form. **/
         const val SIZE_BITS: Int = 32
 
@@ -126,12 +123,11 @@ value class Color32 private constructor(private val data: Int) {
             val ag: UByte = a.g
             val ab: UByte = a.b
             val aa: UByte = a.a
-            val bb: UByte = b.b
 
             return Color32(
                 (ar.toFloat() + (b.r.toInt() - ar.toInt()).toFloat() * t).toUInt().toUByte(),
                 (ag.toFloat() + (b.g.toInt() - ag.toInt()).toFloat() * t).toUInt().toUByte(),
-                (ab.toFloat() + (bb.toInt() - ab.toInt()).toFloat() * t).toUInt().toUByte(),
+                (ab.toFloat() + (b.b.toInt() - ab.toInt()).toFloat() * t).toUInt().toUByte(),
                 (aa.toFloat() + (b.a.toInt() - aa.toInt()).toFloat() * t).toUInt().toUByte()
             )
         }
