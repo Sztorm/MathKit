@@ -1,7 +1,7 @@
 package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -72,10 +72,12 @@ class Color32Tests {
         assertContentEquals(expected, actual)
     }
 
-    @Test
-    fun getThrowsWhenIndexIsOutOfBounds() {
-        assertThrows<IndexOutOfBoundsException> { Color32(1u, 255u, 0u, 4u)[-1] }
-        assertThrows<IndexOutOfBoundsException> { Color32(1u, 255u, 0u, 4u)[4] }
+    @ParameterizedTest
+    @MethodSource("getThrowsExceptionArgs")
+    fun getThrowsCorrectException(
+        color: Wrapper<Color32>, index: Int, expectedExceptionClass: Class<Throwable>
+    ) {
+        Assertions.assertThrows(expectedExceptionClass) { color.value[index] }
     }
 
     @Test
@@ -217,6 +219,25 @@ class Color32Tests {
             Arguments.of(
                 Wrapper(Color32(1u, 2u, 3u, 4u)),
                 listOf<UByte>(1u, 2u, 3u, 4u)
+            ),
+        )
+
+        @JvmStatic
+        fun getThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Color32(1u, 255u, 0u, 4u)),
+                -1,
+                IndexOutOfBoundsException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Color32(1u, 255u, 0u, 4u)),
+                4,
+                IndexOutOfBoundsException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Color32(1u, 255u, 0u, 4u)),
+                5,
+                IndexOutOfBoundsException::class.java
             ),
         )
 

@@ -7,16 +7,15 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class ComplexFTests {
     @ParameterizedTest
     @MethodSource("complexComponentsArgs")
     fun complexComponentsReturnCorrectValues(
-        complex: Wrapper<ComplexF>, real: Float, imaginary: Float
+        complex: Wrapper<ComplexF>, expectedReal: Float, expectedImaginary: Float
     ) {
-        assertEquals(real.toRawBits(), complex.value.real.toRawBits())
-        assertEquals(imaginary.toRawBits(), complex.value.imaginary.toRawBits())
+        assertEquals(expectedReal, complex.value.real)
+        assertEquals(expectedImaginary, complex.value.imaginary)
     }
 
     @ParameterizedTest
@@ -110,9 +109,7 @@ class ComplexFTests {
     @ParameterizedTest
     @MethodSource("componentsArgs")
     fun componentsReturnCorrectValues(
-        complex: Wrapper<ComplexF>,
-        expectedComponent1: Float,
-        expectedComponent2: Float,
+        complex: Wrapper<ComplexF>, expectedComponent1: Float, expectedComponent2: Float,
     ) {
         val (actualComponent1: Float, actualComponent2: Float) = complex.value
 
@@ -124,13 +121,13 @@ class ComplexFTests {
     @MethodSource("plusComplexArgs")
     fun unaryPlusOperatorReturnsCorrectValue(
         complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertTrue(equalsBitwise(expected.value, +complex.value))
+    ) = assertEquals(expected.value, +complex.value)
 
     @ParameterizedTest
     @MethodSource("minusComplexArgs")
     fun unaryMinusOperatorReturnsCorrectValue(
         complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertTrue(equalsBitwise(expected.value, -complex.value))
+    ) = assertEquals(expected.value, -complex.value)
 
     @ParameterizedTest
     @MethodSource("complexPlusComplexArgs")
@@ -344,12 +341,6 @@ class ComplexFTests {
     ) = assertApproximation(expected.value, ComplexF.slerp(a.value, b.value, t))
 
     companion object {
-        /** Compares complices bitwise. Useful when comparing NaNs. **/
-        @JvmStatic
-        fun equalsBitwise(a: ComplexF, b: ComplexF) =
-            a.real.toRawBits() == b.real.toRawBits() &&
-                    a.imaginary.toRawBits() == b.imaginary.toRawBits()
-
         @JvmStatic
         fun complexComponentsArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(ComplexF(2f, 4f)), 2f, 4f),
@@ -361,9 +352,7 @@ class ComplexFTests {
                 -1f
             ),
             Arguments.of(
-                Wrapper(ComplexF(2.5f, Float.NaN)),
-                2.5f,
-                Float.NaN
+                Wrapper(ComplexF(2.5f, Float.NaN)), 2.5f, Float.NaN
             ),
         )
 
