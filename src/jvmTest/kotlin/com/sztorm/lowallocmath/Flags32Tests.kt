@@ -11,14 +11,25 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class Flags32Tests {
+    @ParameterizedTest
+    @MethodSource("uIntValueArgs")
+    fun uIntValueReturnsCorrectValue(flags: Wrapper<Flags32>, expected: Wrapper<UInt>) =
+        assertEquals(expected.value, flags.value.uIntValue)
 
     @ParameterizedTest
-    @MethodSource("flags")
-    fun basicPropertiesAreValid(flags: Wrapper<Flags32>) {
+    @MethodSource("sizeArgs")
+    fun sizeReturnsCorrectValue(flags: Wrapper<Flags32>) =
         assertEquals(32, flags.value.size)
+
+    @ParameterizedTest
+    @MethodSource("lastIndexArgs")
+    fun lastIndexReturnsCorrectValue(flags: Wrapper<Flags32>) =
         assertEquals(31, flags.value.lastIndex)
+
+    @ParameterizedTest
+    @MethodSource("isEmptyArgs")
+    fun isEmptyReturnsCorrectValue(flags: Wrapper<Flags32>) =
         assertEquals(false, flags.value.isEmpty())
-    }
 
     @ParameterizedTest
     @MethodSource("containsAllArgs")
@@ -47,7 +58,10 @@ class Flags32Tests {
     @ParameterizedTest
     @MethodSource("settingArgs")
     fun settingReturnsCorrectValue(
-        a: Wrapper<Flags32>, setFlags: Wrapper<Flags32>, toValue: Boolean, expected: Wrapper<Flags32>
+        a: Wrapper<Flags32>,
+        setFlags: Wrapper<Flags32>,
+        toValue: Boolean,
+        expected: Wrapper<Flags32>
     ) = assertEquals(expected.value, a.value.setting(setFlags.value, toValue))
 
     @ParameterizedTest
@@ -97,6 +111,12 @@ class Flags32Tests {
     }
 
     @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(Flags32.SIZE_BITS, 32)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(Flags32.SIZE_BYTES, 4)
+
+    @Test
     fun noneValueReturnsCorrectValue() {
         val none = Flags32.NONE
 
@@ -114,6 +134,16 @@ class Flags32Tests {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("fromUIntArgs")
+    fun fromUIntReturnsCorrectValue(uIntValue: Wrapper<UInt>, expected: Wrapper<Flags32>) =
+        assertEquals(expected.value, Flags32.fromUInt(uIntValue.value))
+
+    @ParameterizedTest
+    @MethodSource("fromIntArgs")
+    fun fromIntReturnsCorrectValue(intValue: Int, expected: Wrapper<Flags32>) =
+        assertEquals(expected.value, Flags32.fromInt(intValue))
+
     companion object {
         @JvmStatic
         fun flags(): List<Arguments> = listOf(
@@ -122,6 +152,23 @@ class Flags32Tests {
             Arguments.of(Wrapper(Flags32.fromUInt(0b00000000_00000000_00000000_00000000u))),
             Arguments.of(Wrapper(Flags32.fromUInt(0b11111111_11111111_11111111_11111111u))),
         )
+
+        @JvmStatic
+        fun uIntValueArgs(): List<Arguments> = fromIntArgs().map {
+            val args: Array<Any> = it.get()
+            val intValue = (args[0] as Int)
+
+            Arguments.of(Wrapper(Flags32(intValue)), Wrapper(intValue.toUInt()))
+        }
+
+        @JvmStatic
+        fun sizeArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun lastIndexArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun isEmptyArgs(): List<Arguments> = flags()
 
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
@@ -466,6 +513,34 @@ class Flags32Tests {
                     true, true, true, true, true, true, true, true,
                     true, true, true, true, true, true, true, true,
                 ).iterator()
+            ),
+        )
+
+        @JvmStatic
+        fun fromUIntArgs(): List<Arguments> = fromIntArgs().map {
+            val args: Array<Any> = it.get()
+            val intValue = (args[0] as Int)
+
+            Arguments.of(Wrapper(intValue.toUInt()), Wrapper(Flags32(intValue)))
+        }
+
+        @JvmStatic
+        fun fromIntArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                0b11100000_00001101_00000100_01000001u.toInt(),
+                Wrapper(Flags32(0b11100000_00001101_00000100_01000001u.toInt()))
+            ),
+            Arguments.of(
+                0b11110111_11111101_01111111_01111101u.toInt(),
+                Wrapper(Flags32(0b11110111_11111101_01111111_01111101u.toInt()))
+            ),
+            Arguments.of(
+                0b00000000_00000000_00000000_00000000,
+                Wrapper(Flags32(0b00000000_00000000_00000000_00000000))
+            ),
+            Arguments.of(
+                0b11111111_11111111_11111111_11111111u.toInt(),
+                Wrapper(Flags32(0b11111111_11111111_11111111_11111111u.toInt()))
             ),
         )
     }

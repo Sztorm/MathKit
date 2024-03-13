@@ -136,13 +136,13 @@ class Flags64Tests {
 
     @ParameterizedTest
     @MethodSource("fromULongArgs")
-    fun fromULongReturnsCorrectValue(uLong: Wrapper<ULong>, expected: Wrapper<Flags64>) =
-        assertEquals(expected.value, Flags64.fromULong(uLong.value))
+    fun fromULongReturnsCorrectValue(uLongValue: Wrapper<ULong>, expected: Wrapper<Flags64>) =
+        assertEquals(expected.value, Flags64.fromULong(uLongValue.value))
 
     @ParameterizedTest
     @MethodSource("fromLongArgs")
-    fun fromLongReturnsCorrectValue(long: Long, expected: Wrapper<Flags64>) =
-        assertEquals(expected.value, Flags64.fromLong(long))
+    fun fromLongReturnsCorrectValue(longValue: Long, expected: Wrapper<Flags64>) =
+        assertEquals(expected.value, Flags64.fromLong(longValue))
 
     companion object {
         @JvmStatic
