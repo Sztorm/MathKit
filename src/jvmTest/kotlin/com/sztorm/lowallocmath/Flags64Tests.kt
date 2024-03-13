@@ -11,14 +11,25 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class Flags64Tests {
+    @ParameterizedTest
+    @MethodSource("uLongValueArgs")
+    fun uLongValueReturnsCorrectValue(flags: Wrapper<Flags64>, expected: Wrapper<ULong>) =
+        assertEquals(expected.value, flags.value.uLongValue)
 
     @ParameterizedTest
-    @MethodSource("flags")
-    fun basicPropertiesAreValid(flags: Wrapper<Flags64>) {
+    @MethodSource("sizeArgs")
+    fun sizeReturnsCorrectValue(flags: Wrapper<Flags64>) =
         assertEquals(64, flags.value.size)
+
+    @ParameterizedTest
+    @MethodSource("lastIndexArgs")
+    fun lastIndexReturnsCorrectValue(flags: Wrapper<Flags64>) =
         assertEquals(63, flags.value.lastIndex)
+
+    @ParameterizedTest
+    @MethodSource("isEmptyArgs")
+    fun isEmptyReturnsCorrectValue(flags: Wrapper<Flags64>) =
         assertEquals(false, flags.value.isEmpty())
-    }
 
     @ParameterizedTest
     @MethodSource("containsAllArgs")
@@ -47,7 +58,10 @@ class Flags64Tests {
     @ParameterizedTest
     @MethodSource("settingArgs")
     fun settingReturnsCorrectValue(
-        a: Wrapper<Flags64>, setFlags: Wrapper<Flags64>, toValue: Boolean, expected: Wrapper<Flags64>
+        a: Wrapper<Flags64>,
+        setFlags: Wrapper<Flags64>,
+        toValue: Boolean,
+        expected: Wrapper<Flags64>
     ) = assertEquals(expected.value, a.value.setting(setFlags.value, toValue))
 
     @ParameterizedTest
@@ -97,6 +111,12 @@ class Flags64Tests {
     }
 
     @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(Flags64.SIZE_BITS, 64)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(Flags64.SIZE_BYTES, 8)
+
+    @Test
     fun noneValueReturnsCorrectValue() {
         val none = Flags64.NONE
 
@@ -113,6 +133,16 @@ class Flags64Tests {
             assertTrue(all[i])
         }
     }
+
+    @ParameterizedTest
+    @MethodSource("fromULongArgs")
+    fun fromULongReturnsCorrectValue(uLong: Wrapper<ULong>, expected: Wrapper<Flags64>) =
+        assertEquals(expected.value, Flags64.fromULong(uLong.value))
+
+    @ParameterizedTest
+    @MethodSource("fromLongArgs")
+    fun fromLongReturnsCorrectValue(long: Long, expected: Wrapper<Flags64>) =
+        assertEquals(expected.value, Flags64.fromLong(long))
 
     companion object {
         @JvmStatic
@@ -146,6 +176,23 @@ class Flags64Tests {
                 )
             ),
         )
+
+        @JvmStatic
+        fun uLongValueArgs(): List<Arguments> = fromLongArgs().map {
+            val args: Array<Any> = it.get()
+            val longValue = (args[0] as Long)
+
+            Arguments.of(Wrapper(Flags64(longValue)), Wrapper(longValue.toULong()))
+        }
+
+        @JvmStatic
+        fun sizeArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun lastIndexArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun isEmptyArgs(): List<Arguments> = flags()
 
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
@@ -942,6 +989,50 @@ class Flags64Tests {
                     true, true, true, true, true, true, true, true,
                     true, true, true, true, true, true, true, true,
                 ).iterator()
+            ),
+        )
+
+        @JvmStatic
+        fun fromULongArgs(): List<Arguments> = fromLongArgs().map {
+            val args: Array<Any> = it.get()
+            val longValue = (args[0] as Long)
+
+            Arguments.of(Wrapper(longValue.toULong()), Wrapper(Flags64(longValue)))
+        }
+
+        @JvmStatic
+        fun fromLongArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                0b11110001_01100110_10101001_11100111_11100000_00001101_00000100_01000001uL.toLong(),
+                Wrapper(
+                    Flags64(
+                        0b11110001_01100110_10101001_11100111_11100000_00001101_00000100_01000001uL.toLong()
+                    )
+                )
+            ),
+            Arguments.of(
+                0b10100010_01010011_01110011_00111110_11110111_11111101_01111111_01111101uL.toLong(),
+                Wrapper(
+                    Flags64(
+                        0b10100010_01010011_01110011_00111110_11110111_11111101_01111111_01111101uL.toLong()
+                    )
+                )
+            ),
+            Arguments.of(
+                0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L,
+                Wrapper(
+                    Flags64(
+                        0b00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000L
+                    )
+                )
+            ),
+            Arguments.of(
+                0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL.toLong(),
+                Wrapper(
+                    Flags64(
+                        0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL.toLong()
+                    )
+                )
             ),
         )
     }
