@@ -156,7 +156,7 @@ class Flags16Tests {
         @JvmStatic
         fun uShortValueArgs(): List<Arguments> = fromShortArgs().map {
             val args: Array<Any> = it.get()
-            val shortValue = (args[0] as Short)
+            val shortValue = args[0] as Short
 
             Arguments.of(Wrapper(Flags16(shortValue)), Wrapper(shortValue.toUShort()))
         }
@@ -471,7 +471,7 @@ class Flags16Tests {
         @JvmStatic
         fun fromUShortArgs(): List<Arguments> = fromShortArgs().map {
             val args: Array<Any> = it.get()
-            val shortValue = (args[0] as Short)
+            val shortValue = args[0] as Short
 
             Arguments.of(Wrapper(shortValue.toUShort()), Wrapper(Flags16(shortValue)))
         }

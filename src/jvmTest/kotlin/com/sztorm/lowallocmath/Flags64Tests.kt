@@ -180,7 +180,7 @@ class Flags64Tests {
         @JvmStatic
         fun uLongValueArgs(): List<Arguments> = fromLongArgs().map {
             val args: Array<Any> = it.get()
-            val longValue = (args[0] as Long)
+            val longValue = args[0] as Long
 
             Arguments.of(Wrapper(Flags64(longValue)), Wrapper(longValue.toULong()))
         }
@@ -995,7 +995,7 @@ class Flags64Tests {
         @JvmStatic
         fun fromULongArgs(): List<Arguments> = fromLongArgs().map {
             val args: Array<Any> = it.get()
-            val longValue = (args[0] as Long)
+            val longValue = args[0] as Long
 
             Arguments.of(Wrapper(longValue.toULong()), Wrapper(Flags64(longValue)))
         }

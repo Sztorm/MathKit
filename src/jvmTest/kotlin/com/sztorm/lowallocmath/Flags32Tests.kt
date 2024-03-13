@@ -156,7 +156,7 @@ class Flags32Tests {
         @JvmStatic
         fun uIntValueArgs(): List<Arguments> = fromIntArgs().map {
             val args: Array<Any> = it.get()
-            val intValue = (args[0] as Int)
+            val intValue = args[0] as Int
 
             Arguments.of(Wrapper(Flags32(intValue)), Wrapper(intValue.toUInt()))
         }
@@ -519,7 +519,7 @@ class Flags32Tests {
         @JvmStatic
         fun fromUIntArgs(): List<Arguments> = fromIntArgs().map {
             val args: Array<Any> = it.get()
-            val intValue = (args[0] as Int)
+            val intValue = args[0] as Int
 
             Arguments.of(Wrapper(intValue.toUInt()), Wrapper(Flags32(intValue)))
         }

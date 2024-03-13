@@ -11,14 +11,25 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class Flags8Tests {
+    @ParameterizedTest
+    @MethodSource("uByteValueArgs")
+    fun uByteValueReturnsCorrectValue(flags: Wrapper<Flags8>, expected: Wrapper<UByte>) =
+        assertEquals(expected.value, flags.value.uByteValue)
 
     @ParameterizedTest
-    @MethodSource("flags")
-    fun basicPropertiesAreValid(flags: Wrapper<Flags8>) {
+    @MethodSource("sizeArgs")
+    fun sizeReturnsCorrectValue(flags: Wrapper<Flags8>) =
         assertEquals(8, flags.value.size)
+
+    @ParameterizedTest
+    @MethodSource("lastIndexArgs")
+    fun lastIndexReturnsCorrectValue(flags: Wrapper<Flags8>) =
         assertEquals(7, flags.value.lastIndex)
+
+    @ParameterizedTest
+    @MethodSource("isEmptyArgs")
+    fun isEmptyReturnsCorrectValue(flags: Wrapper<Flags8>) =
         assertEquals(false, flags.value.isEmpty())
-    }
 
     @ParameterizedTest
     @MethodSource("containsAllArgs")
@@ -97,6 +108,12 @@ class Flags8Tests {
     }
 
     @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(Flags8.SIZE_BITS, 8)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(Flags8.SIZE_BYTES, 1)
+
+    @Test
     fun noneValueReturnsCorrectValue() {
         val none = Flags8.NONE
 
@@ -114,6 +131,16 @@ class Flags8Tests {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("fromUByteArgs")
+    fun fromUByteReturnsCorrectValue(uByteValue: Wrapper<UByte>, expected: Wrapper<Flags8>) =
+        assertEquals(expected.value, Flags8.fromUByte(uByteValue.value))
+
+    @ParameterizedTest
+    @MethodSource("fromByteArgs")
+    fun fromByteReturnsCorrectValue(byteValue: Byte, expected: Wrapper<Flags8>) =
+        assertEquals(expected.value, Flags8.fromByte(byteValue))
+
     companion object {
         @JvmStatic
         fun flags(): List<Arguments> = listOf(
@@ -122,6 +149,23 @@ class Flags8Tests {
             Arguments.of(Wrapper(Flags8.fromUByte(0b00000000u))),
             Arguments.of(Wrapper(Flags8.fromUByte(0b11111111u))),
         )
+
+        @JvmStatic
+        fun uByteValueArgs(): List<Arguments> = fromByteArgs().map {
+            val args: Array<Any> = it.get()
+            val byteValue = args[0] as Byte
+
+            Arguments.of(Wrapper(Flags8(byteValue)), Wrapper(byteValue.toUByte()))
+        }
+
+        @JvmStatic
+        fun sizeArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun lastIndexArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun isEmptyArgs(): List<Arguments> = flags()
 
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
@@ -394,6 +438,34 @@ class Flags8Tests {
             Arguments.of(
                 Wrapper(Flags8.fromUByte(0b11111111u)),
                 listOf(true, true, true, true, true, true, true, true).iterator()
+            ),
+        )
+
+        @JvmStatic
+        fun fromUByteArgs(): List<Arguments> = fromByteArgs().map {
+            val args: Array<Any> = it.get()
+            val byteValue = args[0] as Byte
+
+            Arguments.of(Wrapper(byteValue.toUByte()), Wrapper(Flags8(byteValue)))
+        }
+
+        @JvmStatic
+        fun fromByteArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                0b11100001u.toByte(),
+                Wrapper(Flags8(0b11100001u.toByte()))
+            ),
+            Arguments.of(
+                0b10110111u.toByte(),
+                Wrapper(Flags8(0b10110111u.toByte()))
+            ),
+            Arguments.of(
+                0b00000000u.toByte(),
+                Wrapper(Flags8(0b00000000u.toByte()))
+            ),
+            Arguments.of(
+                0b11111111u.toByte(),
+                Wrapper(Flags8(0b11111111u.toByte()))
             ),
         )
     }

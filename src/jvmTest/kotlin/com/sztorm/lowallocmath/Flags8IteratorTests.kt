@@ -9,7 +9,6 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class Flags8IteratorTests {
-
     @ParameterizedTest
     @MethodSource("nextArgs")
     fun nextMutatesIteratorCorrectly(flags: Wrapper<Flags8>, expected: List<Boolean>) {
