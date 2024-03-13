@@ -1,6 +1,5 @@
 @file:Suppress(
     "ConvertTwoComparisonsToRangeCheck",
-    "MemberVisibilityCanBePrivate",
     "OVERRIDE_BY_INLINE",
     "ReplaceRangeToWithUntil",
     "ReplaceSizeCheckWithIsNotEmpty",

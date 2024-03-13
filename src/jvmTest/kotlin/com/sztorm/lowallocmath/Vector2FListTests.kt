@@ -73,11 +73,11 @@ class Vector2FListTests {
 
     @ParameterizedTest
     @MethodSource("subListExceptionArgs")
-    fun <T : Throwable> subListThrowsCorrectException(
+    fun subListThrowsCorrectException(
         list: Wrapper<Vector2FList>,
         fromIndex: Int,
         toIndex: Int,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         val unwrappedList: Vector2FList = list.value
 

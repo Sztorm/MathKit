@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.sztorm.lowallocmath
 
 import kotlin.math.absoluteValue

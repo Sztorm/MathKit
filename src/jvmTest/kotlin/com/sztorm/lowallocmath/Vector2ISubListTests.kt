@@ -69,11 +69,11 @@ class Vector2ISubListTests {
 
     @ParameterizedTest
     @MethodSource("subListExceptionArgs")
-    fun <T : Throwable> subListThrowsCorrectException(
+    fun subListThrowsCorrectException(
         list: Vector2ISubList,
         fromIndex: Int,
         toIndex: Int,
-        expectedExceptionClass: Class<T>
+        expectedExceptionClass: Class<Throwable>
     ) {
         Assertions.assertThrows(expectedExceptionClass) {
             list.subList(fromIndex, toIndex)
