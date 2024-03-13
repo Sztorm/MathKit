@@ -1,8 +1,4 @@
-@file:Suppress(
-    "MemberVisibilityCanBePrivate",
-    "OVERRIDE_BY_INLINE",
-    "unused",
-)
+@file:Suppress("OVERRIDE_BY_INLINE")
 
 package com.sztorm.lowallocmath
 
@@ -19,7 +15,6 @@ import kotlin.jvm.JvmStatic
  */
 @JvmInline
 value class Flags16(val shortValue: Short) : Collection<Boolean> {
-
     /** Returns 16-bit unsigned integer representation of this type. **/
     inline val uShortValue: UShort
         get() = shortValue.toUShort()
@@ -111,14 +106,17 @@ value class Flags16(val shortValue: Short) : Collection<Boolean> {
     override inline operator fun contains(element: Boolean): Boolean =
         (element && this != NONE) || (!element && this != ALL)
 
-    /** Returns a value indicating whether the bit at [index] is set to 1. **/
+    /**
+     * Returns a value indicating whether the bit at [index] is set to 1.
+     *
+     * [index] should be in range of 0..15, but the value of [index] is not checked.
+     **/
     inline operator fun get(index: Int): Boolean = ((shortValue.toInt() ushr index) and 1) != 0
 
     /** Returns an iterator of this collection. **/
-    override operator fun iterator(): BooleanIterator = BooleanIteratorOfFlags16(this)
+    override operator fun iterator(): BooleanIterator = Iterator(this)
 
     companion object {
-
         /** The number of bits used to represent an instance of [Flags16] in a binary form. **/
         const val SIZE_BITS: Int = 16
 
@@ -143,14 +141,14 @@ value class Flags16(val shortValue: Short) : Collection<Boolean> {
         @JvmStatic
         inline fun fromShort(value: Short) = Flags16(value)
     }
-}
 
-private class BooleanIteratorOfFlags16(private val flags: Flags16) : BooleanIterator() {
-    private var index: Int = 0
+    private class Iterator(private val flags: Flags16) : BooleanIterator() {
+        private var index: Int = 0
 
-    override fun hasNext(): Boolean = index < flags.size
+        override fun hasNext(): Boolean = index < flags.size
 
-    override fun nextBoolean(): Boolean =
-        if (!hasNext()) throw NoSuchElementException("$index")
-        else flags[index++]
+        override fun nextBoolean(): Boolean =
+            if (!hasNext()) throw NoSuchElementException("$index")
+            else flags[index++]
+    }
 }

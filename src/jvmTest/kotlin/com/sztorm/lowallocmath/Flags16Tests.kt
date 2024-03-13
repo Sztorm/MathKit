@@ -11,14 +11,25 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class Flags16Tests {
+    @ParameterizedTest
+    @MethodSource("uShortValueArgs")
+    fun uShortValueReturnsCorrectValue(flags: Wrapper<Flags16>, expected: Wrapper<UShort>) =
+        assertEquals(expected.value, flags.value.uShortValue)
 
     @ParameterizedTest
-    @MethodSource("flags")
-    fun basicPropertiesAreValid(flags: Wrapper<Flags16>) {
+    @MethodSource("sizeArgs")
+    fun sizeReturnsCorrectValue(flags: Wrapper<Flags16>) =
         assertEquals(16, flags.value.size)
+
+    @ParameterizedTest
+    @MethodSource("lastIndexArgs")
+    fun lastIndexReturnsCorrectValue(flags: Wrapper<Flags16>) =
         assertEquals(15, flags.value.lastIndex)
+
+    @ParameterizedTest
+    @MethodSource("isEmptyArgs")
+    fun isEmptyReturnsCorrectValue(flags: Wrapper<Flags16>) =
         assertEquals(false, flags.value.isEmpty())
-    }
 
     @ParameterizedTest
     @MethodSource("containsAllArgs")
@@ -47,7 +58,10 @@ class Flags16Tests {
     @ParameterizedTest
     @MethodSource("settingArgs")
     fun settingReturnsCorrectValue(
-        a: Wrapper<Flags16>, setFlags: Wrapper<Flags16>, toValue: Boolean, expected: Wrapper<Flags16>
+        a: Wrapper<Flags16>,
+        setFlags: Wrapper<Flags16>,
+        toValue: Boolean,
+        expected: Wrapper<Flags16>
     ) = assertEquals(expected.value, a.value.setting(setFlags.value, toValue))
 
     @ParameterizedTest
@@ -97,6 +111,12 @@ class Flags16Tests {
     }
 
     @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(Flags16.SIZE_BITS, 16)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(Flags16.SIZE_BYTES, 2)
+
+    @Test
     fun noneValueReturnsCorrectValue() {
         val none = Flags16.NONE
 
@@ -114,6 +134,16 @@ class Flags16Tests {
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("fromUShortArgs")
+    fun fromUShortReturnsCorrectValue(uShortValue: Wrapper<UShort>, expected: Wrapper<Flags16>) =
+        assertEquals(expected.value, Flags16.fromUShort(uShortValue.value))
+
+    @ParameterizedTest
+    @MethodSource("fromShortArgs")
+    fun fromShortReturnsCorrectValue(shortValue: Short, expected: Wrapper<Flags16>) =
+        assertEquals(expected.value, Flags16.fromShort(shortValue))
+
     companion object {
         @JvmStatic
         fun flags(): List<Arguments> = listOf(
@@ -122,6 +152,23 @@ class Flags16Tests {
             Arguments.of(Wrapper(Flags16.fromUShort(0b00000000_00000000u))),
             Arguments.of(Wrapper(Flags16.fromUShort(0b11111111_11111111u))),
         )
+
+        @JvmStatic
+        fun uShortValueArgs(): List<Arguments> = fromShortArgs().map {
+            val args: Array<Any> = it.get()
+            val shortValue = (args[0] as Short)
+
+            Arguments.of(Wrapper(Flags16(shortValue)), Wrapper(shortValue.toUShort()))
+        }
+
+        @JvmStatic
+        fun sizeArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun lastIndexArgs(): List<Arguments> = flags()
+
+        @JvmStatic
+        fun isEmptyArgs(): List<Arguments> = flags()
 
         @JvmStatic
         fun containsAllArgs(): List<Arguments> = listOf(
@@ -418,6 +465,34 @@ class Flags16Tests {
                     true, true, true, true, true, true, true, true,
                     true, true, true, true, true, true, true, true,
                 ).iterator()
+            ),
+        )
+
+        @JvmStatic
+        fun fromUShortArgs(): List<Arguments> = fromShortArgs().map {
+            val args: Array<Any> = it.get()
+            val shortValue = (args[0] as Short)
+
+            Arguments.of(Wrapper(shortValue.toUShort()), Wrapper(Flags16(shortValue)))
+        }
+
+        @JvmStatic
+        fun fromShortArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                0b11100000_00001101u.toShort(),
+                Wrapper(Flags16(0b11100000_00001101u.toShort()))
+            ),
+            Arguments.of(
+                0b11110111_11111101u.toShort(),
+                Wrapper(Flags16(0b11110111_11111101u.toShort()))
+            ),
+            Arguments.of(
+                0b00000000_00000000.toShort(),
+                Wrapper(Flags16(0b00000000_00000000u.toShort()))
+            ),
+            Arguments.of(
+                0b11111111_11111111u.toShort(),
+                Wrapper(Flags16(0b11111111_11111111u.toShort()))
             ),
         )
     }
