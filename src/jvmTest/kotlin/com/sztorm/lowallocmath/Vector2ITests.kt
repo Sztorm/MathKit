@@ -2,27 +2,25 @@ package com.sztorm.lowallocmath
 
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class Vector2ITests {
     @ParameterizedTest
-    @MethodSource("vectors")
-    fun basicPropertiesAreValid(vector: Wrapper<Vector2I>) {
-        val unwrappedVector: Vector2I = vector.value
-        val (x, y) = unwrappedVector
-
-        assertEquals(unwrappedVector.x, x)
-        assertEquals(unwrappedVector.y, y)
-        assertEquals(unwrappedVector.x, unwrappedVector[0])
-        assertEquals(unwrappedVector.y, unwrappedVector[1])
-        assertEquals(unwrappedVector.xy, Vector2I(x, y))
-        assertEquals(unwrappedVector.yx, Vector2I(y, x))
-        assertEquals(unwrappedVector.xx, Vector2I(x, x))
-        assertEquals(unwrappedVector.yy, Vector2I(y, y))
+    @MethodSource("vectorComponentsArgs")
+    fun vectorComponentsAreValid(vector: Wrapper<Vector2I>, expectedX: Int, expectedY: Int) {
+        assertEquals(expectedX, vector.value.x)
+        assertEquals(expectedY, vector.value.y)
+        assertEquals(Vector2I(expectedX, expectedY), vector.value.xy)
+        assertEquals(Vector2I(expectedY, expectedX), vector.value.yx)
+        assertEquals(Vector2I(expectedX, expectedX), vector.value.xx)
+        assertEquals(Vector2I(expectedY, expectedY), vector.value.yy)
     }
 
     @ParameterizedTest
@@ -100,6 +98,17 @@ class Vector2ITests {
     ) = assertEquals(expected.value, vector.value.copy(x, y))
 
     @ParameterizedTest
+    @MethodSource("componentsArgs")
+    fun componentsReturnCorrectValues(
+        vector: Wrapper<Vector2I>, expectedComponent1: Int, expectedComponent2: Int,
+    ) {
+        val (actualComponent1: Int, actualComponent2: Int) = vector.value
+
+        assertEquals(expectedComponent1, actualComponent1)
+        assertEquals(expectedComponent2, actualComponent2)
+    }
+
+    @ParameterizedTest
     @MethodSource("getArgs")
     fun getReturnsCorrectValue(vector: Wrapper<Vector2I>, expected: Collection<Int>) {
         val actual: List<Int> = listOf(vector.value[0], vector.value[1])
@@ -108,10 +117,11 @@ class Vector2ITests {
     }
 
     @ParameterizedTest
-    @MethodSource("vectors")
-    fun getThrowsWhenIndexIsOutOfBounds(vector: Wrapper<Vector2I>) {
-        assertThrows<IndexOutOfBoundsException> { vector.value[-1] }
-        assertThrows<IndexOutOfBoundsException> { vector.value[2] }
+    @MethodSource("getThrowsExceptionArgs")
+    fun getThrowsCorrectException(
+        vector: Wrapper<Vector2I>, index: Int, expectedExceptionClass: Class<Throwable>
+    ) {
+        Assertions.assertThrows(expectedExceptionClass) { vector.value[index] }
     }
 
     @ParameterizedTest
@@ -149,8 +159,8 @@ class Vector2ITests {
     ) = assertEquals(expected.value, a.value * b)
 
     @ParameterizedTest
-    @MethodSource("floatTimesVectorArgs")
-    fun floatTimesVectorReturnCorrectValue(
+    @MethodSource("intTimesVectorArgs")
+    fun intTimesVectorReturnCorrectValue(
         a: Int, b: Wrapper<Vector2I>, expected: Wrapper<Vector2I>
     ) = assertEquals(expected.value, a * b.value)
 
@@ -166,6 +176,18 @@ class Vector2ITests {
         a: Wrapper<Vector2I>, b: Int, expected: Wrapper<Vector2I>
     ) = assertEquals(expected.value, a.value / b)
 
+    @Test
+    fun sizeBitsReturnsCorrectValue() = assertEquals(Vector2I.SIZE_BITS, 64)
+
+    @Test
+    fun sizeBytesReturnsCorrectValue() = assertEquals(Vector2I.SIZE_BYTES, 8)
+
+    @Test
+    fun zeroReturnsCorrectValue() = assertEquals(Vector2I.ZERO, Vector2I(0, 0))
+
+    @Test
+    fun oneReturnsCorrectValue() = assertEquals(Vector2I.ONE, Vector2I(1, 1))
+
     @ParameterizedTest
     @MethodSource("maxArgs")
     fun maxReturnsCorrectValue(
@@ -180,11 +202,12 @@ class Vector2ITests {
 
     companion object {
         @JvmStatic
-        fun vectors(): List<Arguments> = listOf(
-            Arguments.of(Wrapper(Vector2I(2, 4))),
-            Arguments.of(Wrapper(Vector2I(2, 0))),
-            Arguments.of(Wrapper(Vector2I(Int.MIN_VALUE, -1))),
-            Arguments.of(Wrapper(Vector2I(-1, Int.MAX_VALUE))),
+        fun vectorComponentsArgs(): List<Arguments> = listOf(
+            Arguments.of(Wrapper(Vector2I(2, 4)), 2, 4),
+            Arguments.of(Wrapper(Vector2I(3, -4)), 3, -4),
+            Arguments.of(Wrapper(Vector2I(6, -2)), 6, -2),
+            Arguments.of(Wrapper(Vector2I(Int.MIN_VALUE, -1)), Int.MIN_VALUE, -1),
+            Arguments.of(Wrapper(Vector2I(0, Int.MAX_VALUE)), 0, Int.MAX_VALUE),
         )
 
         @JvmStatic
@@ -305,24 +328,18 @@ class Vector2ITests {
         @JvmStatic
         fun copyArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(Vector2I(2, 4)),
-                2,
-                4,
-                Wrapper(Vector2I(2, 4))
+                Wrapper(Vector2I(2, 4)), 2, 4, Wrapper(Vector2I(2, 4))
             ),
             Arguments.of(
-                Wrapper(Vector2I(2, 4)),
-                1,
-                4,
-                Wrapper(Vector2I(1, 4))
+                Wrapper(Vector2I(2, 4)), 1, 4, Wrapper(Vector2I(1, 4))
             ),
             Arguments.of(
-                Wrapper(Vector2I(2, 4)),
-                6,
-                -2,
-                Wrapper(Vector2I(6, -2))
+                Wrapper(Vector2I(2, 4)), 6, -2, Wrapper(Vector2I(6, -2))
             ),
         )
+
+        @JvmStatic
+        fun componentsArgs(): List<Arguments> = vectorComponentsArgs()
 
         @JvmStatic
         fun getArgs(): List<Arguments> = listOf(
@@ -333,12 +350,23 @@ class Vector2ITests {
                 Wrapper(Vector2I(-2, 0)), listOf(-2, 0)
             ),
             Arguments.of(
-                Wrapper(Vector2I(Int.MIN_VALUE, -1)),
-                listOf(Int.MIN_VALUE, -1)
+                Wrapper(Vector2I(Int.MIN_VALUE, -1)), listOf(Int.MIN_VALUE, -1)
             ),
             Arguments.of(
-                Wrapper(Vector2I(-1, Int.MAX_VALUE)),
-                listOf(-1, Int.MAX_VALUE)
+                Wrapper(Vector2I(-1, Int.MAX_VALUE)), listOf(-1, Int.MAX_VALUE)
+            ),
+        )
+
+        @JvmStatic
+        fun getThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2I(2, 4)), -1, IndexOutOfBoundsException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2I(2, 4)), 2, IndexOutOfBoundsException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2I(2, 4)), 3, IndexOutOfBoundsException::class.java
             ),
         )
 
@@ -407,7 +435,7 @@ class Vector2ITests {
         )
 
         @JvmStatic
-        fun floatTimesVectorArgs(): List<Arguments> = listOf(
+        fun intTimesVectorArgs(): List<Arguments> = listOf(
             Arguments.of(
                 2,
                 Wrapper(Vector2I(-3, 1)),

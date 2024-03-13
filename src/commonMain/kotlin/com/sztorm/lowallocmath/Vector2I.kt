@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.sztorm.lowallocmath
 
 import kotlin.jvm.JvmInline
@@ -179,7 +177,6 @@ value class Vector2I internal constructor(internal val data: Long) {
     inline operator fun div(other: Int) = Vector2I(x / other, y / other)
 
     companion object {
-
         /** The number of bits used to represent an instance of [Vector2I] in a binary form. **/
         const val SIZE_BITS: Int = 64
 
