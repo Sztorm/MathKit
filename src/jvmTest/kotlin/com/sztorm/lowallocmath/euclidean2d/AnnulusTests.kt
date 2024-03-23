@@ -3,11 +3,11 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.euclidean2d.utils.DefaultAnnulus
+import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import com.sztorm.lowallocmath.euclidean2d.utils.DefaultAnnulus
-import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -941,7 +941,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(-2f, 2f),
                         orientation = ComplexF.ONE,
                         radius = 1.01f
@@ -955,7 +955,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(-2f, 2f),
                         orientation = ComplexF.ONE,
                         radius = 0.99f
@@ -969,7 +969,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(-6f, 2f),
                         orientation = ComplexF.ONE,
                         radius = 1.01f
@@ -983,7 +983,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(-6f, 2f),
                         orientation = ComplexF.ONE,
                         radius = 0.99f
@@ -1009,7 +1009,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-2f, 2f),
                         outerRadius = 1.01f,
                         orientation = ComplexF.ONE,
@@ -1024,7 +1024,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-2f, 2f),
                         outerRadius = 0.99f,
                         orientation = ComplexF.ONE,
@@ -1039,7 +1039,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-6f, 2f),
                         outerRadius = 1.01f,
                         orientation = ComplexF.ONE,
@@ -1054,7 +1054,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-6f, 2f),
                         outerRadius = 0.99f,
                         orientation = ComplexF.ONE,
@@ -1069,7 +1069,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(0f, 2f),
                         outerRadius = 7f,
                         orientation = ComplexF.ONE,
@@ -1084,7 +1084,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(0f, 2f),
                         outerRadius = 7f,
                         orientation = ComplexF.ONE,
@@ -1163,7 +1163,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(-1f, -1f),
                         orientation = ComplexF.ONE,
                         radius = 0.99f
@@ -1177,7 +1177,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(-1f, -1f),
                         orientation = ComplexF.ONE,
                         radius = 1.01f
@@ -1203,7 +1203,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-1f, -1f),
                         outerRadius = 0.99f,
                         orientation = ComplexF.ONE,
@@ -1218,7 +1218,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-1f, -1f),
                         outerRadius = 1.01f,
                         orientation = ComplexF.ONE,
@@ -1233,7 +1233,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         outerRadius = 3.99f,
                         orientation = ComplexF.ONE,
@@ -1248,7 +1248,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         outerRadius = 4.01f,
                         orientation = ComplexF.ONE,
@@ -1263,7 +1263,7 @@ class AnnulusTests {
                         orientation = ComplexF.ONE,
                         innerRadius = 2f
                     ),
-                    Annulus(
+                    MutableAnnulus(
                         center = Vector2F(-1f, 2f),
                         outerRadius = 3.99f,
                         orientation = ComplexF.ONE,

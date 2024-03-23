@@ -3,11 +3,11 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.euclidean2d.utils.DefaultCircle
+import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import com.sztorm.lowallocmath.euclidean2d.utils.DefaultCircle
-import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -727,64 +727,10 @@ class CircleTests {
 
         @JvmStatic
         fun intersectsAnnulusArgs(): List<Arguments> {
-            val mutableCircleArgs = listOf(
-                Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-2f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 1.01f
-                    ),
-                    Annulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    true
-                ),
-                Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-2f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 0.99f
-                    ),
-                    Annulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    false
-                ),
-                Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-6f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 1.01f
-                    ),
-                    Annulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    true
-                ),
-                Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-6f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 0.99f
-                    ),
-                    Annulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    false
-                ),
-            )
+            val mutableCircleArgs = AnnulusTests.intersectsCircleArgs().map {
+                val args = it.get()
+                Arguments.of(args[1], args[0], args[2])
+            }
             val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
 
             return listOf(
@@ -800,7 +746,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 3f
                     ),
                     false
@@ -809,7 +755,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
                     ),
                     true
@@ -818,7 +764,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(3.99f, 4f), orientation = ComplexF.ONE, radius = 4f
                     ),
                     true
@@ -922,7 +868,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 3.99f
                     ),
                     true
@@ -931,7 +877,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F.ZERO, orientation = ComplexF.ONE, radius = 4.01f
                     ),
                     false
@@ -940,7 +886,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 1.99f
                     ),
                     true
@@ -949,7 +895,7 @@ class CircleTests {
                     MutableCircle(
                         center = Vector2F(2f, 0f), orientation = ComplexF.ONE, radius = 4f
                     ),
-                    Circle(
+                    MutableCircle(
                         center = Vector2F(4f, 0f), orientation = ComplexF.ONE, radius = 2.01f
                     ),
                     false
