@@ -173,6 +173,20 @@ interface Circle : CircleShape, Transformable {
     fun intersects(circle: Circle): Boolean =
         center.distanceTo(circle.center) <= radius + circle.radius
 
+    fun intersects(ray: Ray): Boolean {
+        val rayOrigin: Vector2F = ray.origin
+        val rayDirection: Vector2F = ray.direction
+        val circleCenter: Vector2F = center
+        val circleRadius: Float = radius
+        val diff: Vector2F = circleCenter - rayOrigin
+        val t: Float = diff dot rayDirection
+        val closestPointOnRay: Vector2F =
+            if (t <= 0f) rayOrigin
+            else rayOrigin + rayDirection * t
+
+        return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
+    }
+
     operator fun contains(point: Vector2F): Boolean = center.distanceTo(point) <= radius
 
     operator fun contains(annulus: Annulus): Boolean =

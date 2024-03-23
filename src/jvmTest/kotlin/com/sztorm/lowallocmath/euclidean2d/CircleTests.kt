@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultCircle
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
@@ -177,6 +178,15 @@ class CircleTests {
         assertImmutabilityOf(circle) {
             assertImmutabilityOf(otherCircle) {
                 assertEquals(expected, circle.intersects(otherCircle))
+            }
+        }
+
+    @ParameterizedTest
+    @MethodSource("intersectsRayArgs")
+    fun intersectsReturnsCorrectValue(circle: Circle, ray: Ray, expected: Boolean) =
+        assertImmutabilityOf(circle) {
+            assertImmutabilityOf(ray) {
+                assertEquals(expected, circle.intersects(ray))
             }
         }
 
@@ -726,17 +736,9 @@ class CircleTests {
         }
 
         @JvmStatic
-        fun intersectsAnnulusArgs(): List<Arguments> {
-            val mutableCircleArgs = AnnulusTests.intersectsCircleArgs().map {
-                val args = it.get()
-                Arguments.of(args[1], args[0], args[2])
-            }
-            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
-
-            return listOf(
-                mutableCircleArgs,
-                defaultCircleArgs
-            ).flatten()
+        fun intersectsAnnulusArgs(): List<Arguments> = AnnulusTests.intersectsCircleArgs().map {
+            val args = it.get()
+            Arguments.of(args[1], args[0], args[2])
         }
 
         @JvmStatic
@@ -775,6 +777,92 @@ class CircleTests {
             return listOf(
                 mutableCircleArgs,
                 defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRayArgs(): List<Arguments> {
+            val mutableCircleMutableRayArgs = listOf(
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-8.1f, 0f), direction = Vector2F(0f, 1f)
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-8.1f, 0f),
+                        direction = Vector2F(0.17365f, 0.98481f)
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, 7.9f), direction = Vector2F(1f, 0f)
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, 8.1f), direction = Vector2F(1f, 0f)
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, 7.9f),
+                        direction = Vector2F(-0.70711f, -0.70711f)
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, -2f),
+                        direction = Vector2F(0.76604f, 0.64279f)
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableCircle(
+                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, -2f),
+                        direction = Vector2F(0.64279f, 0.76604f)
+                    ),
+                    true
+                ),
+            )
+            val defaultCircleMutableRayArgs = mutableCircleMutableRayArgs
+                .mapCirclesToDefaultCircles()
+            val mutableCircleDefaultRayArgs = mutableCircleMutableRayArgs
+                .mapRaysToDefaultRays()
+            val defaultCircleDefaultRayArgs = defaultCircleMutableRayArgs
+                .mapRaysToDefaultRays()
+
+            return listOf(
+                mutableCircleMutableRayArgs,
+                defaultCircleMutableRayArgs,
+                mutableCircleDefaultRayArgs,
+                defaultCircleDefaultRayArgs
             ).flatten()
         }
 

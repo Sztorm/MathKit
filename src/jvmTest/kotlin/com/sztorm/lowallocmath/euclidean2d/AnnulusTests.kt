@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.euclidean2d.CircleTests.Companion.mapCirclesToDefaultCircles
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultAnnulus
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
@@ -933,7 +934,7 @@ class AnnulusTests {
 
         @JvmStatic
         fun intersectsCircleArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
+            val mutableAnnulusMutableCircleArgs = listOf(
                 Arguments.of(
                     MutableAnnulus(
                         center = Vector2F(-1f, 2f),
@@ -991,11 +992,18 @@ class AnnulusTests {
                     false
                 ),
             )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
+            val defaultAnnulusMutableCircleArgs = mutableAnnulusMutableCircleArgs
+                .mapAnnulusesToDefaultAnnuluses()
+            val mutableAnnulusDefaultCircleArgs = mutableAnnulusMutableCircleArgs
+                .mapCirclesToDefaultCircles()
+            val defaultAnnulusDefaultCircleArgs = defaultAnnulusMutableCircleArgs
+                .mapCirclesToDefaultCircles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs
+                mutableAnnulusMutableCircleArgs,
+                defaultAnnulusMutableCircleArgs,
+                mutableAnnulusDefaultCircleArgs,
+                defaultAnnulusDefaultCircleArgs
             ).flatten()
         }
 

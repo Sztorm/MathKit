@@ -328,6 +328,20 @@ class MutableCircle : Circle, MutableTransformable {
     override fun intersects(circle: Circle): Boolean =
         _center.distanceTo(circle.center) <= _radius + circle.radius
 
+    override fun intersects(ray: Ray): Boolean {
+        val rayOrigin: Vector2F = ray.origin
+        val rayDirection: Vector2F = ray.direction
+        val circleCenter: Vector2F = _center
+        val circleRadius: Float = _radius
+        val diff: Vector2F = circleCenter - rayOrigin
+        val t: Float = diff dot rayDirection
+        val closestPointOnRay: Vector2F =
+            if (t <= 0f) rayOrigin
+            else rayOrigin + rayDirection * t
+
+        return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
+    }
+
     override operator fun contains(point: Vector2F): Boolean = _center.distanceTo(point) <= _radius
 
     override operator fun contains(annulus: Annulus): Boolean =

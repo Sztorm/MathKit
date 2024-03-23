@@ -3,10 +3,10 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.utils.Wrapper
-import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRay
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
+import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -91,6 +91,15 @@ class RayTests {
     ) = assertImmutabilityOf(ray) {
         assertApproximation(expected.value, ray.closestPointTo(point.value))
     }
+
+    @ParameterizedTest
+    @MethodSource("intersectsCircleArgs")
+    fun intersectsReturnsCorrectValue(ray: Ray, circle: Circle, expected: Boolean) =
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(circle) {
+                assertEquals(expected, ray.intersects(circle))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
@@ -552,6 +561,12 @@ class RayTests {
                 mutableRayArgs,
                 defaultRayArgs
             ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsCircleArgs(): List<Arguments> = CircleTests.intersectsRayArgs().map {
+            val args = it.get()
+            Arguments.of(args[1], args[0], args[2])
         }
 
         @JvmStatic
