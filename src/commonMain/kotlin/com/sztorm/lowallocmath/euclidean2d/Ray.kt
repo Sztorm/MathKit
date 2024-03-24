@@ -171,6 +171,20 @@ interface Ray : Transformable {
         else origin + direction * t
     }
 
+    fun intersects(annulus: Annulus): Boolean {
+        val rayOrigin: Vector2F = origin
+        val rayDirection: Vector2F = direction
+        val annulusCenter: Vector2F = annulus.center
+        val annulusOuterRadius: Float = annulus.outerRadius
+        val diff: Vector2F = annulusCenter - rayOrigin
+        val t: Float = diff dot rayDirection
+        val closestPointOnRay: Vector2F =
+            if (t <= 0f) rayOrigin
+            else rayOrigin + rayDirection * t
+
+        return closestPointOnRay.distanceTo(annulusCenter) <= annulusOuterRadius
+    }
+
     fun intersects(circle: Circle): Boolean {
         val rayOrigin: Vector2F = origin
         val rayDirection: Vector2F = direction

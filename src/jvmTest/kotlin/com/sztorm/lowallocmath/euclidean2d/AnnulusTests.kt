@@ -4,6 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.CircleTests.Companion.mapCirclesToDefaultCircles
+import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultAnnulus
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
@@ -196,6 +197,15 @@ class AnnulusTests {
     }
 
     @ParameterizedTest
+    @MethodSource("intersectsAnnulusArgs")
+    fun intersectsReturnsCorrectValue(annulus: Annulus, otherAnnulus: Annulus, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(otherAnnulus) {
+                assertEquals(expected, annulus.intersects(otherAnnulus))
+            }
+        }
+
+    @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
     fun intersectsReturnsCorrectValue(annulus: Annulus, circle: Circle, expected: Boolean) =
         assertImmutabilityOf(annulus) {
@@ -205,11 +215,11 @@ class AnnulusTests {
         }
 
     @ParameterizedTest
-    @MethodSource("intersectsAnnulusArgs")
-    fun intersectsReturnsCorrectValue(annulus: Annulus, otherAnnulus: Annulus, expected: Boolean) =
+    @MethodSource("intersectsRayArgs")
+    fun intersectsReturnsCorrectValue(annulus: Annulus, ray: Ray, expected: Boolean) =
         assertImmutabilityOf(annulus) {
-            assertImmutabilityOf(otherAnnulus) {
-                assertEquals(expected, annulus.intersects(otherAnnulus))
+            assertImmutabilityOf(ray) {
+                assertEquals(expected, annulus.intersects(ray))
             }
         }
 
@@ -222,20 +232,20 @@ class AnnulusTests {
     }
 
     @ParameterizedTest
-    @MethodSource("containsCircleArgs")
-    fun containsReturnsCorrectValue(annulus: Annulus, circle: Circle, expected: Boolean) =
-        assertImmutabilityOf(annulus) {
-            assertImmutabilityOf(circle) {
-                assertEquals(expected, annulus.contains(circle))
-            }
-        }
-
-    @ParameterizedTest
     @MethodSource("containsAnnulusArgs")
     fun containsReturnsCorrectValue(annulus: Annulus, otherAnnulus: Annulus, expected: Boolean) =
         assertImmutabilityOf(annulus) {
             assertImmutabilityOf(otherAnnulus) {
                 assertEquals(expected, annulus.contains(otherAnnulus))
+            }
+        }
+
+    @ParameterizedTest
+    @MethodSource("containsCircleArgs")
+    fun containsReturnsCorrectValue(annulus: Annulus, circle: Circle, expected: Boolean) =
+        assertImmutabilityOf(annulus) {
+            assertImmutabilityOf(circle) {
+                assertEquals(expected, annulus.contains(circle))
             }
         }
 
@@ -933,81 +943,6 @@ class AnnulusTests {
         }
 
         @JvmStatic
-        fun intersectsCircleArgs(): List<Arguments> {
-            val mutableAnnulusMutableCircleArgs = listOf(
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        outerRadius = 4f,
-                        orientation = ComplexF.ONE,
-                        innerRadius = 2f
-                    ),
-                    MutableCircle(
-                        center = Vector2F(-2f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 1.01f
-                    ),
-                    true
-                ),
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        outerRadius = 4f,
-                        orientation = ComplexF.ONE,
-                        innerRadius = 2f
-                    ),
-                    MutableCircle(
-                        center = Vector2F(-2f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 0.99f
-                    ),
-                    false
-                ),
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        outerRadius = 4f,
-                        orientation = ComplexF.ONE,
-                        innerRadius = 2f
-                    ),
-                    MutableCircle(
-                        center = Vector2F(-6f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 1.01f
-                    ),
-                    true
-                ),
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        outerRadius = 4f,
-                        orientation = ComplexF.ONE,
-                        innerRadius = 2f
-                    ),
-                    MutableCircle(
-                        center = Vector2F(-6f, 2f),
-                        orientation = ComplexF.ONE,
-                        radius = 0.99f
-                    ),
-                    false
-                ),
-            )
-            val defaultAnnulusMutableCircleArgs = mutableAnnulusMutableCircleArgs
-                .mapAnnulusesToDefaultAnnuluses()
-            val mutableAnnulusDefaultCircleArgs = mutableAnnulusMutableCircleArgs
-                .mapCirclesToDefaultCircles()
-            val defaultAnnulusDefaultCircleArgs = defaultAnnulusMutableCircleArgs
-                .mapCirclesToDefaultCircles()
-
-            return listOf(
-                mutableAnnulusMutableCircleArgs,
-                defaultAnnulusMutableCircleArgs,
-                mutableAnnulusDefaultCircleArgs,
-                defaultAnnulusDefaultCircleArgs
-            ).flatten()
-        }
-
-        @JvmStatic
         fun intersectsAnnulusArgs(): List<Arguments> {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
@@ -1110,6 +1045,188 @@ class AnnulusTests {
         }
 
         @JvmStatic
+        fun intersectsCircleArgs(): List<Arguments> {
+            val mutableAnnulusMutableCircleArgs = listOf(
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        outerRadius = 4f,
+                        orientation = ComplexF.ONE,
+                        innerRadius = 2f
+                    ),
+                    MutableCircle(
+                        center = Vector2F(-2f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 1.01f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        outerRadius = 4f,
+                        orientation = ComplexF.ONE,
+                        innerRadius = 2f
+                    ),
+                    MutableCircle(
+                        center = Vector2F(-2f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 0.99f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        outerRadius = 4f,
+                        orientation = ComplexF.ONE,
+                        innerRadius = 2f
+                    ),
+                    MutableCircle(
+                        center = Vector2F(-6f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 1.01f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        outerRadius = 4f,
+                        orientation = ComplexF.ONE,
+                        innerRadius = 2f
+                    ),
+                    MutableCircle(
+                        center = Vector2F(-6f, 2f),
+                        orientation = ComplexF.ONE,
+                        radius = 0.99f
+                    ),
+                    false
+                ),
+            )
+            val defaultAnnulusMutableCircleArgs = mutableAnnulusMutableCircleArgs
+                .mapAnnulusesToDefaultAnnuluses()
+            val mutableAnnulusDefaultCircleArgs = mutableAnnulusMutableCircleArgs
+                .mapCirclesToDefaultCircles()
+            val defaultAnnulusDefaultCircleArgs = defaultAnnulusMutableCircleArgs
+                .mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableAnnulusMutableCircleArgs,
+                defaultAnnulusMutableCircleArgs,
+                mutableAnnulusDefaultCircleArgs,
+                defaultAnnulusDefaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRayArgs(): List<Arguments> {
+            val mutableAnnulusMutableRayArgs = listOf(
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-8.1f, 0f), direction = Vector2F(0f, 1f)
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-8.1f, 0f),
+                        direction = Vector2F(0.17365f, 0.98481f)
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, 7.9f), direction = Vector2F(1f, 0f)
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, 8.1f), direction = Vector2F(1f, 0f)
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, 7.9f),
+                        direction = Vector2F(-0.70711f, -0.70711f)
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, -2f),
+                        direction = Vector2F(0.76604f, 0.64279f)
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-4f, 4f),
+                        orientation = ComplexF.ONE,
+                        outerRadius = 4f,
+                        innerRadius = 2f
+                    ),
+                    MutableRay(
+                        origin = Vector2F(-4f, -2f),
+                        direction = Vector2F(0.64279f, 0.76604f)
+                    ),
+                    true
+                ),
+            )
+            val defaultAnnulusMutableRayArgs = mutableAnnulusMutableRayArgs
+                .mapAnnulusesToDefaultAnnuluses()
+            val mutableAnnulusDefaultRayArgs = mutableAnnulusMutableRayArgs
+                .mapRaysToDefaultRays()
+            val defaultAnnulusDefaultRayArgs = defaultAnnulusMutableRayArgs
+                .mapRaysToDefaultRays()
+
+            return listOf(
+                mutableAnnulusMutableRayArgs,
+                defaultAnnulusMutableRayArgs,
+                mutableAnnulusDefaultRayArgs,
+                defaultAnnulusDefaultRayArgs
+            ).flatten()
+        }
+
+        @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
@@ -1150,46 +1267,6 @@ class AnnulusTests {
                         innerRadius = 1.5f
                     ),
                     Wrapper(Vector2F(0f, 2.51f)),
-                    false
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
-
-            return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs
-            ).flatten()
-        }
-
-        @JvmStatic
-        fun containsCircleArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        outerRadius = 4f,
-                        orientation = ComplexF.ONE,
-                        innerRadius = 2f
-                    ),
-                    MutableCircle(
-                        center = Vector2F(-1f, -1f),
-                        orientation = ComplexF.ONE,
-                        radius = 0.99f
-                    ),
-                    true
-                ),
-                Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        outerRadius = 4f,
-                        orientation = ComplexF.ONE,
-                        innerRadius = 2f
-                    ),
-                    MutableCircle(
-                        center = Vector2F(-1f, -1f),
-                        orientation = ComplexF.ONE,
-                        radius = 1.01f
-                    ),
                     false
                 ),
             )
@@ -1276,6 +1353,46 @@ class AnnulusTests {
                         outerRadius = 3.99f,
                         orientation = ComplexF.ONE,
                         innerRadius = 1.99f
+                    ),
+                    false
+                ),
+            )
+            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
+
+            return listOf(
+                mutableAnnulusArgs,
+                defaultAnnulusArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun containsCircleArgs(): List<Arguments> {
+            val mutableAnnulusArgs = listOf(
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        outerRadius = 4f,
+                        orientation = ComplexF.ONE,
+                        innerRadius = 2f
+                    ),
+                    MutableCircle(
+                        center = Vector2F(-1f, -1f),
+                        orientation = ComplexF.ONE,
+                        radius = 0.99f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableAnnulus(
+                        center = Vector2F(-1f, 2f),
+                        outerRadius = 4f,
+                        orientation = ComplexF.ONE,
+                        innerRadius = 2f
+                    ),
+                    MutableCircle(
+                        center = Vector2F(-1f, -1f),
+                        orientation = ComplexF.ONE,
+                        radius = 1.01f
                     ),
                     false
                 ),

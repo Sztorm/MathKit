@@ -93,6 +93,15 @@ class RayTests {
     }
 
     @ParameterizedTest
+    @MethodSource("intersectsAnnulusArgs")
+    fun intersectsReturnsCorrectValue(ray: Ray, annulus: Annulus, expected: Boolean) =
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(annulus) {
+                assertEquals(expected, ray.intersects(annulus))
+            }
+        }
+
+    @ParameterizedTest
     @MethodSource("intersectsCircleArgs")
     fun intersectsReturnsCorrectValue(ray: Ray, circle: Circle, expected: Boolean) =
         assertImmutabilityOf(ray) {
@@ -561,6 +570,12 @@ class RayTests {
                 mutableRayArgs,
                 defaultRayArgs
             ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsAnnulusArgs(): List<Arguments> = AnnulusTests.intersectsRayArgs().map {
+            val args = it.get()
+            Arguments.of(args[1], args[0], args[2])
         }
 
         @JvmStatic

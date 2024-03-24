@@ -290,6 +290,20 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         else origin + direction * t
     }
 
+    override fun intersects(annulus: Annulus): Boolean {
+        val rayOrigin: Vector2F = _origin
+        val rayDirection: Vector2F = _direction
+        val annulusCenter: Vector2F = annulus.center
+        val annulusOuterRadius: Float = annulus.outerRadius
+        val diff: Vector2F = annulusCenter - rayOrigin
+        val t: Float = diff dot rayDirection
+        val closestPointOnRay: Vector2F =
+            if (t <= 0f) rayOrigin
+            else rayOrigin + rayDirection * t
+
+        return closestPointOnRay.distanceTo(annulusCenter) <= annulusOuterRadius
+    }
+
     override fun intersects(circle: Circle): Boolean {
         val rayOrigin: Vector2F = _origin
         val rayDirection: Vector2F = _direction

@@ -216,6 +216,20 @@ interface Annulus : AnnulusShape, Transformable {
                 (distance <= (outerRadius + circleRadius))
     }
 
+    fun intersects(ray: Ray): Boolean {
+        val rayOrigin: Vector2F = ray.origin
+        val rayDirection: Vector2F = ray.direction
+        val annulusCenter: Vector2F = center
+        val annulusOuterRadius: Float = outerRadius
+        val diff: Vector2F = annulusCenter - rayOrigin
+        val t: Float = diff dot rayDirection
+        val closestPointOnRay: Vector2F =
+            if (t <= 0f) rayOrigin
+            else rayOrigin + rayDirection * t
+
+        return closestPointOnRay.distanceTo(annulusCenter) <= annulusOuterRadius
+    }
+
     operator fun contains(point: Vector2F): Boolean {
         val distance: Float = center.distanceTo(point)
 
