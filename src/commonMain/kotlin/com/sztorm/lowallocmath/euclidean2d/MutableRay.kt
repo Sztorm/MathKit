@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
@@ -316,6 +317,39 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
             else rayOrigin + rayDirection * t
 
         return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
+    }
+
+    override fun intersects(ray: Ray): Boolean {
+        val (origAX: Float, origAY: Float) = _origin
+        val (dirAX: Float, dirAY: Float) = _direction
+        val (origBX: Float, origBY: Float) = ray.origin
+        val (dirBX: Float, dirBY: Float) = ray.direction
+        val dx: Float = origBX - origAX
+        val dy: Float = origBY - origAY
+        val dirBCrossDirA: Float = dirBX * dirAY - dirBY * dirAX
+        val areDirsTheSameOrOpposite: Boolean = dirBCrossDirA.absoluteValue < 0.00001f
+
+        if (areDirsTheSameOrOpposite) {
+            val length: Float = sqrt(dx * dx + dy * dy)
+
+            if (length < 0.00001f) {
+                return true
+            }
+            val dirBDotDirA: Float = dirBX * dirAX + dirBY * dirAY
+            val oneOverLength: Float = 1f / length
+            val dxn: Float = dx * oneOverLength
+            val dyn: Float = dy * oneOverLength
+            val areDirsOpposite: Boolean = dirBDotDirA < 0
+            val det: Float =
+                if (areDirsOpposite) dirAX * dxn + dirAY * dyn - 1f
+                else dirAX * dyn - dirAY * dxn
+
+            return det.absoluteValue < 0.000001f
+        }
+        val nomX: Float = (dy * dirBX - dx * dirBY)
+        val nomY: Float = (dy * dirAX - dx * dirAY)
+
+        return (nomX * dirBCrossDirA >= 0f) and (nomY * dirBCrossDirA >= 0f)
     }
 
     override operator fun contains(point: Vector2F): Boolean {

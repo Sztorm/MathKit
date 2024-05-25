@@ -111,6 +111,15 @@ class RayTests {
         }
 
     @ParameterizedTest
+    @MethodSource("intersectsRayArgs")
+    fun intersectsReturnsCorrectValue(ray: Ray, otherRay: Ray, expected: Boolean) =
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(otherRay) {
+                assertEquals(expected, ray.intersects(otherRay))
+            }
+        }
+
+    @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(ray: Ray, point: Wrapper<Vector2F>, expected: Boolean) =
         assertImmutabilityOf(ray) {
@@ -582,6 +591,505 @@ class RayTests {
         fun intersectsCircleArgs(): List<Arguments> = CircleTests.intersectsRayArgs().map {
             val args = it.get()
             Arguments.of(args[1], args[0], args[2])
+        }
+
+        @JvmStatic
+        fun intersectsRayArgs(): List<Arguments> {
+            fun List<Arguments>.withRayArgsSwapped() = map {
+                val args = it.get()
+                Arguments.of(args[1], args[0], args[2])
+            }
+
+            fun createMutableRayArgs(): List<Arguments> {
+                val identicalRaysArgs = listOf(
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                )
+                val sameDirectionRaysArgs = listOf(
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5.1f), direction = Vector2F(1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 4.9f), direction = Vector2F(1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(5f, 2.1f), direction = Vector2F(0f, 1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(5f, 1.9f), direction = Vector2F(0f, 1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(5.1f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(4.9f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, -5.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, -4.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, -5.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, -4.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, -5.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, -4.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                )
+                val oppositeDirectionRaysArgs = listOf(
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, 5f), direction = Vector2F(-1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, 5f), direction = Vector2F(-1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(5f, 2.1f), direction = Vector2F(0f, -1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(5f, 2f), direction = Vector2F(0f, 1f)
+                        ),
+                        MutableRay(
+                            origin = Vector2F(5f, 1.9f), direction = Vector2F(0f, -1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, -4.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(45f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, -5.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, -4.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, -5.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2.000001f, -5.000001f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, -5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-1.999999f, -4.999999f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                )
+                val allDirectionRayArgs = listOf(
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(20f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(60f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(100f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(140f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(220f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(260f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(300f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(340f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        MutableRay(
+                            origin = Vector2F(-2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(342f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                )
+                val result = listOf(
+                    identicalRaysArgs,
+                    sameDirectionRaysArgs,
+                    oppositeDirectionRaysArgs,
+                    allDirectionRayArgs
+                ).flatten()
+
+                return result + result.withRayArgsSwapped()
+            }
+
+            val mutableRayArgs = createMutableRayArgs()
+            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
+
+            return listOf(
+                mutableRayArgs,
+                defaultRayArgs
+            ).flatten()
         }
 
         @JvmStatic
