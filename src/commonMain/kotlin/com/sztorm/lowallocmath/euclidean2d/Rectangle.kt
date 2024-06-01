@@ -1,9 +1,7 @@
 package com.sztorm.lowallocmath.euclidean2d
 
 import com.sztorm.lowallocmath.*
-import kotlin.math.absoluteValue
-import kotlin.math.sqrt
-import kotlin.math.withSign
+import kotlin.math.*
 
 fun Rectangle(center: Vector2F, orientation: ComplexF, width: Float, height: Float): Rectangle =
     MutableRectangle(center, orientation, width, height)
@@ -237,6 +235,37 @@ interface Rectangle : RectangleShape, Transformable {
         val p2Y: Float = if (p1Y.absoluteValue > halfHeight) halfHeight.withSign(p1Y) else p1Y
 
         return Vector2F(rotR * p2X - rotI * p2Y + cX, rotI * p2X + rotR * p2Y + cY)
+    }
+
+    fun intersects(ray: Ray): Boolean {
+        val (rectCX: Float, rectCY: Float) = center
+        val (rectOR: Float, rectOI: Float) = orientation
+        val halfWidth: Float = width * 0.5f
+        val halfHeight: Float = height * 0.5f
+        val aabbMinX: Float = rectCX - halfWidth
+        val aabbMinY: Float = rectCY - halfHeight
+        val aabbMaxX: Float = rectCX + halfWidth
+        val aabbMaxY: Float = rectCY + halfHeight
+
+        val (rayCX: Float, rayCY: Float) = ray.origin
+        val (rayDirX: Float, rayDirY: Float) = ray.direction
+        val cpDiffX: Float = rayCX - rectCX
+        val cpDiffY: Float = rayCY - rectCY
+        val orientedOriginX: Float = cpDiffX * rectOR + cpDiffY * rectOI + rectCX
+        val orientedOriginY: Float = cpDiffY * rectOR - cpDiffX * rectOI + rectCY
+        val orientedDirX: Float = rayDirX * rectOR + rayDirY * rectOI
+        val orientedDirY: Float = rayDirY * rectOR - rayDirX * rectOI
+
+        val dirReciprocalX: Float = 1f / orientedDirX
+        val dirReciprocalY: Float = 1f / orientedDirY
+        val tx1: Float = (aabbMinX - orientedOriginX) * dirReciprocalX
+        val tx2: Float = (aabbMaxX - orientedOriginX) * dirReciprocalX
+        val ty1: Float = (aabbMinY - orientedOriginY) * dirReciprocalY
+        val ty2: Float = (aabbMaxY - orientedOriginY) * dirReciprocalY
+        val tMax: Float = max(min(tx1, tx2), min(ty1, ty2))
+        val tMin: Float = min(max(tx1, tx2), max(ty1, ty2))
+
+        return (tMin >= 0f) and (tMax <= tMin)
     }
 
     operator fun contains(point: Vector2F): Boolean {
