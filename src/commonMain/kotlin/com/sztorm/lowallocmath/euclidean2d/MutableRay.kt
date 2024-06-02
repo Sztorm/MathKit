@@ -317,37 +317,6 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
     }
 
-    override fun intersects(rectangle: Rectangle): Boolean {
-        val (rectCX: Float, rectCY: Float) = rectangle.center
-        val (rectOR: Float, rectOI: Float) = rectangle.orientation
-        val halfWidth: Float = rectangle.width * 0.5f
-        val halfHeight: Float = rectangle.height * 0.5f
-        val aabbMinX: Float = rectCX - halfWidth
-        val aabbMinY: Float = rectCY - halfHeight
-        val aabbMaxX: Float = rectCX + halfWidth
-        val aabbMaxY: Float = rectCY + halfHeight
-
-        val (rayCX: Float, rayCY: Float) = _origin
-        val (rayDirX: Float, rayDirY: Float) = _direction
-        val cpDiffX: Float = rayCX - rectCX
-        val cpDiffY: Float = rayCY - rectCY
-        val orientedOriginX: Float = cpDiffX * rectOR + cpDiffY * rectOI + rectCX
-        val orientedOriginY: Float = cpDiffY * rectOR - cpDiffX * rectOI + rectCY
-        val orientedDirX: Float = rayDirX * rectOR + rayDirY * rectOI
-        val orientedDirY: Float = rayDirY * rectOR - rayDirX * rectOI
-
-        val dirReciprocalX: Float = 1f / orientedDirX
-        val dirReciprocalY: Float = 1f / orientedDirY
-        val tx1: Float = (aabbMinX - orientedOriginX) * dirReciprocalX
-        val tx2: Float = (aabbMaxX - orientedOriginX) * dirReciprocalX
-        val ty1: Float = (aabbMinY - orientedOriginY) * dirReciprocalY
-        val ty2: Float = (aabbMaxY - orientedOriginY) * dirReciprocalY
-        val tMax: Float = max(min(tx1, tx2), min(ty1, ty2))
-        val tMin: Float = min(max(tx1, tx2), max(ty1, ty2))
-
-        return (tMin >= 0f) and (tMax <= tMin)
-    }
-
     override fun intersects(ray: Ray): Boolean {
         val (origAX: Float, origAY: Float) = _origin
         val (dirAX: Float, dirAY: Float) = _direction
@@ -379,6 +348,67 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         val nomY: Float = (dy * dirAX - dx * dirAY)
 
         return (nomX * dirBCrossDirA >= 0f) and (nomY * dirBCrossDirA >= 0f)
+    }
+
+    override fun intersects(rectangle: Rectangle): Boolean {
+        val (rectCX: Float, rectCY: Float) = rectangle.center
+        val (rectOR: Float, rectOI: Float) = rectangle.orientation
+        val halfWidth: Float = rectangle.width * 0.5f
+        val halfHeight: Float = rectangle.height * 0.5f
+        val aabbMinX: Float = rectCX - halfWidth
+        val aabbMinY: Float = rectCY - halfHeight
+        val aabbMaxX: Float = rectCX + halfWidth
+        val aabbMaxY: Float = rectCY + halfHeight
+
+        val (rayCX: Float, rayCY: Float) = _origin
+        val (rayDirX: Float, rayDirY: Float) = _direction
+        val cpDiffX: Float = rayCX - rectCX
+        val cpDiffY: Float = rayCY - rectCY
+        val orientedOriginX: Float = cpDiffX * rectOR + cpDiffY * rectOI + rectCX
+        val orientedOriginY: Float = cpDiffY * rectOR - cpDiffX * rectOI + rectCY
+        val orientedDirX: Float = rayDirX * rectOR + rayDirY * rectOI
+        val orientedDirY: Float = rayDirY * rectOR - rayDirX * rectOI
+
+        val dirReciprocalX: Float = 1f / orientedDirX
+        val dirReciprocalY: Float = 1f / orientedDirY
+        val tx1: Float = (aabbMinX - orientedOriginX) * dirReciprocalX
+        val tx2: Float = (aabbMaxX - orientedOriginX) * dirReciprocalX
+        val ty1: Float = (aabbMinY - orientedOriginY) * dirReciprocalY
+        val ty2: Float = (aabbMaxY - orientedOriginY) * dirReciprocalY
+        val tMax: Float = max(min(tx1, tx2), min(ty1, ty2))
+        val tMin: Float = min(max(tx1, tx2), max(ty1, ty2))
+
+        return (tMin >= 0f) and (tMax <= tMin)
+    }
+
+    override fun intersects(square: Square): Boolean {
+        val (rectCX: Float, rectCY: Float) = square.center
+        val (rectOR: Float, rectOI: Float) = square.orientation
+        val halfSideLength: Float = square.sideLength * 0.5f
+        val aabbMinX: Float = rectCX - halfSideLength
+        val aabbMinY: Float = rectCY - halfSideLength
+        val aabbMaxX: Float = rectCX + halfSideLength
+        val aabbMaxY: Float = rectCY + halfSideLength
+
+        val (rayCX: Float, rayCY: Float) = _origin
+        val (rayDirX: Float, rayDirY: Float) = _direction
+        val cpDiffX: Float = rayCX - rectCX
+        val cpDiffY: Float = rayCY - rectCY
+        val orientedOriginX: Float = cpDiffX * rectOR + cpDiffY * rectOI + rectCX
+        val orientedOriginY: Float = cpDiffY * rectOR - cpDiffX * rectOI + rectCY
+        val orientedDirX: Float = rayDirX * rectOR + rayDirY * rectOI
+        val orientedDirY: Float = rayDirY * rectOR - rayDirX * rectOI
+
+        val dirReciprocalX: Float = 1f / orientedDirX
+        val dirReciprocalY: Float = 1f / orientedDirY
+        val tx1: Float = (aabbMinX - orientedOriginX) * dirReciprocalX
+        val tx2: Float = (aabbMaxX - orientedOriginX) * dirReciprocalX
+        val ty1: Float = (aabbMinY - orientedOriginY) * dirReciprocalY
+        val ty2: Float = (aabbMaxY - orientedOriginY) * dirReciprocalY
+        val tMax: Float = max(min(tx1, tx2), min(ty1, ty2))
+        val tMin: Float = min(max(tx1, tx2), max(ty1, ty2))
+
+        return (tMin >= 0f) and (tMax <= tMin)
     }
 
     override operator fun contains(point: Vector2F): Boolean {

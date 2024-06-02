@@ -4,6 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
+import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRay
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.utils.Wrapper
@@ -126,6 +127,15 @@ class RayTests {
         assertImmutabilityOf(ray) {
             assertImmutabilityOf(rectangle) {
                 assertEquals(expected, ray.intersects(rectangle))
+            }
+        }
+
+    @ParameterizedTest
+    @MethodSource("intersectsSquareArgs")
+    fun intersectsSquareReturnsCorrectValue(ray: Ray, square: Square, expected: Boolean) =
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(square) {
+                assertEquals(expected, ray.intersects(square))
             }
         }
 
@@ -1393,7 +1403,7 @@ class RayTests {
                 ),
                 Arguments.of(
                     MutableRay(
-                        origin = Vector2F(-2.25f, 3.0f),
+                        origin = Vector2F(-2.25f, 3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-66f)).toVector2F()
                     ),
                     MutableRectangle(
@@ -1417,6 +1427,301 @@ class RayTests {
                 defaultRayMutableRectangleArgs,
                 mutableRayDefaultRectangleArgs,
                 defaultRayDefaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsSquareArgs(): List<Arguments> {
+            val mutableRayMutableSquareArgs = listOf(
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(7.5f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(7f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5f, -3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(4.5f, -3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(8.5f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(9f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(11f, -3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(11.5f, -3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(13f, 0.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(12.5f, 0.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(10f, 2f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(9.5f, 2f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(4.5f, -1f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5f, -1f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(7f, 1f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(7.5f, 1f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2f, -4f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-1.5f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2f, -4f),
+                        direction = ComplexF.ONE.toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(14f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(139f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(14f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(141f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(8.5f, -1.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(6f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(7f, -2f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(117f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(8f, -3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
+                    ),
+                    MutableSquare(
+                        center = Vector2F(8f, -2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+            )
+            val defaultRayMutableSquareArgs = mutableRayMutableSquareArgs
+                .mapRaysToDefaultRays()
+            val mutableRayDefaultSquareArgs = mutableRayMutableSquareArgs
+                .mapSquaresToDefaultSquares()
+            val defaultRayDefaultSquareArgs = defaultRayMutableSquareArgs
+                .mapSquaresToDefaultSquares()
+
+            return listOf(
+                mutableRayMutableSquareArgs,
+                defaultRayMutableSquareArgs,
+                mutableRayDefaultSquareArgs,
+                defaultRayDefaultSquareArgs
             ).flatten()
         }
 

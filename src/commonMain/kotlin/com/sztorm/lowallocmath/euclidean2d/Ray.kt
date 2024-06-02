@@ -262,6 +262,36 @@ interface Ray : Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    fun intersects(square: Square): Boolean {
+        val (rectCX: Float, rectCY: Float) = square.center
+        val (rectOR: Float, rectOI: Float) = square.orientation
+        val halfSideLength: Float = square.sideLength * 0.5f
+        val aabbMinX: Float = rectCX - halfSideLength
+        val aabbMinY: Float = rectCY - halfSideLength
+        val aabbMaxX: Float = rectCX + halfSideLength
+        val aabbMaxY: Float = rectCY + halfSideLength
+
+        val (rayCX: Float, rayCY: Float) = origin
+        val (rayDirX: Float, rayDirY: Float) = direction
+        val cpDiffX: Float = rayCX - rectCX
+        val cpDiffY: Float = rayCY - rectCY
+        val orientedOriginX: Float = cpDiffX * rectOR + cpDiffY * rectOI + rectCX
+        val orientedOriginY: Float = cpDiffY * rectOR - cpDiffX * rectOI + rectCY
+        val orientedDirX: Float = rayDirX * rectOR + rayDirY * rectOI
+        val orientedDirY: Float = rayDirY * rectOR - rayDirX * rectOI
+
+        val dirReciprocalX: Float = 1f / orientedDirX
+        val dirReciprocalY: Float = 1f / orientedDirY
+        val tx1: Float = (aabbMinX - orientedOriginX) * dirReciprocalX
+        val tx2: Float = (aabbMaxX - orientedOriginX) * dirReciprocalX
+        val ty1: Float = (aabbMinY - orientedOriginY) * dirReciprocalY
+        val ty2: Float = (aabbMaxY - orientedOriginY) * dirReciprocalY
+        val tMax: Float = max(min(tx1, tx2), min(ty1, ty2))
+        val tMin: Float = min(max(tx1, tx2), max(ty1, ty2))
+
+        return (tMin >= 0f) and (tMax <= tMin)
+    }
+
     operator fun contains(point: Vector2F): Boolean {
         val origin: Vector2F = this.origin
         val direction: Vector2F = this.direction

@@ -510,6 +510,36 @@ class MutableSquare : Square, MutableTransformable {
         return Vector2F(rotR * p2X - rotI * p2Y + cX, rotI * p2X + rotR * p2Y + cY)
     }
 
+    override fun intersects(ray: Ray): Boolean {
+        val (rectCX: Float, rectCY: Float) = _center
+        val (rectOR: Float, rectOI: Float) = _orientation
+        val halfSideLength: Float = _sideLength * 0.5f
+        val aabbMinX: Float = rectCX - halfSideLength
+        val aabbMinY: Float = rectCY - halfSideLength
+        val aabbMaxX: Float = rectCX + halfSideLength
+        val aabbMaxY: Float = rectCY + halfSideLength
+
+        val (rayCX: Float, rayCY: Float) = ray.origin
+        val (rayDirX: Float, rayDirY: Float) = ray.direction
+        val cpDiffX: Float = rayCX - rectCX
+        val cpDiffY: Float = rayCY - rectCY
+        val orientedOriginX: Float = cpDiffX * rectOR + cpDiffY * rectOI + rectCX
+        val orientedOriginY: Float = cpDiffY * rectOR - cpDiffX * rectOI + rectCY
+        val orientedDirX: Float = rayDirX * rectOR + rayDirY * rectOI
+        val orientedDirY: Float = rayDirY * rectOR - rayDirX * rectOI
+
+        val dirReciprocalX: Float = 1f / orientedDirX
+        val dirReciprocalY: Float = 1f / orientedDirY
+        val tx1: Float = (aabbMinX - orientedOriginX) * dirReciprocalX
+        val tx2: Float = (aabbMaxX - orientedOriginX) * dirReciprocalX
+        val ty1: Float = (aabbMinY - orientedOriginY) * dirReciprocalY
+        val ty2: Float = (aabbMaxY - orientedOriginY) * dirReciprocalY
+        val tMax: Float = max(min(tx1, tx2), min(ty1, ty2))
+        val tMin: Float = min(max(tx1, tx2), max(ty1, ty2))
+
+        return (tMin >= 0f) and (tMax <= tMin)
+    }
+
     override operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _orientation
