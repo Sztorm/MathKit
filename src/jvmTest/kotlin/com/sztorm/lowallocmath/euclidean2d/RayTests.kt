@@ -4,6 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
+import com.sztorm.lowallocmath.euclidean2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRay
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
@@ -129,6 +130,16 @@ class RayTests {
                 assertEquals(expected, ray.intersects(rectangle))
             }
         }
+
+    @ParameterizedTest
+    @MethodSource("intersectsRoundedRectangleArgs")
+    fun intersectsRoundedRectangleReturnsCorrectValue(
+        ray: Ray, rectangle: RoundedRectangle, expected: Boolean
+    ) = assertImmutabilityOf(ray) {
+        assertImmutabilityOf(rectangle) {
+            assertEquals(expected, ray.intersects(rectangle))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("intersectsSquareArgs")
@@ -1427,6 +1438,565 @@ class RayTests {
                 defaultRayMutableRectangleArgs,
                 mutableRayDefaultRectangleArgs,
                 defaultRayDefaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRoundedRectangleArgs(): List<Arguments> {
+            val mutableRayMutableRoundedRectangleArgs = listOf(
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-4.0f, -9.2f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(29.54f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-4.0f, -9.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(29.54f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-7.75f, -2.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(29.74f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-7.4f, -2.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(29.74f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.75f, -9.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(119.78f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.25f, -9.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(120.26f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(1.9f, -8.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(120.49f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(1.5f, -8.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(120.26f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-4.0f, -7.75f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-14.04f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-4.0f, -7.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-14.93f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(0.15f, -8.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(80.33f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-0.1f, -8.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(79.92f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.0f, -0.25f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(162.12f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.0f, -0.45f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(161.29f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-6.0f, -0.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-109.18f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-5.8f, -0.6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-109.18f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2.0f, -5.8f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.46f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2.0f, -5.6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.46f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.5f, 1.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.26f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.5f, 0.8f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.26f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-7.9f, 0.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-60.22f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-7.5f, 0.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.74f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-3.4f, 1.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.51f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-3.75f, 1.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.74f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-1.0f, -8.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(165.96f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-1.0f, -8.3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(165.07f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(0.9f, -3.6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-99.67f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(0.7f, -3.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-100.08f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-5.1f, 0.75f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-17.88f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-5.1f, 0.6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-18.71f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-6.8f, -2.8f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(70.82f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-6.6f, -2.9f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(70.82f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-3.3f, -0.6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(72.12f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-5.0f, -3.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-116.57f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2.8f, -4.3f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-22.99f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-1.3f, -7.0f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-50.91f))
+                            .toVector2F()
+                    ),
+                    MutableRoundedRectangle(
+                        center = Vector2F(-3f, -4f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                        width = 8f,
+                        height = 4f,
+                        cornerRadius = 1f
+                    ),
+                    true
+                ),
+            )
+            val defaultRayMutableRoundedRectangleArgs = mutableRayMutableRoundedRectangleArgs
+                .mapRaysToDefaultRays()
+            val mutableRayDefaultRoundedRectangleArgs = mutableRayMutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+            val defaultRayDefaultRoundedRectangleArgs = defaultRayMutableRoundedRectangleArgs
+                .mapRoundedRectanglesToDefaultRoundedRectangles()
+
+            return listOf(
+                mutableRayMutableRoundedRectangleArgs,
+                defaultRayMutableRoundedRectangleArgs,
+                mutableRayDefaultRoundedRectangleArgs,
+                defaultRayDefaultRoundedRectangleArgs
             ).flatten()
         }
 

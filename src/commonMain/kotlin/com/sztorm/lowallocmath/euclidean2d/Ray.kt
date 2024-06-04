@@ -262,6 +262,129 @@ interface Ray : Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    fun intersects(rectangle: RoundedRectangle): Boolean {
+        val (rectCX: Float, rectCY: Float) = rectangle.center
+        val (rectOR: Float, rectOI: Float) = rectangle.orientation
+        val halfWidth: Float = rectangle.width * 0.5f
+        val halfHeight: Float = rectangle.height * 0.5f
+        val cornerRadius: Float = rectangle.cornerRadius
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val aabb1MinX: Float = rectCX - halfWidth
+        val aabb1MinY: Float = rectCY - halfHeightMinusRadius
+        val aabb1MaxX: Float = rectCX + halfWidth
+        val aabb1MaxY: Float = rectCY + halfHeightMinusRadius
+        val aabb2MinX: Float = rectCX - halfWidthMinusRadius
+        val aabb2MinY: Float = rectCY - halfHeight
+        val aabb2MaxX: Float = rectCX + halfWidthMinusRadius
+        val aabb2MaxY: Float = rectCY + halfHeight
+
+        val (rayCX: Float, rayCY: Float) = origin
+        val (rayDirX: Float, rayDirY: Float) = direction
+        val centersDiffX: Float = rayCX - rectCX
+        val centersDiffY: Float = rayCY - rectCY
+        val orientedRayCX: Float = centersDiffX * rectOR + centersDiffY * rectOI + rectCX
+        val orientedRayCY: Float = centersDiffY * rectOR - centersDiffX * rectOI + rectCY
+        val orientedRayDirX: Float = rayDirX * rectOR + rayDirY * rectOI
+        val orientedRayDirY: Float = rayDirY * rectOR - rayDirX * rectOI
+
+        val ccArCDiffY: Float = aabb1MaxY - orientedRayCY
+        val ccCrCDiffY: Float = aabb1MinY - orientedRayCY
+        val dirReciprocalX: Float = 1f / orientedRayDirX
+        val dirReciprocalY: Float = 1f / orientedRayDirY
+        val tx11: Float = (aabb1MinX - orientedRayCX) * dirReciprocalX
+        val tx12: Float = (aabb1MaxX - orientedRayCX) * dirReciprocalX
+        val ty11: Float = ccCrCDiffY * dirReciprocalY
+        val ty12: Float = ccArCDiffY * dirReciprocalY
+        val tMax1: Float = max(min(tx11, tx12), min(ty11, ty12))
+        val tMin1: Float = min(max(tx11, tx12), max(ty11, ty12))
+        val intersectsAabb1: Boolean = (tMin1 >= 0f) and (tMax1 <= tMin1)
+
+        if (intersectsAabb1) {
+            return true
+        }
+
+        val ccArCDiffX: Float = aabb2MaxX - orientedRayCX
+        val ccBrCDiffX: Float = aabb2MinX - orientedRayCX
+        val tx21: Float = ccBrCDiffX * dirReciprocalX
+        val tx22: Float = ccArCDiffX * dirReciprocalX
+        val ty21: Float = (aabb2MinY - orientedRayCY) * dirReciprocalY
+        val ty22: Float = (aabb2MaxY - orientedRayCY) * dirReciprocalY
+        val tMax2: Float = max(min(tx21, tx22), min(ty21, ty22))
+        val tMin2: Float = min(max(tx21, tx22), max(ty21, ty22))
+        val intersectsAabb2: Boolean = (tMin2 >= 0f) and (tMax2 <= tMin2)
+
+        if (intersectsAabb2) {
+            return true
+        }
+
+        val tA1: Float = ccArCDiffX * orientedRayDirX
+        val tA2: Float = ccArCDiffY * orientedRayDirY
+        val tA: Float = tA1 + tA2
+        val minusCcArCDiffX: Float = -ccArCDiffX
+        val minusCcArCDiffY: Float = -ccArCDiffY
+        val intersectsCircleA: Boolean = if (tA <= 0f) {
+            sqrt(
+                minusCcArCDiffX * minusCcArCDiffX + minusCcArCDiffY * minusCcArCDiffY
+            ) <= cornerRadius
+        } else {
+            val cpCcADiffX: Float = minusCcArCDiffX + orientedRayDirX * tA
+            val cpCcADiffY: Float = minusCcArCDiffY + orientedRayDirY * tA
+
+            sqrt(cpCcADiffX * cpCcADiffX + cpCcADiffY * cpCcADiffY) <= cornerRadius
+        }
+        if (intersectsCircleA) {
+            return true
+        }
+
+        val tB1: Float = ccBrCDiffX * orientedRayDirX
+        val tB: Float = tB1 + tA2
+        val minusCcBrCDiffX: Float = -ccBrCDiffX
+        val intersectsCircleB: Boolean = if (tB <= 0f) {
+            sqrt(
+                minusCcBrCDiffX * minusCcBrCDiffX + minusCcArCDiffY * minusCcArCDiffY
+            ) <= cornerRadius
+        } else {
+            val cpCcBDiffX: Float = minusCcBrCDiffX + orientedRayDirX * tB
+            val cpCcBDiffY: Float = minusCcArCDiffY + orientedRayDirY * tB
+
+            sqrt(cpCcBDiffX * cpCcBDiffX + cpCcBDiffY * cpCcBDiffY) <= cornerRadius
+        }
+        if (intersectsCircleB) {
+            return true
+        }
+
+        val tC2: Float = ccCrCDiffY * orientedRayDirY
+        val tC: Float = tB1 + tC2
+        val minusCcCrCDiffY: Float = -ccCrCDiffY
+        val intersectsCircleC: Boolean = if (tC <= 0f) {
+            sqrt(
+                minusCcBrCDiffX * minusCcBrCDiffX + minusCcCrCDiffY * minusCcCrCDiffY
+            ) <= cornerRadius
+        } else {
+            val cpCcCDiffX: Float = minusCcBrCDiffX + orientedRayDirX * tC
+            val cpCcCDiffY: Float = minusCcCrCDiffY + orientedRayDirY * tC
+
+            sqrt(cpCcCDiffX * cpCcCDiffX + cpCcCDiffY * cpCcCDiffY) <= cornerRadius
+        }
+        if (intersectsCircleC) {
+            return true
+        }
+
+        val tD: Float = tA1 + tC2
+        val intersectsCircleD: Boolean = if (tD <= 0f) {
+            sqrt(
+                minusCcArCDiffX * minusCcArCDiffX + minusCcCrCDiffY * minusCcCrCDiffY
+            ) <= cornerRadius
+        } else {
+            val cpCcDDiffX: Float = minusCcArCDiffX + orientedRayDirX * tD
+            val cpCcDDiffY: Float = minusCcCrCDiffY + orientedRayDirY * tD
+
+            sqrt(cpCcDDiffX * cpCcDDiffX + cpCcDDiffY * cpCcDDiffY) <= cornerRadius
+        }
+        return intersectsCircleD
+    }
+
     fun intersects(square: Square): Boolean {
         val (rectCX: Float, rectCY: Float) = square.center
         val (rectOR: Float, rectOI: Float) = square.orientation
