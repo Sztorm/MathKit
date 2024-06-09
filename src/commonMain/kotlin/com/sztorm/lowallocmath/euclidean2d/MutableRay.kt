@@ -317,6 +317,37 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
     }
 
+    override fun intersects(lineSegment: LineSegment): Boolean {
+        val (oX: Float, oY: Float) = _origin
+        val (dirX: Float, dirY: Float) = _direction
+        val (aX: Float, aY: Float) = lineSegment.pointA
+        val (bX: Float, bY: Float) = lineSegment.pointB
+        val aoX: Float = oX - aX
+        val aoY: Float = oY - aY
+        val abX: Float = bX - aX
+        val abY: Float = bY - aY
+        val dirCrossAB: Float = abY * dirX - abX * dirY
+        val areParallel: Boolean = dirCrossAB.absoluteValue < 0.00001f
+
+        if (areParallel) {
+            val boX: Float = oX - bX
+            val boY: Float = oY - bY
+            val dirDotAO: Float = aoX * dirX + aoY * dirY
+            val dirDotBO: Float = boX * dirX + boY * dirY
+
+            return (dirDotAO <= 0f) or (dirDotBO <= 0f)
+        }
+        val detABReciprocal: Float = 1f / dirCrossAB
+        val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+        if (t1 >= 0f) {
+            val t2: Float = (aoY * dirX - aoX * dirY) * detABReciprocal
+
+            return (t2 >= 0f) and (t2 <= 1f)
+        }
+        return false
+    }
+
     override fun intersects(ray: Ray): Boolean {
         val (origAX: Float, origAY: Float) = _origin
         val (dirAX: Float, dirAY: Float) = _direction

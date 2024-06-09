@@ -115,6 +115,15 @@ class RayTests {
         }
 
     @ParameterizedTest
+    @MethodSource("intersectsLineSegmentArgs")
+    fun intersectsReturnsCorrectValue(ray: Ray, lineSegment: LineSegment, expected: Boolean) =
+        assertImmutabilityOf(ray) {
+            assertImmutabilityOf(lineSegment) {
+                assertEquals(expected, ray.intersects(lineSegment))
+            }
+        }
+
+    @ParameterizedTest
     @MethodSource("intersectsRayArgs")
     fun intersectsReturnsCorrectValue(ray: Ray, otherRay: Ray, expected: Boolean) =
         assertImmutabilityOf(ray) {
@@ -633,6 +642,13 @@ class RayTests {
             val args = it.get()
             Arguments.of(args[1], args[0], args[2])
         }
+
+        @JvmStatic
+        fun intersectsLineSegmentArgs(): List<Arguments> =
+            LineSegmentTests.intersectsRayArgs().map {
+                val args = it.get()
+                Arguments.of(args[1], args[0], args[2])
+            }
 
         @JvmStatic
         fun intersectsRayArgs(): List<Arguments> {

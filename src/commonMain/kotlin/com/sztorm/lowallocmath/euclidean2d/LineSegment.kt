@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.Vector2FIterator
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
 fun LineSegment(pointA: Vector2F, pointB: Vector2F): LineSegment =
@@ -314,6 +315,37 @@ interface LineSegment : Transformable {
             else -> t
         }
         return pointA + ab * tClamped
+    }
+
+    fun intersects(ray: Ray): Boolean {
+        val (oX: Float, oY: Float) = ray.origin
+        val (dirX: Float, dirY: Float) = ray.direction
+        val (aX: Float, aY: Float) = pointA
+        val (bX: Float, bY: Float) = pointB
+        val aoX: Float = oX - aX
+        val aoY: Float = oY - aY
+        val abX: Float = bX - aX
+        val abY: Float = bY - aY
+        val dirCrossAB: Float = abY * dirX - abX * dirY
+        val areParallel: Boolean = dirCrossAB.absoluteValue < 0.00001f
+
+        if (areParallel) {
+            val boX: Float = oX - bX
+            val boY: Float = oY - bY
+            val dirDotAO: Float = aoX * dirX + aoY * dirY
+            val dirDotBO: Float = boX * dirX + boY * dirY
+
+            return (dirDotAO <= 0f) or (dirDotBO <= 0f)
+        }
+        val detABReciprocal: Float = 1f / dirCrossAB
+        val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+        if (t1 >= 0f) {
+            val t2: Float = (aoY * dirX - aoX * dirY) * detABReciprocal
+
+            return (t2 >= 0f) and (t2 <= 1f)
+        }
+        return false
     }
 
     operator fun contains(point: Vector2F): Boolean {

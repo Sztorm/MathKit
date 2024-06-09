@@ -3,10 +3,11 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.utils.Wrapper
-import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultLineSegment
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
+import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -107,6 +108,15 @@ class LineSegmentTests {
     ) = assertImmutabilityOf(lineSegment) {
         assertApproximation(expected.value, lineSegment.closestPointTo(point.value))
     }
+
+    @ParameterizedTest
+    @MethodSource("intersectsRayArgs")
+    fun intersectsReturnsCorrectValue(lineSegment: LineSegment, ray: Ray, expected: Boolean) =
+        assertImmutabilityOf(lineSegment) {
+            assertImmutabilityOf(ray) {
+                assertEquals(expected, lineSegment.intersects(ray))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
@@ -754,6 +764,329 @@ class LineSegmentTests {
             return listOf(
                 mutableLineSegmentArgs,
                 defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRayArgs(): List<Arguments> {
+            fun List<Arguments>.withLineSegmentPointsSwapped() = map { args ->
+                val argArray = args.get().map {
+                    if (it is LineSegment) LineSegment(it.pointB, it.pointA)
+                    else it
+                }.toTypedArray()
+
+                Arguments.of(*argArray)
+            }
+
+            fun createMutableLineSegmentMutableRayArgs(): List<Arguments> {
+                val parallelArgs = listOf(
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(2.9f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(3.1f, 5f), direction = Vector2F(1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(3.1f, 5f), direction = Vector2F(-1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, 5f), direction = Vector2F(-1f, 0f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(-2.1f, 5f), direction = Vector2F(-1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, 1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-2f, -1.1f), direction = Vector2F(0f, 1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, 1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, -1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-2f, -5.9f), direction = Vector2F(0f, -1f)
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, -1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(5.1f, -2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(1.1f, 1.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(0.9f, 2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(0.9f, 2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(4.9f, -1.9f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(5.1f, -2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                )
+                val nonParallelArgs = listOf(
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(30f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(60f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(90f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(120f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-150f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-120f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-90f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-60f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-30f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-66.8f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-74.05f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-144.46f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        MutableRay(
+                            origin = Vector2F(8f, -3f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-140.19f))
+                                .toVector2F()
+                        ),
+                        true
+                    ),
+                )
+
+                return listOf(
+                    parallelArgs,
+                    parallelArgs.withLineSegmentPointsSwapped(),
+                    nonParallelArgs,
+                    nonParallelArgs.withLineSegmentPointsSwapped()
+                ).flatten()
+            }
+
+            val mutableLineSegmentMutableRayArgs = createMutableLineSegmentMutableRayArgs()
+            val defaultLineSegmentMutableRayArgs = mutableLineSegmentMutableRayArgs
+                .mapLineSegmentsToDefaultLineSegments()
+            val mutableLineSegmentDefaultRayArgs = mutableLineSegmentMutableRayArgs
+                .mapRaysToDefaultRays()
+            val defaultLineSegmentDefaultRayArgs = defaultLineSegmentMutableRayArgs
+                .mapRaysToDefaultRays()
+
+            return listOf(
+                mutableLineSegmentMutableRayArgs,
+                defaultLineSegmentMutableRayArgs,
+                mutableLineSegmentDefaultRayArgs,
+                defaultLineSegmentDefaultRayArgs
             ).flatten()
         }
 
