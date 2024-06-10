@@ -334,8 +334,9 @@ interface LineSegment : Transformable {
             val boY: Float = oY - bY
             val dirDotAO: Float = aoX * dirX + aoY * dirY
             val dirDotBO: Float = boX * dirX + boY * dirY
+            val dirCrossAO = dirX * aoY - dirY * aoX
 
-            return (dirDotAO <= 0f) or (dirDotBO <= 0f)
+            return (dirCrossAO.absoluteValue < 0.00001f) and ((dirDotAO <= 0f) or (dirDotBO <= 0f))
         }
         val detABReciprocal: Float = 1f / dirCrossAB
         val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal

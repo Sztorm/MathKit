@@ -804,6 +804,13 @@ class LineSegmentTests {
                     Arguments.of(
                         MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
                         MutableRay(
+                            origin = Vector2F(-2.1f, 5.1f), direction = Vector2F(1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
                             origin = Vector2F(3.1f, 5f), direction = Vector2F(-1f, 0f)
                         ),
                         true
@@ -819,6 +826,13 @@ class LineSegmentTests {
                         MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
                         MutableRay(
                             origin = Vector2F(-2.1f, 5f), direction = Vector2F(-1f, 0f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        MutableRay(
+                            origin = Vector2F(3.1f, 4.9f), direction = Vector2F(-1f, 0f)
                         ),
                         false
                     ),
@@ -846,6 +860,14 @@ class LineSegmentTests {
                     Arguments.of(
                         MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
                         MutableRay(
+                            origin = Vector2F(-2.1f, -6.1f),
+                            direction = Vector2F(0f, 1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
                             origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, -1f)
                         ),
                         true
@@ -861,6 +883,14 @@ class LineSegmentTests {
                         MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
                         MutableRay(
                             origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, -1f)
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        MutableRay(
+                            origin = Vector2F(-1.9f, -0.9f),
+                            direction = Vector2F(0f, -1f)
                         ),
                         false
                     ),
@@ -894,6 +924,15 @@ class LineSegmentTests {
                     Arguments.of(
                         MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
                         MutableRay(
+                            origin = Vector2F(5.2f, -2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
                             origin = Vector2F(0.9f, 2.1f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
                                 .toVector2F()
@@ -913,6 +952,15 @@ class LineSegmentTests {
                         MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
                         MutableRay(
                             origin = Vector2F(5.1f, -2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
+                                .toVector2F()
+                        ),
+                        false
+                    ),
+                    Arguments.of(
+                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        MutableRay(
+                            origin = Vector2F(0.9f, 2.2f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
                                 .toVector2F()
                         ),
