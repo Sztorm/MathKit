@@ -359,24 +359,15 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         val areDirsTheSameOrOpposite: Boolean = dirBCrossDirA.absoluteValue < 0.00001f
 
         if (areDirsTheSameOrOpposite) {
-            val length: Float = sqrt(dx * dx + dy * dy)
+            val dirADotDirB: Float = dirAX * dirBX + dirAY * dirBY
+            val areSameDirs: Boolean = dirADotDirB >= 0f
 
-            if (length < 0.00001f) {
-                return true
-            }
-            val dirBDotDirA: Float = dirBX * dirAX + dirBY * dirAY
-            val oneOverLength: Float = 1f / length
-            val dxn: Float = dx * oneOverLength
-            val dyn: Float = dy * oneOverLength
-            val areDirsOpposite: Boolean = dirBDotDirA < 0
-            val det: Float =
-                if (areDirsOpposite) dirAX * dxn + dirAY * dyn - 1f
-                else dirAX * dyn - dirAY * dxn
+            return if (areSameDirs) (dirAX * dy - dirAY * dx).absoluteValue < 0.00001f
+            else (dirAX * dx + dirAY * dy) >= 0f
 
-            return det.absoluteValue < 0.000001f
         }
-        val nomX: Float = (dy * dirBX - dx * dirBY)
-        val nomY: Float = (dy * dirAX - dx * dirAY)
+        val nomX: Float = dy * dirBX - dx * dirBY
+        val nomY: Float = dy * dirAX - dx * dirAY
 
         return (nomX * dirBCrossDirA >= 0f) and (nomY * dirBCrossDirA >= 0f)
     }
