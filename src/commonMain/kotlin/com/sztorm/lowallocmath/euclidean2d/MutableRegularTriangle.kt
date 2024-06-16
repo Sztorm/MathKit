@@ -605,6 +605,59 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         return (add120DegRotation.conjugate * orientation * edgePoint).toVector2F() + center
     }
 
+    override fun intersects(ray: Ray): Boolean {
+        val (oX: Float, oY: Float) = ray.origin
+        val (dirX: Float, dirY: Float) = ray.direction
+        val (aX: Float, aY: Float) = _pointA
+        val (bX: Float, bY: Float) = _pointB
+        val (cX: Float, cY: Float) = _pointC
+        val aoX: Float = oX - aX
+        val aoY: Float = oY - aY
+        val abX: Float = bX - aX
+        val abY: Float = bY - aY
+        val detAB: Float = abY * dirX - abX * dirY
+
+        if (detAB.absoluteValue >= 0.00001f) {
+            val detABReciprocal: Float = 1f / detAB
+            val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+            if (t1 >= 0f) {
+                val t2: Float = (aoY * dirX - aoX * dirY) * detABReciprocal
+
+                if ((t2 >= 0f) and (t2 <= 1f)) {
+                    return true
+                }
+            }
+        }
+        val boX: Float = oX - bX
+        val boY: Float = oY - bY
+        val bcX: Float = cX - bX
+        val bcY: Float = cY - bY
+        val detBC: Float = bcY * dirX - bcX * dirY
+
+        if (detBC.absoluteValue >= 0.00001f) {
+            val detBCReciprocal: Float = 1f / detBC
+            val t1: Float = (boY * bcX - boX * bcY) * detBCReciprocal
+
+            if (t1 >= 0f) {
+                val t2: Float = (boY * dirX - boX * dirY) * detBCReciprocal
+
+                if ((t2 >= 0f) and (t2 <= 1f)) {
+                    return true
+                }
+            }
+        }
+        val coX: Float = oX - cX
+        val coY: Float = oY - cY
+        val acX: Float = cX - aX
+        val acY: Float = cY - aY
+        val abo: Boolean = (aoY * abX - aoX * abY) >= 0f
+        val bco: Boolean = (boY * bcX - boX * bcY) >= 0f
+        val aco: Boolean = (coX * acY - coY * acX) >= 0f
+
+        return (abo == bco) and (bco == aco)
+    }
+
     override operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = _orientation

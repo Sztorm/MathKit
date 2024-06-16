@@ -4,6 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
+import com.sztorm.lowallocmath.euclidean2d.RegularTriangleTests.Companion.mapRegularTrianglesToDefaultRegularTriangles
 import com.sztorm.lowallocmath.euclidean2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.TriangleTests.Companion.mapTrianglesToDefaultTriangles
@@ -140,6 +141,16 @@ class RayTests {
                 assertEquals(expected, ray.intersects(rectangle))
             }
         }
+
+    @ParameterizedTest
+    @MethodSource("intersectsRegularTriangleArgs")
+    fun intersectsRegularTriangleReturnsCorrectValue(
+        ray: Ray, triangle: RegularTriangle, expected: Boolean
+    ) = assertImmutabilityOf(ray) {
+        assertImmutabilityOf(triangle) {
+            assertEquals(expected, ray.intersects(triangle))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("intersectsRoundedRectangleArgs")
@@ -1464,6 +1475,272 @@ class RayTests {
                 defaultRayMutableRectangleArgs,
                 mutableRayDefaultRectangleArgs,
                 defaultRayDefaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRegularTriangleArgs(): List<Arguments> {
+            val mutableRayMutableRegularTriangleArgs = listOf(
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(6.3f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-100.3f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(6.2f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-100.3f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2.4f, -7f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(19.98f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2.5f, -7f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(19.98f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2.4f, -6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-40.31f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(2.5f, -6f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-40.31f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5.3f, -10.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(79.7f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5.2f, -10.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(79.7f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(7.9f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-160.02f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(8f, -5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-160.02f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5.7f, -8.8f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(139.69f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5.8f, -8.8f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(139.69f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2f, -4f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-11.31f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(-2f, -4f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-12.41f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(12f, 2f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-135.32f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    false
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(12f, 2f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-134.68f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(4.5f, -6.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(33.69f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5.5f, -6.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-23.20f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+                Arguments.of(
+                    MutableRay(
+                        origin = Vector2F(5f, -7.5f),
+                        direction = ComplexF.fromAngle(AngleF.fromDegrees(-126.87f))
+                            .toVector2F()
+                    ),
+                    MutableRegularTriangle(
+                        center = Vector2F(5f, -7f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                        sideLength = 3f
+                    ),
+                    true
+                ),
+            )
+            val defaultRayMutableRegularTriangleArgs = mutableRayMutableRegularTriangleArgs
+                .mapRaysToDefaultRays()
+            val mutableRayDefaultRegularTriangleArgs = mutableRayMutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+            val defaultRayDefaultRegularTriangleArgs = defaultRayMutableRegularTriangleArgs
+                .mapRegularTrianglesToDefaultRegularTriangles()
+
+            return listOf(
+                mutableRayMutableRegularTriangleArgs,
+                defaultRayMutableRegularTriangleArgs,
+                mutableRayDefaultRegularTriangleArgs,
+                defaultRayDefaultRegularTriangleArgs
             ).flatten()
         }
 

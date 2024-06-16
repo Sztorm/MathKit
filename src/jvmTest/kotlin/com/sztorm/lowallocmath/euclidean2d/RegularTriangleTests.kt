@@ -3,11 +3,11 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
+import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRegularTriangle
+import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRegularTriangle
-import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -246,6 +246,15 @@ class RegularTriangleTests {
     ) = assertImmutabilityOf(triangle) {
         assertApproximation(expected.value, triangle.closestPointTo(point.value))
     }
+
+    @ParameterizedTest
+    @MethodSource("intersectsRayArgs")
+    fun intersectsRayReturnsCorrectValue(triangle: RegularTriangle, ray: Ray, expected: Boolean) =
+        assertImmutabilityOf(triangle) {
+            assertImmutabilityOf(ray) {
+                assertEquals(expected, triangle.intersects(ray))
+            }
+        }
 
     @ParameterizedTest
     @MethodSource("containsVector2FArgs")
@@ -1086,6 +1095,12 @@ class RegularTriangleTests {
                 mutableRegularTriangleArgs,
                 defaultRegularTriangleArgs
             ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRayArgs(): List<Arguments> = RayTests.intersectsRegularTriangleArgs().map {
+            val args = it.get()
+            Arguments.of(args[1], args[0], args[2])
         }
 
         @JvmStatic

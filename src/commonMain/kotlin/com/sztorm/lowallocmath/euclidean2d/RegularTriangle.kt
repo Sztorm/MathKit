@@ -269,6 +269,72 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         return (add120DegRotation.conjugate * orientation * edgePoint).toVector2F() + center
     }
 
+    fun intersects(ray: Ray): Boolean {
+        val (oX: Float, oY: Float) = ray.origin
+        val (dirX: Float, dirY: Float) = ray.direction
+        val (triangleCX: Float, triangleCY: Float) = center
+        val (triangleOR: Float, triangleOI: Float) = orientation
+        val sideLength: Float = sideLength
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = sideLength * 0.28867513f
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = triangleOI * inradius + triangleCX
+        val addendX2: Float = triangleOR * halfSideLength
+        val addendY1: Float = triangleOI * halfSideLength
+        val addendY2: Float = triangleOR * inradius - triangleCY
+        val aX: Float = triangleCX - triangleOI * circumradius
+        val aY: Float = triangleCY + triangleOR * circumradius
+        val bX: Float = addendX1 - addendX2
+        val bY: Float = -addendY1 - addendY2
+        val cX: Float = addendX1 + addendX2
+        val cY: Float = addendY1 - addendY2
+        val aoX: Float = oX - aX
+        val aoY: Float = oY - aY
+        val abX: Float = bX - aX
+        val abY: Float = bY - aY
+        val detAB: Float = abY * dirX - abX * dirY
+
+        if (detAB.absoluteValue >= 0.00001f) {
+            val detABReciprocal: Float = 1f / detAB
+            val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+            if (t1 >= 0f) {
+                val t2: Float = (aoY * dirX - aoX * dirY) * detABReciprocal
+
+                if ((t2 >= 0f) and (t2 <= 1f)) {
+                    return true
+                }
+            }
+        }
+        val boX: Float = oX - bX
+        val boY: Float = oY - bY
+        val bcX: Float = cX - bX
+        val bcY: Float = cY - bY
+        val detBC: Float = bcY * dirX - bcX * dirY
+
+        if (detBC.absoluteValue >= 0.00001f) {
+            val detBCReciprocal: Float = 1f / detBC
+            val t1: Float = (boY * bcX - boX * bcY) * detBCReciprocal
+
+            if (t1 >= 0f) {
+                val t2: Float = (boY * dirX - boX * dirY) * detBCReciprocal
+
+                if ((t2 >= 0f) and (t2 <= 1f)) {
+                    return true
+                }
+            }
+        }
+        val coX: Float = oX - cX
+        val coY: Float = oY - cY
+        val acX: Float = cX - aX
+        val acY: Float = cY - aY
+        val abo: Boolean = (aoY * abX - aoX * abY) >= 0f
+        val bco: Boolean = (boY * bcX - boX * bcY) >= 0f
+        val aco: Boolean = (coX * acY - coY * acX) >= 0f
+
+        return (abo == bco) and (bco == aco)
+    }
+
     operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
