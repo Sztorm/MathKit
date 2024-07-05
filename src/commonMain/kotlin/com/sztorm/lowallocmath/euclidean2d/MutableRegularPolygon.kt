@@ -827,40 +827,43 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     }
 
     override operator fun contains(point: Vector2F): Boolean {
-        val sideCount: Int = this.sideCount
-        val orientation: ComplexF = _orientation
-        val rotConj: ComplexF = orientation.conjugate
+        val sideCount: Int = _points.size
         val halfSideLength: Float = _sideLength * 0.5f
-        val center: Vector2F = _center
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = _orientation
+        val (pX: Float, pY: Float) = point
+        val cpX: Float = pX - cX
+        val cpY: Float = pY - cY
 
         if (sideCount == 2) {
-            val x: Float = (rotConj * (point - center).toComplexF()).real
+            // x = (orientation.conjugate * cp).x
+            val x: Float = oR * cpX + oI * cpY
 
-            return if ((x > halfSideLength) or (x < -halfSideLength)) false
+            return if (x.absoluteValue > halfSideLength) false
             else {
-                val closestPoint = center + orientation.toVector2F() * x
+                val closestPointX: Float = cX + oR * x
+                val closestPointY: Float = cY + oI * x
 
-                return closestPoint.isApproximately(point)
+                return closestPointX.isApproximately(pX) && closestPointY.isApproximately(pY)
             }
         }
-        val rot90Deg = ComplexF(0f, 1f)
-        val rotNeg90Deg = ComplexF(0f, -1f)
         val fullAngle = (2.0 * PI).toFloat()
         val exteriorAngle: Float = fullAngle / sideCount
-        val inradius: Float = _inradius
-        val p1: ComplexF = rotConj * rotNeg90Deg * (point - center).toComplexF()
-        val p1Angle: Float = atan2(p1.imaginary, p1.real) + 0.001f
-        val p1AnglePositive: Float =
-            if (p1Angle < 0) p1Angle + fullAngle
-            else p1Angle
+        val halfExteriorAngle: Float = exteriorAngle * 0.5f
+        // p1 = orientation.conjugate * ComplexF.fromAngle(AngleF.fromDegrees(-90f)) * cp
+        val p1X: Float = oR * cpY - oI * cpX
+        val p1Y: Float = -oR * cpX - oI * cpY
+        val p1Angle: Float = atan2(p1Y, p1X) + 0.0001f +
+                ((sideCount + 1) and 1) * halfExteriorAngle
+        val p1AnglePositive: Float = p1Angle + fullAngle
         val index: Int = (p1AnglePositive / exteriorAngle).toInt()
-        val rot1 = ComplexF.fromAngle(
-            AngleF((sideCount and 1) * (-exteriorAngle * 0.5f) + -exteriorAngle * index)
-        )
-        val p2: ComplexF = rot1 * rot90Deg * p1
-        val (p2X, p2Y) = p2
+        val angle: Float = (sideCount and 1) * -halfExteriorAngle - exteriorAngle * index
+        val cosAngle: Float = cos(angle)
+        val sinAngle: Float = sin(angle)
+        // p2 = ComplexF.fromAngle(angle) * ComplexF.fromAngle(AngleF.fromDegrees(90f)) * p1
+        val p2I: Float = cosAngle * p1X - sinAngle * p1Y
 
-        return (p2X >= -halfSideLength) and (p2X <= halfSideLength) and (p2Y <= inradius)
+        return p2I <= _inradius
     }
 
     override fun pointIterator(): Vector2FIterator = _points.iterator()

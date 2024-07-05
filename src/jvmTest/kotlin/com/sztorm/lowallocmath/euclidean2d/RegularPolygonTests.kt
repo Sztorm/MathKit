@@ -1,10 +1,10 @@
 package com.sztorm.lowallocmath.euclidean2d
 
 import com.sztorm.lowallocmath.*
-import com.sztorm.lowallocmath.utils.Wrapper
-import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRegularPolygon
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
+import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -1985,7 +1985,25 @@ class RegularPolygonTests {
                     decagon, Wrapper(Vector2F(17.219757f, -0.046162248f)), false
                 ),
                 Arguments.of(
+                    decagon, Wrapper(Vector2F(12f, 2f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(12f, 0f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14f, 2f)), true
+                ),
+                Arguments.of(
                     decagon, Wrapper(Vector2F(14f, 1f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(14f, 0f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16f, 2f)), true
+                ),
+                Arguments.of(
+                    decagon, Wrapper(Vector2F(16f, 0f)), true
                 ),
             )
             val heptagonArgs = listOf(
@@ -2074,7 +2092,31 @@ class RegularPolygonTests {
                     heptagon, Wrapper(Vector2F(-3.4166799f, 7.743955f)), false
                 ),
                 Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2f, 10f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(0f, 10f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2f, 10f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2f, 8f)), true
+                ),
+                Arguments.of(
                     heptagon, Wrapper(Vector2F(0f, 8f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2f, 8f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(-2f, 6f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(0f, 6f)), true
+                ),
+                Arguments.of(
+                    heptagon, Wrapper(Vector2F(2f, 6f)), true
                 ),
             )
             val digonArgs = listOf(
