@@ -779,51 +779,60 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
-        val sideCount: Int = this.sideCount
-        val center: Vector2F = _center
-        val orientation: ComplexF = _orientation
-        val rotConj: ComplexF = orientation.conjugate
-        val halfSideLength: Float = _sideLength * 0.5f
+        val sideCount: Int = _points.size
+        val sideLength: Float = _sideLength
+        val halfSideLength: Float = sideLength * 0.5f
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = _orientation
+        val (pX: Float, pY: Float) = point
+        val cpX: Float = pX - cX
+        val cpY: Float = pY - cY
 
         if (sideCount == 2) {
-            val x: Float = (rotConj * (point - center).toComplexF()).real
+            // x = (orientation.conjugate * cp).real
+            val x: Float = oR * cpX + oI * cpY
 
             return when {
                 x > halfSideLength -> _points[0]
+
                 x < -halfSideLength -> _points[1]
-                else -> center + orientation.toVector2F() * x
+
+                else -> Vector2F(cX + oR * x, cY + oI * x)
             }
         }
-        val rot90Deg = ComplexF(0f, 1f)
-        val rotNeg90Deg = ComplexF(0f, -1f)
         val fullAngle = (2.0 * PI).toFloat()
         val exteriorAngle: Float = fullAngle / sideCount
+        val halfExteriorAngle: Float = exteriorAngle * 0.5f
         val inradius: Float = _inradius
-        val p1: ComplexF = rotConj * rotNeg90Deg * (point - center).toComplexF()
-        val p1Angle: Float = atan2(p1.imaginary, p1.real) + 0.001f
-        val p1AnglePositive: Float =
-            if (p1Angle < 0) p1Angle + fullAngle
-            else p1Angle
+        // p1 = orientation.conjugate * ComplexF.fromAngle(AngleF.fromDegrees(-90f)) * cp
+        val p1X: Float = oR * cpY - oI * cpX
+        val p1Y: Float = -oR * cpX - oI * cpY
+        val p1Angle: Float = atan2(p1Y, p1X) + 0.0001f +
+                ((sideCount + 1) and 1) * halfExteriorAngle
+        val p1AnglePositive: Float = p1Angle + fullAngle
         val index: Int = (p1AnglePositive / exteriorAngle).toInt()
-        val rot1 = ComplexF.fromAngle(
-            AngleF((sideCount and 1) * (-exteriorAngle * 0.5f) + -exteriorAngle * index)
-        )
-        val rot1Conj: ComplexF = rot1.conjugate
-        val p2: ComplexF = rot1 * rot90Deg * p1
-        val (p2X, p2Y) = p2
+        val angle: Float = (sideCount and 1) * -halfExteriorAngle - exteriorAngle * index
+        val cosAngle: Float = cos(angle)
+        val sinAngle: Float = sin(angle)
+        // p2 = ComplexF.fromAngle(angle) * ComplexF.fromAngle(AngleF.fromDegrees(90f)) * p1
+        val p2X: Float = -cosAngle * p1Y - sinAngle * p1X
 
-        return when {
-            p2X < -halfSideLength ->
-                center + (rot1Conj * orientation * ComplexF(-halfSideLength, inradius)).toVector2F()
-
-            p2X > halfSideLength ->
-                center + (rot1Conj * orientation * ComplexF(halfSideLength, inradius)).toVector2F()
-
-            p2Y > inradius ->
-                center + (rot1Conj * orientation * ComplexF(p2X, inradius)).toVector2F()
-
-            else -> point
+        if (p2X < -halfSideLength) {
+            return _points[(index + 1) % sideCount]
         }
+        if (p2X > halfSideLength) {
+            return _points[index % sideCount]
+        }
+        val p2Y: Float = cosAngle * p1X - sinAngle * p1Y
+
+        if (p2Y > inradius) {
+            val r: Float = cosAngle * oR + sinAngle * oI
+            val i: Float = cosAngle * oI - sinAngle * oR
+
+            // center + orientation * ComplexF(cosAngle, -sinAngle) * ComplexF(p2X, inradius)
+            return Vector2F(cX + r * p2X - i * inradius, cY + i * p2X + r * inradius)
+        }
+        return point
     }
 
     override operator fun contains(point: Vector2F): Boolean {
@@ -836,7 +845,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val cpY: Float = pY - cY
 
         if (sideCount == 2) {
-            // x = (orientation.conjugate * cp).x
+            // x = (orientation.conjugate * cp).real
             val x: Float = oR * cpX + oI * cpY
 
             return if (x.absoluteValue > halfSideLength) false

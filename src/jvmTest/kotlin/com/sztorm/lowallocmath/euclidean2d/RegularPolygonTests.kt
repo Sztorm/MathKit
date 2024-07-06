@@ -1631,8 +1631,38 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     decagon,
+                    Wrapper(Vector2F(12f, 2f)),
+                    Wrapper(Vector2F(12f, 2f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(12f, 0f)),
+                    Wrapper(Vector2F(12f, 0f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14f, 2f)),
+                    Wrapper(Vector2F(14f, 2f))
+                ),
+                Arguments.of(
+                    decagon,
                     Wrapper(Vector2F(14f, 1f)),
                     Wrapper(Vector2F(14f, 1f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(14f, 0f)),
+                    Wrapper(Vector2F(14f, 0f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16f, 2f)),
+                    Wrapper(Vector2F(16f, 2f))
+                ),
+                Arguments.of(
+                    decagon,
+                    Wrapper(Vector2F(16f, 0f)),
+                    Wrapper(Vector2F(16f, 0f))
                 ),
             )
             val heptagonArgs = listOf(
@@ -1778,8 +1808,48 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     heptagon,
+                    Wrapper(Vector2F(-2f, 10f)),
+                    Wrapper(Vector2F(-2f, 10f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(0f, 10f)),
+                    Wrapper(Vector2F(0f, 10f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2f, 10f)),
+                    Wrapper(Vector2F(2f, 10f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-2f, 8f)),
+                    Wrapper(Vector2F(-2f, 8f))
+                ),
+                Arguments.of(
+                    heptagon,
                     Wrapper(Vector2F(0f, 8f)),
                     Wrapper(Vector2F(0f, 8f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2f, 8f)),
+                    Wrapper(Vector2F(2f, 8f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(-2f, 6f)),
+                    Wrapper(Vector2F(-2f, 6f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(0f, 6f)),
+                    Wrapper(Vector2F(0f, 6f))
+                ),
+                Arguments.of(
+                    heptagon,
+                    Wrapper(Vector2F(2f, 6f)),
+                    Wrapper(Vector2F(2f, 6f))
                 ),
             )
             val digonArgs = listOf(
