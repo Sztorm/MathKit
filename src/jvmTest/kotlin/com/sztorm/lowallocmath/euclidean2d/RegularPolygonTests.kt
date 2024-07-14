@@ -234,6 +234,15 @@ class RegularPolygonTests {
     }
 
     @ParameterizedTest
+    @MethodSource("intersectsRayArgs")
+    fun intersectsRayReturnsCorrectValue(polygon: RegularPolygon, ray: Ray, expected: Boolean) =
+        assertImmutabilityOf(polygon) {
+            assertImmutabilityOf(ray) {
+                assertEquals(expected, polygon.intersects(ray))
+            }
+        }
+
+    @ParameterizedTest
     @MethodSource("containsVector2FArgs")
     fun containsReturnsCorrectValue(
         polygon: RegularPolygon, point: Wrapper<Vector2F>, expected: Boolean
@@ -1911,6 +1920,12 @@ class RegularPolygonTests {
                 mutableRegularPolygonArgs,
                 defaultRegularPolygonArgs
             ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRayArgs(): List<Arguments> = RayTests.intersectsRegularPolygonArgs().map {
+            val args = it.get()
+            Arguments.of(args[1], args[0], args[2])
         }
 
         @JvmStatic

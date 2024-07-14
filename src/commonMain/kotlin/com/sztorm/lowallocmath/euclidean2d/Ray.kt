@@ -285,6 +285,117 @@ interface Ray : Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    fun intersects(polygon: RegularPolygon): Boolean {
+        val (polyCX: Float, polyCY: Float) = polygon.center
+        val (polyOR: Float, polyOI: Float) = polygon.orientation
+        val sideCount: Int = polygon.sideCount
+        val sideLength: Float = polygon.sideLength
+        val halfSideLength: Float = sideLength * 0.5f
+        val (rayCX: Float, rayCY: Float) = origin
+        val (rayDirX: Float, rayDirY: Float) = direction
+        val rayCPolyCX: Float = polyCX - rayCX
+        val rayCPolyCY: Float = polyCY - rayCY
+        val oRayCX: Float = -rayCPolyCX * polyOR - rayCPolyCY * polyOI
+        val oRayCY: Float = rayCPolyCX * polyOI - rayCPolyCY * polyOR
+        val oRayDirX: Float = rayDirX * polyOR + rayDirY * polyOI
+        val oRayDirY: Float = rayDirY * polyOR - rayDirX * polyOI
+
+        if (sideCount == 2) {
+            val aoX: Float = oRayCX - halfSideLength
+            val dirCrossAB: Float = sideLength * oRayDirY
+            val areParallel: Boolean = dirCrossAB.absoluteValue < 0.00001f
+
+            if (areParallel) {
+                val boX: Float = oRayCX + halfSideLength
+                val factor: Float = oRayCY * oRayDirY
+                val dirDotAO: Float = aoX * oRayDirX + factor
+                val dirDotBO: Float = boX * oRayDirX + factor
+                val dirCrossAO: Float = oRayDirX * oRayCY - oRayDirY * aoX
+
+                return (dirCrossAO.absoluteValue < 0.00001f) and ((dirDotAO <= 0f) or (dirDotBO <= 0f))
+            }
+            val detABReciprocal: Float = 1f / dirCrossAB
+            val t1: Float = -oRayCY * sideLength * detABReciprocal
+
+            if (t1 >= 0f) {
+                val t2: Float = (oRayCY * oRayDirX - aoX * oRayDirY) * detABReciprocal
+
+                return (t2 >= 0f) and (t2 <= 1f)
+            }
+            return false
+        }
+        val fullAngle = (2.0 * PI).toFloat()
+        val exteriorAngle: Float = fullAngle / sideCount
+        val halfExteriorAngle: Float = exteriorAngle * 0.5f
+        val inradius: Float = halfSideLength / tan(halfExteriorAngle)
+        val minusORayCDotORayDir: Float = -oRayCX * oRayDirX - oRayCY * oRayDirY
+        val closestPointOnORayX: Float
+        val closestPointOnORayY: Float
+
+        if (minusORayCDotORayDir <= 0f) {
+            closestPointOnORayX = oRayCX
+            closestPointOnORayY = oRayCY
+        } else {
+            closestPointOnORayX = oRayCX + oRayDirX * minusORayCDotORayDir
+            closestPointOnORayY = oRayCY + oRayDirY * minusORayCDotORayDir
+        }
+        val closestPointOnORayLength: Float = sqrt(
+            closestPointOnORayX * closestPointOnORayX + closestPointOnORayY * closestPointOnORayY
+        )
+        if (closestPointOnORayLength <= inradius) {
+            return true
+        }
+        val sinHalfExteriorAngle: Float = sin(halfExteriorAngle)
+        val circumradius: Float = halfSideLength / sinHalfExteriorAngle
+
+        if (closestPointOnORayLength > circumradius) {
+            return false
+        }
+        val rightAngle = (PI * 0.5).toFloat()
+        val evenSidedFactor = ((sideCount + 1) and 1).toFloat()
+        val evenSidedHalfExteriorAngle: Float = evenSidedFactor * halfExteriorAngle
+        val cosP1: Float = cos(evenSidedHalfExteriorAngle)
+        val sinP1: Float = evenSidedFactor * sinHalfExteriorAngle
+        // p1 = ComplexF.ONE *
+        //      ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
+        //      ComplexF.fromAngle(AngleF.fromDegrees(evenSidedHalfExteriorAngle)) *
+        //      ComplexF(closestPointOnORayX, closestPointOnORayY)
+        val p1X: Float = closestPointOnORayY * cosP1 + closestPointOnORayX * sinP1
+        val p1Y: Float = closestPointOnORayY * sinP1 - closestPointOnORayX * cosP1
+        val p1Angle: Float = atan2(p1Y, p1X) + 0.001f
+        val p1AnglePositive: Float = p1Angle + fullAngle
+        val index = (p1AnglePositive / exteriorAngle).toInt()
+        val angleA: Float = evenSidedHalfExteriorAngle - exteriorAngle * index - rightAngle
+        val angleB: Float = angleA - exteriorAngle
+        val cosA: Float = cos(angleA)
+        val sinA: Float = sin(angleA)
+        val cosB: Float = cos(angleB)
+        val sinB: Float = sin(angleB)
+        val aX: Float = cosA * circumradius
+        val aY: Float = -sinA * circumradius
+        val bX: Float = cosB * circumradius
+        val bY: Float = -sinB * circumradius
+        val aoX: Float = oRayCX - aX
+        val aoY: Float = oRayCY - aY
+        val abX: Float = bX - aX
+        val abY: Float = bY - aY
+        val dirCrossAB: Float = abY * oRayDirX - abX * oRayDirY
+        val areParallel: Boolean = dirCrossAB.absoluteValue < 0.00001f
+
+        if (areParallel) {
+            return false
+        }
+        val detABReciprocal: Float = 1f / dirCrossAB
+        val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+        if (t1 >= 0f) {
+            val t2: Float = (aoY * oRayDirX - aoX * oRayDirY) * detABReciprocal
+
+            return (t2 >= 0f) and (t2 <= 1f)
+        }
+        return false
+    }
+
     fun intersects(triangle: RegularTriangle): Boolean {
         val (oX: Float, oY: Float) = origin
         val (dirX: Float, dirY: Float) = direction

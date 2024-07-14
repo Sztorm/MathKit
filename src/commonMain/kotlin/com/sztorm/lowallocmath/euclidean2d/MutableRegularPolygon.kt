@@ -835,6 +835,107 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         return point
     }
 
+    override fun intersects(ray: Ray): Boolean {
+        val (polyCX: Float, polyCY: Float) = _center
+        val (polyOR: Float, polyOI: Float) = _orientation
+        val sideCount: Int = _points.size
+        val (rayCX: Float, rayCY: Float) = ray.origin
+        val (rayDirX: Float, rayDirY: Float) = ray.direction
+
+        if (sideCount == 2) {
+            val (aX: Float, aY: Float) = _points[0]
+            val (bX: Float, bY: Float) = _points[1]
+            val aoX: Float = rayCX - aX
+            val aoY: Float = rayCY - aY
+            val abX: Float = bX - aX
+            val abY: Float = bY - aY
+            val dirCrossAB: Float = abY * rayDirX - abX * rayDirY
+            val areParallel: Boolean = dirCrossAB.absoluteValue < 0.00001f
+
+            if (areParallel) {
+                val boX: Float = rayCX - bX
+                val boY: Float = rayCY - bY
+                val dirDotAO: Float = aoX * rayDirX + aoY * rayDirY
+                val dirDotBO: Float = boX * rayDirX + boY * rayDirY
+                val dirCrossAO: Float = rayDirX * aoY - rayDirY * aoX
+
+                return (dirCrossAO.absoluteValue < 0.00001f) and ((dirDotAO <= 0f) or (dirDotBO <= 0f))
+            }
+            val detABReciprocal: Float = 1f / dirCrossAB
+            val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+            if (t1 >= 0f) {
+                val t2: Float = (aoY * rayDirX - aoX * rayDirY) * detABReciprocal
+
+                return (t2 >= 0f) and (t2 <= 1f)
+            }
+            return false
+        }
+        val fullAngle = (2.0 * PI).toFloat()
+        val exteriorAngle: Float = fullAngle / sideCount
+        val halfExteriorAngle: Float = exteriorAngle * 0.5f
+        val rayCPolyCX: Float = polyCX - rayCX
+        val rayCPolyCY: Float = polyCY - rayCY
+        val rayCPolyCDotRayDir: Float = rayCPolyCX * rayDirX + rayCPolyCY * rayDirY
+        val closestPointOnRayX: Float
+        val closestPointOnRayY: Float
+
+        if (rayCPolyCDotRayDir <= 0f) {
+            closestPointOnRayX = rayCX
+            closestPointOnRayY = rayCY
+        } else {
+            closestPointOnRayX = rayCX + rayDirX * rayCPolyCDotRayDir
+            closestPointOnRayY = rayCY + rayDirY * rayCPolyCDotRayDir
+        }
+        val polyCXcpX: Float = closestPointOnRayX - polyCX
+        val polyCYcpY: Float = closestPointOnRayY - polyCY
+        val polyCDistToClosestPointOnRay: Float =
+            sqrt(polyCXcpX * polyCXcpX + polyCYcpY * polyCYcpY)
+
+        if (polyCDistToClosestPointOnRay <= _inradius) {
+            return true
+        }
+        if (polyCDistToClosestPointOnRay > _circumradius) {
+            return false
+        }
+        val evenSidedFactor = ((sideCount + 1) and 1).toFloat()
+        val evenSidedHalfExteriorAngle: Float = evenSidedFactor * halfExteriorAngle
+        val cosP1: Float = cos(evenSidedHalfExteriorAngle)
+        val sinP1: Float = sin(evenSidedHalfExteriorAngle)
+        // p1 = polygon.orientation.conjugate *
+        //      ComplexF.fromAngle(AngleF.fromDegrees(-90f)) *
+        //      ComplexF.fromAngle(AngleF.fromDegrees(evenSidedHalfExteriorAngle)) *
+        //      ComplexF(polyCXcpX, polyCYcpY)
+        val p1FactorX: Float = polyOR * sinP1 - polyOI * cosP1
+        val p1FactorY: Float = -polyOR * cosP1 - polyOI * sinP1
+        val p1X: Float = p1FactorX * polyCXcpX - p1FactorY * polyCYcpY
+        val p1Y: Float = p1FactorY * polyCXcpX + p1FactorX * polyCYcpY
+        val p1Angle: Float = atan2(p1Y, p1X) + 0.001f
+        val p1AnglePositive: Float = p1Angle + fullAngle
+        val index = (p1AnglePositive / exteriorAngle).toInt()
+        val (aX: Float, aY: Float) = _points[index % sideCount]
+        val (bX: Float, bY: Float) = _points[(index + 1) % sideCount]
+        val aoX: Float = rayCX - aX
+        val aoY: Float = rayCY - aY
+        val abX: Float = bX - aX
+        val abY: Float = bY - aY
+        val dirCrossAB: Float = abY * rayDirX - abX * rayDirY
+        val areParallel: Boolean = dirCrossAB.absoluteValue < 0.00001f
+
+        if (areParallel) {
+            return false
+        }
+        val detABReciprocal: Float = 1f / dirCrossAB
+        val t1: Float = (aoY * abX - aoX * abY) * detABReciprocal
+
+        if (t1 >= 0f) {
+            val t2: Float = (aoY * rayDirX - aoX * rayDirY) * detABReciprocal
+
+            return (t2 >= 0f) and (t2 <= 1f)
+        }
+        return false
+    }
+
     override operator fun contains(point: Vector2F): Boolean {
         val sideCount: Int = _points.size
         val halfSideLength: Float = _sideLength * 0.5f

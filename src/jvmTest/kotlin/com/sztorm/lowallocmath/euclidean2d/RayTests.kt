@@ -4,6 +4,7 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
+import com.sztorm.lowallocmath.euclidean2d.RegularPolygonTests.Companion.mapRegularPolygonsToDefaultRegularPolygons
 import com.sztorm.lowallocmath.euclidean2d.RegularTriangleTests.Companion.mapRegularTrianglesToDefaultRegularTriangles
 import com.sztorm.lowallocmath.euclidean2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
@@ -141,6 +142,16 @@ class RayTests {
                 assertEquals(expected, ray.intersects(rectangle))
             }
         }
+
+    @ParameterizedTest
+    @MethodSource("intersectsRegularPolygonArgs")
+    fun intersectsRegularPolygonReturnsCorrectValue(
+        ray: Ray, polygon: RegularPolygon, expected: Boolean
+    ) = assertImmutabilityOf(ray) {
+        assertImmutabilityOf(polygon) {
+            assertEquals(expected, ray.intersects(polygon))
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("intersectsRegularTriangleArgs")
@@ -1475,6 +1486,842 @@ class RayTests {
                 defaultRayMutableRectangleArgs,
                 mutableRayDefaultRectangleArgs,
                 defaultRayDefaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun intersectsRegularPolygonArgs(): List<Arguments> {
+            fun createMutableRayMutableRegularPolygonArgs(): List<Arguments> {
+                val heptagon = MutableRegularPolygon(
+                    Vector2F(0f, 8f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+                val decagon = MutableRegularPolygon(
+                    Vector2F(-14f, 1f),
+                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                )
+                val digonArgs = intersectsLineSegmentArgs().let { it.take(it.size / 4) }
+                    .map {
+                        val args = it.get()
+                        val ray = args[0] as Ray
+                        val lineSegment = args[1] as LineSegment
+
+                        Arguments.of(
+                            MutableRay(ray.origin, ray.direction),
+                            MutableRegularPolygon(
+                                lineSegment.center,
+                                lineSegment.orientation,
+                                lineSegment.length,
+                                sideCount = 2
+                            ),
+                            args[2]
+                        )
+                    }
+                val regularTriangleArgs = intersectsRegularTriangleArgs()
+                    .let { it.take(it.size / 4) }
+                    .map {
+                        val args = it.get()
+                        val ray = args[0] as Ray
+                        val triangle = args[1] as RegularTriangle
+
+                        Arguments.of(
+                            MutableRay(ray.origin, ray.direction),
+                            MutableRegularPolygon(
+                                triangle.center,
+                                triangle.orientation,
+                                triangle.sideLength,
+                                sideCount = 3
+                            ),
+                            args[2]
+                        )
+                    }
+                val squareArgs = intersectsSquareArgs()
+                    .let { it.take(it.size / 4) }
+                    .map {
+                        val args = it.get()
+                        val ray = args[0] as Ray
+                        val square = args[1] as Square
+
+                        Arguments.of(
+                            MutableRay(ray.origin, ray.direction),
+                            MutableRegularPolygon(
+                                square.center,
+                                square.orientation,
+                                square.sideLength,
+                                sideCount = 4
+                            ),
+                            args[2]
+                        )
+                    }
+                val heptagonArgs = listOf(
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-4f, 11.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-8.53f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-4f, 11.7f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-8.53f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1.3f, 12f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.59f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1.2f, 12f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.59f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(3.85f, 9.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-111.45f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(3.8f, 9.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-111.45f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(3f, 5.65f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-162.88f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(3f, 5.68f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-162.88f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-0.2f, 4.35f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(145.61f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-0.2f, 4.38f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(145.74f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3f, 5.5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(94.40f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2.9f, 5.5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(94.40f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.8f, 8.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(43.15f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.6f, 8.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(43.15f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(4f, 10.6f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(171.47f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(4f, 10.5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(171.47f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(4f, 7.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(120.41f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(3.9f, 7.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(120.41f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(2.2f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(68.55f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(2.15f, 5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(68.55f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 4.11f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(17.12f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-2f, 4.14f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(17.12f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.4f, 6.54f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-34.39f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.4f, 6.56f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-34.26f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.3f, 9.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-85.6f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.2f, 9.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-85.6f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-0.6f, 11.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-136.85f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-0.4f, 11.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-136.85f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(14.3f, -4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(129.43f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(14.3f, -4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(130.36f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.2f, 8.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-87.88f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-3.2f, 8.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-82.61f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(1f, 8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(59.04f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-1f, 11.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-174.29f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(0f, 6f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-63.43f))
+                                .toVector2F()
+                        ),
+                        heptagon,
+                        true
+                    ),
+                )
+                val decagonArgs = listOf(
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-15.6f, 4.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-15.6f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-13.4f, 4.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-36.03f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-13.5f, 4.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-36.03f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.5f, 3.35f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-72.26f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.5f, 3.25f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-72.26f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-10.6f, 1.35f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-108.08f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-10.65f, 1.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-108.08f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.2f, -0.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-143.62f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.3f, -0.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-143.62f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-12.2f, -2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-12.2f, -2.05f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-14.3f, -2.6f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(144.09f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-14.1f, -2.7f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(144.09f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.5f, -1.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(107.82f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.4f, -1.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(107.82f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-17.4f, 0.7f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(72.26f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-17.3f, 0.7f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(72.26f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.85f, 2.75f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(35.94f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.8f, 2.75f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(35.94f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-12.4f, 4.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-12.4f, 4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.2f, 2.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(143.97f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.3f, 2.8f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(143.97f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-10.7f, 0.85f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(107.74f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-10.7f, 0.75f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(107.74f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.4f, -1.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(71.92f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-11.45f, -1.05f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(71.92f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-13.1f, -2.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(36.38f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-13.2f, -2.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(36.38f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-15.4f, -2.1f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-15.4f, -2.05f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-17.2f, -0.5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-35.91f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-17f, -0.6f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-35.91f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-17.4f, 1.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-72.18f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-17.3f, 1.4f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-72.18f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.6f, 3.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-107.74f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.5f, 3.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-107.74f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-14.85f, 4.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-144.06f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-14.8f, 4.2f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-144.06f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-20f, -10f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(46.22f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-20f, -10f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(46.77f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-20f, 18f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-80.96f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        false
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-20f, 18f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-80.71f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-13f, 4.05f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(53.13f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-13.1f, 0.35f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-37.16f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                    Arguments.of(
+                        MutableRay(
+                            origin = Vector2F(-16.0f, 1.5f),
+                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-131.63f))
+                                .toVector2F()
+                        ),
+                        decagon,
+                        true
+                    ),
+                )
+
+                return listOf(
+                    digonArgs,
+                    regularTriangleArgs,
+                    squareArgs,
+                    heptagonArgs,
+                    decagonArgs
+                ).flatten()
+            }
+
+            val mutableRayMutableRegularPolygonArgs = createMutableRayMutableRegularPolygonArgs()
+            val defaultRayMutableRegularPolygonArgs = mutableRayMutableRegularPolygonArgs
+                .mapRaysToDefaultRays()
+            val mutableRayDefaultRegularPolygonArgs = mutableRayMutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+            val defaultRayDefaultRegularPolygonArgs = defaultRayMutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRayMutableRegularPolygonArgs,
+                defaultRayMutableRegularPolygonArgs,
+                mutableRayDefaultRegularPolygonArgs,
+                defaultRayDefaultRegularPolygonArgs
             ).flatten()
         }
 
