@@ -129,6 +129,20 @@ value class ComplexF internal constructor(
         else defaultValue
     }
 
+    /**
+     * Returns a normalized copy of this complex number if this complex number [magnitude] is large
+     * enough to safely normalize. Else returns the result of calling the [defaultValue] function.
+     *
+     * @param [defaultValue] The function whose result is returned if the complex number could not
+     * be safely normalized.
+     */
+    inline fun normalizedOrElse(defaultValue: () -> ComplexF): ComplexF {
+        val magnitude: Float = this.magnitude
+
+        return if (magnitude > 0.00001f) this / magnitude
+        else defaultValue()
+    }
+
     /** Converts this [ComplexF] value to [Vector2F]. **/
     fun toVector2F() = Vector2F(data)
 

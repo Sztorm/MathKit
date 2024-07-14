@@ -107,6 +107,20 @@ value class Vector2F internal constructor(internal val data: Long) {
         else defaultValue
     }
 
+    /**
+     * Returns a normalized copy of this vector if this vector [magnitude] is large enough to
+     * safely normalize. Else returns the result of calling the [defaultValue] function.
+     *
+     * @param [defaultValue] The function whose result is returned if the vector could not be
+     * safely normalized.
+     */
+    inline fun normalizedOrElse(defaultValue: () -> Vector2F): Vector2F {
+        val length: Float = this.length
+
+        return if (length > 0.00001f) this / length
+        else defaultValue()
+    }
+
     /** Returns the squared distance from this vector to the [other]. **/
     inline fun squaredDistanceTo(other: Vector2F): Float {
         val dX = other.x - this.x

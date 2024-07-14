@@ -48,10 +48,16 @@ class Vector2FTests {
         assertApproximation(expected.value, vector.value.normalized)
 
     @ParameterizedTest
-    @MethodSource("normalizedOrElseArgs")
+    @MethodSource("normalizedOrElseVector2FArgs")
     fun normalizedOrElseReturnsCorrectValue(
         vector: Wrapper<Vector2F>, defaultValue: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
     ) = assertApproximation(expected.value, vector.value.normalizedOrElse(defaultValue.value))
+
+    @ParameterizedTest
+    @MethodSource("normalizedOrElseFunctionArgs")
+    fun normalizedOrElseReturnsCorrectValue(
+        vector: Wrapper<Vector2F>, defaultValue: () -> Vector2F, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, vector.value.normalizedOrElse(defaultValue))
 
     @ParameterizedTest
     @MethodSource("squaredDistanceToArgs")
@@ -317,7 +323,7 @@ class Vector2FTests {
         )
 
         @JvmStatic
-        fun normalizedOrElseArgs(): List<Arguments> = listOf(
+        fun normalizedOrElseVector2FArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F(3f, 4f)),
                 Wrapper(Vector2F(1f, 0f)),
@@ -339,6 +345,13 @@ class Vector2FTests {
                 Wrapper(Vector2F(0f, 1f))
             ),
         )
+
+        @JvmStatic
+        fun normalizedOrElseFunctionArgs(): List<Arguments> = normalizedOrElseVector2FArgs().map {
+            val args = it.get()
+            val vector = (args[1] as Wrapper<*>).value as Vector2F
+            Arguments.of(args[0], { vector }, args[2])
+        }
 
         @JvmStatic
         fun squaredDistanceToArgs(): List<Arguments> = listOf(

@@ -56,10 +56,16 @@ class ComplexFTests {
         assertApproximation(expected.value, complex.value.normalized)
 
     @ParameterizedTest
-    @MethodSource("normalizedOrElseArgs")
+    @MethodSource("normalizedOrElseComplexFArgs")
     fun normalizedOrElseReturnsCorrectValue(
         complex: Wrapper<ComplexF>, defaultValue: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, complex.value.normalizedOrElse(defaultValue.value))
+
+    @ParameterizedTest
+    @MethodSource("normalizedOrElseFunctionArgs")
+    fun normalizedOrElseReturnsCorrectValue(
+        complex: Wrapper<ComplexF>, defaultValue: () -> ComplexF, expected: Wrapper<ComplexF>
+    ) = assertApproximation(expected.value, complex.value.normalizedOrElse(defaultValue))
 
     @ParameterizedTest
     @MethodSource("toVector2FArgs")
@@ -417,7 +423,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun normalizedOrElseArgs(): List<Arguments> = listOf(
+        fun normalizedOrElseComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(3f, 4f)),
                 Wrapper(ComplexF(1f, 0f)),
@@ -439,6 +445,13 @@ class ComplexFTests {
                 Wrapper(ComplexF(0f, 1f))
             ),
         )
+
+        @JvmStatic
+        fun normalizedOrElseFunctionArgs(): List<Arguments> = normalizedOrElseComplexFArgs().map {
+            val args = it.get()
+            val complex = (args[1] as Wrapper<*>).value as ComplexF
+            Arguments.of(args[0], { complex }, args[2])
+        }
 
         @JvmStatic
         fun toVector2FArgs(): List<Arguments> = listOf(
