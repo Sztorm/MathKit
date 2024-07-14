@@ -782,20 +782,19 @@ class CircleTests {
 
         @JvmStatic
         fun intersectsRayArgs(): List<Arguments> {
+            val circle = MutableCircle(
+                center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
+            )
             val mutableCircleMutableRayArgs = listOf(
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-8.1f, 0f), direction = Vector2F(0f, 1f)
                     ),
                     false
                 ),
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-8.1f, 0f),
                         direction = Vector2F(0.17365f, 0.98481f)
@@ -803,27 +802,21 @@ class CircleTests {
                     true
                 ),
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-4f, 7.9f), direction = Vector2F(1f, 0f)
                     ),
                     true
                 ),
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-4f, 8.1f), direction = Vector2F(1f, 0f)
                     ),
                     false
                 ),
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-4f, 7.9f),
                         direction = Vector2F(-0.70711f, -0.70711f)
@@ -831,9 +824,7 @@ class CircleTests {
                     true
                 ),
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-4f, -2f),
                         direction = Vector2F(0.76604f, 0.64279f)
@@ -841,9 +832,7 @@ class CircleTests {
                     false
                 ),
                 Arguments.of(
-                    MutableCircle(
-                        center = Vector2F(-4f, 4f), orientation = ComplexF.ONE, radius = 4f
-                    ),
+                    circle,
                     MutableRay(
                         origin = Vector2F(-4f, -2f),
                         direction = Vector2F(0.64279f, 0.76604f)

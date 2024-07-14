@@ -1121,26 +1121,22 @@ class AnnulusTests {
 
         @JvmStatic
         fun intersectsRayArgs(): List<Arguments> {
+            val annulus = MutableAnnulus(
+                center = Vector2F(-4f, 4f),
+                orientation = ComplexF.ONE,
+                outerRadius = 4f,
+                innerRadius = 2f
+            )
             val mutableAnnulusMutableRayArgs = listOf(
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-8.1f, 0f), direction = Vector2F(0f, 1f)
                     ),
                     false
                 ),
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-8.1f, 0f),
                         direction = Vector2F(0.17365f, 0.98481f)
@@ -1148,36 +1144,21 @@ class AnnulusTests {
                     true
                 ),
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-4f, 7.9f), direction = Vector2F(1f, 0f)
                     ),
                     true
                 ),
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-4f, 8.1f), direction = Vector2F(1f, 0f)
                     ),
                     false
                 ),
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-4f, 7.9f),
                         direction = Vector2F(-0.70711f, -0.70711f)
@@ -1185,12 +1166,7 @@ class AnnulusTests {
                     true
                 ),
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-4f, -2f),
                         direction = Vector2F(0.76604f, 0.64279f)
@@ -1198,12 +1174,7 @@ class AnnulusTests {
                     false
                 ),
                 Arguments.of(
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 4f),
-                        orientation = ComplexF.ONE,
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
+                    annulus,
                     MutableRay(
                         origin = Vector2F(-4f, -2f),
                         direction = Vector2F(0.64279f, 0.76604f)

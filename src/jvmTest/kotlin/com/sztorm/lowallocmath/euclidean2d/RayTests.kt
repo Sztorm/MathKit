@@ -1173,18 +1173,19 @@ class RayTests {
 
         @JvmStatic
         fun intersectsRectangleArgs(): List<Arguments> {
+            val rectangle = MutableRectangle(
+                center = Vector2F(-2f, 4f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                width = 4f,
+                height = 2f
+            )
             val mutableRayMutableRectangleArgs = listOf(
                 Arguments.of(
                     MutableRay(
                         origin = Vector2F(2f, 4f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1192,12 +1193,7 @@ class RayTests {
                         origin = Vector2F(2f, 2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1205,12 +1201,7 @@ class RayTests {
                         origin = Vector2F(2f, -2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1218,12 +1209,7 @@ class RayTests {
                         origin = Vector2F(0f, -2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1231,12 +1217,7 @@ class RayTests {
                         origin = Vector2F(-4f, 0f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1244,12 +1225,7 @@ class RayTests {
                         origin = Vector2F(-5f, 0f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1257,12 +1233,7 @@ class RayTests {
                         origin = Vector2F(-6f, 1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1270,12 +1241,7 @@ class RayTests {
                         origin = Vector2F(-6f, 2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1283,12 +1249,7 @@ class RayTests {
                         origin = Vector2F(-2f, 8f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1296,12 +1257,7 @@ class RayTests {
                         origin = Vector2F(-4f, 8f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1309,12 +1265,7 @@ class RayTests {
                         origin = Vector2F(-6f, 6f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1322,12 +1273,7 @@ class RayTests {
                         origin = Vector2F(-6f, 4f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1335,12 +1281,7 @@ class RayTests {
                         origin = Vector2F(2f, 6f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1348,12 +1289,7 @@ class RayTests {
                         origin = Vector2F(2f, 7f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1361,12 +1297,7 @@ class RayTests {
                         origin = Vector2F(1f, 8f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1374,12 +1305,7 @@ class RayTests {
                         origin = Vector2F(2f, 10f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1387,12 +1313,7 @@ class RayTests {
                         origin = Vector2F(11f, 8f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-172f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1400,12 +1321,7 @@ class RayTests {
                         origin = Vector2F(11f, 8f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-170f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1413,12 +1329,7 @@ class RayTests {
                         origin = Vector2F(-4f, -7f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(70f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -1426,12 +1337,7 @@ class RayTests {
                         origin = Vector2F(-4f, -7f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(72f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1439,12 +1345,7 @@ class RayTests {
                         origin = Vector2F(-1.5f, 3.5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(86f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1452,12 +1353,7 @@ class RayTests {
                         origin = Vector2F(-2.75f, 4f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-173f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -1465,12 +1361,7 @@ class RayTests {
                         origin = Vector2F(-2.25f, 3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-66f)).toVector2F()
                     ),
-                    MutableRectangle(
-                        center = Vector2F(-2f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 4f,
-                        height = 2f
-                    ),
+                    rectangle,
                     true
                 ),
             )
@@ -2327,6 +2218,11 @@ class RayTests {
 
         @JvmStatic
         fun intersectsRegularTriangleArgs(): List<Arguments> {
+            val triangle = MutableRegularTriangle(
+                center = Vector2F(5f, -7f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
+                sideLength = 3f
+            )
             val mutableRayMutableRegularTriangleArgs = listOf(
                 Arguments.of(
                     MutableRay(
@@ -2334,11 +2230,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-100.3f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2347,11 +2239,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-100.3f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2360,11 +2248,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(19.98f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2373,11 +2257,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(19.98f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2386,11 +2266,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-40.31f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2399,11 +2275,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-40.31f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2412,11 +2284,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(79.7f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2425,11 +2293,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(79.7f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2438,11 +2302,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-160.02f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2451,11 +2311,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-160.02f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2464,11 +2320,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(139.69f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2477,11 +2329,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(139.69f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2490,11 +2338,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-11.31f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2503,11 +2347,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-12.41f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2516,11 +2356,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135.32f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -2529,11 +2365,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-134.68f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2542,11 +2374,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(33.69f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2555,11 +2383,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-23.20f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -2568,11 +2392,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-126.87f))
                             .toVector2F()
                     ),
-                    MutableRegularTriangle(
-                        center = Vector2F(5f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-40f)),
-                        sideLength = 3f
-                    ),
+                    triangle,
                     true
                 ),
             )
@@ -2593,6 +2413,13 @@ class RayTests {
 
         @JvmStatic
         fun intersectsRoundedRectangleArgs(): List<Arguments> {
+            val rectangle = MutableRoundedRectangle(
+                center = Vector2F(-3f, -4f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                width = 8f,
+                height = 4f,
+                cornerRadius = 1f
+            )
             val mutableRayMutableRoundedRectangleArgs = listOf(
                 Arguments.of(
                     MutableRay(
@@ -2600,13 +2427,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(29.54f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2615,13 +2436,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(29.54f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2630,13 +2445,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(29.74f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2645,13 +2454,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(29.74f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2660,13 +2463,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(119.78f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2675,13 +2472,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(120.26f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2690,13 +2481,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(120.49f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2705,13 +2490,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(120.26f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2720,13 +2499,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-14.04f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2735,13 +2508,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-14.93f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2750,13 +2517,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(80.33f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2765,13 +2526,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(79.92f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2780,13 +2535,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(162.12f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2795,13 +2544,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(161.29f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2810,13 +2553,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-109.18f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2825,13 +2562,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-109.18f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2840,13 +2571,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.46f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2855,13 +2580,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.46f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2870,13 +2589,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.26f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2885,13 +2598,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-150.26f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2900,13 +2607,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-60.22f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2915,13 +2616,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.74f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2930,13 +2625,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.51f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2945,13 +2634,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-59.74f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2960,13 +2643,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(165.96f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -2975,13 +2652,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(165.07f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -2990,13 +2661,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-99.67f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -3005,13 +2670,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-100.08f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -3020,13 +2679,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-17.88f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -3035,13 +2688,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-18.71f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -3050,13 +2697,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(70.82f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     false
                 ),
                 Arguments.of(
@@ -3065,13 +2706,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(70.82f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -3080,13 +2715,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(72.12f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -3095,13 +2724,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-116.57f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -3110,13 +2733,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-22.99f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
                 Arguments.of(
@@ -3125,13 +2742,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-50.91f))
                             .toVector2F()
                     ),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
+                    rectangle,
                     true
                 ),
             )
@@ -3152,17 +2763,18 @@ class RayTests {
 
         @JvmStatic
         fun intersectsSquareArgs(): List<Arguments> {
+            val square = MutableSquare(
+                center = Vector2F(8f, -2f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
+                sideLength = 3f
+            )
             val mutableRayMutableSquareArgs = listOf(
                 Arguments.of(
                     MutableRay(
                         origin = Vector2F(7.5f, -5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3170,11 +2782,7 @@ class RayTests {
                         origin = Vector2F(7f, -5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3182,11 +2790,7 @@ class RayTests {
                         origin = Vector2F(5f, -3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3194,11 +2798,7 @@ class RayTests {
                         origin = Vector2F(4.5f, -3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3206,11 +2806,7 @@ class RayTests {
                         origin = Vector2F(8.5f, -5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3218,11 +2814,7 @@ class RayTests {
                         origin = Vector2F(9f, -5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3230,11 +2822,7 @@ class RayTests {
                         origin = Vector2F(11f, -3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3242,11 +2830,7 @@ class RayTests {
                         origin = Vector2F(11.5f, -3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3254,11 +2838,7 @@ class RayTests {
                         origin = Vector2F(13f, 0.5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3266,11 +2846,7 @@ class RayTests {
                         origin = Vector2F(12.5f, 0.5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3278,11 +2854,7 @@ class RayTests {
                         origin = Vector2F(10f, 2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3290,11 +2862,7 @@ class RayTests {
                         origin = Vector2F(9.5f, 2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3302,11 +2870,7 @@ class RayTests {
                         origin = Vector2F(4.5f, -1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3314,11 +2878,7 @@ class RayTests {
                         origin = Vector2F(5f, -1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3326,11 +2886,7 @@ class RayTests {
                         origin = Vector2F(7f, 1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3338,11 +2894,7 @@ class RayTests {
                         origin = Vector2F(7.5f, 1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3350,11 +2902,7 @@ class RayTests {
                         origin = Vector2F(2f, -4f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-1.5f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3362,11 +2910,7 @@ class RayTests {
                         origin = Vector2F(2f, -4f),
                         direction = ComplexF.ONE.toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3374,11 +2918,7 @@ class RayTests {
                         origin = Vector2F(14f, -5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(139f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     false
                 ),
                 Arguments.of(
@@ -3386,11 +2926,7 @@ class RayTests {
                         origin = Vector2F(14f, -5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(141f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3398,11 +2934,7 @@ class RayTests {
                         origin = Vector2F(8.5f, -1.5f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(6f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3410,11 +2942,7 @@ class RayTests {
                         origin = Vector2F(7f, -2f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(117f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
                 Arguments.of(
@@ -3422,11 +2950,7 @@ class RayTests {
                         origin = Vector2F(8f, -3f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-135f)).toVector2F()
                     ),
-                    MutableSquare(
-                        center = Vector2F(8f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-135f)),
-                        sideLength = 3f
-                    ),
+                    square,
                     true
                 ),
             )
@@ -3447,6 +2971,9 @@ class RayTests {
 
         @JvmStatic
         fun intersectsTriangleArgs(): List<Arguments> {
+            val triangle = MutableTriangle(
+                Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+            )
             val mutableRayMutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableRay(
@@ -3454,9 +2981,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(108.43f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3465,9 +2990,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(108.43f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3475,9 +2998,7 @@ class RayTests {
                         origin = Vector2F(-8f, 1.9f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(0f)).toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3485,9 +3006,7 @@ class RayTests {
                         origin = Vector2F(-8f, 2.1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(0f)).toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3496,9 +3015,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(30.96f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3507,9 +3024,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(30.96f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3518,9 +3033,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-71.57f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3529,9 +3042,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-71.57f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3539,9 +3050,7 @@ class RayTests {
                         origin = Vector2F(4f, 1.9f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(180f)).toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3549,9 +3058,7 @@ class RayTests {
                         origin = Vector2F(4f, 2.1f),
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(180f)).toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3560,9 +3067,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-149.04f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3571,9 +3076,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-149.04f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3582,9 +3085,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(132.88f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3593,9 +3094,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(136.97f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3604,9 +3103,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(21.8f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     false
                 ),
                 Arguments.of(
@@ -3615,9 +3112,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(24.23f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3626,9 +3121,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(28.3f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3637,9 +3130,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(149.04f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
                 Arguments.of(
@@ -3648,9 +3139,7 @@ class RayTests {
                         direction = ComplexF.fromAngle(AngleF.fromDegrees(-102.53f))
                             .toVector2F()
                     ),
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
+                    triangle,
                     true
                 ),
             )
