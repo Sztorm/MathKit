@@ -109,6 +109,11 @@ class Vector2FTests {
         assertApproximation(expected, a.value dot b.value)
 
     @ParameterizedTest
+    @MethodSource("perpDotArgs")
+    fun perpDotReturnsCorrectValue(a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Float) =
+        assertApproximation(expected, a.value perpDot b.value)
+
+    @ParameterizedTest
     @MethodSource("toVector2IArgs")
     fun toVector2IReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<Vector2I>) =
         assertEquals(expected.value, vector.value.toVector2I())
@@ -456,6 +461,13 @@ class Vector2FTests {
         fun dotArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F(0f, 4f)), 16f),
             Arguments.of(Wrapper(Vector2F(1f, -2f)), Wrapper(Vector2F(-4f, 0.4f)), -4.8f),
+            Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F.ZERO), 0f),
+        )
+
+        @JvmStatic
+        fun perpDotArgs(): List<Arguments> = listOf(
+            Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F(0f, 4f)), 12f),
+            Arguments.of(Wrapper(Vector2F(1f, -2f)), Wrapper(Vector2F(-4f, 0.4f)), -7.6f),
             Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F.ZERO), 0f),
         )
 

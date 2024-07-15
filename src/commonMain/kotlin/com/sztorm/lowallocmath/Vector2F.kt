@@ -163,8 +163,29 @@ value class Vector2F internal constructor(internal val data: Long) {
     inline fun isApproximately(other: Vector2F, epsilon: Float = 0.00001f): Boolean =
         x.isApproximately(other.x, epsilon) and y.isApproximately(other.y, epsilon)
 
-    /** Returns the dot product of this and [other] vector. **/
+    /**
+     * Returns the dot product of this and [other] vector.
+     *
+     *  Selected identities that the [dot] satisfies:
+     *  1. _a [dot] b = b [dot] a_
+     *  2. _a [dot] b = a.[magnitude] * b.[magnitude] * cos(theta)_
+     *  3. _(a [dot] b)^2 + (a [perpDot] b)^2 = a.[magnitude]^2 * b.[magnitude]^2_
+     *
+     *  where _theta_ is the angle from vector _a_ to vector _b_.
+     */
     inline infix fun dot(other: Vector2F): Float = x * other.x + y * other.y
+
+    /**
+     *  Returns the perp dot product of this and [other] vector.
+     *
+     *  Selected identities that the [perpDot] satisfies:
+     *  1. _a [perpDot] b = -b [perpDot] a_
+     *  2. _a [perpDot] b = a.[magnitude] * b.[magnitude] * sin(theta)_
+     *  3. _(a [perpDot] b)^2 + (a [dot] b)^2 = a.[magnitude]^2 * b.[magnitude]^2_
+     *
+     *  where _theta_ is the angle from vector _a_ to vector _b_.
+     */
+    inline infix fun perpDot(other: Vector2F): Float = x * other.y - y * other.x
 
     /**
      * Converts this [Vector2F] value to [Vector2I].
