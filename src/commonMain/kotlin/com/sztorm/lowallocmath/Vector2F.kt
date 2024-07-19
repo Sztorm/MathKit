@@ -2,10 +2,7 @@ package com.sztorm.lowallocmath
 
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /** Multiplies this vector by the [other] scalar. **/
 inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
@@ -164,28 +161,76 @@ value class Vector2F internal constructor(internal val data: Long) {
         x.isApproximately(other.x, epsilon) and y.isApproximately(other.y, epsilon)
 
     /**
-     * Returns the dot product of this and [other] vector.
+     * Returns the dot product of this and the [other] vector.
      *
-     *  Selected identities that the [dot] satisfies:
-     *  1. _a [dot] b = b [dot] a_
-     *  2. _a [dot] b = a.[magnitude] * b.[magnitude] * cos(theta)_
-     *  3. _(a [dot] b)^2 + (a [perpDot] b)^2 = a.[magnitude]^2 * b.[magnitude]^2_
+     * Selected identities that the [dot] satisfies:
+     * 1. _a [dot] b = b [dot] a_
+     * 2. _a [dot] b = a.[magnitude] * b.[magnitude] * cos(theta)_
+     * 3. _(a [dot] b)^2 + (a [perpDot] b)^2 = a.[magnitude]^2 * b.[magnitude]^2_
      *
-     *  where _theta_ is the angle from vector _a_ to vector _b_.
+     * where _theta_ is the angle from vector _a_ to vector _b_.
      */
     inline infix fun dot(other: Vector2F): Float = x * other.x + y * other.y
 
     /**
-     *  Returns the perp dot product of this and [other] vector.
+     * Returns the perp dot product of this and the [other] vector.
      *
-     *  Selected identities that the [perpDot] satisfies:
-     *  1. _a [perpDot] b = -b [perpDot] a_
-     *  2. _a [perpDot] b = a.[magnitude] * b.[magnitude] * sin(theta)_
-     *  3. _(a [perpDot] b)^2 + (a [dot] b)^2 = a.[magnitude]^2 * b.[magnitude]^2_
+     * Selected identities that the [perpDot] satisfies:
+     * 1. _a [perpDot] b = -b [perpDot] a_
+     * 2. _a [perpDot] b = a.[magnitude] * b.[magnitude] * sin(theta)_
+     * 3. _(a [perpDot] b)^2 + (a [dot] b)^2 = a.[magnitude]^2 * b.[magnitude]^2_
      *
-     *  where _theta_ is the angle from vector _a_ to vector _b_.
+     * where _theta_ is the angle from vector _a_ to vector _b_.
      */
     inline infix fun perpDot(other: Vector2F): Float = x * other.y - y * other.x
+
+    /**
+     * Returns the geometric product, which is a result of multiplying this vector by the [other]
+     * vector.
+     *
+     * Geometric product can be interpreted as a scaled rotation from this to the [other]
+     * vector. The scale is a product of magnitudes of this and the [other] vector.
+     */
+    infix fun geometric(other: Vector2F): ComplexF {
+        val (aX: Float, aY: Float) = this
+        val (bX: Float, bY: Float) = other
+        val dotProduct: Float = aX * bX + aY * bY
+        val perpDotProduct: Float = aX * bY - aY * bX
+
+        return ComplexF(dotProduct, perpDotProduct)
+    }
+
+    /**
+     * Returns the smallest angle between this vector and the [other] vector. Angle is signed when
+     * the shortest angular path from this vector to the [other] vector is clockwise.
+     */
+    fun angleTo(other: Vector2F): AngleF {
+        val (aX: Float, aY: Float) = this
+        val (bX: Float, bY: Float) = other
+        val perpDotProduct: Float = aX * bY - aY * bX
+        val dotProduct: Float = aX * bX + aY * bY
+
+        return AngleF(atan2(perpDotProduct, dotProduct))
+    }
+
+    /**
+     * Returns a normalized complex number which represent rotation from this vector to the
+     * [other] vector.
+     */
+    inline fun rotationTo(other: Vector2F): ComplexF {
+        val (aX: Float, aY: Float) = this
+        val (bX: Float, bY: Float) = other
+        val perpDotProduct: Float = aX * bY - aY * bX
+        val dotProduct: Float = aX * bX + aY * bY
+        val aMagnitudeSqr: Float = aX * aX + aY * aY
+        val bMagnitudeSqr: Float = bX * bX + bY * bY
+        val abMagnitudeReciprocal: Float = 1f / sqrt(aMagnitudeSqr * bMagnitudeSqr)
+
+        return ComplexF(
+            dotProduct * abMagnitudeReciprocal,
+            perpDotProduct * abMagnitudeReciprocal
+        )
+    }
 
     /**
      * Converts this [Vector2F] value to [Vector2I].

@@ -114,6 +114,24 @@ class Vector2FTests {
         assertApproximation(expected, a.value perpDot b.value)
 
     @ParameterizedTest
+    @MethodSource("geometricArgs")
+    fun geometricToReturnsCorrectValue(
+        vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Wrapper<ComplexF>
+    ) = assertApproximation(expected.value, vector.value geometric other.value)
+
+    @ParameterizedTest
+    @MethodSource("angleToArgs")
+    fun angleToReturnsCorrectValue(
+        vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Wrapper<AngleF>
+    ) = assertApproximation(expected.value, vector.value.angleTo(other.value))
+
+    @ParameterizedTest
+    @MethodSource("rotationToArgs")
+    fun rotationToReturnsCorrectValue(
+        vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Wrapper<ComplexF>
+    ) = assertApproximation(expected.value, vector.value.rotationTo(other.value))
+
+    @ParameterizedTest
     @MethodSource("toVector2IArgs")
     fun toVector2IReturnsCorrectValue(vector: Wrapper<Vector2F>, expected: Wrapper<Vector2I>) =
         assertEquals(expected.value, vector.value.toVector2I())
@@ -469,6 +487,181 @@ class Vector2FTests {
             Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F(0f, 4f)), 12f),
             Arguments.of(Wrapper(Vector2F(1f, -2f)), Wrapper(Vector2F(-4f, 0.4f)), -7.6f),
             Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F.ZERO), 0f),
+        )
+
+        @JvmStatic
+        fun geometricArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(179f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(1f)).toVector2F() * 4f),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-178f)) * 2f),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(1f)).toVector2F() * 0.5f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(179f)).toVector2F() * 4f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(178f)) * 2f),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f)) * 0.1f),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f)) * 0.1f),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f)) * 0.1f),
+            ),
+            Arguments.of(
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F()),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F()),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(0f, 0f)),
+                Wrapper(Vector2F(0f, 0f)),
+                Wrapper(ComplexF(0f, 0f)),
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(0f, 0f)),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-90f)).toVector2F() * 0.8f
+                ),
+                Wrapper(ComplexF(0f, 0f)),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-90f)).toVector2F() * 0.8f
+                ),
+                Wrapper(Vector2F(0f, 0f)),
+                Wrapper(ComplexF(0f, 0f)),
+            ),
+        )
+
+        @JvmStatic
+        fun angleToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(179f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(1f)).toVector2F() * 4f),
+                Wrapper(AngleF.fromDegrees(-178f)),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(1f)).toVector2F() * 0.5f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(179f)).toVector2F() * 4f
+                ),
+                Wrapper(AngleF.fromDegrees(178f)),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(AngleF.fromDegrees(-60f)),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(AngleF.fromDegrees(60f)),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(AngleF.fromDegrees(0f)),
+            ),
+            Arguments.of(
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F()),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F()),
+                Wrapper(AngleF.fromDegrees(0f)),
+            ),
+        )
+
+        @JvmStatic
+        fun rotationToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(179f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(1f)).toVector2F() * 4f),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-178f))),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(1f)).toVector2F() * 0.5f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(179f)).toVector2F() * 4f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(178f))),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-60f))),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(60f))),
+            ),
+            Arguments.of(
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.2f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F() * 0.5f
+                ),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+            ),
+            Arguments.of(
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F()),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-30f)).toVector2F()),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+            ),
         )
 
         @JvmStatic
