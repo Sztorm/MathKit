@@ -21,12 +21,12 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     override val orientation: ComplexF
         get() = _direction.toComplexF()
 
-    override fun movedBy(offset: Vector2F) = MutableRay(_origin + offset, _direction)
+    override fun movedBy(displacement: Vector2F) = MutableRay(_origin + displacement, _direction)
 
     override fun movedTo(position: Vector2F) = MutableRay(position, _direction)
 
-    override fun moveBy(offset: Vector2F) {
-        _origin += offset
+    override fun moveBy(displacement: Vector2F) {
+        _origin += displacement
     }
 
     override fun moveTo(position: Vector2F) {
@@ -189,30 +189,33 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction *= 1f.withSign(factor)
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableRay =
-        transformedBy(offset, ComplexF.fromAngle(rotation))
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): MutableRay =
+        transformedBy(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): MutableRay {
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): MutableRay {
         val (dirX: Float, dirY: Float) = _direction
         val (rotR: Float, rotI: Float) = rotation
 
         return MutableRay(
-            origin = _origin + offset,
+            origin = _origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): MutableRay =
-        transformedBy(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): MutableRay = transformedBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): MutableRay {
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): MutableRay {
         val (dirX: Float, dirY: Float) = _direction
-        val factorSign: Float = 1f.withSign(factor)
-        val rotR: Float = rotation.real * factorSign
-        val rotI: Float = rotation.imaginary * factorSign
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
+        val rotR: Float = rotation.real * scaleFactorSign
+        val rotI: Float = rotation.imaginary * scaleFactorSign
 
         return MutableRay(
-            origin = _origin + offset,
+            origin = _origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
         )
     }
@@ -223,27 +226,27 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
         MutableRay(position, direction = orientation.toVector2F())
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(rotation))
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
+        transformBy(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) {
         val (dirX: Float, dirY: Float) = _direction
         val (rotR: Float, rotI: Float) = rotation
 
-        _origin += offset
+        _origin += displacement
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
     }
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
         val (dirX: Float, dirY: Float) = _direction
-        val factorSign: Float = 1f.withSign(factor)
-        val rotR: Float = rotation.real * factorSign
-        val rotI: Float = rotation.imaginary * factorSign
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
+        val rotR: Float = rotation.real * scaleFactorSign
+        val rotI: Float = rotation.imaginary * scaleFactorSign
 
-        _origin += offset
+        _origin += displacement
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
     }
 

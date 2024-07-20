@@ -5,7 +5,7 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
 interface MutableTransformable : Transformable {
-    fun moveBy(offset: Vector2F)
+    fun moveBy(displacement: Vector2F)
 
     fun moveTo(position: Vector2F)
 
@@ -29,13 +29,13 @@ interface MutableTransformable : Transformable {
 
     fun dilateBy(point: Vector2F, factor: Float)
 
-    fun transformBy(offset: Vector2F, rotation: AngleF)
+    fun transformBy(displacement: Vector2F, rotation: AngleF)
 
-    fun transformBy(offset: Vector2F, rotation: ComplexF)
+    fun transformBy(displacement: Vector2F, rotation: ComplexF)
 
-    fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float)
+    fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float)
 
-    fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float)
+    fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float)
 
     fun transformTo(position: Vector2F, orientation: AngleF)
 

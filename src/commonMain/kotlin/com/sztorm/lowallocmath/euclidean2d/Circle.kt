@@ -27,7 +27,7 @@ interface Circle : CircleShape, Transformable {
     override val position: Vector2F
         get() = center
 
-    override fun movedBy(offset: Vector2F): Circle = copy(center = center + offset)
+    override fun movedBy(displacement: Vector2F): Circle = copy(center = center + displacement)
 
     override fun movedTo(position: Vector2F): Circle = copy(center = position)
 
@@ -112,26 +112,30 @@ interface Circle : CircleShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): Circle = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Circle = copy(
+        center = center + displacement,
         orientation = orientation * ComplexF.fromAngle(rotation)
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): Circle = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Circle = copy(
+        center = center + displacement,
         orientation = orientation * rotation
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Circle = copy(
-        center = center + offset,
-        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-        radius = radius * factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): Circle = copy(
+        center = center + displacement,
+        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+        radius = radius * scaleFactor.absoluteValue
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Circle = copy(
-        center = center + offset,
-        orientation = orientation * rotation * 1f.withSign(factor),
-        radius = radius * factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Circle = copy(
+        center = center + displacement,
+        orientation = orientation * rotation * 1f.withSign(scaleFactor),
+        radius = radius * scaleFactor.absoluteValue
     )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): Circle = copy(

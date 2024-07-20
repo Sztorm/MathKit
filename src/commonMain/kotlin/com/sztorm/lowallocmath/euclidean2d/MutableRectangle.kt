@@ -90,47 +90,47 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override val position: Vector2F
         get() = _center
 
-    override fun movedBy(offset: Vector2F) = MutableRectangle(
-        _center + offset,
+    override fun movedBy(displacement: Vector2F) = MutableRectangle(
+        _center + displacement,
         _orientation,
         _width,
         _height,
-        _pointA + offset,
-        _pointB + offset,
-        _pointC + offset,
-        _pointD + offset,
+        _pointA + displacement,
+        _pointB + displacement,
+        _pointC + displacement,
+        _pointD + displacement,
     )
 
     override fun movedTo(position: Vector2F): MutableRectangle {
-        val offset: Vector2F = position - _center
+        val displacement: Vector2F = position - _center
 
         return MutableRectangle(
             position,
             _orientation,
             _width,
             _height,
-            _pointA + offset,
-            _pointB + offset,
-            _pointC + offset,
-            _pointD + offset,
+            _pointA + displacement,
+            _pointB + displacement,
+            _pointC + displacement,
+            _pointD + displacement,
         )
     }
 
-    override fun moveBy(offset: Vector2F) {
-        _center += offset
-        _pointA += offset
-        _pointB += offset
-        _pointC += offset
-        _pointD += offset
+    override fun moveBy(displacement: Vector2F) {
+        _center += displacement
+        _pointA += displacement
+        _pointB += displacement
+        _pointC += displacement
+        _pointD += displacement
     }
 
     override fun moveTo(position: Vector2F) {
-        val offset: Vector2F = position - _center
+        val displacement: Vector2F = position - _center
         _center = position
-        _pointA += offset
-        _pointB += offset
-        _pointC += offset
-        _pointD += offset
+        _pointA += displacement
+        _pointB += displacement
+        _pointC += displacement
+        _pointD += displacement
     }
 
     override fun rotatedBy(rotation: AngleF) = createInternal(
@@ -450,40 +450,40 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = createInternal(
-        _center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF) = createInternal(
+        _center + displacement,
         _orientation * ComplexF.fromAngle(rotation),
         _width,
         _height
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = createInternal(
-        _center + offset, _orientation * rotation, _width, _height
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF) = createInternal(
+        _center + displacement, _orientation * rotation, _width, _height
     )
 
     override fun transformedBy(
-        offset: Vector2F, rotation: AngleF, factor: Float
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
     ): MutableRectangle {
-        val absFactor: Float = factor.absoluteValue
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return createInternal(
-            _center + offset,
-            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-            _width * absFactor,
-            _height * absFactor
+            _center + displacement,
+            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+            _width * absScaleFactor,
+            _height * absScaleFactor
         )
     }
 
     override fun transformedBy(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): MutableRectangle {
-        val absFactor: Float = factor.absoluteValue
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return createInternal(
-            _center + offset,
-            _orientation * rotation * 1f.withSign(factor),
-            _width * absFactor,
-            _height * absFactor
+            _center + displacement,
+            _orientation * rotation * 1f.withSign(scaleFactor),
+            _width * absScaleFactor,
+            _height * absScaleFactor
         )
     }
 
@@ -493,28 +493,28 @@ class MutableRectangle : Rectangle, MutableTransformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
         createInternal(position, orientation, _width, _height)
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF) =
-        transformTo(_center + offset, _orientation * ComplexF.fromAngle(rotation))
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
+        transformTo(_center + displacement, _orientation * ComplexF.fromAngle(rotation))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) =
-        transformTo(_center + offset, _orientation * rotation)
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) =
+        transformTo(_center + displacement, _orientation * rotation)
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
-        val cX: Float = _center.x + offset.x
-        val cY: Float = _center.y + offset.y
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
+        val cX: Float = _center.x + displacement.x
+        val cY: Float = _center.y + displacement.y
         val r0 = _orientation.real
         val i0 = _orientation.imaginary
         val r1 = rotation.real
         val i1 = rotation.imaginary
-        val factorSign: Float = 1f.withSign(factor)
-        val absFactor: Float = factor.absoluteValue
-        val rotR: Float = (r0 * r1 - i0 * i1) * factorSign
-        val rotI: Float = (i0 * r1 + r0 * i1) * factorSign
-        val width = _width * absFactor
-        val height = _height * absFactor
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
+        val absScaleFactor: Float = scaleFactor.absoluteValue
+        val rotR: Float = (r0 * r1 - i0 * i1) * scaleFactorSign
+        val rotI: Float = (i0 * r1 + r0 * i1) * scaleFactorSign
+        val width = _width * absScaleFactor
+        val height = _height * absScaleFactor
         val halfWidth: Float = width * 0.5f
         val halfHeight: Float = height * 0.5f
         val addendX1: Float = rotR * halfWidth

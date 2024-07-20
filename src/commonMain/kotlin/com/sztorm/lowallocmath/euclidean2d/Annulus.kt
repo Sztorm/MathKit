@@ -30,7 +30,7 @@ interface Annulus : AnnulusShape, Transformable {
     override val position: Vector2F
         get() = center
 
-    override fun movedBy(offset: Vector2F): Annulus = copy(center = center + offset)
+    override fun movedBy(displacement: Vector2F): Annulus = copy(center = center + displacement)
 
     override fun movedTo(position: Vector2F): Annulus = copy(center = position)
 
@@ -123,35 +123,39 @@ interface Annulus : AnnulusShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): Annulus = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Annulus = copy(
+        center = center + displacement,
         orientation = orientation * ComplexF.fromAngle(rotation)
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): Annulus = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Annulus = copy(
+        center = center + displacement,
         orientation = orientation * rotation
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Annulus {
-        val absFactor: Float = factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): Annulus {
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return copy(
-            center = center + offset,
-            orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-            outerRadius = outerRadius * absFactor,
-            innerRadius = innerRadius * absFactor
+            center = center + displacement,
+            orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+            outerRadius = outerRadius * absScaleFactor,
+            innerRadius = innerRadius * absScaleFactor
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Annulus {
-        val absFactor: Float = factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Annulus {
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return copy(
-            center = center + offset,
-            orientation = orientation * rotation * 1f.withSign(factor),
-            outerRadius = outerRadius * absFactor,
-            innerRadius = innerRadius * absFactor
+            center = center + displacement,
+            orientation = orientation * rotation * 1f.withSign(scaleFactor),
+            outerRadius = outerRadius * absScaleFactor,
+            innerRadius = innerRadius * absScaleFactor
         )
     }
 

@@ -83,7 +83,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
     override val position: Vector2F
         get() = center
 
-    override fun movedBy(offset: Vector2F): Square = copy(center = center + offset)
+    override fun movedBy(displacement: Vector2F): Square = copy(center = center + displacement)
 
     override fun movedTo(position: Vector2F): Square = copy(center = position)
 
@@ -170,26 +170,30 @@ interface Square : RectangleShape, RegularShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): Square = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Square = copy(
+        center = center + displacement,
         orientation = orientation * ComplexF.fromAngle(rotation)
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): Square = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Square = copy(
+        center = center + displacement,
         orientation = orientation * rotation
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Square = copy(
-        center = center + offset,
-        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-        sideLength = sideLength * factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): Square = copy(
+        center = center + displacement,
+        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+        sideLength = sideLength * scaleFactor.absoluteValue
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Square = copy(
-        center = center + offset,
-        orientation = orientation * rotation * 1f.withSign(factor),
-        sideLength = sideLength * factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Square = copy(
+        center = center + displacement,
+        orientation = orientation * rotation * 1f.withSign(scaleFactor),
+        sideLength = sideLength * scaleFactor.absoluteValue
     )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): Square = copy(

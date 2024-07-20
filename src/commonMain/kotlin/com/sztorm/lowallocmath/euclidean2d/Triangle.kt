@@ -122,20 +122,20 @@ interface Triangle : TriangleShape, Transformable {
             return (pointA - centroid).normalized.toComplexF()
         }
 
-    override fun movedBy(offset: Vector2F): Triangle = copy(
-        pointA = pointA + offset,
-        pointB = pointB + offset,
-        pointC = pointC + offset
+    override fun movedBy(displacement: Vector2F): Triangle = copy(
+        pointA = pointA + displacement,
+        pointB = pointB + displacement,
+        pointC = pointC + displacement
     )
 
     override fun movedTo(position: Vector2F): Triangle {
         val centroid: Vector2F = (pointA + pointB + pointC) * 0.3333333f
-        val offset: Vector2F = position - centroid
+        val displacement: Vector2F = position - centroid
 
         return copy(
-            pointA = pointA + offset,
-            pointB = pointB + offset,
-            pointC = pointC + offset
+            pointA = pointA + displacement,
+            pointB = pointB + displacement,
+            pointC = pointC + displacement
         )
     }
 
@@ -346,13 +346,13 @@ interface Triangle : TriangleShape, Transformable {
         )
     }
 
-    private fun transformedByImpl(offset: Vector2F, rotation: ComplexF): Triangle {
+    private fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): Triangle {
         val (aX: Float, aY: Float) = pointA
         val (bX: Float, bY: Float) = pointB
         val (cX: Float, cY: Float) = pointC
         val centroidX: Float = (aX + bX + cX) * 0.3333333f
         val centroidY: Float = (aY + bY + cY) * 0.3333333f
-        val (oX: Float, oY: Float) = offset
+        val (displacementX: Float, displacementY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
         val caX: Float = aX - centroidX
         val caY: Float = aY - centroidY
@@ -360,8 +360,8 @@ interface Triangle : TriangleShape, Transformable {
         val cbY: Float = bY - centroidY
         val ccX: Float = cX - centroidX
         val ccY: Float = cY - centroidY
-        val targetPosX: Float = centroidX + oX
-        val targetPosY: Float = centroidY + oY
+        val targetPosX: Float = centroidX + displacementX
+        val targetPosY: Float = centroidY + displacementY
 
         return copy(
             pointA = Vector2F(
@@ -376,19 +376,21 @@ interface Triangle : TriangleShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): Triangle =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation))
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Triangle =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): Triangle =
-        transformedByImpl(offset, rotation)
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Triangle =
+        transformedByImpl(displacement, rotation)
 
-    private fun transformedByImpl(offset: Vector2F, rotation: ComplexF, factor: Float): Triangle {
+    private fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Triangle {
         val (aX: Float, aY: Float) = pointA
         val (bX: Float, bY: Float) = pointB
         val (cX: Float, cY: Float) = pointC
         val centroidX: Float = (aX + bX + cX) * 0.3333333f
         val centroidY: Float = (aY + bY + cY) * 0.3333333f
-        val (oX: Float, oY: Float) = offset
+        val (displacementX: Float, displacementY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
         val caX: Float = aX - centroidX
         val caY: Float = aY - centroidY
@@ -396,33 +398,35 @@ interface Triangle : TriangleShape, Transformable {
         val cbY: Float = bY - centroidY
         val ccX: Float = cX - centroidX
         val ccY: Float = cY - centroidY
-        val targetPosX: Float = centroidX + oX
-        val targetPosY: Float = centroidY + oY
-        val f: Float = 1f - factor
+        val targetPosX: Float = centroidX + displacementX
+        val targetPosY: Float = centroidY + displacementY
+        val f: Float = 1f - scaleFactor
         val addendX: Float = targetPosX * f
         val addendY: Float = targetPosY * f
 
         return copy(
             pointA = Vector2F(
-                (caX * rotR - caY * rotI + targetPosX) * factor + addendX,
-                (caY * rotR + caX * rotI + targetPosY) * factor + addendY
+                (caX * rotR - caY * rotI + targetPosX) * scaleFactor + addendX,
+                (caY * rotR + caX * rotI + targetPosY) * scaleFactor + addendY
             ),
             pointB = Vector2F(
-                (cbX * rotR - cbY * rotI + targetPosX) * factor + addendX,
-                (cbY * rotR + cbX * rotI + targetPosY) * factor + addendY
+                (cbX * rotR - cbY * rotI + targetPosX) * scaleFactor + addendX,
+                (cbY * rotR + cbX * rotI + targetPosY) * scaleFactor + addendY
             ),
             pointC = Vector2F(
-                (ccX * rotR - ccY * rotI + targetPosX) * factor + addendX,
-                (ccY * rotR + ccX * rotI + targetPosY) * factor + addendY
+                (ccX * rotR - ccY * rotI + targetPosX) * scaleFactor + addendX,
+                (ccY * rotR + ccX * rotI + targetPosY) * scaleFactor + addendY
             )
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Triangle =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): Triangle = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Triangle =
-        transformedByImpl(offset, rotation, factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Triangle = transformedByImpl(displacement, rotation, scaleFactor)
 
     private fun transformedToImpl(position: Vector2F, orientation: ComplexF): Triangle {
         val (aX: Float, aY: Float) = pointA

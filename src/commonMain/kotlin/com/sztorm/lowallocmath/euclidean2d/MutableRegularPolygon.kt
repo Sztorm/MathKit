@@ -20,10 +20,10 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             throwWhenSideCountValueIsIllegal(sideCount)
             val (oR: Float, oI: Float) = orientation
             val halfSideLength: Float = 0.5f * sideLength
-            val offset = Vector2F(oR * halfSideLength, oI * halfSideLength)
+            val displacement = Vector2F(oR * halfSideLength, oI * halfSideLength)
             val points = Vector2FArray(sideCount)
-            points[0] = center + offset
-            points[1] = center - offset
+            points[0] = center + displacement
+            points[1] = center - displacement
             _center = center
             _orientation = orientation
             _sideLength = sideLength
@@ -158,14 +158,14 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     override val position: Vector2F
         get() = _center
 
-    override fun movedBy(offset: Vector2F): MutableRegularPolygon {
+    override fun movedBy(displacement: Vector2F): MutableRegularPolygon {
         val points: Vector2FArray = _points.copyOf()
 
         for (i in 0 until points.size) {
-            points[i] += offset
+            points[i] += displacement
         }
         return MutableRegularPolygon(
-            _center + offset,
+            _center + displacement,
             _orientation,
             _sideLength,
             points,
@@ -176,10 +176,10 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
 
     override fun movedTo(position: Vector2F): MutableRegularPolygon {
         val points: Vector2FArray = _points.copyOf()
-        val offset: Vector2F = position - _center
+        val displacement: Vector2F = position - _center
 
         for (i in 0 until points.size) {
-            points[i] += offset
+            points[i] += displacement
         }
         return MutableRegularPolygon(
             position,
@@ -191,22 +191,22 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         )
     }
 
-    override fun moveBy(offset: Vector2F) {
+    override fun moveBy(displacement: Vector2F) {
         val points: Vector2FArray = _points
-        _center += offset
+        _center += displacement
 
         for (i in 0 until points.size) {
-            points[i] += offset
+            points[i] += displacement
         }
     }
 
     override fun moveTo(position: Vector2F) {
         val points: Vector2FArray = _points
-        val offset: Vector2F = position - _center
+        val displacement: Vector2F = position - _center
         _center = position
 
         for (i in 0 until points.size) {
-            points[i] += offset
+            points[i] += displacement
         }
     }
 
@@ -550,14 +550,14 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _inradius *= absFactor
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): MutableRegularPolygon =
-        transformedBy(offset, ComplexF.fromAngle(rotation))
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): MutableRegularPolygon =
+        transformedBy(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): MutableRegularPolygon {
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): MutableRegularPolygon {
         val points: Vector2FArray = _points.copyOf()
         val (pcX: Float, pcY: Float) = _center
-        val cX: Float = pcX + offset.x
-        val cY: Float = pcY + offset.y
+        val cX: Float = pcX + displacement.x
+        val cY: Float = pcY + displacement.y
         val (rotR: Float, rotI: Float) = rotation
 
         for (i in 0 until points.size) {
@@ -576,19 +576,20 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     }
 
     override fun transformedBy(
-        offset: Vector2F, rotation: AngleF, factor: Float
-    ): MutableRegularPolygon = transformedBy(offset, ComplexF.fromAngle(rotation), factor)
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): MutableRegularPolygon =
+        transformedBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
     override fun transformedBy(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): MutableRegularPolygon {
         val points: Vector2FArray = _points.copyOf()
         val (pcX: Float, pcY: Float) = _center
-        val cX: Float = pcX + offset.x
-        val cY: Float = pcY + offset.y
+        val cX: Float = pcX + displacement.x
+        val cY: Float = pcY + displacement.y
         val (rotR: Float, rotI: Float) = rotation
-        val f: Float = 1f - factor
-        val absFactor: Float = factor.absoluteValue
+        val f: Float = 1f - scaleFactor
+        val absScaleFactor: Float = scaleFactor.absoluteValue
         val addendX: Float = cX * f
         val addendY: Float = cY * f
 
@@ -597,15 +598,15 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             val p1Y: Float = points[i].y - pcY
             val p2X: Float = p1X * rotR - p1Y * rotI + cX
             val p2Y: Float = p1Y * rotR + p1X * rotI + cY
-            points[i] = Vector2F(addendX + p2X * factor, addendY + p2Y * factor)
+            points[i] = Vector2F(addendX + p2X * scaleFactor, addendY + p2Y * scaleFactor)
         }
         return MutableRegularPolygon(
             Vector2F(cX, cY),
-            _orientation * rotation * 1f.withSign(factor),
-            _sideLength * absFactor,
+            _orientation * rotation * 1f.withSign(scaleFactor),
+            _sideLength * absScaleFactor,
             points,
-            _inradius * absFactor,
-            _circumradius * absFactor
+            _inradius * absScaleFactor,
+            _circumradius * absScaleFactor
         )
     }
 
@@ -633,14 +634,14 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         )
     }
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(rotation))
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
+        transformBy(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) {
         val points: Vector2FArray = _points
         val (pcX: Float, pcY: Float) = _center
-        val cX: Float = pcX + offset.x
-        val cY: Float = pcY + offset.y
+        val cX: Float = pcX + displacement.x
+        val cY: Float = pcY + displacement.y
         val (rotR: Float, rotI: Float) = rotation
 
         for (i in 0 until points.size) {
@@ -652,17 +653,17 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _orientation *= rotation
     }
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
         val points: Vector2FArray = _points
         val (pcX: Float, pcY: Float) = _center
-        val cX: Float = pcX + offset.x
-        val cY: Float = pcY + offset.y
+        val cX: Float = pcX + displacement.x
+        val cY: Float = pcY + displacement.y
         val (rotR: Float, rotI: Float) = rotation
-        val f: Float = 1f - factor
-        val absFactor: Float = factor.absoluteValue
+        val f: Float = 1f - scaleFactor
+        val absScaleFactor: Float = scaleFactor.absoluteValue
         val addendX: Float = cX * f
         val addendY: Float = cY * f
 
@@ -671,13 +672,13 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             val p1Y: Float = points[i].y - pcY
             val p2X: Float = p1X * rotR - p1Y * rotI + cX
             val p2Y: Float = p1Y * rotR + p1X * rotI + cY
-            points[i] = Vector2F(addendX + p2X * factor, addendY + p2Y * factor)
+            points[i] = Vector2F(addendX + p2X * scaleFactor, addendY + p2Y * scaleFactor)
         }
         _center = Vector2F(cX, cY)
-        _orientation *= rotation * 1f.withSign(factor)
-        _sideLength *= absFactor
-        _circumradius *= absFactor
-        _inradius *= absFactor
+        _orientation *= rotation * 1f.withSign(scaleFactor)
+        _sideLength *= absScaleFactor
+        _circumradius *= absScaleFactor
+        _inradius *= absScaleFactor
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =
@@ -704,12 +705,12 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         if (sideCount < 3) {
             val (oR: Float, oI: Float) = orientation
             val halfSideLength: Float = 0.5f * sideLength
-            val offset = Vector2F(oR * halfSideLength, oI * halfSideLength)
+            val displacement = Vector2F(oR * halfSideLength, oI * halfSideLength)
             val points: Vector2FArray =
                 if (sideCount == points.size) _points
                 else Vector2FArray(sideCount)
-            points[0] = center + offset
-            points[1] = center - offset
+            points[0] = center + displacement
+            points[1] = center - displacement
             _center = center
             _orientation = orientation
             _sideLength = sideLength

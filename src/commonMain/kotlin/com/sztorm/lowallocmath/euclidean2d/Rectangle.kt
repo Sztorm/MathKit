@@ -82,7 +82,7 @@ interface Rectangle : RectangleShape, Transformable {
     override val position: Vector2F
         get() = center
 
-    override fun movedBy(offset: Vector2F): Rectangle = copy(center = center + offset)
+    override fun movedBy(displacement: Vector2F): Rectangle = copy(center = center + displacement)
 
     override fun movedTo(position: Vector2F): Rectangle = copy(center = position)
 
@@ -175,34 +175,36 @@ interface Rectangle : RectangleShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): Rectangle = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Rectangle = copy(
+        center = center + displacement,
         orientation = orientation * ComplexF.fromAngle(rotation)
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): Rectangle = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Rectangle = copy(
+        center = center + displacement,
         orientation = orientation * rotation
     )
 
     private inline fun transformedByImpl(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Rectangle {
-        val absFactor: Float = factor.absoluteValue
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return copy(
-            center = center + offset,
-            orientation = orientation * rotation * 1f.withSign(factor),
-            width = width * absFactor,
-            height = height * absFactor
+            center = center + displacement,
+            orientation = orientation * rotation * 1f.withSign(scaleFactor),
+            width = width * absScaleFactor,
+            height = height * absScaleFactor
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Rectangle =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): Rectangle = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Rectangle =
-        transformedByImpl(offset, rotation, factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Rectangle = transformedByImpl(displacement, rotation, scaleFactor)
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): Rectangle = copy(
         center = position,

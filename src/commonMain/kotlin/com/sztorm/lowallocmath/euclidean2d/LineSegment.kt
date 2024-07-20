@@ -27,18 +27,18 @@ interface LineSegment : Transformable {
     override val orientation: ComplexF
         get() = (pointA - pointB).normalized.toComplexF()
 
-    override fun movedBy(offset: Vector2F): LineSegment = copy(
-        pointA = pointA + offset,
-        pointB = pointB + offset
+    override fun movedBy(displacement: Vector2F): LineSegment = copy(
+        pointA = pointA + displacement,
+        pointB = pointB + displacement
     )
 
     override fun movedTo(position: Vector2F): LineSegment {
         val center: Vector2F = (pointA + pointB) * 0.5f
-        val offset: Vector2F = position - center
+        val displacement: Vector2F = position - center
 
         return copy(
-            pointA = pointA + offset,
-            pointB = pointB + offset
+            pointA = pointA + displacement,
+            pointB = pointB + displacement
         )
     }
 
@@ -204,10 +204,10 @@ interface LineSegment : Transformable {
         )
     }
 
-    private fun transformedByImpl(offset: Vector2F, rotation: ComplexF): LineSegment {
+    private fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): LineSegment {
         val (paX: Float, paY: Float) = pointA
         val (pbX: Float, pbY: Float) = pointB
-        val (oX: Float, oY: Float) = offset
+        val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
         val cX: Float = (paX + pbX) * 0.5f
         val cY: Float = (paY + pbY) * 0.5f
@@ -215,8 +215,8 @@ interface LineSegment : Transformable {
         val pcaY: Float = paY - cY
         val pcbX: Float = pbX - cX
         val pcbY: Float = pbY - cY
-        val targetPosX: Float = cX + oX
-        val targetPosY: Float = cY + oY
+        val targetPosX: Float = cX + dX
+        val targetPosY: Float = cY + dY
 
         return copy(
             pointA = Vector2F(
@@ -230,18 +230,18 @@ interface LineSegment : Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): LineSegment =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation))
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): LineSegment =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): LineSegment =
-        transformedByImpl(offset, rotation)
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): LineSegment =
+        transformedByImpl(displacement, rotation)
 
     private fun transformedByImpl(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): LineSegment {
         val (paX: Float, paY: Float) = pointA
         val (pbX: Float, pbY: Float) = pointB
-        val (oX: Float, oY: Float) = offset
+        val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
         val cX: Float = (paX + pbX) * 0.5f
         val cY: Float = (paY + pbY) * 0.5f
@@ -249,29 +249,31 @@ interface LineSegment : Transformable {
         val pcaY: Float = paY - cY
         val pcbX: Float = pbX - cX
         val pcbY: Float = pbY - cY
-        val targetPosX: Float = cX + oX
-        val targetPosY: Float = cY + oY
-        val f: Float = 1f - factor
+        val targetPosX: Float = cX + dX
+        val targetPosY: Float = cY + dY
+        val f: Float = 1f - scaleFactor
         val addendX: Float = targetPosX * f
         val addendY: Float = targetPosY * f
 
         return copy(
             pointA = Vector2F(
-                (pcaX * rotR - pcaY * rotI + targetPosX) * factor + addendX,
-                (pcaY * rotR + pcaX * rotI + targetPosY) * factor + addendY
+                (pcaX * rotR - pcaY * rotI + targetPosX) * scaleFactor + addendX,
+                (pcaY * rotR + pcaX * rotI + targetPosY) * scaleFactor + addendY
             ),
             pointB = Vector2F(
-                (pcbX * rotR - pcbY * rotI + targetPosX) * factor + addendX,
-                (pcbY * rotR + pcbX * rotI + targetPosY) * factor + addendY
+                (pcbX * rotR - pcbY * rotI + targetPosX) * scaleFactor + addendX,
+                (pcbY * rotR + pcbX * rotI + targetPosY) * scaleFactor + addendY
             )
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): LineSegment =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): LineSegment = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): LineSegment =
-        transformedByImpl(offset, rotation, factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): LineSegment = transformedByImpl(displacement, rotation, scaleFactor)
 
     private fun transformedToImpl(position: Vector2F, orientation: ComplexF): LineSegment {
         val (paX: Float, paY: Float) = pointA

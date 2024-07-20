@@ -240,7 +240,8 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     override val position: Vector2F
         get() = center
 
-    override fun movedBy(offset: Vector2F): RoundedRectangle = copy(center = center + offset)
+    override fun movedBy(displacement: Vector2F): RoundedRectangle =
+        copy(center = center + displacement)
 
     override fun movedTo(position: Vector2F): RoundedRectangle = copy(center = position)
 
@@ -342,37 +343,40 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): RoundedRectangle = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RoundedRectangle = copy(
+        center = center + displacement,
         orientation = orientation * ComplexF.fromAngle(rotation)
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): RoundedRectangle = copy(
-        center = center + offset,
-        orientation = orientation * rotation
-    )
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RoundedRectangle =
+        copy(
+            center = center + displacement,
+            orientation = orientation * rotation
+        )
 
     private inline fun transformedByImpl(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): RoundedRectangle {
-        val absFactor: Float = factor.absoluteValue
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return copy(
-            center = center + offset,
-            orientation = orientation * rotation * 1f.withSign(factor),
-            width = width * absFactor,
-            height = height * absFactor,
-            cornerRadius = cornerRadius * absFactor
+            center = center + displacement,
+            orientation = orientation * rotation * 1f.withSign(scaleFactor),
+            width = width * absScaleFactor,
+            height = height * absScaleFactor,
+            cornerRadius = cornerRadius * absScaleFactor
         )
     }
 
     override fun transformedBy(
-        offset: Vector2F, rotation: AngleF, factor: Float
-    ): RoundedRectangle = transformedByImpl(offset, ComplexF.fromAngle(rotation), factor)
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): RoundedRectangle = transformedByImpl(
+        displacement, ComplexF.fromAngle(rotation), scaleFactor
+    )
 
     override fun transformedBy(
-        offset: Vector2F, rotation: ComplexF, factor: Float
-    ): RoundedRectangle = transformedByImpl(offset, rotation, factor)
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): RoundedRectangle = transformedByImpl(displacement, rotation, scaleFactor)
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): RoundedRectangle = copy(
         center = position,

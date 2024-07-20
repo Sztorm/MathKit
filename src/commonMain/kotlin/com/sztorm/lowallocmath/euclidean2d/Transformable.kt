@@ -8,7 +8,7 @@ interface Transformable {
     val position: Vector2F
     val orientation: ComplexF
 
-    fun movedBy(offset: Vector2F): Transformable
+    fun movedBy(displacement: Vector2F): Transformable
 
     fun movedTo(position: Vector2F): Transformable
 
@@ -32,13 +32,15 @@ interface Transformable {
 
     fun dilatedBy(point: Vector2F, factor: Float): Transformable
 
-    fun transformedBy(offset: Vector2F, rotation: AngleF): Transformable
+    fun transformedBy(displacement: Vector2F, rotation: AngleF): Transformable
 
-    fun transformedBy(offset: Vector2F, rotation: ComplexF): Transformable
+    fun transformedBy(displacement: Vector2F, rotation: ComplexF): Transformable
 
-    fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Transformable
+    fun transformedBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float): Transformable
 
-    fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Transformable
+    fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Transformable
 
     fun transformedTo(position: Vector2F, orientation: AngleF): Transformable
 

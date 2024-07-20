@@ -20,9 +20,9 @@ interface RegularPolygon : RegularShape, Transformable {
 
             if (sideCount == 2) {
                 val (rotR: Float, rotI: Float) = orientation
-                val offset = Vector2F(rotR * halfSideLength, rotI * halfSideLength)
-                points[0] = center + offset
-                points[1] = center - offset
+                val displacement = Vector2F(rotR * halfSideLength, rotI * halfSideLength)
+                points[0] = center + displacement
+                points[1] = center - displacement
 
                 return points.asList()
             }
@@ -108,7 +108,8 @@ interface RegularPolygon : RegularShape, Transformable {
     override val position: Vector2F
         get() = center
 
-    override fun movedBy(offset: Vector2F): RegularPolygon = copy(center = center + offset)
+    override fun movedBy(displacement: Vector2F): RegularPolygon =
+        copy(center = center + displacement)
 
     override fun movedTo(position: Vector2F): RegularPolygon = copy(center = position)
 
@@ -198,30 +199,30 @@ interface RegularPolygon : RegularShape, Transformable {
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): RegularPolygon = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RegularPolygon = copy(
+        center = center + displacement,
         orientation = orientation * ComplexF.fromAngle(rotation)
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): RegularPolygon = copy(
-        center = center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RegularPolygon = copy(
+        center = center + displacement,
         orientation = orientation * rotation
     )
 
     override fun transformedBy(
-        offset: Vector2F, rotation: AngleF, factor: Float
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
     ): RegularPolygon = copy(
-        center = center + offset,
-        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-        sideLength = sideLength * factor.absoluteValue
+        center = center + displacement,
+        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+        sideLength = sideLength * scaleFactor.absoluteValue
     )
 
     override fun transformedBy(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): RegularPolygon = copy(
-        center = center + offset,
-        orientation = orientation * rotation * 1f.withSign(factor),
-        sideLength = sideLength * factor.absoluteValue
+        center = center + displacement,
+        orientation = orientation * rotation * 1f.withSign(scaleFactor),
+        sideLength = sideLength * scaleFactor.absoluteValue
     )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): RegularPolygon = copy(

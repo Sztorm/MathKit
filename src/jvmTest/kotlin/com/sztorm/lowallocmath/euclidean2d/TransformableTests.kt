@@ -3,9 +3,6 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.utils.Wrapper
-import com.sztorm.lowallocmath.utils.assertApproximation
-import com.sztorm.lowallocmath.utils.assertEquals
 import com.sztorm.lowallocmath.euclidean2d.AnnulusTests.Companion.mapAnnulusesToDefaultAnnuluses
 import com.sztorm.lowallocmath.euclidean2d.CircleTests.Companion.mapCirclesToDefaultCircles
 import com.sztorm.lowallocmath.euclidean2d.LineSegmentTests.Companion.mapLineSegmentsToDefaultLineSegments
@@ -16,6 +13,9 @@ import com.sztorm.lowallocmath.euclidean2d.RegularTriangleTests.Companion.mapReg
 import com.sztorm.lowallocmath.euclidean2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.TriangleTests.Companion.mapTrianglesToDefaultTriangles
+import com.sztorm.lowallocmath.utils.Wrapper
+import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -45,11 +45,11 @@ class TransformableTests {
         cloner: (Transformable) -> Transformable,
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.movedBy(offset.value)
+        val actual: Transformable = transformable.movedBy(displacement.value)
 
         assertEquals(expected, actual, equalityComparator)
         assertTrue(
@@ -80,9 +80,11 @@ class TransformableTests {
     fun moveByMutatesTransformableCorrectly(
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         expected: MutableTransformable
-    ) = assertEquals(expected, transformable.apply { moveBy(offset.value) }, equalityComparator)
+    ) = assertEquals(
+        expected, transformable.apply { moveBy(displacement.value) }, equalityComparator
+    )
 
     @ParameterizedTest
     @MethodSource("moveToArgs")
@@ -424,12 +426,12 @@ class TransformableTests {
         cloner: (Transformable) -> Transformable,
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.transformedBy(offset.value, rotation.value)
+        val actual: Transformable = transformable.transformedBy(displacement.value, rotation.value)
 
         assertEquals(expected, actual, equalityComparator)
         assertTrue(
@@ -443,12 +445,12 @@ class TransformableTests {
         cloner: (Transformable) -> Transformable,
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
-        val actual: Transformable = transformable.transformedBy(offset.value, rotation.value)
+        val actual: Transformable = transformable.transformedBy(displacement.value, rotation.value)
 
         assertEquals(expected, actual, equalityComparator)
         assertTrue(
@@ -462,14 +464,14 @@ class TransformableTests {
         cloner: (Transformable) -> Transformable,
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
-        factor: Float,
+        scaleFactor: Float,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable =
-            transformable.transformedBy(offset.value, rotation.value, factor)
+            transformable.transformedBy(displacement.value, rotation.value, scaleFactor)
 
         assertEquals(expected, actual, equalityComparator)
         assertTrue(
@@ -483,14 +485,14 @@ class TransformableTests {
         cloner: (Transformable) -> Transformable,
         equalityComparator: (Transformable, Transformable) -> Boolean,
         transformable: Transformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
-        factor: Float,
+        scaleFactor: Float,
         expected: Transformable
     ) {
         val clone: Transformable = cloner(transformable)
         val actual: Transformable =
-            transformable.transformedBy(offset.value, rotation.value, factor)
+            transformable.transformedBy(displacement.value, rotation.value, scaleFactor)
 
         assertEquals(expected, actual, equalityComparator)
         assertTrue(
@@ -541,12 +543,12 @@ class TransformableTests {
     fun transformByVector2FAngleFMutatesTransformableCorrectly(
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
         expected: MutableTransformable
     ) = assertEquals(
         expected,
-        transformable.apply { transformBy(offset.value, rotation.value) },
+        transformable.apply { transformBy(displacement.value, rotation.value) },
         equalityComparator
     )
 
@@ -555,12 +557,12 @@ class TransformableTests {
     fun transformByVector2FComplexFMutatesTransformableCorrectly(
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
         expected: MutableTransformable
     ) = assertEquals(
         expected,
-        transformable.apply { transformBy(offset.value, rotation.value) },
+        transformable.apply { transformBy(displacement.value, rotation.value) },
         equalityComparator
     )
 
@@ -569,13 +571,13 @@ class TransformableTests {
     fun transformByVector2FAngleFFloatMutatesTransformableCorrectly(
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<AngleF>,
-        factor: Float,
+        scaleFactor: Float,
         expected: MutableTransformable
     ) = assertEquals(
         expected,
-        transformable.apply { transformBy(offset.value, rotation.value, factor) },
+        transformable.apply { transformBy(displacement.value, rotation.value, scaleFactor) },
         equalityComparator
     )
 
@@ -584,13 +586,13 @@ class TransformableTests {
     fun transformByVector2FComplexFFloatMutatesTransformableCorrectly(
         equalityComparator: (MutableTransformable, MutableTransformable) -> Boolean,
         transformable: MutableTransformable,
-        offset: Wrapper<Vector2F>,
+        displacement: Wrapper<Vector2F>,
         rotation: Wrapper<ComplexF>,
-        factor: Float,
+        scaleFactor: Float,
         expected: MutableTransformable
     ) = assertEquals(
         expected,
-        transformable.apply { transformBy(offset.value, rotation.value, factor) },
+        transformable.apply { transformBy(displacement.value, rotation.value, scaleFactor) },
         equalityComparator
     )
 

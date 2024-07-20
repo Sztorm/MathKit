@@ -49,14 +49,14 @@ class MutableCircle : Circle, MutableTransformable {
     override val position: Vector2F
         get() = _center
 
-    override fun movedBy(offset: Vector2F) =
-        MutableCircle(_center + offset, _orientation, _radius, tag = null)
+    override fun movedBy(displacement: Vector2F) =
+        MutableCircle(_center + displacement, _orientation, _radius, tag = null)
 
     override fun movedTo(position: Vector2F) =
         MutableCircle(position, _orientation, _radius, tag = null)
 
-    override fun moveBy(offset: Vector2F) {
-        _center += offset
+    override fun moveBy(displacement: Vector2F) {
+        _center += displacement
     }
 
     override fun moveTo(position: Vector2F) {
@@ -220,29 +220,31 @@ class MutableCircle : Circle, MutableTransformable {
         _radius *= factor.absoluteValue
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableCircle(
-        _center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF) = MutableCircle(
+        _center + displacement,
         _orientation * ComplexF.fromAngle(rotation),
         _radius,
         tag = null
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableCircle(
-        _center + offset, _orientation * rotation, _radius, tag = null
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF) = MutableCircle(
+        _center + displacement, _orientation * rotation, _radius, tag = null
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float) = MutableCircle(
-        _center + offset,
-        _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-        _radius * factor.absoluteValue,
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ) = MutableCircle(
+        _center + displacement,
+        _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+        _radius * scaleFactor.absoluteValue,
         tag = null
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float) =
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) =
         MutableCircle(
-            _center + offset,
-            _orientation * rotation * 1f.withSign(factor),
-            _radius * factor.absoluteValue,
+            _center + displacement,
+            _orientation * rotation * 1f.withSign(scaleFactor),
+            _radius * scaleFactor.absoluteValue,
             tag = null
         )
 
@@ -252,21 +254,21 @@ class MutableCircle : Circle, MutableTransformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
         MutableCircle(position, orientation, _radius, tag = null)
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(rotation))
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
+        transformBy(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
-        _center += offset
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) {
+        _center += displacement
         _orientation *= rotation
     }
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
-        _center += offset
-        _orientation *= rotation * 1f.withSign(factor)
-        _radius *= factor.absoluteValue
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
+        _center += displacement
+        _orientation *= rotation * 1f.withSign(scaleFactor)
+        _radius *= scaleFactor.absoluteValue
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =

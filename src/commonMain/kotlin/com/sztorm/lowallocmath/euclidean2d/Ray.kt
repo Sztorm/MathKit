@@ -17,7 +17,7 @@ interface Ray : Transformable {
     override val orientation: ComplexF
         get() = direction.toComplexF()
 
-    override fun movedBy(offset: Vector2F): Ray = copy(origin = origin + offset)
+    override fun movedBy(displacement: Vector2F): Ray = copy(origin = origin + displacement)
 
     override fun movedTo(position: Vector2F): Ray = copy(origin = position)
 
@@ -107,41 +107,42 @@ interface Ray : Transformable {
         )
     }
 
-    private inline fun transformedByImpl(offset: Vector2F, rotation: ComplexF): Ray {
+    private inline fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): Ray {
         val (dirX: Float, dirY: Float) = direction
         val (rotR: Float, rotI: Float) = rotation
 
         return copy(
-            origin = origin + offset,
+            origin = origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF): Ray =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation))
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Ray =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF): Ray =
-        transformedByImpl(offset, rotation)
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Ray =
+        transformedByImpl(displacement, rotation)
 
     private inline fun transformedByImpl(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Ray {
         val (dirX: Float, dirY: Float) = direction
-        val factorSign: Float = 1f.withSign(factor)
-        val rotR: Float = rotation.real * factorSign
-        val rotI: Float = rotation.imaginary * factorSign
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
+        val rotR: Float = rotation.real * scaleFactorSign
+        val rotI: Float = rotation.imaginary * scaleFactorSign
 
         return copy(
-            origin = origin + offset,
+            origin = origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
         )
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): Ray =
-        transformedByImpl(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float): Ray =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF, factor: Float): Ray =
-        transformedByImpl(offset, rotation, factor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Ray = transformedByImpl(displacement, rotation, scaleFactor)
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): Ray = copy(
         origin = position,

@@ -63,15 +63,15 @@ class MutableAnnulus : Annulus, MutableTransformable {
     override val position: Vector2F
         get() = _center
 
-    override fun movedBy(offset: Vector2F) = MutableAnnulus(
-        _center + offset, _orientation, _outerRadius, _innerRadius, tag = null
+    override fun movedBy(displacement: Vector2F) = MutableAnnulus(
+        _center + displacement, _orientation, _outerRadius, _innerRadius, tag = null
     )
 
     override fun movedTo(position: Vector2F) =
         MutableAnnulus(position, _orientation, _outerRadius, _innerRadius, tag = null)
 
-    override fun moveBy(offset: Vector2F) {
-        _center += offset
+    override fun moveBy(displacement: Vector2F) {
+        _center += displacement
     }
 
     override fun moveTo(position: Vector2F) {
@@ -254,44 +254,46 @@ class MutableAnnulus : Annulus, MutableTransformable {
         _innerRadius *= absFactor
     }
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF) = MutableAnnulus(
-        _center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF) = MutableAnnulus(
+        _center + displacement,
         _orientation * ComplexF.fromAngle(rotation),
         _outerRadius,
         _innerRadius,
         tag = null
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: ComplexF) = MutableAnnulus(
-        _center + offset,
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF) = MutableAnnulus(
+        _center + displacement,
         _orientation * rotation,
         _outerRadius,
         _innerRadius,
         tag = null
     )
 
-    override fun transformedBy(offset: Vector2F, rotation: AngleF, factor: Float): MutableAnnulus {
-        val absFactor: Float = factor.absoluteValue
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): MutableAnnulus {
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return MutableAnnulus(
-            _center + offset,
-            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(factor),
-            _outerRadius * absFactor,
-            _innerRadius * absFactor,
+            _center + displacement,
+            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
+            _outerRadius * absScaleFactor,
+            _innerRadius * absScaleFactor,
             tag = null
         )
     }
 
     override fun transformedBy(
-        offset: Vector2F, rotation: ComplexF, factor: Float
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): MutableAnnulus {
-        val absFactor: Float = factor.absoluteValue
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return MutableAnnulus(
-            _center + offset,
-            _orientation * rotation * 1f.withSign(factor),
-            _outerRadius * absFactor,
-            _innerRadius * absFactor,
+            _center + displacement,
+            _orientation * rotation * 1f.withSign(scaleFactor),
+            _outerRadius * absScaleFactor,
+            _innerRadius * absScaleFactor,
             tag = null
         )
     }
@@ -303,24 +305,24 @@ class MutableAnnulus : Annulus, MutableTransformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
         MutableAnnulus(position, orientation, _outerRadius, _innerRadius, tag = null)
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF) =
-        transformBy(offset, ComplexF.fromAngle(rotation))
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
+        transformBy(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF) {
-        _center += offset
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) {
+        _center += displacement
         _orientation *= rotation
     }
 
-    override fun transformBy(offset: Vector2F, rotation: AngleF, factor: Float) =
-        transformBy(offset, ComplexF.fromAngle(rotation), factor)
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformBy(offset: Vector2F, rotation: ComplexF, factor: Float) {
-        val absFactor: Float = factor.absoluteValue
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
+        val absScaleFactor: Float = scaleFactor.absoluteValue
 
-        _center += offset
-        _orientation *= rotation * 1f.withSign(factor)
-        _outerRadius *= absFactor
-        _innerRadius *= absFactor
+        _center += displacement
+        _orientation *= rotation * 1f.withSign(scaleFactor)
+        _outerRadius *= absScaleFactor
+        _innerRadius *= absScaleFactor
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =
