@@ -143,7 +143,12 @@ value class ComplexF internal constructor(
         else defaultValue()
     }
 
-    /** Converts this [ComplexF] value to [Vector2F]. **/
+    /**
+     * Converts this [ComplexF] value to [Vector2F], where [real] and [imaginary] represents the
+     * [Vector2F.x] and [Vector2F.y] components of a vector.
+     *
+     * Note that this type of conversion is not mathematically correct.
+     */
     fun toVector2F() = Vector2F(data)
 
     /** Returns a [String] representation of this vector in "[real] ± [imaginary]i" format. **/
@@ -252,41 +257,79 @@ value class ComplexF internal constructor(
     /** Subtracts the [other] real number from this complex number. **/
     inline operator fun minus(other: Float) = ComplexF(real - other, imaginary)
 
-    /** Multiplies this complex number by the [other] complex number. **/
+    /**
+     * Multiplies this complex number by the [other] complex number.
+     *
+     * The result [magnitude] is this.[magnitude] * [other].[magnitude].
+     *
+     * The result [phase] is this.[phase] + [other].[phase].
+     */
     inline operator fun times(other: ComplexF): ComplexF {
-        val r0 = real
-        val i0 = imaginary
-        val r1 = other.real
-        val i1 = other.imaginary
+        val (aR: Float, aI: Float) = this
+        val (bR: Float, bI: Float) = other
 
-        return ComplexF(r0 * r1 - i0 * i1, i0 * r1 + r0 * i1)
+        return ComplexF(aR * bR - aI * bI, aI * bR + aR * bI)
     }
 
-    /** Multiplies this complex number by the [other] real number. **/
-    inline operator fun times(other: Float) = ComplexF(real * other, imaginary * other)
+    /**
+     * Multiplies this complex number by the [other] real number.
+     *
+     * The result [magnitude] is this.[magnitude] * [other].
+     */
+    inline operator fun times(other: Float) =
+        ComplexF(real * other, imaginary * other)
 
-    /** Divides this complex number by the [other] complex number. **/
+    /**
+     * Multiplies this complex number by the [other] vector.
+     *
+     * The result [magnitude] is this.[magnitude] * [other].[magnitude].
+     *
+     * The result [phase] is [other].[Vector2F.toComplexF].[phase] - this.[phase].
+     */
+    inline operator fun times(other: Vector2F): Vector2F {
+        val r: Float = real
+        val i: Float = imaginary
+        val (x: Float, y: Float) = other
+
+        return Vector2F(r * x + i * y, r * y - i * x)
+    }
+
+    /**
+     * Divides this complex number by the [other] complex number.
+     *
+     * The result [magnitude] is this.[magnitude] / [other].[magnitude].
+     *
+     * The result [phase] is this.[phase] - [other].[phase].
+     */
     operator fun div(other: ComplexF): ComplexF {
-        val r0 = real
-        val i0 = imaginary
-        val r1 = other.real
-        val i1 = other.imaginary
+        val (aR: Float, aI: Float) = this
+        val (bR: Float, bI: Float) = other
+        val factor: Float = 1f / (bR * bR + bI * bI)
 
-        return if (i1.absoluteValue < r1.absoluteValue) {
-            val i1OverR1 = i1 / r1
-            val divisor = r1 + i1 * i1OverR1
-
-            ComplexF((r0 + i0 * i1OverR1) / divisor, (i0 - r0 * i1OverR1) / divisor)
-        } else {
-            val r1OverI1 = r1 / i1
-            val divisor = i1 + r1 * r1OverI1
-
-            ComplexF((i0 + r0 * r1OverI1) / divisor, (i0 * r1OverI1 - r0) / divisor)
-        }
+        return ComplexF((aR * bR + aI * bI) * factor, (aI * bR - aR * bI) * factor)
     }
 
-    /** Divides this complex number by the [other] real number. **/
+    /**
+     * Divides this complex number by the [other] real number.
+     *
+     * The result [magnitude] is this.[magnitude] / [other].
+     */
     inline operator fun div(other: Float) = ComplexF(real / other, imaginary / other)
+
+    /**
+     * Divides this complex number by the [other] vector.
+     *
+     * The result [magnitude] is this.[magnitude] / [other].[magnitude].
+     *
+     * The result [phase] is [other].[Vector2F.toComplexF].[phase] - this.[phase].
+     */
+    inline operator fun div(other: Vector2F): Vector2F {
+        val (r: Float, i: Float) = this
+        val (x: Float, y: Float) = other
+        val factor: Float = 1f / (x * x + y * y)
+
+        return Vector2F((r * x + i * y) * factor, (r * y - i * x) * factor)
+    }
 
     companion object {
         private const val LN10_INVERTED = 0.4342945f
