@@ -284,7 +284,7 @@ value class ComplexF internal constructor(
      *
      * The result [magnitude] is this.[magnitude] * [other].[magnitude].
      *
-     * The result [phase] is [other].[Vector2F.toComplexF].[phase] - this.[phase].
+     * The result [phase] is [other].[toComplexF][Vector2F.toComplexF].[phase] - this.[phase].
      */
     inline operator fun times(other: Vector2F): Vector2F {
         val r: Float = real
@@ -321,7 +321,7 @@ value class ComplexF internal constructor(
      *
      * The result [magnitude] is this.[magnitude] / [other].[magnitude].
      *
-     * The result [phase] is [other].[Vector2F.toComplexF].[phase] - this.[phase].
+     * The result [phase] is [other].[toComplexF][Vector2F.toComplexF].[phase] - this.[phase].
      */
     inline operator fun div(other: Vector2F): Vector2F {
         val (r: Float, i: Float) = this

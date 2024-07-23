@@ -119,97 +119,97 @@ class ComplexFTests {
     }
 
     @ParameterizedTest
-    @MethodSource("plusComplexArgs")
+    @MethodSource("plusComplexFArgs")
     fun unaryPlusOperatorReturnsCorrectValue(
         complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertEquals(expected.value, +complex.value)
 
     @ParameterizedTest
-    @MethodSource("minusComplexArgs")
+    @MethodSource("minusComplexFArgs")
     fun unaryMinusOperatorReturnsCorrectValue(
         complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertEquals(expected.value, -complex.value)
 
     @ParameterizedTest
-    @MethodSource("complexPlusComplexArgs")
+    @MethodSource("complexFPlusComplexFArgs")
     fun complexPlusComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value + b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexPlusFloatArgs")
+    @MethodSource("complexFPlusFloatArgs")
     fun complexPlusFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value + b, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("floatPlusComplexArgs")
+    @MethodSource("floatPlusComplexFArgs")
     fun floatPlusComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a + b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexMinusComplexArgs")
+    @MethodSource("complexFMinusComplexFArgs")
     fun complexMinusComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value - b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexMinusFloatArgs")
+    @MethodSource("complexFMinusFloatArgs")
     fun complexMinusFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value - b, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("floatMinusComplexArgs")
+    @MethodSource("floatMinusComplexFArgs")
     fun floatMinusComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a - b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexTimesComplexFArgs")
+    @MethodSource("complexFTimesComplexFArgs")
     fun complexTimesComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value * b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexTimesFloatArgs")
+    @MethodSource("complexFTimesFloatArgs")
     fun complexTimesFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value * b, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexTimesVector2FArgs")
+    @MethodSource("complexFTimesVector2FArgs")
     fun complexTimesVectorReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
     ) = assertApproximation(expected.value, a.value * b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("floatTimesComplexArgs")
+    @MethodSource("floatTimesComplexFArgs")
     fun floatTimesComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a * b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexDivComplexFArgs")
+    @MethodSource("complexFDivComplexFArgs")
     fun complexDivComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value / b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexDivFloatArgs")
+    @MethodSource("complexFDivFloatArgs")
     fun complexDivFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a.value / b, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("complexDivVector2FArgs")
+    @MethodSource("complexFDivVector2FArgs")
     fun complexDivVector2FReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
     ) = assertApproximation(expected.value, a.value / b.value, tolerance = 0.001f)
 
     @ParameterizedTest
-    @MethodSource("floatDivComplexArgs")
+    @MethodSource("floatDivComplexFArgs")
     fun floatDivComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
     ) = assertApproximation(expected.value, a / b.value, tolerance = 0.001f)
@@ -591,7 +591,7 @@ class ComplexFTests {
         fun componentsArgs(): List<Arguments> = complexComponentsArgs()
 
         @JvmStatic
-        fun plusComplexArgs(): List<Arguments> = listOf(
+        fun plusComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)),
                 Wrapper(ComplexF(2f, 4f)),
@@ -607,7 +607,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun minusComplexArgs(): List<Arguments> = listOf(
+        fun minusComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)),
                 Wrapper(ComplexF(-2f, -4f)),
@@ -623,7 +623,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexPlusComplexArgs(): List<Arguments> = listOf(
+        fun complexFPlusComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)),
                 Wrapper(ComplexF(6f, -8f)),
@@ -637,7 +637,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexPlusFloatArgs(): List<Arguments> = listOf(
+        fun complexFPlusFloatArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)), 6f,
                 Wrapper(ComplexF(8f, 4f))
@@ -649,7 +649,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun floatPlusComplexArgs(): List<Arguments> = listOf(
+        fun floatPlusComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 2f, Wrapper(ComplexF(4f, 6f)),
                 Wrapper(ComplexF(6f, 6f))
@@ -661,7 +661,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexMinusComplexArgs(): List<Arguments> = listOf(
+        fun complexFMinusComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)),
                 Wrapper(ComplexF(6f, -8f)),
@@ -675,7 +675,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexMinusFloatArgs(): List<Arguments> = listOf(
+        fun complexFMinusFloatArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)), 6f,
                 Wrapper(ComplexF(-4f, 4f))
@@ -687,7 +687,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun floatMinusComplexArgs(): List<Arguments> = listOf(
+        fun floatMinusComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 2f, Wrapper(ComplexF(4f, 6f)),
                 Wrapper(ComplexF(-2f, -6f))
@@ -699,7 +699,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexTimesComplexFArgs(): List<Arguments> = listOf(
+        fun complexFTimesComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)),
                 Wrapper(ComplexF(6f, -8f)),
@@ -733,7 +733,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexTimesFloatArgs(): List<Arguments> = listOf(
+        fun complexFTimesFloatArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)), 6f,
                 Wrapper(ComplexF(12f, 24f))
@@ -749,7 +749,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexTimesVector2FArgs(): List<Arguments> = listOf(
+        fun complexFTimesVector2FArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f)) * 2f),
                 Wrapper(
@@ -780,7 +780,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun floatTimesComplexArgs(): List<Arguments> = listOf(
+        fun floatTimesComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 2f, Wrapper(ComplexF(6f, -8f)),
                 Wrapper(ComplexF(12f, -16f))
@@ -796,7 +796,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexDivComplexFArgs(): List<Arguments> = listOf(
+        fun complexFDivComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)),
                 Wrapper(ComplexF(6f, -8f)),
@@ -830,7 +830,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexDivVector2FArgs(): List<Arguments> = listOf(
+        fun complexFDivVector2FArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(30f)) * 2f),
                 Wrapper(
@@ -861,7 +861,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun complexDivFloatArgs(): List<Arguments> = listOf(
+        fun complexFDivFloatArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(ComplexF(2f, 4f)), 6f,
                 Wrapper(ComplexF(0.33333f, 0.66667f))
@@ -877,7 +877,7 @@ class ComplexFTests {
         )
 
         @JvmStatic
-        fun floatDivComplexArgs(): List<Arguments> = listOf(
+        fun floatDivComplexFArgs(): List<Arguments> = listOf(
             Arguments.of(
                 2f, Wrapper(ComplexF(6f, -8f)),
                 Wrapper(ComplexF(0.12f, 0.16f))
