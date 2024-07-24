@@ -145,7 +145,7 @@ value class ComplexF internal constructor(
 
     /**
      * Converts this [ComplexF] value to [Vector2F], where [real] and [imaginary] represents the
-     * [Vector2F.x] and [Vector2F.y] components of a vector.
+     * [x][Vector2F.x] and [y][Vector2F.y] components of a vector.
      *
      * Note that this type of conversion is not mathematically correct.
      */

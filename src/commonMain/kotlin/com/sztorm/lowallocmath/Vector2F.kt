@@ -244,8 +244,10 @@ value class Vector2F internal constructor(internal val data: Long) {
     inline fun toVector2I() = Vector2I(x.toInt(), y.toInt())
 
     /**
-     * Converts this [Vector2F] value to [ComplexF], where [x] and [y] represents the real and
-     * imaginary parts of a complex number.
+     * Converts this [Vector2F] value to [ComplexF], where [x] and [y] represents the
+     * [real][ComplexF.real] and [imaginary][ComplexF.imaginary] parts of a complex number.
+     *
+     * Note that this type of conversion is not mathematically correct.
      */
     fun toComplexF() = ComplexF(data)
 
@@ -284,14 +286,53 @@ value class Vector2F internal constructor(internal val data: Long) {
     /** Multiplies this vector by the [other] vector component-wise. **/
     inline operator fun times(other: Vector2F) = Vector2F(x * other.x, y * other.y)
 
-    /** Multiplies this vector by the [other] scalar. **/
+    /**
+     * Multiplies this vector by the [other] scalar.
+     *
+     * The result [magnitude] is this.[magnitude] * [other].
+     */
     inline operator fun times(other: Float) = Vector2F(x * other, y * other)
+
+    /**
+     * Multiplies this vector by the [other] complex number.
+     *
+     * The result [magnitude] is this.[magnitude] * [other].[magnitude][ComplexF.magnitude].
+     *
+     * The result [phase][ComplexF.phase] is this.[toComplexF].[phase][ComplexF.phase] +
+     * [other].[phase][ComplexF.phase].
+     */
+    inline operator fun times(other: ComplexF): Vector2F {
+        val (x: Float, y: Float) = this
+        val (r: Float, i: Float) = other
+
+        return Vector2F(x * r - y * i, x * i + y * r)
+    }
 
     /** Divides this vector by the [other] vector component-wise. **/
     inline operator fun div(other: Vector2F) = Vector2F(x / other.x, y / other.y)
 
-    /** Divides this vector by the [other] scalar. **/
+    /**
+     * Divides this vector by the [other] scalar.
+     *
+     * The result [magnitude] is this.[magnitude] / [other].
+     */
     inline operator fun div(other: Float) = Vector2F(x / other, y / other)
+
+    /**
+     * Divides this vector by the [other] complex number.
+     *
+     * The result [magnitude] is this.[magnitude] / [other].[magnitude][ComplexF.magnitude].
+     *
+     * The result [phase][ComplexF.phase] is this.[toComplexF].[phase][ComplexF.phase] -
+     * [other].[phase][ComplexF.phase].
+     */
+    inline operator fun div(other: ComplexF): Vector2F {
+        val (x: Float, y: Float) = this
+        val (r: Float, i: Float) = other
+        val factor: Float = 1f / (r * r + i * i)
+
+        return Vector2F((x * r + y * i) * factor, (y * r - x * i) * factor)
+    }
 
     companion object {
         /** The number of bits used to represent an instance of [Vector2F] in a binary form. **/
