@@ -20,26 +20,26 @@ inline operator fun Float.plus(other: ComplexF) =
 inline operator fun Float.minus(other: ComplexF) =
     ComplexF(this - other.real, -other.imaginary)
 
-/** Multiplies this real number by the [other] complex number. **/
+/**
+ * Multiplies this real number by the [other] complex number.
+ *
+ * The result [magnitude][ComplexF.magnitude] is this * [other].[magnitude][ComplexF.magnitude].
+ */
 inline operator fun Float.times(other: ComplexF) =
     ComplexF(this * other.real, this * other.imaginary)
 
-/** Divides this real number by the [other] complex number. **/
+/**
+ * Divides this real number by the [other] complex number.
+ *
+ * The result [magnitude][ComplexF.magnitude] is this / [other].[magnitude][ComplexF.magnitude].
+ *
+ * The result [phase][ComplexF.phase] is -[other].[phase][ComplexF.phase].
+ */
 operator fun Float.div(other: ComplexF): ComplexF {
-    val r1 = other.real
-    val i1 = other.imaginary
+    val (r: Float, i: Float) = other
+    val factor: Float = this / (r * r + i * i)
 
-    return if (i1.absoluteValue < r1.absoluteValue) {
-        val i1OverR1 = i1 / r1
-        val divisor = r1 + i1 * i1OverR1
-
-        ComplexF(this / divisor, (-this * i1OverR1) / divisor)
-    } else {
-        val r1OverI1 = r1 / i1
-        val divisor = i1 + r1 * r1OverI1
-
-        ComplexF((this * r1OverI1) / divisor, -this / divisor)
-    }
+    return ComplexF(r * factor, -i * factor)
 }
 
 /**
