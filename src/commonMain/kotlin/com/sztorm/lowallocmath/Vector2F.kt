@@ -209,22 +209,6 @@ value class Vector2F internal constructor(internal val data: Long) {
         Vector2F(x / other.x, y / other.y)
 
     /**
-     * Returns the geometric product, which is a result of multiplying this vector by the [other]
-     * vector.
-     *
-     * Geometric product can be interpreted as a scaled rotation from this to the [other]
-     * vector. The scale is a product of magnitudes of this and the [other] vector.
-     */
-    infix fun geometric(other: Vector2F): ComplexF {
-        val (aX: Float, aY: Float) = this
-        val (bX: Float, bY: Float) = other
-        val dotProduct: Float = aX * bX + aY * bY
-        val perpDotProduct: Float = aX * bY - aY * bX
-
-        return ComplexF(dotProduct, perpDotProduct)
-    }
-
-    /**
      * Returns the smallest angle between this vector and the [other] vector. Angle is signed when
      * the shortest angular path from this vector to the [other] vector is clockwise.
      */
@@ -307,8 +291,24 @@ value class Vector2F internal constructor(internal val data: Long) {
     /** Subtracts the [other] vector from this vector. **/
     inline operator fun minus(other: Vector2F) = Vector2F(x - other.x, y - other.y)
 
-    /** Multiplies this vector by the [other] vector component-wise. **/
-    inline operator fun times(other: Vector2F) = Vector2F(x * other.x, y * other.y)
+    /**
+     * Multiplies this vector by the [other] vector.
+     *
+     * The result [magnitude] is this.[magnitude] * [other].[magnitude].
+     *
+     * The result [phase][ComplexF.phase] is [other].[toComplexF].[phase][ComplexF.phase] -
+     * this.[toComplexF].[phase][ComplexF.phase].
+     *
+     * This type of vector multiplication is also known as the geometric product.
+     */
+    inline operator fun times(other: Vector2F): ComplexF {
+        val (aX: Float, aY: Float) = this
+        val (bX: Float, bY: Float) = other
+        val dotProduct: Float = aX * bX + aY * bY
+        val perpDotProduct: Float = aX * bY - aY * bX
+
+        return ComplexF(dotProduct, perpDotProduct)
+    }
 
     /**
      * Multiplies this vector by the [other] scalar.
@@ -332,8 +332,21 @@ value class Vector2F internal constructor(internal val data: Long) {
         return Vector2F(x * r - y * i, x * i + y * r)
     }
 
-    /** Divides this vector by the [other] vector component-wise. **/
-    inline operator fun div(other: Vector2F) = Vector2F(x / other.x, y / other.y)
+    /**
+     * Divides this vector by the [other] vector.
+     *
+     * The result [magnitude] is this.[magnitude] / [other].[magnitude].
+     *
+     * The result [phase][ComplexF.phase] is [other].[toComplexF].[phase][ComplexF.phase] -
+     * this.[toComplexF].[phase][ComplexF.phase].
+     */
+    inline operator fun div(other: Vector2F): ComplexF {
+        val (aX: Float, aY: Float) = this
+        val (bX: Float, bY: Float) = other
+        val factor: Float = 1f / (bX * bX + bY * bY)
+
+        return ComplexF((aX * bX + aY * bY) * factor, (aX * bY - aY * bX) * factor)
+    }
 
     /**
      * Divides this vector by the [other] scalar.
