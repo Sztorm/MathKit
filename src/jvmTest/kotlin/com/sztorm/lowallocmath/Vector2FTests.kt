@@ -245,6 +245,12 @@ class Vector2FTests {
     ) = assertApproximation(expected.value, a.value / b)
 
     @ParameterizedTest
+    @MethodSource("floatDivVector2FArgs")
+    fun floatDivVectorReturnCorrectValue(
+        a: Float, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, a / b.value)
+
+    @ParameterizedTest
     @MethodSource("vector2FDivComplexFArgs")
     fun vectorDivComplexReturnCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<ComplexF>, expected: Wrapper<Vector2F>
@@ -944,6 +950,42 @@ class Vector2FTests {
                 Wrapper(Vector2F(-4f, 0.4f)),
                 -0.2f,
                 Wrapper(Vector2F(20f, -2f)),
+            ),
+        )
+
+        @JvmStatic
+        fun floatDivVector2FArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                0f,
+                Wrapper(Vector2F(2f, 4f)),
+                Wrapper(Vector2F(0f, 0f)),
+            ),
+            Arguments.of(
+                2f,
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(90f)).toVector2F() * 5f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(90f)).toVector2F() * 0.4f
+                ),
+            ),
+            Arguments.of(
+                2f,
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-110f)).toVector2F() * 0.1f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(-110f)).toVector2F() * 20f
+                ),
+            ),
+            Arguments.of(
+                0.1f,
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(200f)).toVector2F() * 4f
+                ),
+                Wrapper(
+                    ComplexF.fromAngle(AngleF.fromDegrees(200f)).toVector2F() * 0.025f
+                ),
             ),
         )
 

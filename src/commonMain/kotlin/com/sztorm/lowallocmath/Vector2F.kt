@@ -4,8 +4,24 @@ import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
 
-/** Multiplies this vector by the [other] scalar. **/
+/**
+ * Multiplies this scalar by the [other] vector.
+ *
+ * The result [magnitude][Vector2F.magnitude] is this * [other].[magnitude][Vector2F.magnitude].
+ */
 inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
+
+/**
+ * Divides this scalar by the [other] vector.
+ *
+ * The result [magnitude][Vector2F.magnitude] is this / [other].[magnitude][Vector2F.magnitude].
+ */
+inline operator fun Float.div(other: Vector2F): Vector2F {
+    val (x: Float, y: Float) = other
+    val factor: Float = this / (x * x + y * y)
+
+    return Vector2F(x * factor, y * factor)
+}
 
 /**
  * Represents a vector of two single-precision 32-bit IEEE 754 floating point numbers.
