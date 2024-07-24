@@ -184,6 +184,14 @@ value class Vector2F internal constructor(internal val data: Long) {
      */
     inline infix fun perpDot(other: Vector2F): Float = x * other.y - y * other.x
 
+    /** Multiplies this vector by the [other] vector component-wise. **/
+    inline infix fun multipliedComponentWiseBy(other: Vector2F) =
+        Vector2F(x * other.x, y * other.y)
+
+    /** Divides this vector by the [other] vector component-wise. **/
+    inline infix fun dividedComponentWiseBy(other: Vector2F) =
+        Vector2F(x / other.x, y / other.y)
+
     /**
      * Returns the geometric product, which is a result of multiplying this vector by the [other]
      * vector.

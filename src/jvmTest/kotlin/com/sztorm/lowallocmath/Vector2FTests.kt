@@ -114,6 +114,18 @@ class Vector2FTests {
         assertApproximation(expected, a.value perpDot b.value)
 
     @ParameterizedTest
+    @MethodSource("multipliedComponentWiseByArgs")
+    fun multipliedComponentWiseByReturnCorrectValue(
+        a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, a.value multipliedComponentWiseBy b.value)
+
+    @ParameterizedTest
+    @MethodSource("dividedComponentWiseByArgs")
+    fun dividedComponentWiseByReturnCorrectValue(
+        a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, a.value dividedComponentWiseBy b.value)
+
+    @ParameterizedTest
     @MethodSource("geometricArgs")
     fun geometricToReturnsCorrectValue(
         vector: Wrapper<Vector2F>, other: Wrapper<Vector2F>, expected: Wrapper<ComplexF>
@@ -499,6 +511,34 @@ class Vector2FTests {
             Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F(0f, 4f)), 12f),
             Arguments.of(Wrapper(Vector2F(1f, -2f)), Wrapper(Vector2F(-4f, 0.4f)), -7.6f),
             Arguments.of(Wrapper(Vector2F(3f, 4f)), Wrapper(Vector2F.ZERO), 0f),
+        )
+
+        @JvmStatic
+        fun multipliedComponentWiseByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(Vector2F(-6f, 4f)),
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(Vector2F(-4f, 0.4f)),
+                Wrapper(Vector2F(4f, -0.8f)),
+            ),
+        )
+
+        @JvmStatic
+        fun dividedComponentWiseByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(2f, 4f)),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(Vector2F(-0.666667f, 4f)),
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(Vector2F(-4f, 0.4f)),
+                Wrapper(Vector2F(0.25f, -5f)),
+            ),
         )
 
         @JvmStatic
