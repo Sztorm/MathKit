@@ -422,21 +422,14 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             isOutOfCorner -> {
                 val t: Float = cornerRadius / distance
 
-                center + (orientation * ComplexF(
-                    (cornerCenterX + dx * t),
-                    (cornerCenterY + dy * t)
-                )).toVector2F()
+                center + Vector2F(
+                    cornerCenterX + dx * t, cornerCenterY + dy * t
+                ) * orientation
             }
 
-            p1XAbs > halfWidth -> center + (orientation * ComplexF(
-                halfWidth.withSign(p1X),
-                p1Y
-            )).toVector2F()
+            p1XAbs > halfWidth -> center + Vector2F(halfWidth.withSign(p1X), p1Y) * orientation
 
-            p1YAbs > halfHeight -> center + (orientation * ComplexF(
-                p1X,
-                halfHeight.withSign(p1Y)
-            )).toVector2F()
+            p1YAbs > halfHeight -> center + Vector2F(p1X, halfHeight.withSign(p1Y)) * orientation
 
             else -> point
         }

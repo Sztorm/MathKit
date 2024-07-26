@@ -244,13 +244,13 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
                 return point
             }
             if (p1X.absoluteValue >= halfSideLength) {
-                val vertexPoint = ComplexF(halfSideLength.withSign(p1X), -inradius)
+                val vertexPoint = Vector2F(halfSideLength.withSign(p1X), -inradius)
 
-                return (orientation * vertexPoint).toVector2F() + center
+                return vertexPoint * orientation + center
             }
-            val edgePoint = ComplexF(p1X, -inradius)
+            val edgePoint = Vector2F(p1X, -inradius)
 
-            return (orientation * edgePoint).toVector2F() + center
+            return edgePoint * orientation + center
         }
         val add120DegRotation = ComplexF(-0.5f, -(0.8660254f.withSign(p1X)))
         val p2: ComplexF = add120DegRotation * p1
@@ -261,13 +261,13 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
             return point
         }
         if (p2X.absoluteValue >= halfSideLength) {
-            val vertexPoint = ComplexF(halfSideLength.withSign(p2X), -inradius)
+            val vertexPoint = Vector2F(halfSideLength.withSign(p2X), -inradius)
 
-            return (add120DegRotation.conjugate * orientation * vertexPoint).toVector2F() + center
+            return vertexPoint * (add120DegRotation.conjugate * orientation) + center
         }
-        val edgePoint = ComplexF(p2X, -inradius)
+        val edgePoint = Vector2F(p2X, -inradius)
 
-        return (add120DegRotation.conjugate * orientation * edgePoint).toVector2F() + center
+        return edgePoint * (add120DegRotation.conjugate * orientation) + center
     }
 
     fun intersects(ray: Ray): Boolean {

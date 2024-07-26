@@ -1097,21 +1097,12 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
             isOutOfCorner -> {
                 val t: Float = cornerRadius / distance
 
-                center + (rotation * ComplexF(
-                    (cornerCenterX + dx * t),
-                    (cornerCenterY + dy * t)
-                )).toVector2F()
+                center + Vector2F(cornerCenterX + dx * t, cornerCenterY + dy * t) * rotation
             }
 
-            p1XAbs > halfWidth -> center + (rotation * ComplexF(
-                halfWidth.withSign(p1X),
-                p1Y
-            )).toVector2F()
+            p1XAbs > halfWidth -> center + Vector2F(halfWidth.withSign(p1X), p1Y) * rotation
 
-            p1YAbs > halfHeight -> center + (rotation * ComplexF(
-                p1X,
-                halfHeight.withSign(p1Y)
-            )).toVector2F()
+            p1YAbs > halfHeight -> center + Vector2F(p1X, halfHeight.withSign(p1Y)) * rotation
 
             else -> point
         }

@@ -49,7 +49,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             points[1] = Vector2F(-halfSideLength, inradius)
 
             for (i in 2..halfCount) {
-                points[i] = (exteriorRotation * points[i - 1].toComplexF()).toVector2F()
+                points[i] = points[i - 1] * exteriorRotation
             }
             for (i in halfCount + 1 until sideCount) {
                 val oppositePoint: Vector2F = points[sideCount - i + 1]
@@ -61,7 +61,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             points[0] = Vector2F(0f, circumradius)
 
             for (i in 1..halfCount) {
-                points[i] = (exteriorRotation * points[i - 1].toComplexF()).toVector2F()
+                points[i] = points[i - 1] * exteriorRotation
             }
             for (i in (halfCount + 1) until sideCount) {
                 val oppositePoint: Vector2F = points[sideCount - i]
@@ -69,7 +69,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             }
         }
         for (i in 0 until sideCount) {
-            points[i] = center + (orientation * points[i].toComplexF()).toVector2F()
+            points[i] = center + points[i] * orientation
         }
         _center = center
         _orientation = orientation
@@ -738,7 +738,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             points[1] = Vector2F(-halfSideLength, inradius)
 
             for (i in 2..halfCount) {
-                points[i] = (exteriorRotation * points[i - 1].toComplexF()).toVector2F()
+                points[i] = points[i - 1] * exteriorRotation
             }
             for (i in halfCount + 1 until sideCount) {
                 val oppositePoint: Vector2F = points[sideCount - i + 1]
@@ -750,7 +750,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             points[0] = Vector2F(0f, circumradius)
 
             for (i in 1..halfCount) {
-                points[i] = (exteriorRotation * points[i - 1].toComplexF()).toVector2F()
+                points[i] = points[i - 1] * exteriorRotation
             }
             for (i in (halfCount + 1) until sideCount) {
                 val oppositePoint: Vector2F = points[sideCount - i]
@@ -758,7 +758,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             }
         }
         for (i in 0 until sideCount) {
-            points[i] = center + (orientation * points[i].toComplexF()).toVector2F()
+            points[i] = center + points[i] * orientation
         }
         _center = center
         _orientation = orientation
