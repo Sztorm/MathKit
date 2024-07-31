@@ -102,10 +102,24 @@ class AnnulusTests {
         }
 
     @ParameterizedTest
-    @MethodSource("annularRadiusArgs")
-    fun annularRadiusReturnsCorrectValue(annulus: Annulus, expected: Float) =
+    @MethodSource("widthArgs")
+    fun widthReturnsCorrectValue(annulus: Annulus, expected: Float) =
         assertImmutabilityOf(annulus) {
-            assertApproximation(expected, annulus.annularRadius)
+            assertApproximation(expected, annulus.width)
+        }
+
+    @ParameterizedTest
+    @MethodSource("outerDiameterArgs")
+    fun outerDiameterReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.outerDiameter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("innerDiameterArgs")
+    fun innerDiameterReturnsCorrectValue(annulus: Annulus, expected: Float) =
+        assertImmutabilityOf(annulus) {
+            assertApproximation(expected, annulus.innerDiameter)
         }
 
     @ParameterizedTest
@@ -650,7 +664,7 @@ class AnnulusTests {
         }
 
         @JvmStatic
-        fun annularRadiusArgs(): List<Arguments> {
+        fun widthArgs(): List<Arguments> {
             val mutableAnnulusArgs = listOf(
                 Arguments.of(
                     MutableAnnulus(
@@ -686,6 +700,18 @@ class AnnulusTests {
                 mutableAnnulusArgs,
                 defaultAnnulusArgs
             ).flatten()
+        }
+
+        @JvmStatic
+        fun outerDiameterArgs(): List<Arguments> = outerRadiusArgs().map {
+            val args = it.get()
+            Arguments.of(args[0], args[1] as Float * 2f)
+        }
+
+        @JvmStatic
+        fun innerDiameterArgs(): List<Arguments> = innerRadiusArgs().map {
+            val args = it.get()
+            Arguments.of(args[0], args[1] as Float * 2f)
         }
 
         @JvmStatic

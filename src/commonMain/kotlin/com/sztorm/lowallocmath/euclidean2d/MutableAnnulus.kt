@@ -57,8 +57,14 @@ class MutableAnnulus : Annulus, MutableTransformable {
     override val perimeter: Float
         get() = (2.0 * PI).toFloat() * (_outerRadius + _innerRadius)
 
-    override val annularRadius: Float
+    override val width: Float
         get() = _outerRadius - _innerRadius
+
+    override val outerDiameter: Float
+        get() = _outerRadius * 2f
+
+    override val innerDiameter: Float
+        get() = _innerRadius * 2f
 
     override val position: Vector2F
         get() = _center

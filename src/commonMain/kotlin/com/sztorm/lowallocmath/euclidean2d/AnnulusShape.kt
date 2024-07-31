@@ -9,8 +9,14 @@ interface AnnulusShape : Shape {
     val innerRadius: Float
 
     /**
-     * Returns the annular radius of this annulus. Annular radius is the difference between the
-     * outer radius and the inner radius.
+     * Returns the width of this annulus. Width is the difference between the outer radius and the
+     * inner radius.
      */
-    val annularRadius: Float
+    val width: Float
+
+    /** Returns the outer diameter of this annulus. **/
+    val outerDiameter: Float
+
+    /** Returns the inner diameter of this annulus. **/
+    val innerDiameter: Float
 }

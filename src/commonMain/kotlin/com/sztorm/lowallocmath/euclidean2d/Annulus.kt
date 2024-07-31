@@ -24,11 +24,17 @@ interface Annulus : AnnulusShape, Transformable {
     override val perimeter: Float
         get() = (2.0 * PI).toFloat() * (outerRadius + innerRadius)
 
-    override val annularRadius: Float
+    override val width: Float
         get() = outerRadius - innerRadius
 
     override val position: Vector2F
         get() = center
+
+    override val outerDiameter: Float
+        get() = outerRadius * 2f
+
+    override val innerDiameter: Float
+        get() = innerRadius * 2f
 
     override fun movedBy(displacement: Vector2F): Annulus = copy(center = center + displacement)
 
