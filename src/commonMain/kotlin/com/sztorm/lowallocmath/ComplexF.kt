@@ -231,10 +231,10 @@ value class ComplexF internal constructor(
     inline fun copy(real: Float = this.real, imaginary: Float = this.imaginary) =
         ComplexF(real, imaginary)
 
-    /** Real part of the complex number. **/
+    /** Returns the [real] part of this complex number. **/
     inline operator fun component1(): Float = real
 
-    /** Imaginary part of the complex number. **/
+    /** Returns the [imaginary] part of this complex number. **/
     inline operator fun component2(): Float = imaginary
 
     /** Returns this complex number. **/

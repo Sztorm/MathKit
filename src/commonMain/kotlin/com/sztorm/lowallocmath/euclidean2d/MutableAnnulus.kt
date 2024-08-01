@@ -11,12 +11,14 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
+/** Represents a mutable transformable annulus in a two-dimensional Euclidean space. **/
 class MutableAnnulus : Annulus, MutableTransformable {
     private var _center: Vector2F
     private var _orientation: ComplexF
     private var _outerRadius: Float
     private var _innerRadius: Float
 
+    /** Creates a new instance of [MutableAnnulus]. **/
     constructor(center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float) {
         throwWhenConstructorArgumentsAreIllegal(outerRadius, innerRadius)
         _center = center
@@ -348,6 +350,7 @@ class MutableAnnulus : Annulus, MutableTransformable {
         _innerRadius = innerRadius
     }
 
+    /** Sets the specified properties of this instance. **/
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -366,6 +369,14 @@ class MutableAnnulus : Annulus, MutableTransformable {
         tag = null
     )
 
+    /**
+     * Sets this annulus with the result of interpolation [from] one annulus [to] another annulus
+     * [by] a factor.
+     *
+     * @param from The annulus from which the interpolation starts.
+     * @param to The annulus at which the interpolation ends.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: Annulus, to: Annulus, by: Float) {
         _center = Vector2F.lerp(from.center, to.center, by)
         _orientation = ComplexF.slerp(from.orientation, to.orientation, by)
@@ -466,6 +477,7 @@ class MutableAnnulus : Annulus, MutableTransformable {
             _outerRadius == other.outerRadius &&
             _innerRadius == other.innerRadius
 
+    /** Indicates whether the other [MutableAnnulus] is equal to this one. **/
     fun equals(other: MutableAnnulus): Boolean =
         _center == other._center &&
                 _orientation == other._orientation &&

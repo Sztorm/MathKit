@@ -11,11 +11,20 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
+/** Creates a new instance of [Annulus]. **/
 fun Annulus(
     center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
 ): Annulus = MutableAnnulus(center, orientation, outerRadius, innerRadius)
 
+/**
+ * Represents a transformable annulus in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * [center], [orientation], [outerRadius], and [innerRadius] properties are independent of other
+ * properties and their computational complexity is trivial.
+ */
 interface Annulus : AnnulusShape, Transformable {
+    /** Returns the center of this annulus. **/
     val center: Vector2F
 
     override val area: Float
@@ -27,6 +36,11 @@ interface Annulus : AnnulusShape, Transformable {
     override val width: Float
         get() = outerRadius - innerRadius
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -175,6 +189,12 @@ interface Annulus : AnnulusShape, Transformable {
         orientation = orientation
     )
 
+    /**
+     * Returns a copy of this annulus interpolated [to] other annulus [by] a factor.
+     *
+     * @param to The annulus to which this annulus is interpolated to.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: Annulus, by: Float): Annulus = copy(
         center = Vector2F.lerp(center, to.center, by),
         orientation = ComplexF.slerp(orientation, to.orientation, by),
@@ -182,6 +202,7 @@ interface Annulus : AnnulusShape, Transformable {
         innerRadius = Float.lerp(innerRadius, to.innerRadius, by)
     )
 
+    /** Returns the closest point to the given [point] on this annulus. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val outerRadius: Float = outerRadius
         val innerRadius: Float = innerRadius
@@ -207,6 +228,7 @@ interface Annulus : AnnulusShape, Transformable {
         }
     }
 
+    /** Returns `true` if this annulus intersects the given [annulus]. **/
     fun intersects(annulus: Annulus): Boolean {
         val distance: Float = center.distanceTo(annulus.center)
         val otherAnnulusOuterRadius: Float = annulus.outerRadius
@@ -218,6 +240,7 @@ interface Annulus : AnnulusShape, Transformable {
                 (otherAnnulusInnerRadius <= (outerRadius + distance))
     }
 
+    /** Returns `true` if this annulus intersects the given [circle]. **/
     fun intersects(circle: Circle): Boolean {
         val distance: Float = center.distanceTo(circle.center)
         val circleRadius: Float = circle.radius
@@ -226,6 +249,7 @@ interface Annulus : AnnulusShape, Transformable {
                 (distance <= (outerRadius + circleRadius))
     }
 
+    /** Returns `true` if this annulus intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val rayOrigin: Vector2F = ray.origin
         val rayDirection: Vector2F = ray.direction
@@ -240,12 +264,14 @@ interface Annulus : AnnulusShape, Transformable {
         return closestPointOnRay.distanceTo(annulusCenter) <= annulusOuterRadius
     }
 
+    /** Returns `true` if this annulus contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val distance: Float = center.distanceTo(point)
 
         return distance >= innerRadius && distance <= outerRadius
     }
 
+    /** Returns `true` if this annulus contains the whole given [annulus]. **/
     operator fun contains(annulus: Annulus): Boolean {
         val distance: Float = center.distanceTo(annulus.center)
         val otherAnnulusOuterRadius: Float = annulus.outerRadius
@@ -257,6 +283,7 @@ interface Annulus : AnnulusShape, Transformable {
                         (innerRadius <= (distance + otherAnnulusInnerRadius)))
     }
 
+    /** Returns `true` if this annulus contains the whole given [circle]. **/
     operator fun contains(circle: Circle): Boolean {
         val distance: Float = center.distanceTo(circle.center)
         val circleRadius: Float = circle.radius
@@ -265,6 +292,7 @@ interface Annulus : AnnulusShape, Transformable {
                 (innerRadius <= (distance - circleRadius))
     }
 
+    /** Returns a copy of this instance with specified properties changed. **/
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -272,11 +300,15 @@ interface Annulus : AnnulusShape, Transformable {
         innerRadius: Float = this.innerRadius
     ): Annulus
 
+    /** Returns the [center] of this annulus. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this annulus. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [outerRadius] of this annulus. **/
     operator fun component3(): Float = outerRadius
 
+    /** Returns the [innerRadius] of this annulus. **/
     operator fun component4(): Float = innerRadius
 }

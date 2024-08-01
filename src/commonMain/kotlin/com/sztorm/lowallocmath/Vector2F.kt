@@ -262,10 +262,10 @@ value class Vector2F internal constructor(internal val data: Long) {
     /** Returns a copy of this instance with specified properties altered. **/
     inline fun copy(x: Float = this.x, y: Float = this.y) = Vector2F(x, y)
 
-    /** First component of the vector. **/
+    /** Returns the [x] component of this vector. **/
     inline operator fun component1(): Float = x
 
-    /** Second component of the vector. **/
+    /** Returns the [y] component of this vector. **/
     inline operator fun component2(): Float = y
 
     /**
