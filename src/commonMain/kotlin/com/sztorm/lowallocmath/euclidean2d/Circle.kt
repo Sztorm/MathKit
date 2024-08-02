@@ -9,10 +9,19 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
+/** Creates a new instance of [Circle]. **/
 fun Circle(center: Vector2F, orientation: ComplexF, radius: Float): Circle =
     MutableCircle(center, orientation, radius)
 
+/**
+ * Represents a transformable circle in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * [center], [orientation], and [radius] properties are independent of other properties and their
+ * computational complexity is trivial.
+ */
 interface Circle : CircleShape, Transformable {
+    /** Returns the center of this circle. **/
     val center: Vector2F
 
     override val area: Float
@@ -24,6 +33,11 @@ interface Circle : CircleShape, Transformable {
     override val diameter: Float
         get() = 2f * radius
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -148,12 +162,19 @@ interface Circle : CircleShape, Transformable {
         orientation = orientation
     )
 
+    /**
+     * Returns a copy of this circle interpolated [to] other circle [by] a factor.
+     *
+     * @param to The circle to which this circle is interpolated.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: Circle, by: Float): Circle = copy(
         center = Vector2F.lerp(center, to.center, by),
         orientation = ComplexF.slerp(orientation, to.orientation, by),
         radius = Float.lerp(radius, to.radius, by)
     )
 
+    /** Returns the closest point to the given [point] on this circle. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val radius: Float = radius
         val (cx: Float, cy: Float) = center
@@ -166,6 +187,7 @@ interface Circle : CircleShape, Transformable {
         else point
     }
 
+    /** Returns `true` if this circle intersects the given [annulus]. **/
     fun intersects(annulus: Annulus): Boolean {
         val distance: Float = center.distanceTo(annulus.center)
         val radius: Float = radius
@@ -174,9 +196,11 @@ interface Circle : CircleShape, Transformable {
                 (distance <= (annulus.outerRadius + radius))
     }
 
+    /** Returns `true` if this circle intersects the given [circle]. **/
     fun intersects(circle: Circle): Boolean =
         center.distanceTo(circle.center) <= radius + circle.radius
 
+    /** Returns `true` if this circle intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val rayOrigin: Vector2F = ray.origin
         val rayDirection: Vector2F = ray.direction
@@ -191,23 +215,30 @@ interface Circle : CircleShape, Transformable {
         return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
     }
 
+    /** Returns `true` if this circle contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean = center.distanceTo(point) <= radius
 
+    /** Returns `true` if this circle contains the whole given [annulus]. **/
     operator fun contains(annulus: Annulus): Boolean =
         center.distanceTo(annulus.center) <= radius - annulus.outerRadius
 
+    /** Returns `true` if this circle contains the whole given [circle]. **/
     operator fun contains(circle: Circle): Boolean =
         center.distanceTo(circle.center) <= radius - circle.radius
 
+    /** Returns a copy of this instance with specified properties changed. **/
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
         radius: Float = this.radius
     ): Circle
 
+    /** Returns the [center] of this circle. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this circle. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [radius] of this circle. **/
     operator fun component3(): Float = radius
 }

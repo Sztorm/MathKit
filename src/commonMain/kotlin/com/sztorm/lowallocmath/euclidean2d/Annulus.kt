@@ -192,7 +192,7 @@ interface Annulus : AnnulusShape, Transformable {
     /**
      * Returns a copy of this annulus interpolated [to] other annulus [by] a factor.
      *
-     * @param to The annulus to which this annulus is interpolated to.
+     * @param to The annulus to which this annulus is interpolated.
      * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: Annulus, by: Float): Annulus = copy(
