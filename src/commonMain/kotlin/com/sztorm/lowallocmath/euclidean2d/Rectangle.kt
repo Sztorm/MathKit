@@ -3,12 +3,22 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/** Creates a new instance of [Rectangle]. **/
 fun Rectangle(center: Vector2F, orientation: ComplexF, width: Float, height: Float): Rectangle =
     MutableRectangle(center, orientation, width, height)
 
+/**
+ * Represents a transformable rectangle in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [center], [orientation], [width], [height] and the [copy] method are independent of
+ * other properties and the computational complexity of these members is trivial.
+ */
 interface Rectangle : RectangleShape, Transformable {
+    /** Returns the center of this rectangle. **/
     val center: Vector2F
 
+    /** Returns the point _A_ of this rectangle. **/
     val pointA: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -25,6 +35,7 @@ interface Rectangle : RectangleShape, Transformable {
             return Vector2F(cX + addendDiffX1X2, cY + addendSumY1Y2)
         }
 
+    /** Returns the point _B_ of this rectangle. **/
     val pointB: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -41,6 +52,7 @@ interface Rectangle : RectangleShape, Transformable {
             return Vector2F(cX - addendSumX1X2, cY + addendDiffY1Y2)
         }
 
+    /** Returns the point _C_ of this rectangle. **/
     val pointC: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -57,6 +69,7 @@ interface Rectangle : RectangleShape, Transformable {
             return Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2)
         }
 
+    /** Returns the point _D_ of this rectangle. **/
     val pointD: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -79,6 +92,11 @@ interface Rectangle : RectangleShape, Transformable {
     override val perimeter: Float
         get() = 2f * (width + height)
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -216,6 +234,12 @@ interface Rectangle : RectangleShape, Transformable {
         orientation = orientation
     )
 
+    /**
+     * Returns a copy of this rectangle interpolated [to] other rectangle [by] a factor.
+     *
+     * @param to The rectangle to which this rectangle is interpolated.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: Rectangle, by: Float): Rectangle = copy(
         center = Vector2F.lerp(center, to.center, by),
         orientation = ComplexF.slerp(orientation, to.orientation, by),
@@ -223,6 +247,7 @@ interface Rectangle : RectangleShape, Transformable {
         height = Float.lerp(height, to.height, by)
     )
 
+    /** Returns the closest point on this rectangle to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
@@ -239,6 +264,7 @@ interface Rectangle : RectangleShape, Transformable {
         return Vector2F(rotR * p2X - rotI * p2Y + cX, rotI * p2X + rotR * p2Y + cY)
     }
 
+    /** Returns `true` if this rectangle intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (rectCX: Float, rectCY: Float) = center
         val (rectOR: Float, rectOI: Float) = orientation
@@ -270,6 +296,7 @@ interface Rectangle : RectangleShape, Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    /** Returns `true` if this rectangle contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
@@ -284,8 +311,10 @@ interface Rectangle : RectangleShape, Transformable {
         return (p1X.absoluteValue <= halfWidth) and (p1Y.absoluteValue <= halfHeight)
     }
 
+    /** Creates an iterator over the points of this rectangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /** Returns a copy of this instance with specified properties changed. **/
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -293,12 +322,16 @@ interface Rectangle : RectangleShape, Transformable {
         height: Float = this.height
     ): Rectangle
 
+    /** Returns the [center] of this rectangle. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this rectangle. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [width] of this rectangle. **/
     operator fun component3(): Float = width
 
+    /** Returns the [height] of this rectangle. **/
     operator fun component4(): Float = height
 
     private class PointIterator(

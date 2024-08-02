@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/** Represents a mutable transformable rectangle in a two-dimensional Euclidean space. **/
 class MutableRectangle : Rectangle, MutableTransformable {
     private var _center: Vector2F
     private var _orientation: ComplexF
@@ -13,6 +14,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
     private var _pointC: Vector2F
     private var _pointD: Vector2F
 
+    /** Creates a new instance of [MutableRectangle]. **/
     constructor(center: Vector2F, orientation: ComplexF, width: Float, height: Float) {
         throwWhenConstructorArgumentsAreIllegal(width, height)
         val (cX: Float, cY: Float) = center
@@ -584,6 +586,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
     }
 
+    /** Sets the specified properties of this instance. **/
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -601,6 +604,14 @@ class MutableRectangle : Rectangle, MutableTransformable {
         height = Float.lerp(_height, to.height, by)
     )
 
+    /**
+     * Sets this rectangle with the result of interpolation [from] one rectangle [to] another
+     * rectangle [by] a factor.
+     *
+     * @param from The rectangle from which the interpolation starts.
+     * @param to The rectangle at which the interpolation ends.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: Rectangle, to: Rectangle, by: Float) = setInternal(
         center = Vector2F.lerp(from.center, to.center, by),
         orientation = ComplexF.slerp(from.orientation, to.orientation, by),
@@ -680,6 +691,7 @@ class MutableRectangle : Rectangle, MutableTransformable {
             _width == other.width &&
             _height == other.height
 
+    /** Indicates whether the other [MutableRectangle] is equal to this one. **/
     fun equals(other: MutableRectangle): Boolean =
         _center == other._center &&
                 _orientation == other._orientation &&
