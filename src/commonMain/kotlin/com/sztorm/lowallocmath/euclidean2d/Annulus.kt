@@ -20,8 +20,8 @@ fun Annulus(
  * Represents a transformable annulus in a two-dimensional Euclidean space.
  *
  * Implementations that use default-implemented members of this interface must make sure that the
- * [center], [orientation], [outerRadius], and [innerRadius] properties are independent of other
- * properties and their computational complexity is trivial.
+ * properties [center], [orientation], [outerRadius], [innerRadius] and the [copy] method are
+ * independent of other properties and the computational complexity of these members is trivial.
  */
 interface Annulus : AnnulusShape, Transformable {
     /** Returns the center of this annulus. **/

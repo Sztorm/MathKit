@@ -17,8 +17,8 @@ fun Circle(center: Vector2F, orientation: ComplexF, radius: Float): Circle =
  * Represents a transformable circle in a two-dimensional Euclidean space.
  *
  * Implementations that use default-implemented members of this interface must make sure that the
- * [center], [orientation], and [radius] properties are independent of other properties and their
- * computational complexity is trivial.
+ * properties [center], [orientation], [radius] and the [copy] method are independent of other
+ * properties and the computational complexity of these members is trivial.
  */
 interface Circle : CircleShape, Transformable {
     /** Returns the center of this circle. **/

@@ -8,6 +8,11 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
+/**
+ * Represents a mutable transformable line segment in a two-dimensional Euclidean space.
+ *
+ * @constructor Creates a new instance of [MutableLineSegment].
+ */
 class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, MutableTransformable {
     private var _pointA: Vector2F = pointA
     private var _pointB: Vector2F = pointB
@@ -488,6 +493,7 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         _pointB = pointB
     }
 
+    /** Sets the specified properties of this instance. **/
     fun set(pointA: Vector2F = this.pointA, pointB: Vector2F = this.pointB) =
         setInternal(pointA, pointB)
 
@@ -496,6 +502,14 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
         pointB = Vector2F.lerp(_pointB, to.pointB, by)
     )
 
+    /**
+     * Sets this line segment with the result of interpolation [from] one line segment [to] another
+     * line segment [by] a factor.
+     *
+     * @param from The line segment from which the interpolation starts.
+     * @param to The line segment at which the interpolation ends.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: LineSegment, to: LineSegment, by: Float) {
         _pointA = Vector2F.lerp(from.pointA, to.pointA, by)
         _pointB = Vector2F.lerp(from.pointB, to.pointB, by)
@@ -578,6 +592,7 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
             _pointA == other.pointA &&
             _pointB == other.pointB
 
+    /** Indicates whether the other [MutableLineSegment] is equal to this one. **/
     fun equals(other: MutableLineSegment): Boolean =
         _pointA == other._pointA && _pointB == other._pointB
 

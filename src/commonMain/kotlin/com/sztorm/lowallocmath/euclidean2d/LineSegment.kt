@@ -8,22 +8,46 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
+/** Creates a new instance of [LineSegment]. **/
 fun LineSegment(pointA: Vector2F, pointB: Vector2F): LineSegment =
     MutableLineSegment(pointA, pointB)
 
+/**
+ * Represents a transformable line segment in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [pointA], [pointB] and the [copy] method are independent of other properties and
+ * the computational complexity of these members is trivial.
+ */
 interface LineSegment : Transformable {
+    /** Returns the point _A_ of this line segment. **/
     val pointA: Vector2F
+
+    /** Returns the point _B_ of this line segment. **/
     val pointB: Vector2F
 
+    /** Returns the center of this line segment. **/
     val center: Vector2F
         get() = (pointA + pointB) * 0.5f
 
+    /** Returns the length of this line segment. **/
     val length: Float
         get() = pointA.distanceTo(pointB)
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = (pointA + pointB) * 0.5f
 
+    /**
+     * Returns the orientation of this object in reference to the origin of [ComplexF.ONE].
+     *
+     * The orientation of this line segment is determined by the [pointA] and its relation to the
+     * [center].
+     */
     override val orientation: ComplexF
         get() = (pointA - pointB).normalized.toComplexF()
 
@@ -296,11 +320,18 @@ interface LineSegment : Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): LineSegment =
         transformedToImpl(position, orientation)
 
+    /**
+     * Returns a copy of this line segment interpolated [to] other line segment [by] a factor.
+     *
+     * @param to The line segment to which this line segment is interpolated.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: LineSegment, by: Float): LineSegment = copy(
         pointA = Vector2F.lerp(pointA, to.pointA, by),
         pointB = Vector2F.lerp(pointB, to.pointB, by)
     )
 
+    /** Returns the closest point to the given [point] on this line segment. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val pointA: Vector2F = this.pointA
         val ab: Vector2F = pointB - pointA
@@ -319,6 +350,7 @@ interface LineSegment : Transformable {
         return pointA + ab * tClamped
     }
 
+    /** Returns `true` if this line segment intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (oX: Float, oY: Float) = ray.origin
         val (dirX: Float, dirY: Float) = ray.direction
@@ -351,6 +383,7 @@ interface LineSegment : Transformable {
         return false
     }
 
+    /** Returns `true` if this line segment approximately contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val pointA: Vector2F = this.pointA
         val ab: Vector2F = pointB - pointA
@@ -370,12 +403,16 @@ interface LineSegment : Transformable {
         }
     }
 
+    /** Creates an iterator over the points of this line segment. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /** Returns a copy of this instance with specified properties changed. **/
     fun copy(pointA: Vector2F = this.pointA, pointB: Vector2F = this.pointB): LineSegment
 
+    /** Returns the [pointA] of this line segment. **/
     operator fun component1(): Vector2F = pointA
 
+    /** Returns the [pointB] of this line segment. **/
     operator fun component2(): Vector2F = pointB
 
     private class PointIterator(
