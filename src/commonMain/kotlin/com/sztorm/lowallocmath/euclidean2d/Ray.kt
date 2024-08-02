@@ -5,15 +5,36 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.*
 
+/** Creates a new instance of [Ray]. **/
 fun Ray(origin: Vector2F, direction: Vector2F): Ray = MutableRay(origin, direction)
 
+/**
+ * Represents a transformable ray in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [origin], [direction] and the [copy] method are independent of other properties and
+ * the computational complexity of these members is trivial.
+ */
 interface Ray : Transformable {
+    /** Returns the origin of this ray. **/
     val origin: Vector2F
+
+    /** Returns the direction of this ray. **/
     val direction: Vector2F
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [origin].
+     */
     override val position: Vector2F
         get() = origin
 
+    /**
+     * Returns the orientation of this object in reference to the origin of [ComplexF.ONE].
+     *
+     * This property is determined by [direction].
+     */
     override val orientation: ComplexF
         get() = direction.toComplexF()
 
@@ -154,6 +175,12 @@ interface Ray : Transformable {
         direction = orientation.toVector2F()
     )
 
+    /**
+     * Returns a copy of this ray interpolated [to] other ray [by] a factor.
+     *
+     * @param to The ray to which this ray is interpolated.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: Ray, by: Float): Ray = copy(
         origin = Vector2F.lerp(origin, to.origin, by),
         direction = ComplexF
@@ -161,6 +188,7 @@ interface Ray : Transformable {
             .toVector2F()
     )
 
+    /** Returns the closest point on this ray to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val origin: Vector2F = this.origin
         val direction: Vector2F = this.direction
@@ -171,6 +199,7 @@ interface Ray : Transformable {
         else origin + direction * t
     }
 
+    /** Returns `true` if this ray intersects the given [annulus]. **/
     fun intersects(annulus: Annulus): Boolean {
         val rayOrigin: Vector2F = origin
         val rayDirection: Vector2F = direction
@@ -185,6 +214,7 @@ interface Ray : Transformable {
         return closestPointOnRay.distanceTo(annulusCenter) <= annulusOuterRadius
     }
 
+    /** Returns `true` if this ray intersects the given [circle]. **/
     fun intersects(circle: Circle): Boolean {
         val rayOrigin: Vector2F = origin
         val rayDirection: Vector2F = direction
@@ -199,6 +229,7 @@ interface Ray : Transformable {
         return closestPointOnRay.distanceTo(circleCenter) <= circleRadius
     }
 
+    /** Returns `true` if this ray intersects the given [lineSegment]. **/
     fun intersects(lineSegment: LineSegment): Boolean {
         val (oX: Float, oY: Float) = origin
         val (dirX: Float, dirY: Float) = direction
@@ -231,6 +262,7 @@ interface Ray : Transformable {
         return false
     }
 
+    /** Returns `true` if this ray intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (origAX: Float, origAY: Float) = origin
         val (dirAX: Float, dirAY: Float) = direction
@@ -255,6 +287,7 @@ interface Ray : Transformable {
         return (nomX * dirBCrossDirA >= 0f) and (nomY * dirBCrossDirA >= 0f)
     }
 
+    /** Returns `true` if this ray intersects the given [rectangle]. **/
     fun intersects(rectangle: Rectangle): Boolean {
         val (rectCX: Float, rectCY: Float) = rectangle.center
         val (rectOR: Float, rectOI: Float) = rectangle.orientation
@@ -286,6 +319,7 @@ interface Ray : Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    /** Returns `true` if this ray intersects the given [polygon]. **/
     fun intersects(polygon: RegularPolygon): Boolean {
         val (polyCX: Float, polyCY: Float) = polygon.center
         val (polyOR: Float, polyOI: Float) = polygon.orientation
@@ -397,6 +431,7 @@ interface Ray : Transformable {
         return false
     }
 
+    /** Returns `true` if this ray intersects the given [triangle]. **/
     fun intersects(triangle: RegularTriangle): Boolean {
         val (oX: Float, oY: Float) = origin
         val (dirX: Float, dirY: Float) = direction
@@ -463,6 +498,7 @@ interface Ray : Transformable {
         return (abo == bco) and (bco == aco)
     }
 
+    /** Returns `true` if this ray intersects the given [rectangle]. **/
     fun intersects(rectangle: RoundedRectangle): Boolean {
         val (rectCX: Float, rectCY: Float) = rectangle.center
         val (rectOR: Float, rectOI: Float) = rectangle.orientation
@@ -586,6 +622,7 @@ interface Ray : Transformable {
         return intersectsCircleD
     }
 
+    /** Returns `true` if this ray intersects the given [square]. **/
     fun intersects(square: Square): Boolean {
         val (rectCX: Float, rectCY: Float) = square.center
         val (rectOR: Float, rectOI: Float) = square.orientation
@@ -616,6 +653,7 @@ interface Ray : Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    /** Returns `true` if this ray intersects the given [triangle]. **/
     fun intersects(triangle: Triangle): Boolean {
         val (aX: Float, aY: Float) = triangle.pointA
         val (bX: Float, bY: Float) = triangle.pointB
@@ -669,6 +707,7 @@ interface Ray : Transformable {
         return (abo == bco) and (bco == aco)
     }
 
+    /** Returns `true` if this ray approximately contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val origin: Vector2F = this.origin
         val direction: Vector2F = this.direction
@@ -681,9 +720,12 @@ interface Ray : Transformable {
         return closestPoint.isApproximately(point)
     }
 
+    /** Returns a copy of this instance with specified properties changed. **/
     fun copy(origin: Vector2F = this.origin, direction: Vector2F = this.direction): Ray
 
+    /** Returns the [origin] of this ray. **/
     operator fun component1(): Vector2F = origin
 
+    /** Returns the [direction] of this ray. **/
     operator fun component2(): Vector2F = direction
 }

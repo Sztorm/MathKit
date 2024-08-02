@@ -202,7 +202,7 @@ interface Annulus : AnnulusShape, Transformable {
         innerRadius = Float.lerp(innerRadius, to.innerRadius, by)
     )
 
-    /** Returns the closest point to the given [point] on this annulus. **/
+    /** Returns the closest point on this annulus to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val outerRadius: Float = outerRadius
         val innerRadius: Float = innerRadius

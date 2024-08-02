@@ -5,6 +5,11 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.*
 
+/**
+ * Represents a mutable transformable ray in a two-dimensional Euclidean space.
+ *
+ * @constructor Creates a new instance of [MutableRay].
+ */
 class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransformable {
     private var _origin: Vector2F = origin
     private var _direction: Vector2F = direction
@@ -21,7 +26,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     override val orientation: ComplexF
         get() = _direction.toComplexF()
 
-    override fun movedBy(displacement: Vector2F) = MutableRay(_origin + displacement, _direction)
+    override fun movedBy(displacement: Vector2F) =
+        MutableRay(_origin + displacement, _direction)
 
     override fun movedTo(position: Vector2F) = MutableRay(position, _direction)
 
@@ -265,6 +271,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction = direction
     }
 
+    /** Sets the specified properties of this instance. **/
     fun set(origin: Vector2F = this.origin, direction: Vector2F = this.direction) =
         setInternal(origin, direction)
 
@@ -275,6 +282,14 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
             .toVector2F()
     )
 
+    /**
+     * Sets this ray with the result of interpolation [from] one ray [to] another ray [by] a
+     * factor.
+     *
+     * @param from The ray from which the interpolation starts.
+     * @param to The ray at which the interpolation ends.
+     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: Ray, to: Ray, by: Float) {
         _origin = Vector2F.lerp(from.origin, to.origin, by)
         _direction = ComplexF
@@ -809,6 +824,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
             _origin == other.origin &&
             _direction == other.direction
 
+    /** Indicates whether the other [MutableRay] is equal to this one. **/
     fun equals(other: MutableRay): Boolean =
         _origin == other._origin && _direction == other._direction
 

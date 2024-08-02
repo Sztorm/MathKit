@@ -174,7 +174,7 @@ interface Circle : CircleShape, Transformable {
         radius = Float.lerp(radius, to.radius, by)
     )
 
-    /** Returns the closest point to the given [point] on this circle. **/
+    /** Returns the closest point on this circle to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val radius: Float = radius
         val (cx: Float, cy: Float) = center

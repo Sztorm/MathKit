@@ -45,8 +45,7 @@ interface LineSegment : Transformable {
     /**
      * Returns the orientation of this object in reference to the origin of [ComplexF.ONE].
      *
-     * The orientation of this line segment is determined by the [pointA] and its relation to the
-     * [center].
+     * This property is determined by the [pointA] and its relation to the [center].
      */
     override val orientation: ComplexF
         get() = (pointA - pointB).normalized.toComplexF()
@@ -331,7 +330,7 @@ interface LineSegment : Transformable {
         pointB = Vector2F.lerp(pointB, to.pointB, by)
     )
 
-    /** Returns the closest point to the given [point] on this line segment. **/
+    /** Returns the closest point on this line segment to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val pointA: Vector2F = this.pointA
         val ab: Vector2F = pointB - pointA
