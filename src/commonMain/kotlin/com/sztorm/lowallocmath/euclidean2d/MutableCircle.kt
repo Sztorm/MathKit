@@ -15,7 +15,12 @@ class MutableCircle : Circle, MutableTransformable {
     private var _orientation: ComplexF
     private var _radius: Float
 
-    /** Creates a new instance of [MutableCircle]. **/
+    /**
+     * Creates a new instance of [MutableCircle].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [radius] is less than zero.
+     */
     constructor(center: Vector2F, orientation: ComplexF, radius: Float) {
         throwWhenConstructorArgumentIsIllegal(radius)
         _center = center
@@ -287,7 +292,12 @@ class MutableCircle : Circle, MutableTransformable {
         _radius = radius
     }
 
-    /** Sets the specified properties of this instance. **/
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [radius] is less than zero.
+     */
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -308,9 +318,9 @@ class MutableCircle : Circle, MutableTransformable {
      * Sets this circle with the result of interpolation [from] one circle [to] another circle [by]
      * a factor.
      *
-     * @param from The circle from which the interpolation starts.
-     * @param to The circle at which the interpolation ends.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param from the circle from which the interpolation starts.
+     * @param to the circle at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolate(from: Circle, to: Circle, by: Float) {
         _center = Vector2F.lerp(from.center, to.center, by)
@@ -363,6 +373,12 @@ class MutableCircle : Circle, MutableTransformable {
     override operator fun contains(circle: Circle): Boolean =
         _center.distanceTo(circle.center) <= _radius - circle.radius
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [radius] is less than zero.
+     */
     override fun copy(center: Vector2F, orientation: ComplexF, radius: Float) =
         MutableCircle(center, orientation, radius)
 

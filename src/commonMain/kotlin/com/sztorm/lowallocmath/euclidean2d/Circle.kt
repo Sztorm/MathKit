@@ -9,7 +9,12 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
-/** Creates a new instance of [Circle]. **/
+/**
+ * Creates a new instance of [Circle].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [radius] is less than zero.
+ */
 fun Circle(center: Vector2F, orientation: ComplexF, radius: Float): Circle =
     MutableCircle(center, orientation, radius)
 
@@ -165,8 +170,8 @@ interface Circle : CircleShape, Transformable {
     /**
      * Returns a copy of this circle interpolated [to] other circle [by] a factor.
      *
-     * @param to The circle to which this circle is interpolated.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param to the circle to which this circle is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: Circle, by: Float): Circle = copy(
         center = Vector2F.lerp(center, to.center, by),
@@ -226,7 +231,11 @@ interface Circle : CircleShape, Transformable {
     operator fun contains(circle: Circle): Boolean =
         center.distanceTo(circle.center) <= radius - circle.radius
 
-    /** Returns a copy of this instance with specified properties changed. **/
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
