@@ -322,8 +322,8 @@ interface LineSegment : Transformable {
     /**
      * Returns a copy of this line segment interpolated [to] other line segment [by] a factor.
      *
-     * @param to The line segment to which this line segment is interpolated.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param to the line segment to which this line segment is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: LineSegment, by: Float): LineSegment = copy(
         pointA = Vector2F.lerp(pointA, to.pointA, by),

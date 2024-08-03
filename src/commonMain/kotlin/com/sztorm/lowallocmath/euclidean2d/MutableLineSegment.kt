@@ -506,9 +506,9 @@ class MutableLineSegment(pointA: Vector2F, pointB: Vector2F) : LineSegment, Muta
      * Sets this line segment with the result of interpolation [from] one line segment [to] another
      * line segment [by] a factor.
      *
-     * @param from The line segment from which the interpolation starts.
-     * @param to The line segment at which the interpolation ends.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param from the line segment from which the interpolation starts.
+     * @param to the line segment at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolate(from: LineSegment, to: LineSegment, by: Float) {
         _pointA = Vector2F.lerp(from.pointA, to.pointA, by)
