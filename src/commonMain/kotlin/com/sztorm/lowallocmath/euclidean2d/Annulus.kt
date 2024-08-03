@@ -11,7 +11,14 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
-/** Creates a new instance of [Annulus]. **/
+/**
+ * Creates a new instance of [Annulus].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [outerRadius] is less than zero.
+ * @throws IllegalArgumentException when [innerRadius] is less than zero.
+ * @throws IllegalArgumentException when [outerRadius] is less than [innerRadius].
+ */
 fun Annulus(
     center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
 ): Annulus = MutableAnnulus(center, orientation, outerRadius, innerRadius)
@@ -192,8 +199,8 @@ interface Annulus : AnnulusShape, Transformable {
     /**
      * Returns a copy of this annulus interpolated [to] other annulus [by] a factor.
      *
-     * @param to The annulus to which this annulus is interpolated.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param to the annulus to which this annulus is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: Annulus, by: Float): Annulus = copy(
         center = Vector2F.lerp(center, to.center, by),
@@ -292,7 +299,11 @@ interface Annulus : AnnulusShape, Transformable {
                 (innerRadius <= (distance - circleRadius))
     }
 
-    /** Returns a copy of this instance with specified properties changed. **/
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
