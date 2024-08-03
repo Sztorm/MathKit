@@ -3,64 +3,82 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/**
+ * Creates a new instance of [RegularPolygon].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [sideLength] is less than zero.
+ * @throws IllegalArgumentException when [sideCount] is less than two.
+ */
 fun RegularPolygon(
     center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int
 ): RegularPolygon = MutableRegularPolygon(center, orientation, sideLength, sideCount)
 
+/**
+ * Represents a transformable regular polygon in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [center], [orientation], [sideLength], [sideCount] and the [copy] method are
+ * independent of other properties and the computational complexity of these members is trivial.
+ */
 interface RegularPolygon : RegularShape, Transformable {
+    /** Returns the center of this regular polygon. **/
     val center: Vector2F
 
-    val points: Vector2FList
-        get() {
-            val center: Vector2F = this.center
-            val orientation: ComplexF = this.orientation
-            val sideCount: Int = this.sideCount
-            val halfSideLength: Float = 0.5f * sideLength
-            val points = Vector2FArray(sideCount)
+    private inline fun pointsImpl(): Vector2FList {
+        val center: Vector2F = this.center
+        val orientation: ComplexF = this.orientation
+        val sideCount: Int = this.sideCount
+        val halfSideLength: Float = 0.5f * sideLength
+        val points = Vector2FArray(sideCount)
 
-            if (sideCount == 2) {
-                val (rotR: Float, rotI: Float) = orientation
-                val displacement = Vector2F(rotR * halfSideLength, rotI * halfSideLength)
-                points[0] = center + displacement
-                points[1] = center - displacement
+        if (sideCount == 2) {
+            val (rotR: Float, rotI: Float) = orientation
+            val displacement = Vector2F(rotR * halfSideLength, rotI * halfSideLength)
+            points[0] = center + displacement
+            points[1] = center - displacement
 
-                return points.asList()
-            }
-            val isSideCountEven: Boolean = sideCount and 1 == 0
-            val halfCount: Int = sideCount / 2
-            val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
-            val halfExteriorAngle: Float = exteriorAngle * 0.5f
-            val exteriorRotation = ComplexF(cos(exteriorAngle), sin(exteriorAngle))
-
-            if (isSideCountEven) {
-                val inradius: Float = halfSideLength / tan(halfExteriorAngle)
-                points[0] = Vector2F(halfSideLength, inradius)
-                points[1] = Vector2F(-halfSideLength, inradius)
-
-                for (i in 2..halfCount) {
-                    points[i] = points[i - 1] * exteriorRotation
-                }
-                for (i in halfCount + 1 until sideCount) {
-                    val oppositePoint: Vector2F = points[sideCount - i + 1]
-                    points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
-                }
-            } else {
-                val circumradius: Float = halfSideLength / sin(halfExteriorAngle)
-                points[0] = Vector2F(0f, circumradius)
-
-                for (i in 1..halfCount) {
-                    points[i] = points[i - 1] * exteriorRotation
-                }
-                for (i in (halfCount + 1) until sideCount) {
-                    val oppositePoint: Vector2F = points[sideCount - i]
-                    points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
-                }
-            }
-            for (i in 0 until sideCount) {
-                points[i] = center + points[i] * orientation
-            }
             return points.asList()
         }
+        val isSideCountEven: Boolean = sideCount and 1 == 0
+        val halfCount: Int = sideCount / 2
+        val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
+        val halfExteriorAngle: Float = exteriorAngle * 0.5f
+        val exteriorRotation = ComplexF(cos(exteriorAngle), sin(exteriorAngle))
+
+        if (isSideCountEven) {
+            val inradius: Float = halfSideLength / tan(halfExteriorAngle)
+            points[0] = Vector2F(halfSideLength, inradius)
+            points[1] = Vector2F(-halfSideLength, inradius)
+
+            for (i in 2..halfCount) {
+                points[i] = points[i - 1] * exteriorRotation
+            }
+            for (i in halfCount + 1 until sideCount) {
+                val oppositePoint: Vector2F = points[sideCount - i + 1]
+                points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
+            }
+        } else {
+            val circumradius: Float = halfSideLength / sin(halfExteriorAngle)
+            points[0] = Vector2F(0f, circumradius)
+
+            for (i in 1..halfCount) {
+                points[i] = points[i - 1] * exteriorRotation
+            }
+            for (i in (halfCount + 1) until sideCount) {
+                val oppositePoint: Vector2F = points[sideCount - i]
+                points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
+            }
+        }
+        for (i in 0 until sideCount) {
+            points[i] = center + points[i] * orientation
+        }
+        return points.asList()
+    }
+
+    /** Returns the read-only list of points of this regular polygon. **/
+    val points: Vector2FList
+        get() = pointsImpl()
 
     override val area: Float
         get() {
@@ -105,6 +123,11 @@ interface RegularPolygon : RegularShape, Transformable {
             return halfSideLength / sin(halfExteriorAngle)
         }
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -235,6 +258,7 @@ interface RegularPolygon : RegularShape, Transformable {
         orientation = orientation
     )
 
+    /** Returns the closest point on this regular polygon to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val sideCount: Int = this.sideCount
         val halfSideLength: Float = sideLength * 0.5f
@@ -309,6 +333,7 @@ interface RegularPolygon : RegularShape, Transformable {
         return point
     }
 
+    /** Returns `true` if this regular polygon intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (polyCX: Float, polyCY: Float) = center
         val (polyOR: Float, polyOI: Float) = orientation
@@ -420,6 +445,7 @@ interface RegularPolygon : RegularShape, Transformable {
         return false
     }
 
+    /** Returns `true` if this regular polygon contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val sideCount: Int = this.sideCount
         val halfSideLength: Float = sideLength * 0.5f
@@ -461,8 +487,14 @@ interface RegularPolygon : RegularShape, Transformable {
         return p2I <= inradius
     }
 
-    fun pointIterator(): Vector2FIterator = points.iterator()
+    /** Creates an iterator over the points of this regular polygon. **/
+    fun pointIterator(): Vector2FIterator = pointsImpl().iterator()
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -470,20 +502,32 @@ interface RegularPolygon : RegularShape, Transformable {
         sideCount: Int = this.sideCount
     ): RegularPolygon
 
+    /**
+     * Creates a new instance of [RegularTriangle] from this regular polygon if the [sideCount] is
+     * equal to 3, otherwise returns `null`.
+     */
     fun toRegularTriangleOrNull(): RegularTriangle? =
         if (sideCount == 3) RegularTriangle(center, orientation, sideLength)
         else null
 
+    /**
+     * Creates a new instance of [Square] from this regular polygon if the [sideCount] is equal to
+     * 4, otherwise returns `null`.
+     */
     fun toSquareOrNull(): Square? =
         if (sideCount == 4) Square(center, orientation, sideLength)
         else null
 
+    /** Returns the [center] of this regular polygon. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this regular polygon. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [sideLength] of this regular polygon. **/
     operator fun component3(): Float = sideLength
 
+    /** Returns the [sideCount] of this regular polygon. **/
     operator fun component4(): Int = sideCount
 }
 

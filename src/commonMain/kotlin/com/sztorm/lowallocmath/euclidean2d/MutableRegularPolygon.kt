@@ -5,6 +5,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/** Represents a mutable transformable regular polygon in a two-dimensional Euclidean space. **/
 class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     internal var _center: Vector2F
     internal var _orientation: ComplexF
@@ -13,6 +14,13 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     private var _inradius: Float
     private var _circumradius: Float
 
+    /**
+     * Creates a new instance of [MutableRegularPolygon].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     * @throws IllegalArgumentException when [sideCount] is less than two.
+     */
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int) {
         throwWhenSideLengthValueIsIllegal(sideLength)
 
@@ -95,6 +103,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _circumradius = circumradius
     }
 
+    /** Creates a new instance of [MutableRegularPolygon] from given [regularTriangle]. **/
     constructor(regularTriangle: MutableRegularTriangle) {
         val points = Vector2FArray(3)
         points[0] = regularTriangle._pointA
@@ -108,6 +117,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _inradius = regularTriangle.inradius
     }
 
+    /** Creates a new instance of [MutableRegularPolygon] from given [square]. **/
     constructor(square: MutableSquare) {
         val points = Vector2FArray(4)
         points[0] = square._pointA
@@ -292,8 +302,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
 
     override fun rotatedAroundPointTo(
         point: Vector2F, orientation: AngleF
-    ): MutableRegularPolygon =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
+    ): MutableRegularPolygon = rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
 
     override fun rotatedAroundPointTo(
         point: Vector2F, orientation: ComplexF
@@ -768,6 +777,13 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _circumradius = circumradius
     }
 
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     * @throws IllegalArgumentException when [sideCount] is less than two.
+     */
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -979,6 +995,13 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
 
     override fun pointIterator(): Vector2FIterator = _points.iterator()
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     * @throws IllegalArgumentException when [sideCount] is less than two.
+     */
     override fun copy(center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int) =
         MutableRegularPolygon(center, orientation, sideLength, sideCount)
 
@@ -988,6 +1011,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             _sideLength == other.sideLength &&
             sideCount == other.sideCount
 
+    /** Indicates whether the other [MutableRegularPolygon] is equal to this one. **/
     fun equals(other: MutableRegularPolygon): Boolean =
         _center == other._center &&
                 _orientation == other._orientation &&
@@ -1010,12 +1034,20 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
             .append(", sideCount=").append(sideCount).append(")")
             .toString()
 
+    /**
+     * Creates a new instance of [MutableRegularTriangle] from this regular polygon if the
+     * [sideCount] is equal to 3, otherwise returns `null`.
+     */
     fun toMutableRegularTriangleOrNull(): MutableRegularTriangle? =
         if (_points.size == 3) MutableRegularTriangle(this)
         else null
 
     override fun toRegularTriangleOrNull(): RegularTriangle? = toMutableRegularTriangleOrNull()
 
+    /**
+     * Creates a new instance of [MutableSquare] from this regular polygon if the [sideCount] is
+     * equal to 4, otherwise returns `null`.
+     */
     fun toMutableSquareOrNull(): MutableSquare? =
         if (_points.size == 4) MutableSquare(this)
         else null
