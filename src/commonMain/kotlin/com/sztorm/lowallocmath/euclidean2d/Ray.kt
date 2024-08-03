@@ -5,7 +5,11 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import kotlin.math.*
 
-/** Creates a new instance of [Ray]. **/
+/**
+ * Creates a new instance of [Ray].
+ *
+ * @param direction the value is expected to be [normalized][Vector2F.normalized].
+ */
 fun Ray(origin: Vector2F, direction: Vector2F): Ray = MutableRay(origin, direction)
 
 /**
@@ -178,8 +182,8 @@ interface Ray : Transformable {
     /**
      * Returns a copy of this ray interpolated [to] other ray [by] a factor.
      *
-     * @param to The ray to which this ray is interpolated.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param to the ray to which this ray is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: Ray, by: Float): Ray = copy(
         origin = Vector2F.lerp(origin, to.origin, by),
@@ -720,7 +724,11 @@ interface Ray : Transformable {
         return closestPoint.isApproximately(point)
     }
 
-    /** Returns a copy of this instance with specified properties changed. **/
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param direction the value is expected to be [normalized][Vector2F.normalized].
+     */
     fun copy(origin: Vector2F = this.origin, direction: Vector2F = this.direction): Ray
 
     /** Returns the [origin] of this ray. **/

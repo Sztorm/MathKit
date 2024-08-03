@@ -8,6 +8,7 @@ import kotlin.math.*
 /**
  * Represents a mutable transformable ray in a two-dimensional Euclidean space.
  *
+ * @param direction the value is expected to be [normalized][Vector2F.normalized].
  * @constructor Creates a new instance of [MutableRay].
  */
 class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransformable {
@@ -271,7 +272,11 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction = direction
     }
 
-    /** Sets the specified properties of this instance. **/
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param direction the value is expected to be [normalized][Vector2F.normalized].
+     */
     fun set(origin: Vector2F = this.origin, direction: Vector2F = this.direction) =
         setInternal(origin, direction)
 
@@ -286,9 +291,9 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
      * Sets this ray with the result of interpolation [from] one ray [to] another ray [by] a
      * factor.
      *
-     * @param from The ray from which the interpolation starts.
-     * @param to The ray at which the interpolation ends.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param from the ray from which the interpolation starts.
+     * @param to the ray at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolate(from: Ray, to: Ray, by: Float) {
         _origin = Vector2F.lerp(from.origin, to.origin, by)
@@ -817,8 +822,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         return closestPoint.isApproximately(point)
     }
 
-    override fun copy(origin: Vector2F, direction: Vector2F) =
-        MutableRay(origin, direction)
+    override fun copy(origin: Vector2F, direction: Vector2F) = MutableRay(origin, direction)
 
     override fun equals(other: Any?): Boolean = other is Ray &&
             _origin == other.origin &&
