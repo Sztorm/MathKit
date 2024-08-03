@@ -3,7 +3,13 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
-/** Creates a new instance of [Rectangle]. **/
+/**
+ * Creates a new instance of [Rectangle].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [width] is less than zero.
+ * @throws IllegalArgumentException when [height] is less than zero.
+ */
 fun Rectangle(center: Vector2F, orientation: ComplexF, width: Float, height: Float): Rectangle =
     MutableRectangle(center, orientation, width, height)
 
@@ -237,8 +243,8 @@ interface Rectangle : RectangleShape, Transformable {
     /**
      * Returns a copy of this rectangle interpolated [to] other rectangle [by] a factor.
      *
-     * @param to The rectangle to which this rectangle is interpolated.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param to the rectangle to which this rectangle is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: Rectangle, by: Float): Rectangle = copy(
         center = Vector2F.lerp(center, to.center, by),
@@ -314,7 +320,11 @@ interface Rectangle : RectangleShape, Transformable {
     /** Creates an iterator over the points of this rectangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
-    /** Returns a copy of this instance with specified properties changed. **/
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,

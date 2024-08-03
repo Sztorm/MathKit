@@ -14,7 +14,13 @@ class MutableRectangle : Rectangle, MutableTransformable {
     private var _pointC: Vector2F
     private var _pointD: Vector2F
 
-    /** Creates a new instance of [MutableRectangle]. **/
+    /**
+     * Creates a new instance of [MutableRectangle].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [width] is less than zero.
+     * @throws IllegalArgumentException when [height] is less than zero.
+     */
     constructor(center: Vector2F, orientation: ComplexF, width: Float, height: Float) {
         throwWhenConstructorArgumentsAreIllegal(width, height)
         val (cX: Float, cY: Float) = center
@@ -586,7 +592,13 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
     }
 
-    /** Sets the specified properties of this instance. **/
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [width] is less than zero.
+     * @throws IllegalArgumentException when [height] is less than zero.
+     */
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -608,9 +620,9 @@ class MutableRectangle : Rectangle, MutableTransformable {
      * Sets this rectangle with the result of interpolation [from] one rectangle [to] another
      * rectangle [by] a factor.
      *
-     * @param from The rectangle from which the interpolation starts.
-     * @param to The rectangle at which the interpolation ends.
-     * @param by The interpolation factor which is expected to be in the range of `[0, 1]`.
+     * @param from the rectangle from which the interpolation starts.
+     * @param to the rectangle at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolate(from: Rectangle, to: Rectangle, by: Float) = setInternal(
         center = Vector2F.lerp(from.center, to.center, by),
@@ -682,6 +694,13 @@ class MutableRectangle : Rectangle, MutableTransformable {
 
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [width] is less than zero.
+     * @throws IllegalArgumentException when [height] is less than zero.
+     */
     override fun copy(center: Vector2F, orientation: ComplexF, width: Float, height: Float) =
         MutableRectangle(center, orientation, width, height)
 
