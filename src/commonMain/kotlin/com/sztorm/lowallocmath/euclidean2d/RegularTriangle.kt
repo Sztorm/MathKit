@@ -6,12 +6,27 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
+/**
+ * Creates a new instance of [RegularTriangle].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [sideLength] is less than zero.
+ */
 fun RegularTriangle(center: Vector2F, orientation: ComplexF, sideLength: Float): RegularTriangle =
     MutableRegularTriangle(center, orientation, sideLength)
 
+/**
+ * Represents a transformable regular triangle in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [center], [orientation], [sideLength] and the [copy] method are independent of other
+ * properties and the computational complexity of these members is trivial.
+ */
 interface RegularTriangle : TriangleShape, RegularShape, Transformable {
+    /** Returns the center of this regular triangle. **/
     val center: Vector2F
 
+    /** Returns the point _A_ of this regular triangle. **/
     val pointA: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -22,6 +37,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
             return Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
         }
 
+    /** Returns the point _B_ of this regular triangle. **/
     val pointB: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -36,6 +52,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
             return Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
         }
 
+    /** Returns the point _C_ of this regular triangle. **/
     val pointC: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -50,16 +67,40 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
             return Vector2F(addendX1 + addendX2, addendY1 - addendY2)
         }
 
-    val centroid: Vector2F
-        get() = center
-
-    val orthocenter: Vector2F
-        get() = center
-
+    /**
+     * Returns the incenter of this regular triangle. Incenter is the center of the triangle's
+     * inscribed circle.
+     *
+     * This property is equal to [center].
+     */
     val incenter: Vector2F
         get() = center
 
+    /**
+     * Returns the centroid of this regular triangle. Centroid is the intersection point of the
+     * triangle's medians.
+     *
+     * This property is equal to [center].
+     */
+    val centroid: Vector2F
+        get() = center
+
+    /**
+     * Returns the circumcenter of this regular triangle. Circumcenter is the center of the
+     * triangle's circumscribed circle.
+     *
+     * This property is equal to [center].
+     */
     val circumcenter: Vector2F
+        get() = center
+
+    /**
+     * Returns the orthocenter of this regular triangle. Orthocenter is the intersection point of
+     * the triangle's altitudes.
+     *
+     * This property is equal to [center].
+     */
+    val orthocenter: Vector2F
         get() = center
 
     override val area: Float
@@ -92,6 +133,11 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     override val circumradius: Float
         get() = 0.5773503f * sideLength
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -220,12 +266,20 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         orientation = orientation
     )
 
+    /**
+     * Returns a copy of this regular triangle interpolated [to] other regular triangle [by] a
+     * factor.
+     *
+     * @param to the regular triangle to which this regular triangle is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: RegularTriangle, by: Float): RegularTriangle = copy(
         center = Vector2F.lerp(center, to.center, by),
         orientation = ComplexF.slerp(orientation, to.orientation, by),
         sideLength = Float.lerp(sideLength, to.sideLength, by)
     )
 
+    /** Returns the closest point on this regular triangle to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val sideLength: Float = this.sideLength
         val halfSideLength: Float = 0.5f * sideLength
@@ -270,6 +324,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         return edgePoint * (add120DegRotation.conjugate * orientation) + center
     }
 
+    /** Returns `true` if this regular triangle intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (oX: Float, oY: Float) = ray.origin
         val (dirX: Float, dirY: Float) = ray.direction
@@ -336,6 +391,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         return (abo == bco) and (bco == aco)
     }
 
+    /** Returns `true` if this regular triangle contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
@@ -356,18 +412,27 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         return (p1Y >= minusInradius) and (p1Y <= yAB) and (p1Y <= yAC)
     }
 
+    /** Creates an iterator over the points of this regular triangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength,
     ): RegularTriangle
 
+    /** Returns the [center] of this regular triangle. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this regular triangle. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [sideLength] of this regular triangle. **/
     operator fun component3(): Float = sideLength
 
     private class PointIterator(

@@ -8,6 +8,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
+/** Represents a mutable transformable regular triangle in a two-dimensional Euclidean space. **/
 class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     internal var _center: Vector2F
     internal var _orientation: ComplexF
@@ -16,6 +17,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     internal var _pointB: Vector2F
     internal var _pointC: Vector2F
 
+    /**
+     * Creates a new instance of [MutableRegularTriangle].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     */
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float) {
         throwWhenConstructorArgumentIsIllegal(sideLength)
         val (cX: Float, cY: Float) = center
@@ -112,16 +119,16 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override val position: Vector2F
         get() = _center
 
-    override val centroid: Vector2F
-        get() = _center
-
-    override val orthocenter: Vector2F
-        get() = _center
-
     override val incenter: Vector2F
         get() = _center
 
+    override val centroid: Vector2F
+        get() = _center
+
     override val circumcenter: Vector2F
+        get() = _center
+
+    override val orthocenter: Vector2F
         get() = _center
 
     override fun movedBy(displacement: Vector2F) = MutableRegularTriangle(
@@ -544,6 +551,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     */
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -559,6 +572,14 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         sideLength = Float.lerp(_sideLength, to.sideLength, by)
     )
 
+    /**
+     * Sets this regular triangle with the result of interpolation [from] one regular triangle [to]
+     * another regular triangle [by] a factor.
+     *
+     * @param from the regular triangle from which the interpolation starts.
+     * @param to the regular triangle at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: RegularTriangle, to: RegularTriangle, by: Float) = setInternal(
         center = Vector2F.lerp(from.center, to.center, by),
         orientation = ComplexF.slerp(from.orientation, to.orientation, by),
@@ -684,6 +705,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
 
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     */
     override fun copy(center: Vector2F, orientation: ComplexF, sideLength: Float) =
         MutableRegularTriangle(center, orientation, sideLength)
 
@@ -692,6 +719,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
             _orientation == other.orientation &&
             _sideLength == other.sideLength
 
+    /** Indicates whether the other [MutableRegularTriangle] is equal to this one. **/
     fun equals(other: MutableRegularTriangle): Boolean =
         _center == other._center &&
                 _orientation == other._orientation &&

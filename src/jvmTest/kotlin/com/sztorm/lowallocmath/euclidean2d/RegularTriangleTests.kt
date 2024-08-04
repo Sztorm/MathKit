@@ -149,20 +149,6 @@ class RegularTriangleTests {
         }
 
     @ParameterizedTest
-    @MethodSource("centroidArgs")
-    fun centroidReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
-        assertImmutabilityOf(triangle) {
-            assertApproximation(expected.value, triangle.centroid)
-        }
-
-    @ParameterizedTest
-    @MethodSource("orthocenterArgs")
-    fun orthocenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
-        assertImmutabilityOf(triangle) {
-            assertApproximation(expected.value, triangle.orthocenter)
-        }
-
-    @ParameterizedTest
     @MethodSource("incenterArgs")
     fun incenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
         assertImmutabilityOf(triangle) {
@@ -170,10 +156,24 @@ class RegularTriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("centroidArgs")
+    fun centroidReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.centroid)
+        }
+
+    @ParameterizedTest
     @MethodSource("circumcenterArgs")
     fun circumcenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
         assertImmutabilityOf(triangle) {
             assertApproximation(expected.value, triangle.circumcenter)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orthocenterArgs")
+    fun orthocenterReturnsCorrectValue(triangle: RegularTriangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.orthocenter)
         }
 
     @ParameterizedTest
@@ -811,16 +811,16 @@ class RegularTriangleTests {
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
-        fun centroidArgs(): List<Arguments> = centerArgs()
-
-        @JvmStatic
-        fun orthocenterArgs(): List<Arguments> = centerArgs()
-
-        @JvmStatic
         fun incenterArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
+        fun centroidArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
         fun circumcenterArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun orthocenterArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
