@@ -337,18 +337,34 @@ interface Square : RectangleShape, RegularShape, Transformable {
     /** Returns the [sideLength] of this square. **/
     operator fun component3(): Float = sideLength
 
-    private class PointIterator(
-        private val square: Square,
-        private var index: Int
-    ) : Vector2FIterator() {
-        override fun hasNext(): Boolean = index < 4
+    private class PointIterator(square: Square, index: Int) : Vector2FIterator() {
+        private val _pointA: Vector2F
+        private val _pointB: Vector2F
+        private val _pointC: Vector2F
+        private val _pointD: Vector2F
+        private var _index: Int
 
-        override fun nextVector2F(): Vector2F = when (index++) {
-            0 -> square.pointA
-            1 -> square.pointB
-            2 -> square.pointC
-            3 -> square.pointD
-            else -> throw NoSuchElementException("${index - 1}")
+        init {
+            val (cX: Float, cY: Float) = square.center
+            val (oR: Float, oI: Float) = square.orientation
+            val halfSideLength: Float = square.sideLength * 0.5f
+            val addendA: Float = halfSideLength * (oR + oI)
+            val addendB: Float = halfSideLength * (oR - oI)
+            _pointA = Vector2F(cX + addendB, cY + addendA)
+            _pointB = Vector2F(cX - addendA, cY + addendB)
+            _pointC = Vector2F(cX - addendB, cY - addendA)
+            _pointD = Vector2F(cX + addendA, cY - addendB)
+            _index = index
+        }
+
+        override fun hasNext(): Boolean = _index < 4
+
+        override fun nextVector2F(): Vector2F = when (_index++) {
+            0 -> _pointA
+            1 -> _pointB
+            2 -> _pointC
+            3 -> _pointD
+            else -> throw NoSuchElementException("${_index - 1}")
         }
     }
 }
