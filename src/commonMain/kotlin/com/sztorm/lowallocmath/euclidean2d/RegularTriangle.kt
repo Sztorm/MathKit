@@ -435,17 +435,36 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     /** Returns the [sideLength] of this regular triangle. **/
     operator fun component3(): Float = sideLength
 
-    private class PointIterator(
-        private val triangle: RegularTriangle,
-        private var index: Int
-    ) : Vector2FIterator() {
-        override fun hasNext(): Boolean = index < 3
+    private class PointIterator(triangle: RegularTriangle, index: Int) : Vector2FIterator() {
+        private val _pointA: Vector2F
+        private val _pointB: Vector2F
+        private val _pointC: Vector2F
+        private var _index: Int
 
-        override fun nextVector2F(): Vector2F = when (index++) {
-            0 -> triangle.pointA
-            1 -> triangle.pointB
-            2 -> triangle.pointC
-            else -> throw NoSuchElementException("${index - 1}")
+        init {
+            val (cX: Float, cY: Float) = triangle.center
+            val (oR: Float, oI: Float) = triangle.orientation
+            val sideLength: Float = triangle.sideLength
+            val halfSideLength: Float = sideLength * 0.5f
+            val inradius: Float = sideLength * 0.28867513f
+            val circumradius: Float = inradius + inradius
+            val addendX1: Float = oI * inradius + cX
+            val addendX2: Float = oR * halfSideLength
+            val addendY1: Float = oI * halfSideLength
+            val addendY2: Float = oR * inradius - cY
+            _pointA = Vector2F(cX - oI * circumradius, cY + oR * circumradius)
+            _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+            _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+            _index = index
+        }
+
+        override fun hasNext(): Boolean = _index < 3
+
+        override fun nextVector2F(): Vector2F = when (_index++) {
+            0 -> _pointA
+            1 -> _pointB
+            2 -> _pointC
+            else -> throw NoSuchElementException("${_index - 1}")
         }
     }
 }

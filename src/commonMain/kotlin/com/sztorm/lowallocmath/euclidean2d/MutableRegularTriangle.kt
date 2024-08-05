@@ -28,7 +28,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
         val halfSideLength: Float = sideLength * 0.5f
-        val inradius: Float = 0.28867513f * sideLength
+        val inradius: Float = sideLength * 0.28867513f
         val circumradius: Float = inradius + inradius
         val addendX1: Float = oI * inradius + cX
         val addendX2: Float = oR * halfSideLength
@@ -758,7 +758,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
             val (cX: Float, cY: Float) = center
             val (oR: Float, oI: Float) = orientation
             val halfSideLength: Float = sideLength * 0.5f
-            val inradius: Float = 0.28867513f * sideLength
+            val inradius: Float = sideLength * 0.28867513f
             val circumradius: Float = inradius + inradius
             val addendX1: Float = oI * inradius + cX
             val addendX2: Float = oR * halfSideLength
