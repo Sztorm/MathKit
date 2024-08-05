@@ -5,6 +5,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/** Represents a mutable transformable square in a two-dimensional Euclidean space. **/
 class MutableSquare : Square, MutableTransformable {
     internal var _center: Vector2F
     internal var _orientation: ComplexF
@@ -14,6 +15,12 @@ class MutableSquare : Square, MutableTransformable {
     internal var _pointC: Vector2F
     internal var _pointD: Vector2F
 
+    /**
+     * Creates a new instance of [MutableSquare].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     */
     constructor(center: Vector2F, orientation: ComplexF, sideLength: Float) {
         throwWhenConstructorArgumentIsIllegal(sideLength)
         val (cX: Float, cY: Float) = center
@@ -474,6 +481,12 @@ class MutableSquare : Square, MutableTransformable {
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     */
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -489,6 +502,14 @@ class MutableSquare : Square, MutableTransformable {
         sideLength = Float.lerp(_sideLength, to.sideLength, by)
     )
 
+    /**
+     * Sets this square with the result of interpolation [from] one square [to] another square [by]
+     * a factor.
+     *
+     * @param from the square from which the interpolation starts.
+     * @param to the square at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: Square, to: Square, by: Float) = setInternal(
         center = Vector2F.lerp(from.center, to.center, by),
         orientation = ComplexF.slerp(from.orientation, to.orientation, by),
@@ -557,6 +578,12 @@ class MutableSquare : Square, MutableTransformable {
 
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [sideLength] is less than zero.
+     */
     override fun copy(center: Vector2F, orientation: ComplexF, sideLength: Float) =
         MutableSquare(center, orientation, sideLength)
 
@@ -565,6 +592,7 @@ class MutableSquare : Square, MutableTransformable {
             _orientation == other.orientation &&
             _sideLength == other.sideLength
 
+    /** Indicates whether the other [MutableSquare] is equal to this one. **/
     fun equals(other: MutableSquare): Boolean =
         _center == other._center &&
                 _orientation == other._orientation &&

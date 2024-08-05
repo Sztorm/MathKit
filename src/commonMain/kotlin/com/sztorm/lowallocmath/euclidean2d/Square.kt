@@ -3,12 +3,27 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/**
+ * Creates a new instance of [Square].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [sideLength] is less than zero.
+ */
 fun Square(center: Vector2F, orientation: ComplexF, sideLength: Float): Square =
     MutableSquare(center, orientation, sideLength)
 
+/**
+ * Represents a transformable square in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [center], [orientation], [sideLength] and the [copy] method are independent of other
+ * members and the computational complexity of these members is trivial.
+ */
 interface Square : RectangleShape, RegularShape, Transformable {
+    /** Returns the center of this square. **/
     val center: Vector2F
 
+    /** Returns the point _A_ of this square. **/
     val pointA: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -20,6 +35,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
             return Vector2F(cX + addendB, cY + addendA)
         }
 
+    /** Returns the point _B_ of this square. **/
     val pointB: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -31,6 +47,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
             return Vector2F(cX - addendA, cY + addendB)
         }
 
+    /** Returns the point _C_ of this square. **/
     val pointC: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -42,6 +59,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
             return Vector2F(cX - addendB, cY - addendA)
         }
 
+    /** Returns the point _D_ of this square. **/
     val pointD: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -59,9 +77,19 @@ interface Square : RectangleShape, RegularShape, Transformable {
     override val perimeter: Float
         get() = 4f * sideLength
 
+    /**
+     * Returns the width of this square.
+     *
+     * This property is equal to [sideLength].
+     */
     override val width: Float
         get() = sideLength
 
+    /**
+     * Returns the height of this square.
+     *
+     * This property is equal to [sideLength].
+     */
     override val height: Float
         get() = sideLength
 
@@ -80,6 +108,11 @@ interface Square : RectangleShape, RegularShape, Transformable {
     override val circumradius: Float
         get() = 0.7071068f * sideLength
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -206,12 +239,19 @@ interface Square : RectangleShape, RegularShape, Transformable {
         orientation = orientation
     )
 
+    /**
+     * Returns a copy of this square interpolated [to] other square [by] a factor.
+     *
+     * @param to the square to which this square is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: Square, by: Float): Square = copy(
         center = Vector2F.lerp(center, to.center, by),
         orientation = ComplexF.slerp(orientation, to.orientation, by),
         sideLength = Float.lerp(sideLength, to.sideLength, by)
     )
 
+    /** Returns the closest point on this square to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
@@ -229,6 +269,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
         return Vector2F(rotR * p2X - rotI * p2Y + cX, rotI * p2X + rotR * p2Y + cY)
     }
 
+    /** Returns `true` if this square intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (rectCX: Float, rectCY: Float) = center
         val (rectOR: Float, rectOI: Float) = orientation
@@ -259,6 +300,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
         return (tMin >= 0f) and (tMax <= tMin)
     }
 
+    /** Returns `true` if this square contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
@@ -272,18 +314,27 @@ interface Square : RectangleShape, RegularShape, Transformable {
         return (p1X.absoluteValue <= halfSideLength) and (p1Y.absoluteValue <= halfSideLength)
     }
 
+    /** Creates an iterator over the points of this square. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
         sideLength: Float = this.sideLength,
     ): Square
 
+    /** Returns the [center] of this square. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this square. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [sideLength] of this square. **/
     operator fun component3(): Float = sideLength
 
     private class PointIterator(
