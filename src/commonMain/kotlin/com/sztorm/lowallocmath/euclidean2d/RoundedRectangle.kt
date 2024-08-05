@@ -666,36 +666,106 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     operator fun component5(): Float = cornerRadius
 
     private class CornerCenterIterator(
-        private val rectangle: RoundedRectangle,
-        private var index: Int
+        rectangle: RoundedRectangle, index: Int
     ) : Vector2FIterator() {
-        override fun hasNext(): Boolean = index < 4
+        private val _cornerCenterA: Vector2F
+        private val _cornerCenterB: Vector2F
+        private val _cornerCenterC: Vector2F
+        private val _cornerCenterD: Vector2F
+        private var _index: Int
 
-        override fun nextVector2F(): Vector2F = when (index++) {
-            0 -> rectangle.cornerCenterA
-            1 -> rectangle.cornerCenterB
-            2 -> rectangle.cornerCenterC
-            3 -> rectangle.cornerCenterD
-            else -> throw NoSuchElementException("${index - 1}")
+        init {
+            val (cX: Float, cY: Float) = rectangle.center
+            val (oR: Float, oI: Float) = rectangle.orientation
+            val halfWidth: Float = rectangle.width * 0.5f
+            val halfHeight: Float = rectangle.height * 0.5f
+            val cornerRadius: Float = rectangle.cornerRadius
+            val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+            val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+            val addendA: Float = oR * halfWidthMinusRadius
+            val addendB: Float = oI * halfWidthMinusRadius
+            val addendC: Float = oR * halfHeightMinusRadius
+            val addendD: Float = oI * halfHeightMinusRadius
+            val addendSumBC: Float = addendB + addendC
+            val addendSumAD: Float = addendA + addendD
+            val addendDiffBC: Float = addendB - addendC
+            val addendDiffAD: Float = addendA - addendD
+            _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+            _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+            _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+            _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+            _index = index
+        }
+
+        override fun hasNext(): Boolean = _index < 4
+
+        override fun nextVector2F(): Vector2F = when (_index++) {
+            0 -> _cornerCenterA
+            1 -> _cornerCenterB
+            2 -> _cornerCenterC
+            3 -> _cornerCenterD
+            else -> throw NoSuchElementException("${_index - 1}")
         }
     }
 
-    private class PointIterator(
-        private val rectangle: RoundedRectangle,
-        private var index: Int
-    ) : Vector2FIterator() {
-        override fun hasNext(): Boolean = index < 8
+    private class PointIterator(rectangle: RoundedRectangle, index: Int) : Vector2FIterator() {
+        private val _pointA: Vector2F
+        private val _pointB: Vector2F
+        private val _pointC: Vector2F
+        private val _pointD: Vector2F
+        private val _pointE: Vector2F
+        private val _pointF: Vector2F
+        private val _pointG: Vector2F
+        private val _pointH: Vector2F
+        private var _index: Int
 
-        override fun nextVector2F(): Vector2F = when (index++) {
-            0 -> rectangle.pointA
-            1 -> rectangle.pointB
-            2 -> rectangle.pointC
-            3 -> rectangle.pointD
-            4 -> rectangle.pointE
-            5 -> rectangle.pointF
-            6 -> rectangle.pointG
-            7 -> rectangle.pointH
-            else -> throw NoSuchElementException("${index - 1}")
+        init {
+            val (cX: Float, cY: Float) = rectangle.center
+            val (oR: Float, oI: Float) = rectangle.orientation
+            val halfWidth: Float = rectangle.width * 0.5f
+            val halfHeight: Float = rectangle.height * 0.5f
+            val cornerRadius: Float = rectangle.cornerRadius
+            val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+            val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+            val addendA: Float = oR * halfWidthMinusRadius
+            val addendB: Float = oI * halfWidthMinusRadius
+            val addendC: Float = oR * halfHeightMinusRadius
+            val addendD: Float = oI * halfHeightMinusRadius
+            val addendE: Float = oR * halfWidth
+            val addendF: Float = oI * halfWidth
+            val addendG: Float = oR * halfHeight
+            val addendH: Float = oI * halfHeight
+            val addendSumAH: Float = addendA + addendH
+            val addendSumBG: Float = addendB + addendG
+            val addendSumCF: Float = addendC + addendF
+            val addendSumED: Float = addendE + addendD
+            val addendDiffAH: Float = addendA - addendH
+            val addendDiffBG: Float = addendB - addendG
+            val addendDiffCF: Float = addendC - addendF
+            val addendDiffED: Float = addendE - addendD
+            _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+            _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+            _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+            _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+            _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+            _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+            _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+            _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+            _index = index
+        }
+
+        override fun hasNext(): Boolean = _index < 8
+
+        override fun nextVector2F(): Vector2F = when (_index++) {
+            0 -> _pointA
+            1 -> _pointB
+            2 -> _pointC
+            3 -> _pointD
+            4 -> _pointE
+            5 -> _pointF
+            6 -> _pointG
+            7 -> _pointH
+            else -> throw NoSuchElementException("${_index - 1}")
         }
     }
 }
