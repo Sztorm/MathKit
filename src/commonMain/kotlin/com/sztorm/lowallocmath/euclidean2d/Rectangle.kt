@@ -344,18 +344,41 @@ interface Rectangle : RectangleShape, Transformable {
     /** Returns the [height] of this rectangle. **/
     operator fun component4(): Float = height
 
-    private class PointIterator(
-        private val rectangle: Rectangle,
-        private var index: Int
-    ) : Vector2FIterator() {
-        override fun hasNext(): Boolean = index < 4
+    private class PointIterator(rectangle: Rectangle, index: Int) : Vector2FIterator() {
+        private val _pointA: Vector2F
+        private val _pointB: Vector2F
+        private val _pointC: Vector2F
+        private val _pointD: Vector2F
+        private var _index: Int
 
-        override fun nextVector2F(): Vector2F = when (index++) {
-            0 -> rectangle.pointA
-            1 -> rectangle.pointB
-            2 -> rectangle.pointC
-            3 -> rectangle.pointD
-            else -> throw NoSuchElementException("${index - 1}")
+        init {
+            val (cX: Float, cY: Float) = rectangle.center
+            val (oR: Float, oI: Float) = rectangle.orientation
+            val halfWidth: Float = rectangle.width * 0.5f
+            val halfHeight: Float = rectangle.height * 0.5f
+            val addendX1: Float = oR * halfWidth
+            val addendX2: Float = oI * halfHeight
+            val addendY1: Float = oR * halfHeight
+            val addendY2: Float = oI * halfWidth
+            val addendSumX1X2: Float = addendX1 + addendX2
+            val addendDiffX1X2: Float = addendX1 - addendX2
+            val addendSumY1Y2: Float = addendY1 + addendY2
+            val addendDiffY1Y2: Float = addendY1 - addendY2
+            _pointA = Vector2F(cX + addendDiffX1X2, cY + addendSumY1Y2)
+            _pointB = Vector2F(cX - addendSumX1X2, cY + addendDiffY1Y2)
+            _pointC = Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2)
+            _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
+            _index = index
+        }
+
+        override fun hasNext(): Boolean = _index < 4
+
+        override fun nextVector2F(): Vector2F = when (_index++) {
+            0 -> _pointA
+            1 -> _pointB
+            2 -> _pointC
+            3 -> _pointD
+            else -> throw NoSuchElementException("${_index - 1}")
         }
     }
 }
