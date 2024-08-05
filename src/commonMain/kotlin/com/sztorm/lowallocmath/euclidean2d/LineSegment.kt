@@ -16,8 +16,8 @@ fun LineSegment(pointA: Vector2F, pointB: Vector2F): LineSegment =
  * Represents a transformable line segment in a two-dimensional Euclidean space.
  *
  * Implementations that use default-implemented members of this interface must make sure that the
- * properties [pointA], [pointB] and the [copy] method are independent of other properties and
- * the computational complexity of these members is trivial.
+ * properties [pointA], [pointB] and the [copy] method are independent of other members and the
+ * computational complexity of these members is trivial.
  */
 interface LineSegment : Transformable {
     /** Returns the point _A_ of this line segment. **/

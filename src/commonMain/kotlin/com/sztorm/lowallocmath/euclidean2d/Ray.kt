@@ -16,8 +16,8 @@ fun Ray(origin: Vector2F, direction: Vector2F): Ray = MutableRay(origin, directi
  * Represents a transformable ray in a two-dimensional Euclidean space.
  *
  * Implementations that use default-implemented members of this interface must make sure that the
- * properties [origin], [direction] and the [copy] method are independent of other properties and
- * the computational complexity of these members is trivial.
+ * properties [origin], [direction] and the [copy] method are independent of other members and the
+ * computational complexity of these members is trivial.
  */
 interface Ray : Transformable {
     /** Returns the origin of this ray. **/

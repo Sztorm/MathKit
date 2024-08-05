@@ -28,7 +28,7 @@ fun Annulus(
  *
  * Implementations that use default-implemented members of this interface must make sure that the
  * properties [center], [orientation], [outerRadius], [innerRadius] and the [copy] method are
- * independent of other properties and the computational complexity of these members is trivial.
+ * independent of other members and the computational complexity of these members is trivial.
  */
 interface Annulus : AnnulusShape, Transformable {
     /** Returns the center of this annulus. **/
