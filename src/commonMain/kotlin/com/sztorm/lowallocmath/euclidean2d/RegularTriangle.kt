@@ -78,7 +78,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     /**
      * Returns the centroid of this regular triangle. Centroid is the intersection point of the
-     * triangle's medians.
+     * triangle's medians. Centroid is also known as the center of mass.
      *
      * This property is equal to [center].
      */

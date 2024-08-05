@@ -45,7 +45,7 @@ interface LineSegment : Transformable {
     /**
      * Returns the orientation of this object in reference to the origin of [ComplexF.ONE].
      *
-     * This property is determined by the [pointA] and its relation to the [center].
+     * This property is determined by the direction formed from [center] to [pointA].
      */
     override val orientation: ComplexF
         get() = (pointA - pointB).normalized.toComplexF()

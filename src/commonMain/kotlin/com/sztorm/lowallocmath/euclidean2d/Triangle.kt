@@ -8,17 +8,82 @@ import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 
+/** Creates a new instance of [Triangle]. **/
 fun Triangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F): Triangle =
     MutableTriangle(pointA, pointB, pointC)
 
+/**
+ * Represents a transformable triangle in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [pointA], [pointB], [pointC] and the [copy] method are independent of other members
+ * and the computational complexity of these members is trivial.
+ */
 interface Triangle : TriangleShape, Transformable {
+    /** Returns the point _A_ of this triangle. **/
     val pointA: Vector2F
+
+    /** Returns the point _B_ of this triangle. **/
     val pointB: Vector2F
+
+    /** Returns the point _C_ of this triangle. **/
     val pointC: Vector2F
 
+    /**
+     * Returns the incenter of this triangle. Incenter is the center of the triangle's inscribed
+     * circle.
+     */
+    val incenter: Vector2F
+        get() {
+            val pointA: Vector2F = pointA
+            val pointB: Vector2F = pointB
+            val pointC: Vector2F = pointC
+            val abSide: Float = pointA.distanceTo(pointB)
+            val bcSide: Float = pointB.distanceTo(pointC)
+            val acSide: Float = pointA.distanceTo(pointC)
+            val factor: Float = 1f / (abSide + bcSide + acSide)
+
+            return Vector2F(
+                (bcSide * pointA.x + acSide * pointB.x + abSide * pointC.x) * factor,
+                (bcSide * pointA.y + acSide * pointB.y + abSide * pointC.y) * factor
+            )
+        }
+
+    /**
+     * Returns the centroid of this triangle. Centroid is the intersection point of the triangle's
+     * medians. Centroid is also known as the center of mass.
+     */
     val centroid: Vector2F
         get() = (pointA + pointB + pointC) * 0.3333333f
 
+    /**
+     * Returns the circumcenter of this triangle. Circumcenter is the center of the triangle's
+     * circumscribed circle.
+     */
+    val circumcenter: Vector2F
+        get() {
+            val (aX: Float, aY: Float) = pointA
+            val (bX: Float, bY: Float) = pointB
+            val (cX: Float, cY: Float) = pointC
+            val pASquaredMagnitude: Float = aX * aX + aY * aY
+            val pBSquaredMagnitude: Float = bX * bX + bY * bY
+            val pCSquaredMagnitude: Float = cX * cX + cY * cY
+            val aDet: Float = aX * bY + aY * cX + bX * cY - bY * cX - aY * bX - aX * cY
+            val factor: Float = 0.5f / aDet
+            val xDet: Float = pASquaredMagnitude * bY + aY * pCSquaredMagnitude +
+                    pBSquaredMagnitude * cY - bY * pCSquaredMagnitude -
+                    aY * pBSquaredMagnitude - pASquaredMagnitude * cY
+            val yDet: Float = aX * pBSquaredMagnitude + pASquaredMagnitude * cX +
+                    bX * pCSquaredMagnitude - pBSquaredMagnitude * cX -
+                    pASquaredMagnitude * bX - aX * pCSquaredMagnitude
+
+            return Vector2F(xDet * factor, yDet * factor)
+        }
+
+    /**
+     * Returns the orthocenter of this triangle. Orthocenter is the intersection point of the
+     * triangle's altitudes.
+     */
     val orthocenter: Vector2F
         get() {
             val (aX: Float, aY: Float) = pointA
@@ -44,42 +109,6 @@ interface Triangle : TriangleShape, Transformable {
                 circumcenterX + (centroidX - circumcenterX) * 3f,
                 circumcenterY + (centroidY - circumcenterY) * 3f
             )
-        }
-
-    val incenter: Vector2F
-        get() {
-            val pointA: Vector2F = pointA
-            val pointB: Vector2F = pointB
-            val pointC: Vector2F = pointC
-            val abSide: Float = pointA.distanceTo(pointB)
-            val bcSide: Float = pointB.distanceTo(pointC)
-            val acSide: Float = pointA.distanceTo(pointC)
-            val factor: Float = 1f / (abSide + bcSide + acSide)
-
-            return Vector2F(
-                (bcSide * pointA.x + acSide * pointB.x + abSide * pointC.x) * factor,
-                (bcSide * pointA.y + acSide * pointB.y + abSide * pointC.y) * factor
-            )
-        }
-
-    val circumcenter: Vector2F
-        get() {
-            val (aX: Float, aY: Float) = pointA
-            val (bX: Float, bY: Float) = pointB
-            val (cX: Float, cY: Float) = pointC
-            val pASquaredMagnitude: Float = aX * aX + aY * aY
-            val pBSquaredMagnitude: Float = bX * bX + bY * bY
-            val pCSquaredMagnitude: Float = cX * cX + cY * cY
-            val aDet: Float = aX * bY + aY * cX + bX * cY - bY * cX - aY * bX - aX * cY
-            val factor: Float = 0.5f / aDet
-            val xDet: Float = pASquaredMagnitude * bY + aY * pCSquaredMagnitude +
-                    pBSquaredMagnitude * cY - bY * pCSquaredMagnitude -
-                    aY * pBSquaredMagnitude - pASquaredMagnitude * cY
-            val yDet: Float = aX * pBSquaredMagnitude + pASquaredMagnitude * cX +
-                    bX * pCSquaredMagnitude - pBSquaredMagnitude * cX -
-                    pASquaredMagnitude * bX - aX * pCSquaredMagnitude
-
-            return Vector2F(xDet * factor, yDet * factor)
         }
 
     override val area: Float
@@ -111,9 +140,19 @@ interface Triangle : TriangleShape, Transformable {
     override val sideLengthCA: Float
         get() = pointC.distanceTo(pointA)
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [centroid].
+     */
     override val position: Vector2F
         get() = (pointA + pointB + pointC) * 0.3333333f
 
+    /**
+     * Returns the orientation of this object in reference to the origin of [ComplexF.ONE].
+     *
+     * This property is determined by the direction formed from [centroid] to [pointA].
+     */
     override val orientation: ComplexF
         get() {
             val pointA: Vector2F = this.pointA
@@ -457,12 +496,19 @@ interface Triangle : TriangleShape, Transformable {
     override fun transformedTo(position: Vector2F, orientation: ComplexF): Triangle =
         transformedToImpl(position, orientation)
 
+    /**
+     * Returns a copy of this triangle interpolated [to] other triangle [by] a factor.
+     *
+     * @param to the triangle to which this triangle is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: Triangle, by: Float): Triangle = copy(
         pointA = Vector2F.lerp(pointA, to.pointA, by),
         pointB = Vector2F.lerp(pointB, to.pointB, by),
         pointC = Vector2F.lerp(pointC, to.pointC, by)
     )
 
+    /** Returns the closest point on this triangle to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val a: Vector2F = pointA
         val b: Vector2F = pointB
@@ -515,6 +561,7 @@ interface Triangle : TriangleShape, Transformable {
         return a + ab * v + ac * w
     }
 
+    /** Returns `true` if this triangle intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (aX: Float, aY: Float) = pointA
         val (bX: Float, bY: Float) = pointB
@@ -568,6 +615,7 @@ interface Triangle : TriangleShape, Transformable {
         return (abo == bco) and (bco == aco)
     }
 
+    /** Returns `true` if this triangle contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val (aX: Float, aY: Float) = pointA
         val (bX: Float, bY: Float) = pointB
@@ -580,18 +628,23 @@ interface Triangle : TriangleShape, Transformable {
         return (abp == bcp) and (bcp == acp)
     }
 
+    /** Creates an iterator over the points of this triangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /** Returns a copy of this instance with specified properties changed. **/
     fun copy(
         pointA: Vector2F = this.pointA,
         pointB: Vector2F = this.pointB,
         pointC: Vector2F = this.pointC
     ): Triangle
 
+    /** Returns the [pointA] of this triangle. **/
     operator fun component1(): Vector2F = pointA
 
+    /** Returns the [pointB] of this triangle. **/
     operator fun component2(): Vector2F = pointB
 
+    /** Returns the [pointC] of this triangle. **/
     operator fun component3(): Vector2F = pointC
 
     private class PointIterator(

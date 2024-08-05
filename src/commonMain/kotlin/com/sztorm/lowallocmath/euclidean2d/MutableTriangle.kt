@@ -9,6 +9,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.sqrt
 import kotlin.math.withSign
 
+/** Represents a mutable transformable triangle in a two-dimensional Euclidean space. **/
 class MutableTriangle : Triangle, MutableTransformable {
     private var _pointA: Vector2F
     private var _pointB: Vector2F
@@ -16,6 +17,7 @@ class MutableTriangle : Triangle, MutableTransformable {
     private var _centroid: Vector2F
     private var _orientation: ComplexF
 
+    /** Creates a new instance of [MutableTriangle]. **/
     constructor(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) {
         _pointA = pointA
         _pointB = pointB
@@ -46,9 +48,6 @@ class MutableTriangle : Triangle, MutableTransformable {
 
     override val pointC: Vector2F
         get() = _pointC
-
-    override val centroid: Vector2F
-        get() = _centroid
 
     override val orientation: ComplexF
         get() = _orientation
@@ -85,6 +84,45 @@ class MutableTriangle : Triangle, MutableTransformable {
     override val position: Vector2F
         get() = _centroid
 
+    override val incenter: Vector2F
+        get() {
+            val pointA: Vector2F = _pointA
+            val pointB: Vector2F = _pointB
+            val pointC: Vector2F = _pointC
+            val abSide: Float = pointA.distanceTo(pointB)
+            val bcSide: Float = pointB.distanceTo(pointC)
+            val acSide: Float = pointA.distanceTo(pointC)
+            val factor: Float = 1f / (abSide + bcSide + acSide)
+
+            return Vector2F(
+                (bcSide * pointA.x + acSide * pointB.x + abSide * pointC.x) * factor,
+                (bcSide * pointA.y + acSide * pointB.y + abSide * pointC.y) * factor
+            )
+        }
+
+    override val centroid: Vector2F
+        get() = _centroid
+
+    override val circumcenter: Vector2F
+        get() {
+            val (aX: Float, aY: Float) = _pointA
+            val (bX: Float, bY: Float) = _pointB
+            val (cX: Float, cY: Float) = _pointC
+            val pASquaredMagnitude: Float = aX * aX + aY * aY
+            val pBSquaredMagnitude: Float = bX * bX + bY * bY
+            val pCSquaredMagnitude: Float = cX * cX + cY * cY
+            val aDet: Float = aX * bY + aY * cX + bX * cY - bY * cX - aY * bX - aX * cY
+            val factor: Float = 0.5f / aDet
+            val xDet: Float = pASquaredMagnitude * bY + aY * pCSquaredMagnitude +
+                    pBSquaredMagnitude * cY - bY * pCSquaredMagnitude -
+                    aY * pBSquaredMagnitude - pASquaredMagnitude * cY
+            val yDet: Float = aX * pBSquaredMagnitude + pASquaredMagnitude * cX +
+                    bX * pCSquaredMagnitude - pBSquaredMagnitude * cX -
+                    pASquaredMagnitude * bX - aX * pCSquaredMagnitude
+
+            return Vector2F(xDet * factor, yDet * factor)
+        }
+
     override val orthocenter: Vector2F
         get() {
             val (aX: Float, aY: Float) = _pointA
@@ -109,42 +147,6 @@ class MutableTriangle : Triangle, MutableTransformable {
                 circumcenterX + (centroidX - circumcenterX) * 3f,
                 circumcenterY + (centroidY - circumcenterY) * 3f
             )
-        }
-
-    override val incenter: Vector2F
-        get() {
-            val pointA: Vector2F = _pointA
-            val pointB: Vector2F = _pointB
-            val pointC: Vector2F = _pointC
-            val abSide: Float = pointA.distanceTo(pointB)
-            val bcSide: Float = pointB.distanceTo(pointC)
-            val acSide: Float = pointA.distanceTo(pointC)
-            val factor: Float = 1f / (abSide + bcSide + acSide)
-
-            return Vector2F(
-                (bcSide * pointA.x + acSide * pointB.x + abSide * pointC.x) * factor,
-                (bcSide * pointA.y + acSide * pointB.y + abSide * pointC.y) * factor
-            )
-        }
-
-    override val circumcenter: Vector2F
-        get() {
-            val (aX: Float, aY: Float) = _pointA
-            val (bX: Float, bY: Float) = _pointB
-            val (cX: Float, cY: Float) = _pointC
-            val pASquaredMagnitude: Float = aX * aX + aY * aY
-            val pBSquaredMagnitude: Float = bX * bX + bY * bY
-            val pCSquaredMagnitude: Float = cX * cX + cY * cY
-            val aDet: Float = aX * bY + aY * cX + bX * cY - bY * cX - aY * bX - aX * cY
-            val factor: Float = 0.5f / aDet
-            val xDet: Float = pASquaredMagnitude * bY + aY * pCSquaredMagnitude +
-                    pBSquaredMagnitude * cY - bY * pCSquaredMagnitude -
-                    aY * pBSquaredMagnitude - pASquaredMagnitude * cY
-            val yDet: Float = aX * pBSquaredMagnitude + pASquaredMagnitude * cX +
-                    bX * pCSquaredMagnitude - pBSquaredMagnitude * cX -
-                    pASquaredMagnitude * bX - aX * pCSquaredMagnitude
-
-            return Vector2F(xDet * factor, yDet * factor)
         }
 
     override fun movedBy(displacement: Vector2F) = MutableTriangle(
@@ -810,6 +812,7 @@ class MutableTriangle : Triangle, MutableTransformable {
         _orientation = (pointA - _centroid).normalized.toComplexF()
     }
 
+    /** Sets the specified properties of this instance. **/
     fun set(
         pointA: Vector2F = this.pointA,
         pointB: Vector2F = this.pointB,
@@ -822,6 +825,14 @@ class MutableTriangle : Triangle, MutableTransformable {
         pointC = Vector2F.lerp(_pointC, to.pointC, by)
     )
 
+    /**
+     * Sets this triangle with the result of interpolation [from] one triangle [to] another
+     * triangle [by] a factor.
+     *
+     * @param from the triangle from which the interpolation starts.
+     * @param to the triangle at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: Triangle, to: Triangle, by: Float) = setInternal(
         pointA = Vector2F.lerp(from.pointA, to.pointA, by),
         pointB = Vector2F.lerp(from.pointB, to.pointB, by),
@@ -955,6 +966,7 @@ class MutableTriangle : Triangle, MutableTransformable {
             _pointB == other.pointB &&
             _pointC == other.pointC
 
+    /** Indicates whether the other [MutableTriangle] is equal to this one. **/
     fun equals(other: MutableTriangle): Boolean =
         _pointA == other._pointA &&
                 _pointB == other._pointB &&
