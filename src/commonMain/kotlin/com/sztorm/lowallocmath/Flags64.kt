@@ -112,7 +112,7 @@ value class Flags64(val longValue: Long) : Collection<Boolean> {
     /**
      * Returns a value indicating whether the bit at [index] is set to 1.
      *
-     * [index] should be in range of 0..63, but the value of [index] is not checked.
+     * [index] should be in range of `[0, 63]`, but the value of [index] is not checked.
      **/
     inline operator fun get(index: Int): Boolean = ((longValue ushr index) and 1L) != 0L
 

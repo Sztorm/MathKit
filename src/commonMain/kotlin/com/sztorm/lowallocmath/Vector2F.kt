@@ -111,7 +111,7 @@ value class Vector2F internal constructor(internal val data: Long) {
      * Returns a normalized copy of this vector if this vector [magnitude] is large enough to
      * safely normalize. Else returns [defaultValue].
      *
-     * @param [defaultValue] The returned value if this vector could not be safely normalized.
+     * @param [defaultValue] the returned value if this vector could not be safely normalized.
      */
     inline fun normalizedOrElse(defaultValue: Vector2F): Vector2F {
         val length: Float = this.length
@@ -124,7 +124,7 @@ value class Vector2F internal constructor(internal val data: Long) {
      * Returns a normalized copy of this vector if this vector [magnitude] is large enough to
      * safely normalize. Else returns the result of calling the [defaultValue] function.
      *
-     * @param [defaultValue] The function whose result is returned if the vector could not be
+     * @param [defaultValue] the function whose result is returned if the vector could not be
      * safely normalized.
      */
     inline fun normalizedOrElse(defaultValue: () -> Vector2F): Vector2F {
@@ -271,12 +271,12 @@ value class Vector2F internal constructor(internal val data: Long) {
     /**
      * Returns a component specified by an [index].
      *
-     * @throws [IndexOutOfBoundsException] when [index] is out of range of 0..1.
+     * @throws [IndexOutOfBoundsException] when [index] is out of range of `[0, 1]`.
      */
     inline operator fun get(index: Int): Float = when (index) {
         0 -> x
         1 -> y
-        else -> throw IndexOutOfBoundsException("Index of $index is out of range of 0..1")
+        else -> throw IndexOutOfBoundsException("Index of $index is out of range of [0, 1].")
     }
 
     /** Returns this vector. **/
@@ -397,9 +397,9 @@ value class Vector2F internal constructor(internal val data: Long) {
         /**
          * Returns a linearly interpolated vector between [a] and [b] vectors.
          *
-         * @param [a] Source vector.
-         * @param [b] Destination vector.
-         * @param [t] Interpolator value with an expected range of 0..1.
+         * @param [a] the source vector.
+         * @param [b] the destination vector.
+         * @param [t] the interpolator value with an expected range of `[0, 1]`.
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection")
@@ -409,9 +409,9 @@ value class Vector2F internal constructor(internal val data: Long) {
         /**
          * Returns a component-wise linearly interpolated vector between [a] and [b] vectors.
          *
-         * @param [a] Source vector.
-         * @param [b] Destination vector.
-         * @param [t] Interpolator vector with expected ranges of (0..1, 0..1).
+         * @param [a] the source vector.
+         * @param [b] the destination vector.
+         * @param [t] the interpolator vector with expected ranges of (`[0, 1]`, `[0, 1]`).
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection")
@@ -422,9 +422,9 @@ value class Vector2F internal constructor(internal val data: Long) {
          * Returns an interpolator value of the linearly interpolated vector [t] between [a] and
          * [b] vectors.
          *
-         * @param [a] Source vector.
-         * @param [b] Destination vector.
-         * @param [t] Interpolated vector.
+         * @param [a] the source vector.
+         * @param [b] the destination vector.
+         * @param [t] the interpolated vector.
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection")

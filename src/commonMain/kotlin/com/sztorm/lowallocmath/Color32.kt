@@ -64,11 +64,11 @@ value class Color32 private constructor(private val data: Int) {
     /**
      * Returns a component specified by an [index].
      *
-     * @throws [IndexOutOfBoundsException] when [index] is out of range of 0..3.
+     * @throws [IndexOutOfBoundsException] when [index] is out of range of `[0, 3]`.
      */
     operator fun get(index: Int): UByte =
         if (index.toUInt() < 4u) (data ushr (index shl 3)).toUByte()
-        else throw IndexOutOfBoundsException("Index of $index is out of range of 0..3")
+        else throw IndexOutOfBoundsException("Index of $index is out of range of [0, 3].")
 
     companion object {
         /** The number of bits used to represent an instance of [Color32] in a binary form. **/
@@ -112,9 +112,9 @@ value class Color32 private constructor(private val data: Int) {
         /**
          * Returns a linearly interpolated color between [a] and [b] colors.
          *
-         * @param [a] Source color.
-         * @param [b] Destination color.
-         * @param [t] Interpolator value with an expected range of 0..1.
+         * @param [a] the source color.
+         * @param [b] the destination color.
+         * @param [t] the interpolator value with an expected range of `[0, 1]`.
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection")

@@ -119,7 +119,7 @@ value class ComplexF internal constructor(
      * Returns a normalized copy of this complex number if this complex number [magnitude] is large
      * enough to safely normalize. Else returns [defaultValue].
      *
-     * @param [defaultValue] The returned value if this complex number could not be safely
+     * @param [defaultValue] the returned value if this complex number could not be safely
      * normalized.
      */
     inline fun normalizedOrElse(defaultValue: ComplexF): ComplexF {
@@ -133,7 +133,7 @@ value class ComplexF internal constructor(
      * Returns a normalized copy of this complex number if this complex number [magnitude] is large
      * enough to safely normalize. Else returns the result of calling the [defaultValue] function.
      *
-     * @param [defaultValue] The function whose result is returned if the complex number could not
+     * @param [defaultValue] the function whose result is returned if the complex number could not
      * be safely normalized.
      */
     inline fun normalizedOrElse(defaultValue: () -> ComplexF): ComplexF {
@@ -356,8 +356,8 @@ value class ComplexF internal constructor(
         /**
          *  Creates a new complex number using the specified polar coordinates.
          *
-         *  @param magnitude Distance from the origin to the number.
-         *  @param phase Angle measured in radians.
+         *  @param magnitude the distance from the origin to the number.
+         *  @param phase the angle measured in radians.
          */
         @JvmStatic
         inline fun fromPolar(magnitude: Float, phase: Float) =
@@ -523,7 +523,7 @@ value class ComplexF internal constructor(
          * value of [t].
          *
          * The [a] and [b] arguments are expected to be normalized.
-         * The [t] argument is expected to be in range of 0..1.
+         * The [t] argument is expected to be in range of `[0, 1]`.
          *
          * Given the constant velocity of [t], the linear velocity of interpolation is
          * constant, but the angular velocity is not.
@@ -550,7 +550,7 @@ value class ComplexF internal constructor(
          *
          * The [a] and [b] arguments are expected to be normalized.
          * The function does not clamp the [t] parameter, however the most accurate results are
-         * returned when [t] is in range of 0..1.
+         * returned when [t] is in range of `[0, 1]`.
          *
          * The function always returns the shortest interpolation path between [a] and [b].
          *

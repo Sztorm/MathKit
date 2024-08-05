@@ -144,12 +144,12 @@ value class Vector2I internal constructor(internal val data: Long) {
     /**
      * Returns a component specified by an [index].
      *
-     * @throws [IndexOutOfBoundsException] when [index] is out of range of 0..1.
+     * @throws [IndexOutOfBoundsException] when [index] is out of range of `[0, 1]`.
      */
     inline operator fun get(index: Int): Int = when (index) {
         0 -> x
         1 -> y
-        else -> throw IndexOutOfBoundsException("Index of $index is out of bounds of 0..1")
+        else -> throw IndexOutOfBoundsException("Index of $index is out of bounds of [0, 1].")
     }
 
     /** Returns this vector. **/

@@ -105,7 +105,7 @@ value class Flags32(val intValue: Int) : Collection<Boolean> {
     /**
      * Returns a value indicating whether the bit at [index] is set to 1.
      *
-     * [index] should be in range of 0..31, but the value of [index] is not checked.
+     * [index] should be in range of `[0, 31]`, but the value of [index] is not checked.
      **/
     inline operator fun get(index: Int): Boolean = ((intValue ushr index) and 1) != 0
 
