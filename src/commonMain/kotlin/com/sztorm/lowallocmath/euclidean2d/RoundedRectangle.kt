@@ -3,13 +3,32 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/**
+ * Creates a new instance of [RoundedRectangle].
+ *
+ * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [width] is less than zero.
+ * @throws IllegalArgumentException when [height] is less than zero.
+ * @throws IllegalArgumentException when [cornerRadius] is less than zero.
+ * @throws IllegalArgumentException when [cornerRadius] is greater than the half the length of
+ * the shorter side of this rounded rectangle.
+ */
 fun RoundedRectangle(
     center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
 ): RoundedRectangle = MutableRoundedRectangle(center, orientation, width, height, cornerRadius)
 
+/**
+ * Represents a transformable rounded rectangle in a two-dimensional Euclidean space.
+ *
+ * Implementations that use default-implemented members of this interface must make sure that the
+ * properties [center], [orientation], [width], [height], [cornerRadius] and the [copy] method are
+ * independent of other properties and the computational complexity of these members is trivial.
+ */
 interface RoundedRectangle : RoundedRectangleShape, Transformable {
+    /** Returns the center of this rounded rectangle. **/
     val center: Vector2F
 
+    /** Returns the point _A_ of this rounded rectangle. **/
     val pointA: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -27,6 +46,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX + addendDiffAH, cY + addendSumBG)
         }
 
+    /** Returns the point _B_ of this rounded rectangle. **/
     val pointB: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -44,6 +64,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX - addendSumAH, cY - addendDiffBG)
         }
 
+    /** Returns the point _C_ of this rounded rectangle. **/
     val pointC: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -61,6 +82,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX - addendSumED, cY + addendDiffCF)
         }
 
+    /** Returns the point _D_ of this rounded rectangle. **/
     val pointD: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -78,6 +100,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX - addendDiffED, cY - addendSumCF)
         }
 
+    /** Returns the point _E_ of this rounded rectangle. **/
     val pointE: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -95,6 +118,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX - addendDiffAH, cY - addendSumBG)
         }
 
+    /** Returns the point _F_ of this rounded rectangle. **/
     val pointF: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -112,6 +136,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX + addendSumAH, cY + addendDiffBG)
         }
 
+    /** Returns the point _G_ of this rounded rectangle. **/
     val pointG: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -129,6 +154,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX + addendSumED, cY - addendDiffCF)
         }
 
+    /** Returns the point _H_ of this rounded rectangle. **/
     val pointH: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -146,6 +172,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX + addendDiffED, cY + addendSumCF)
         }
 
+    /** Returns the corner center _A_ of this rounded rectangle. **/
     val cornerCenterA: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -165,6 +192,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX + addendDiffAD, cY + addendSumBC)
         }
 
+    /** Returns the corner center _B_ of this rounded rectangle. **/
     val cornerCenterB: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -184,6 +212,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX - addendSumAD, cY - addendDiffBC)
         }
 
+    /** Returns the corner center _C_ of this rounded rectangle. **/
     val cornerCenterC: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -203,6 +232,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return Vector2F(cX - addendDiffAD, cY - addendSumBC)
         }
 
+    /** Returns the corner center _D_ of this rounded rectangle. **/
     val cornerCenterD: Vector2F
         get() {
             val (cX: Float, cY: Float) = center
@@ -237,6 +267,11 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             return (2.0 * PI).toFloat() * radius + 2f * (width + height - 4f * radius)
         }
 
+    /**
+     * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
+     *
+     * This property is equal to [center].
+     */
     override val position: Vector2F
         get() = center
 
@@ -388,6 +423,13 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         orientation = orientation
     )
 
+    /**
+     * Returns a copy of this rounded rectangle interpolated [to] other rounded rectangle [by] a
+     * factor.
+     *
+     * @param to the rounded rectangle to which this rounded rectangle is interpolated.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolated(to: RoundedRectangle, by: Float): RoundedRectangle = copy(
         center = Vector2F.lerp(center, to.center, by),
         orientation = ComplexF.slerp(orientation, to.orientation, by),
@@ -396,6 +438,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         cornerRadius = Float.lerp(cornerRadius, to.cornerRadius, by)
     )
 
+    /** Returns the closest point on this rounded rectangle to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
         val center: Vector2F = center
         val orientation: ComplexF = orientation
@@ -435,6 +478,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         }
     }
 
+    /** Returns `true` if this rounded rectangle intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
         val (rectCX: Float, rectCY: Float) = center
         val (rectOR: Float, rectOI: Float) = orientation
@@ -558,6 +602,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         return intersectsCircleD
     }
 
+    /** Returns `true` if this rounded rectangle contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
         val (cX: Float, cY: Float) = center
         val (rotR: Float, rotI: Float) = orientation
@@ -586,10 +631,17 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
                 (p1YAbs <= halfHeight)
     }
 
+    /** Creates an iterator over the points of this rounded rectangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
+    /** Creates an iterator over the corner centers of this rounded rectangle. **/
     fun cornerCenterIterator(): Vector2FIterator = CornerCenterIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -598,14 +650,19 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         cornerRadius: Float = this.cornerRadius
     ): RoundedRectangle
 
+    /** Returns the [center] of this rounded rectangle. **/
     operator fun component1(): Vector2F = center
 
+    /** Returns the [orientation] of this rounded rectangle. **/
     operator fun component2(): ComplexF = orientation
 
+    /** Returns the [width] of this rounded rectangle. **/
     operator fun component3(): Float = width
 
+    /** Returns the [height] of this rounded rectangle. **/
     operator fun component4(): Float = height
 
+    /** Returns the [cornerRadius] of this rounded rectangle. **/
     operator fun component5(): Float = cornerRadius
 
     private class CornerCenterIterator(

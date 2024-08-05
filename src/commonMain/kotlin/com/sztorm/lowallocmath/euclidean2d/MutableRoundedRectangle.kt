@@ -3,6 +3,7 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.*
 import kotlin.math.*
 
+/** Represents a mutable transformable rounded rectangle in a two-dimensional Euclidean space. **/
 class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     private var _center: Vector2F
     private var _orientation: ComplexF
@@ -22,6 +23,16 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     private var _cornerCenterC: Vector2F
     private var _cornerCenterD: Vector2F
 
+    /**
+     * Creates a new instance of [MutableRoundedRectangle].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [width] is less than zero.
+     * @throws IllegalArgumentException when [height] is less than zero.
+     * @throws IllegalArgumentException when [cornerRadius] is less than zero.
+     * @throws IllegalArgumentException when [cornerRadius] is greater than the half the length of
+     * the shorter side of this rounded rectangle.
+     */
     constructor(
         center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
     ) {
@@ -1044,6 +1055,16 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
     }
 
+    /**
+     * Sets the specified properties of this instance.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [width] is less than zero.
+     * @throws IllegalArgumentException when [height] is less than zero.
+     * @throws IllegalArgumentException when [cornerRadius] is less than zero.
+     * @throws IllegalArgumentException when [cornerRadius] is greater than the half the length of
+     * the shorter side of this rounded rectangle.
+     */
     fun set(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,
@@ -1063,6 +1084,14 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         cornerRadius = Float.lerp(_cornerRadius, to.cornerRadius, by)
     )
 
+    /**
+     * Sets this rounded rectangle with the result of interpolation [from] one rounded rectangle
+     * [to] another rounded rectangle [by] a factor.
+     *
+     * @param from the rounded rectangle from which the interpolation starts.
+     * @param to the rounded rectangle at which the interpolation ends.
+     * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
+     */
     fun interpolate(from: RoundedRectangle, to: RoundedRectangle, by: Float) = setInternal(
         center = Vector2F.lerp(from.center, to.center, by),
         orientation = ComplexF.slerp(from.orientation, to.orientation, by),
@@ -1264,6 +1293,16 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     override fun cornerCenterIterator(): Vector2FIterator =
         CornerCenterIterator(this, index = 0)
 
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     * @throws IllegalArgumentException when [width] is less than zero.
+     * @throws IllegalArgumentException when [height] is less than zero.
+     * @throws IllegalArgumentException when [cornerRadius] is less than zero.
+     * @throws IllegalArgumentException when [cornerRadius] is greater than the half the length of
+     * the shorter side of this rounded rectangle.
+     */
     override fun copy(
         center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
     ) = MutableRoundedRectangle(center, orientation, width, height, cornerRadius)
@@ -1275,6 +1314,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
             _height == other.height &&
             _cornerRadius == other.cornerRadius
 
+    /** Indicates whether the other [MutableRoundedRectangle] is equal to this one. **/
     fun equals(other: MutableRoundedRectangle): Boolean =
         _center == other._center &&
                 _orientation == other._orientation &&
@@ -1333,7 +1373,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
 
             if (cornerRadius > halfShortestSize) {
                 throw IllegalArgumentException(
-                    "cornerRadius must be less than half of width and less than half of height."
+                    "cornerRadius must be less than or equal to the half the length of the shorter side of this rounded rectangle."
                 )
             }
         }
