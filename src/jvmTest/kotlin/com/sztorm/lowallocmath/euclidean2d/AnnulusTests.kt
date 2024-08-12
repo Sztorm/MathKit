@@ -130,6 +130,11 @@ class AnnulusTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesAnnulusCorrectly(annulus: MutableAnnulus, expected: MutableAnnulus) =
+        assertApproximation(expected, annulus.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesAnnulusCorrectly(
         annulus: MutableAnnulus,
@@ -716,6 +721,56 @@ class AnnulusTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 3f, AngleF.fromDegrees(-45f).radians
+                    ),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.3f, AngleF.fromDegrees(-45f).radians
+                    ),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
+            ),
+            Arguments.of(
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.ZERO,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                ),
+                MutableAnnulus(
+                    center = Vector2F(-1f, 2f),
+                    orientation = ComplexF.ONE,
+                    outerRadius = 4f,
+                    innerRadius = 2f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(

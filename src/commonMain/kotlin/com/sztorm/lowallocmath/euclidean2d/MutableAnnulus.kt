@@ -348,6 +348,16 @@ class MutableAnnulus : Annulus, MutableTransformable {
         _orientation = orientation
     }
 
+    /**
+     * Calibrates the properties of this instance.
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        _orientation = orientation.normalizedOrElse(ComplexF(1f, 0f))
+    }
+
     private inline fun setInternal(
         center: Vector2F, orientation: ComplexF, outerRadius: Float, innerRadius: Float
     ) {
