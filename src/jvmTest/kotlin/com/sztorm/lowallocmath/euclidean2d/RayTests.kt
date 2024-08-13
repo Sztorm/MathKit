@@ -63,6 +63,11 @@ class RayTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesRayCorrectly(ray: MutableRay, expected: MutableRay) =
+        assertApproximation(expected, ray.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesRayCorrectly(
         ray: MutableRay,
@@ -361,6 +366,42 @@ class RayTests {
                 defaultRayArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRay(
+                    origin = Vector2F(-2f, -5f),
+                    direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                        .toVector2F() * 2.5f
+                ),
+                MutableRay(
+                    origin = Vector2F(-2f, -5f),
+                    direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
+                )
+            ),
+            Arguments.of(
+                MutableRay(
+                    origin = Vector2F(-2f, -5f),
+                    direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
+                        .toVector2F() * 0.25f
+                ),
+                MutableRay(
+                    origin = Vector2F(-2f, -5f),
+                    direction = ComplexF.fromAngle(AngleF.fromDegrees(135f)).toVector2F()
+                )
+            ),
+            Arguments.of(
+                MutableRay(
+                    origin = Vector2F(-2f, -5f),
+                    direction = Vector2F.ZERO
+                ),
+                MutableRay(
+                    origin = Vector2F(-2f, -5f),
+                    direction = ComplexF.ONE.toVector2F()
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
