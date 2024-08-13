@@ -355,7 +355,7 @@ class MutableAnnulus : Annulus, MutableTransformable {
      * inaccuracies that can be countered by this method.
      */
     fun calibrate() {
-        _orientation = orientation.normalizedOrElse(ComplexF(1f, 0f))
+        _orientation = _orientation.normalizedOrElse(ComplexF(1f, 0f))
     }
 
     private inline fun setInternal(

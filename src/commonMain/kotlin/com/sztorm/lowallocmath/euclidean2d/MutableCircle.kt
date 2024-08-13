@@ -293,6 +293,16 @@ class MutableCircle : Circle, MutableTransformable {
     }
 
     /**
+     * Calibrates the properties of this instance.
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        _orientation = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+    }
+
+    /**
      * Sets the specified properties of this instance.
      *
      * @param orientation the value is expected to be [normalized][ComplexF.normalized].

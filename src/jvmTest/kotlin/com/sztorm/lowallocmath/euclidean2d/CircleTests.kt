@@ -100,6 +100,11 @@ class CircleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesCircleCorrectly(circle: MutableCircle, expected: MutableCircle) =
+        assertApproximation(expected, circle.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesCircleCorrectly(
         circle: MutableCircle,
@@ -539,6 +544,50 @@ class CircleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 4f, AngleF.fromDegrees(-78f).radians
+                    ),
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.4f, AngleF.fromDegrees(-78f).radians
+                    ),
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-78f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.ZERO,
+                    radius = 4f
+                ),
+                MutableCircle(
+                    center = Vector2F(2f, 0f),
+                    orientation = ComplexF.ONE,
+                    radius = 4f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
