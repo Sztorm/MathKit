@@ -567,6 +567,33 @@ class MutableRectangle : Rectangle, MutableTransformable {
         _pointD = Vector2F(addendX1A + addendX2, addendY1B + addendY2)
     }
 
+    /**
+     * Calibrates the properties of this instance.
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = newOrientation
+        val halfWidth: Float = _width * 0.5f
+        val halfHeight: Float = _height * 0.5f
+        val addendX1: Float = oR * halfWidth
+        val addendX2: Float = oI * halfHeight
+        val addendY1: Float = oR * halfHeight
+        val addendY2: Float = oI * halfWidth
+        val addendSumX1X2: Float = addendX1 + addendX2
+        val addendDiffX1X2: Float = addendX1 - addendX2
+        val addendSumY1Y2: Float = addendY1 + addendY2
+        val addendDiffY1Y2: Float = addendY1 - addendY2
+        _orientation = newOrientation
+        _pointA = Vector2F(cX + addendDiffX1X2, cY + addendSumY1Y2)
+        _pointB = Vector2F(cX - addendSumX1X2, cY + addendDiffY1Y2)
+        _pointC = Vector2F(cX - addendDiffX1X2, cY - addendSumY1Y2)
+        _pointD = Vector2F(cX + addendSumX1X2, cY - addendDiffY1Y2)
+    }
+
     private inline fun setInternal(
         center: Vector2F, orientation: ComplexF, width: Float, height: Float
     ) {

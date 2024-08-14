@@ -117,6 +117,12 @@ class RectangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesRectangleCorrectly(
         rectangle: MutableRectangle,
@@ -659,6 +665,56 @@ class RectangleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 7f, AngleF.fromDegrees(45f).radians
+                    ),
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.7f, AngleF.fromDegrees(45f).radians
+                    ),
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 4f,
+                    height = 2f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.ZERO,
+                    width = 4f,
+                    height = 2f
+                ),
+                MutableRectangle(
+                    center = Vector2F(-2f, 4f),
+                    orientation = ComplexF.ONE,
+                    width = 4f,
+                    height = 2f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
