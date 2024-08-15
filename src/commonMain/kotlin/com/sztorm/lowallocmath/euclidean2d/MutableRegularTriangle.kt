@@ -533,6 +533,30 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
+    /**
+     * Calibrates the properties of this instance.
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = newOrientation
+        val sideLength: Float = _sideLength
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = oI * inradius + cX
+        val addendX2: Float = oR * halfSideLength
+        val addendY1: Float = oI * halfSideLength
+        val addendY2: Float = oR * inradius - cY
+        _orientation = newOrientation
+        _pointA = Vector2F(cX - oI * circumradius, cY + oR * circumradius)
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
     private inline fun setInternal(center: Vector2F, orientation: ComplexF, sideLength: Float) {
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation

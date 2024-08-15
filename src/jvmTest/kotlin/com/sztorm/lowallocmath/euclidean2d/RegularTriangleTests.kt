@@ -177,6 +177,12 @@ class RegularTriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesRegularTriangleCorrectly(
+        triangle: MutableRegularTriangle, expected: MutableRegularTriangle
+    ) = assertApproximation(expected, triangle.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesRegularTriangleCorrectly(
         triangle: MutableRegularTriangle,
@@ -821,6 +827,50 @@ class RegularTriangleTests {
 
         @JvmStatic
         fun orthocenterArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 1.7f, AngleF.fromDegrees(30f).radians
+                    ),
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.17f, AngleF.fromDegrees(30f).radians
+                    ),
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                    sideLength = 5.773503f
+                )
+            ),
+            Arguments.of(
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.ZERO,
+                    sideLength = 5.773503f
+                ),
+                MutableRegularTriangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.ONE,
+                    sideLength = 5.773503f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
