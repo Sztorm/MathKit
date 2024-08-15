@@ -179,6 +179,12 @@ class RegularPolygonTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesRegularPolygonCorrectly(
+        polygon: MutableRegularPolygon, expected: MutableRegularPolygon
+    ) = assertApproximation(expected, polygon.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesRegularPolygonCorrectly(
         polygon: MutableRegularPolygon,
@@ -551,8 +557,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -560,8 +566,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -582,8 +588,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -591,8 +597,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -613,8 +619,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -622,8 +628,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -631,8 +637,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -640,8 +646,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -649,8 +655,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -658,8 +664,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -667,8 +673,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -689,8 +695,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -698,8 +704,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -707,8 +713,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -716,8 +722,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -725,8 +731,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -734,8 +740,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -743,8 +749,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -765,8 +771,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -787,8 +793,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -806,8 +812,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -824,8 +830,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -841,8 +847,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -857,8 +863,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -872,8 +878,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -899,8 +905,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -908,8 +914,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -917,8 +923,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -926,8 +932,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -935,8 +941,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -944,8 +950,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -953,8 +959,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -975,8 +981,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -984,8 +990,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -993,8 +999,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -1002,8 +1008,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -1011,8 +1017,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -1020,8 +1026,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -1029,8 +1035,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -1051,8 +1057,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -1060,8 +1066,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -1069,8 +1075,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -1078,8 +1084,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -1087,8 +1093,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -1096,8 +1102,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -1105,8 +1111,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -1127,8 +1133,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -1136,8 +1142,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -1145,8 +1151,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -1154,8 +1160,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -1163,8 +1169,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -1172,8 +1178,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -1181,8 +1187,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -1203,8 +1209,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -1212,8 +1218,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -1221,8 +1227,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -1230,8 +1236,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -1239,8 +1245,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -1248,8 +1254,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -1257,8 +1263,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -1279,8 +1285,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(14f, 1f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                        center = Vector2F(14f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                         sideLength = 2f,
                         sideCount = 10
                     ),
@@ -1288,8 +1294,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -1297,8 +1303,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-8f, 2f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
+                        center = Vector2F(-8f, 2f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-30f)),
                         sideLength = 3.5f,
                         sideCount = 6
                     ),
@@ -1306,8 +1312,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(-7.5f, -8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        center = Vector2F(-7.5f, -8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                         sideLength = 4f,
                         sideCount = 5
                     ),
@@ -1315,8 +1321,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),
@@ -1324,8 +1330,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, -6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                        center = Vector2F(10f, -6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
                         sideLength = 4f,
                         sideCount = 3
                     ),
@@ -1333,8 +1339,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(10f, 6.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                        center = Vector2F(10f, 6.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                         sideLength = 4f,
                         sideCount = 2
                     ),
@@ -1352,6 +1358,102 @@ class RegularPolygonTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 4.5f, AngleF.fromDegrees(-72f).radians
+                    ),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.45f, AngleF.fromDegrees(-72f).radians
+                    ),
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    sideLength = 2f,
+                    sideCount = 10
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.ZERO,
+                    sideLength = 2f,
+                    sideCount = 10
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.ONE,
+                    sideLength = 2f,
+                    sideCount = 10
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(10f, 6.5f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 4.5f, AngleF.fromDegrees(195f).radians
+                    ),
+                    sideLength = 4f,
+                    sideCount = 2
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(10f, 6.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                    sideLength = 4f,
+                    sideCount = 2
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(10f, 6.5f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.45f, AngleF.fromDegrees(195f).radians
+                    ),
+                    sideLength = 4f,
+                    sideCount = 2
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(10f, 6.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                    sideLength = 4f,
+                    sideCount = 2
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(10f, 6.5f),
+                    orientation = ComplexF.ZERO,
+                    sideLength = 4f,
+                    sideCount = 2
+                ),
+                MutableRegularPolygon(
+                    center = Vector2F(10f, 6.5f),
+                    orientation = ComplexF.ONE,
+                    sideLength = 4f,
+                    sideCount = 2
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
@@ -1420,20 +1522,20 @@ class RegularPolygonTests {
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
             val decagon = MutableRegularPolygon(
-                Vector2F(14f, 1f),
-                ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                center = Vector2F(14f, 1f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                 sideLength = 2f,
                 sideCount = 10
             )
             val heptagon = MutableRegularPolygon(
-                Vector2F(0f, 8f),
-                ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                center = Vector2F(0f, 8f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                 sideLength = 3f,
                 sideCount = 7
             )
             val digon = MutableRegularPolygon(
-                Vector2F(10f, 6.5f),
-                ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                center = Vector2F(10f, 6.5f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                 sideLength = 4f,
                 sideCount = 2
             )
@@ -1931,20 +2033,20 @@ class RegularPolygonTests {
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
             val decagon = MutableRegularPolygon(
-                Vector2F(14f, 1f),
-                ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                center = Vector2F(14f, 1f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                 sideLength = 2f,
                 sideCount = 10
             )
             val heptagon = MutableRegularPolygon(
-                Vector2F(0f, 8f),
-                ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                center = Vector2F(0f, 8f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                 sideLength = 3f,
                 sideCount = 7
             )
             val digon = MutableRegularPolygon(
-                Vector2F(10f, 6.5f),
-                ComplexF.fromAngle(AngleF.fromDegrees(195f)),
+                center = Vector2F(10f, 6.5f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(195f)),
                 sideLength = 4f,
                 sideCount = 2
             )
@@ -2275,8 +2377,8 @@ class RegularPolygonTests {
         fun equalsAnyArgs(): List<Arguments> = equalsMutableRegularPolygonArgs() + listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2285,14 +2387,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
                 DefaultRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2300,14 +2402,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
                 DefaultRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120.1f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120.1f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2315,14 +2417,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
                 DefaultRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
@@ -2330,14 +2432,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
                 DefaultRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 3
                 ),
@@ -2349,14 +2451,14 @@ class RegularPolygonTests {
         fun equalsMutableRegularPolygonArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2364,14 +2466,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120.1f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120.1f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2379,14 +2481,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
@@ -2394,14 +2496,14 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 3
                 ),
@@ -2413,28 +2515,28 @@ class RegularPolygonTests {
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 )
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 )
@@ -2445,8 +2547,8 @@ class RegularPolygonTests {
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2458,8 +2560,8 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(2f, -7.5f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                    center = Vector2F(2f, -7.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                     sideLength = 4f,
                     sideCount = 4
                 ),
@@ -2488,8 +2590,8 @@ class RegularPolygonTests {
         fun toMutableRegularTriangleOrNullArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                     sideLength = 2f,
                     sideCount = 10
                 ),
@@ -2497,8 +2599,8 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2546,8 +2648,8 @@ class RegularPolygonTests {
         fun toMutableSquareOrNullArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(14f, 1f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
+                    center = Vector2F(14f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-72f)),
                     sideLength = 2f,
                     sideCount = 10
                 ),
@@ -2555,8 +2657,8 @@ class RegularPolygonTests {
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(0f, 8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                     sideLength = 3f,
                     sideCount = 7
                 ),
@@ -2593,8 +2695,8 @@ class RegularPolygonTests {
             val mutableRegularPolygonArgs = listOf(
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(0f, 8f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        center = Vector2F(0f, 8f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
                         sideLength = 3f,
                         sideCount = 7
                     ),
@@ -2605,8 +2707,8 @@ class RegularPolygonTests {
                 ),
                 Arguments.of(
                     MutableRegularPolygon(
-                        Vector2F(2f, -7.5f),
-                        ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
+                        center = Vector2F(2f, -7.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
                         sideLength = 4f,
                         sideCount = 4
                     ),

@@ -708,6 +708,64 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         _orientation = orientation
     }
 
+    /**
+     * Calibrates the properties of this instance.
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val center: Vector2F = _center
+        val orientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val sideLength: Float = _sideLength
+        val points: Vector2FArray = _points
+        val sideCount: Int = points.size
+
+        if (sideCount < 3) {
+            val (oR: Float, oI: Float) = orientation
+            val halfSideLength: Float = 0.5f * sideLength
+            val displacement = Vector2F(oR * halfSideLength, oI * halfSideLength)
+
+            points[0] = center + displacement
+            points[1] = center - displacement
+            _orientation = orientation
+            return
+        }
+        val halfSideLength: Float = 0.5f * sideLength
+        val isSideCountEven: Boolean = sideCount and 1 == 0
+        val halfCount: Int = sideCount / 2
+        val exteriorAngle: Float = (2.0 * PI).toFloat() / sideCount
+        val exteriorRotation = ComplexF(cos(exteriorAngle), sin(exteriorAngle))
+
+        if (isSideCountEven) {
+            val inradius: Float = _inradius
+            points[0] = Vector2F(halfSideLength, inradius)
+            points[1] = Vector2F(-halfSideLength, inradius)
+
+            for (i in 2..halfCount) {
+                points[i] = points[i - 1] * exteriorRotation
+            }
+            for (i in halfCount + 1 until sideCount) {
+                val oppositePoint: Vector2F = points[sideCount - i + 1]
+                points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
+            }
+        } else {
+            points[0] = Vector2F(0f, _circumradius)
+
+            for (i in 1..halfCount) {
+                points[i] = points[i - 1] * exteriorRotation
+            }
+            for (i in (halfCount + 1) until sideCount) {
+                val oppositePoint: Vector2F = points[sideCount - i]
+                points[i] = Vector2F(-oppositePoint.x, oppositePoint.y)
+            }
+        }
+        for (i in 0 until sideCount) {
+            points[i] = center + points[i] * orientation
+        }
+        _orientation = orientation
+    }
+
     private inline fun setInternal(
         center: Vector2F, orientation: ComplexF, sideLength: Float, sideCount: Int
     ) {
