@@ -13,6 +13,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRay
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -262,6 +263,10 @@ class RayTests {
         fun areApproximatelyEqual(a: Ray, b: Ray, tolerance: Float = 0.00001f): Boolean =
             a.origin.isApproximately(b.origin, tolerance) and
                     a.direction.isApproximately(b.direction, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: Ray, b: Ray): Boolean =
+            (a.origin == b.origin) and (a.direction == b.direction)
 
         @JvmStatic
         fun clone(ray: Ray) = ray.copy()

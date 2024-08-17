@@ -8,6 +8,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -408,6 +409,26 @@ class RoundedRectangleTests {
                 a.cornerCenterB.isApproximately(b.cornerCenterB, tolerance) and
                 a.cornerCenterC.isApproximately(b.cornerCenterC, tolerance) and
                 a.cornerCenterD.isApproximately(b.cornerCenterD, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: RoundedRectangle, b: RoundedRectangle): Boolean =
+            (a.center == b.center) and
+                    (a.orientation == b.orientation) and
+                    (a.width == b.width) and
+                    (a.height == b.height) and
+                    (a.cornerRadius == b.cornerRadius) and
+                    (a.pointA == b.pointA) and
+                    (a.pointB == b.pointB) and
+                    (a.pointC == b.pointC) and
+                    (a.pointD == b.pointD) and
+                    (a.pointE == b.pointE) and
+                    (a.pointF == b.pointF) and
+                    (a.pointG == b.pointG) and
+                    (a.pointH == b.pointH) and
+                    (a.cornerCenterA == b.cornerCenterA) and
+                    (a.cornerCenterB == b.cornerCenterB) and
+                    (a.cornerCenterC == b.cornerCenterC) and
+                    (a.cornerCenterD == b.cornerCenterD)
 
         @JvmStatic
         fun clone(rectangle: RoundedRectangle) = rectangle.copy()

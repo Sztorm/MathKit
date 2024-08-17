@@ -8,6 +8,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -373,6 +374,15 @@ class RegularTriangleTests {
                 a.pointA.isApproximately(b.pointA, tolerance) and
                 a.pointB.isApproximately(b.pointB, tolerance) and
                 a.pointC.isApproximately(b.pointC, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: RegularTriangle, b: RegularTriangle): Boolean =
+            (a.center == b.center) and
+                    (a.orientation == b.orientation) and
+                    (a.sideLength == b.sideLength) and
+                    (a.pointA == b.pointA) and
+                    (a.pointB == b.pointB) and
+                    (a.pointC == b.pointC)
 
         @JvmStatic
         fun clone(triangle: RegularTriangle) = triangle.copy()

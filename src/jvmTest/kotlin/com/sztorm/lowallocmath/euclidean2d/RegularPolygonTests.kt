@@ -5,6 +5,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRegularPolygon
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -43,9 +44,12 @@ class RegularPolygonTests {
         triangle: MutableRegularTriangle, expected: MutableRegularPolygon
     ) = assertImmutabilityOf(triangle) {
         val actual = MutableRegularPolygon(triangle)
-        val trianglePointIterator = triangle.pointIterator()
+        val trianglePointIterator: Vector2FIterator = triangle.pointIterator()
 
-        assertEquals(expected, actual)
+        assertEquals(expected.center, actual.center)
+        assertEquals(expected.orientation, actual.orientation)
+        assertEquals(expected.sideLength, actual.sideLength)
+        assertEquals(expected.sideCount, actual.sideCount)
 
         for (i in expected.points.indices) {
             assertApproximation(expected.points[i], actual.points[i])
@@ -60,15 +64,18 @@ class RegularPolygonTests {
     fun constructorCreatesCorrectPolygon(square: MutableSquare, expected: MutableRegularPolygon) =
         assertImmutabilityOf(square) {
             val actual = MutableRegularPolygon(square)
-            val trianglePointIterator = square.pointIterator()
+            val squarePointIterator: Vector2FIterator = square.pointIterator()
 
-            assertEquals(expected, actual)
+            assertEquals(expected.center, actual.center)
+            assertEquals(expected.orientation, actual.orientation)
+            assertEquals(expected.sideLength, actual.sideLength)
+            assertEquals(expected.sideCount, actual.sideCount)
 
             for (i in expected.points.indices) {
                 assertApproximation(expected.points[i], actual.points[i])
             }
             for (i in expected.points.indices) {
-                assertApproximation(expected.points[i], trianglePointIterator.nextVector2F())
+                assertApproximation(expected.points[i], squarePointIterator.nextVector2F())
             }
         }
 
@@ -403,6 +410,18 @@ class RegularPolygonTests {
                 } and
                 a.circumradius.isApproximately(b.circumradius, tolerance) and
                 a.inradius.isApproximately(b.inradius, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: RegularPolygon, b: RegularPolygon): Boolean =
+            (a.center == b.center) and
+                    (a.orientation == b.orientation) and
+                    (a.sideLength == b.sideLength) and
+                    (a.points.size == b.points.size) and
+                    a.points.foldIndexed(true) { index, acc, point ->
+                        acc and (point == b.points[index])
+                    } and
+                    (a.circumradius == b.circumradius) and
+                    (a.inradius == b.inradius)
 
         @JvmStatic
         fun clone(polygon: RegularPolygon) = polygon.copy()

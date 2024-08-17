@@ -7,6 +7,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.DefaultTriangle
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -241,6 +242,14 @@ class TriangleTests {
                     a.pointC.isApproximately(b.pointC, tolerance) and
                     a.centroid.isApproximately(b.centroid, tolerance) and
                     a.orientation.isApproximately(b.orientation, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: Triangle, b: Triangle): Boolean =
+            (a.pointA == b.pointA) and
+                    (a.pointB == b.pointB) and
+                    (a.pointC == b.pointC) and
+                    (a.centroid == b.centroid) and
+                    (a.orientation == b.orientation)
 
         @JvmStatic
         fun clone(triangle: Triangle) = triangle.copy()
@@ -512,7 +521,7 @@ class TriangleTests {
                 defaultTriangleArgs
             ).flatten()
         }
-        
+
         @JvmStatic
         fun circumcenterArgs(): List<Arguments> {
             val mutableTriangleArgs = listOf(

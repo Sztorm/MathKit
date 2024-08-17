@@ -10,6 +10,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
@@ -382,6 +383,13 @@ class AnnulusTests {
                     a.orientation.isApproximately(b.orientation, tolerance) and
                     a.outerRadius.isApproximately(b.outerRadius, tolerance) and
                     a.innerRadius.isApproximately(b.innerRadius, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: Annulus, b: Annulus): Boolean =
+            (a.center == b.center) and
+                    (a.orientation == b.orientation) and
+                    (a.outerRadius == b.outerRadius) and
+                    (a.innerRadius == b.innerRadius)
 
         @JvmStatic
         fun clone(annulus: Annulus) = annulus.copy()

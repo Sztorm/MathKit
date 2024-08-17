@@ -8,6 +8,7 @@ import com.sztorm.lowallocmath.euclidean2d.utils.DefaultLineSegment
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
+import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -188,6 +189,10 @@ class LineSegmentTests {
             a: LineSegment, b: LineSegment, tolerance: Float = 0.00001f
         ): Boolean = a.pointA.isApproximately(b.pointA, tolerance) and
                 a.pointB.isApproximately(b.pointB, tolerance)
+
+        @JvmStatic
+        fun areEqual(a: LineSegment, b: LineSegment): Boolean =
+            (a.pointA == b.pointA) and (a.pointB == b.pointB)
 
         @JvmStatic
         fun clone(lineSegment: LineSegment) = lineSegment.copy()

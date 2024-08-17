@@ -3,13 +3,15 @@ package com.sztorm.lowallocmath.utils
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.euclidean2d.*
+import com.sztorm.lowallocmath.isApproximately
 import kotlin.math.sign
 import kotlin.test.assertTrue
 
 private fun Float.hasSymbolIdenticalTo(other: Float) =
     (isNaN() and other.isNaN()) || (isInfinite() && other.isInfinite() && sign == other.sign)
+
+private fun messagePrefix(message: String?) = if (message == null) "" else "$message. "
 
 fun assertApproximation(expected: Float, actual: Float, tolerance: Float = 0.00001f) = assertTrue(
     expected.hasSymbolIdenticalTo(actual) || expected.isApproximately(actual, tolerance),
@@ -278,6 +280,316 @@ fun assertApproximation(expected: Triangle, actual: Triangle, tolerance: Float =
         """.trimIndent()
     )
 
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: Annulus, actual: Annulus, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <Annulus(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            outerRadius=${expected.outerRadius},
+            innerRadius=${expected.innerRadius}
+        )>,
+        actual <Annulus(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            outerRadius=${actual.outerRadius},
+            innerRadius=${actual.innerRadius}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        AnnulusTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: Circle, actual: Circle, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <Circle(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            radius=${expected.radius}
+        )>,
+        actual <Circle(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            radius=${actual.radius}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        CircleTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: LineSegment, actual: LineSegment, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <LineSegment(
+            pointA=${expected.pointA},
+            pointB=${expected.pointB}
+        )>,
+        actual <LineSegment(
+            pointA=${actual.pointA},
+            pointB=${actual.pointB}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        LineSegmentTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: Ray, actual: Ray, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <Ray(
+            origin=${expected.origin},
+            direction=${expected.direction}
+        )>,
+        actual <Ray(
+            origin=${actual.origin},
+            direction=${actual.direction}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RayTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: Rectangle, actual: Rectangle, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <Rectangle(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            width=${expected.width},
+            height=${expected.height},
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC},
+            pointD=${expected.pointD}
+        )>,
+        actual <Rectangle(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            width=${actual.width},
+            height=${actual.height},
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC},
+            pointD=${actual.pointD}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RectangleTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(
+    expected: RegularPolygon, actual: RegularPolygon, message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <RegularPolygon(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            sideLength=${expected.sideLength},
+            points=${expected.points},
+            circumradius=${expected.circumradius}
+            inradius=${expected.inradius}
+        )>,
+        actual <RegularPolygon(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            sideLength=${actual.sideLength},
+            points=${actual.points},
+            circumradius=${actual.circumradius}
+            inradius=${actual.inradius}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RegularPolygonTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(
+    expected: RegularTriangle, actual: RegularTriangle, message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <RegularTriangle(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            sideLength=${expected.sideLength},
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC}
+        )>,
+        actual <RegularTriangle(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            sideLength=${actual.sideLength},
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RegularTriangleTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(
+    expected: RoundedRectangle, actual: RoundedRectangle, message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <RoundedRectangle(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            width=${expected.width},
+            height=${expected.height},
+            cornerRadius=${expected.cornerRadius},
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC},
+            pointD=${expected.pointD},
+            pointE=${expected.pointE},
+            pointF=${expected.pointF},
+            pointG=${expected.pointG},
+            pointH=${expected.pointH},
+            cornerCenterA=${expected.cornerCenterA},
+            cornerCenterB=${expected.cornerCenterB},
+            cornerCenterC=${expected.cornerCenterC},
+            cornerCenterD=${expected.cornerCenterD}
+        )>,
+        actual <RoundedRectangle(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            width=${actual.width},
+            height=${actual.height},
+            cornerRadius=${actual.cornerRadius},
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC},
+            pointD=${actual.pointD},
+            pointE=${actual.pointE},
+            pointF=${actual.pointF},
+            pointG=${actual.pointG},
+            pointH=${actual.pointH},
+            cornerCenterA=${actual.cornerCenterA},
+            cornerCenterB=${actual.cornerCenterB},
+            cornerCenterC=${actual.cornerCenterC},
+            cornerCenterD=${actual.cornerCenterD}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RoundedRectangleTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: Square, actual: Square, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <Square(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            sideLength=${expected.sideLength},
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC},
+            pointD=${expected.pointD}
+        )>,
+        actual <Square(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            sideLength=${actual.sideLength},
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC},
+            pointD=${actual.pointD}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        SquareTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].
+ */
+fun assertEquals(expected: Triangle, actual: Triangle, message: String? = null) {
+    val mainMessage: String =
+        """
+        Expected <Triangle(
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC},
+            centroid=${expected.centroid},
+            orientation=${expected.orientation}
+        )>,
+        actual <Triangle(
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC},
+            centroid=${actual.centroid},
+            orientation=${actual.orientation}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        TriangleTests.areEqual(expected, actual),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is equal to the [actual] value using [equalityComparator],
+ * with an optional [message].
+ */
 inline fun <reified T> assertEquals(
     expected: T, actual: T, equalityComparator: (T, T) -> Boolean, message: String? = null
 ) {
