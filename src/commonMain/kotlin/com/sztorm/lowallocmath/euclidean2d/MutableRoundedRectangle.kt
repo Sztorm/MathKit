@@ -1007,6 +1007,57 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
     }
 
+    /**
+     * Calibrates the properties of this instance. If the [orientation] cannot be normalized, it
+     * will take the value of [ONE][ComplexF.ONE].
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = newOrientation
+        val halfWidth: Float = _width * 0.5f
+        val halfHeight: Float = _height * 0.5f
+        val cornerRadius: Float = _cornerRadius
+        val halfWidthMinusRadius: Float = halfWidth - cornerRadius
+        val halfHeightMinusRadius: Float = halfHeight - cornerRadius
+        val addendA: Float = oR * halfWidthMinusRadius
+        val addendB: Float = oI * halfWidthMinusRadius
+        val addendC: Float = oR * halfHeightMinusRadius
+        val addendD: Float = oI * halfHeightMinusRadius
+        val addendE: Float = oR * halfWidth
+        val addendF: Float = oI * halfWidth
+        val addendG: Float = oR * halfHeight
+        val addendH: Float = oI * halfHeight
+        val addendSumAH: Float = addendA + addendH
+        val addendSumBG: Float = addendB + addendG
+        val addendSumCF: Float = addendC + addendF
+        val addendSumED: Float = addendE + addendD
+        val addendSumBC: Float = addendB + addendC
+        val addendSumAD: Float = addendA + addendD
+        val addendDiffAH: Float = addendA - addendH
+        val addendDiffBG: Float = addendB - addendG
+        val addendDiffCF: Float = addendC - addendF
+        val addendDiffED: Float = addendE - addendD
+        val addendDiffBC: Float = addendB - addendC
+        val addendDiffAD: Float = addendA - addendD
+        _orientation = newOrientation
+        _pointA = Vector2F(cX + addendDiffAH, cY + addendSumBG)
+        _pointB = Vector2F(cX - addendSumAH, cY - addendDiffBG)
+        _pointC = Vector2F(cX - addendSumED, cY + addendDiffCF)
+        _pointD = Vector2F(cX - addendDiffED, cY - addendSumCF)
+        _pointE = Vector2F(cX - addendDiffAH, cY - addendSumBG)
+        _pointF = Vector2F(cX + addendSumAH, cY + addendDiffBG)
+        _pointG = Vector2F(cX + addendSumED, cY - addendDiffCF)
+        _pointH = Vector2F(cX + addendDiffED, cY + addendSumCF)
+        _cornerCenterA = Vector2F(cX + addendDiffAD, cY + addendSumBC)
+        _cornerCenterB = Vector2F(cX - addendSumAD, cY - addendDiffBC)
+        _cornerCenterC = Vector2F(cX - addendDiffAD, cY - addendSumBC)
+        _cornerCenterD = Vector2F(cX + addendSumAD, cY + addendDiffBC)
+    }
+
     private inline fun setInternal(
         center: Vector2F, orientation: ComplexF, width: Float, height: Float, cornerRadius: Float
     ) {

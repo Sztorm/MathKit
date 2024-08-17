@@ -157,6 +157,12 @@ class RoundedRectangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesRoundedRectangleCorrectly(
+        rectangle: MutableRoundedRectangle, expected: MutableRoundedRectangle
+    ) = assertApproximation(expected, rectangle.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesRoundedRectangleCorrectly(
         rectangle: MutableRoundedRectangle,
@@ -885,6 +891,62 @@ class RoundedRectangleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 5f, AngleF.fromDegrees(-60f).radians
+                    ),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                )
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.5f, AngleF.fromDegrees(-60f).radians
+                    ),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                )
+            ),
+            Arguments.of(
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.ZERO,
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                ),
+                MutableRoundedRectangle(
+                    center = Vector2F(-3f, -4f),
+                    orientation = ComplexF.ONE,
+                    width = 8f,
+                    height = 4f,
+                    cornerRadius = 1f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
