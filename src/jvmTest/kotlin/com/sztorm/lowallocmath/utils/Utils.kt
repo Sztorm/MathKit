@@ -13,51 +13,105 @@ private fun Float.hasSymbolIdenticalTo(other: Float) =
 
 private fun messagePrefix(message: String?) = if (message == null) "" else "$message. "
 
-fun assertApproximation(expected: Float, actual: Float, tolerance: Float = 0.00001f) = assertTrue(
-    expected.hasSymbolIdenticalTo(actual) || expected.isApproximately(actual, tolerance),
-    "Expected <$expected> with absolute tolerance <$tolerance>, actual <$actual>."
-)
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Float,
+    actual: Float,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage =
+        "Expected <$expected> with absolute tolerance <$absoluteTolerance>, actual <$actual>."
 
-fun assertApproximation(expected: Vector2F, actual: Vector2F, tolerance: Float = 0.00001f) {
+    assertTrue(
+        expected.hasSymbolIdenticalTo(actual) ||
+                expected.isApproximately(actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Vector2F,
+    actual: Vector2F,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
     val (eX: Float, eY: Float) = expected
     val (aX: Float, aY: Float) = actual
+    val mainMessage =
+        "Expected <$expected> with absolute tolerance <$absoluteTolerance>, actual <$actual>."
 
     assertTrue(
-        (eX.hasSymbolIdenticalTo(aX) || eX.isApproximately(aX, tolerance)) &&
-                (eY.hasSymbolIdenticalTo(aY) || eY.isApproximately(aY, tolerance)),
-        "Expected <$expected> with absolute tolerance <$tolerance>, actual <$actual>."
+        (eX.hasSymbolIdenticalTo(aX) || eX.isApproximately(aX, absoluteTolerance)) &&
+                (eY.hasSymbolIdenticalTo(aY) || eY.isApproximately(aY, absoluteTolerance)),
+        messagePrefix(message) + mainMessage
     )
 }
 
-fun assertApproximation(expected: ComplexF, actual: ComplexF, tolerance: Float = 0.00001f) {
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: ComplexF,
+    actual: ComplexF,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
     val (eR: Float, eI: Float) = expected
     val (aR: Float, aI: Float) = actual
+    val mainMessage =
+        "Expected <$expected> with absolute tolerance <$absoluteTolerance>, actual <$actual>."
 
     assertTrue(
-        (eR.hasSymbolIdenticalTo(aR) || eR.isApproximately(aR, tolerance)) &&
-                (eI.hasSymbolIdenticalTo(aI) || eI.isApproximately(aI, tolerance)),
-        "Expected <$expected> with absolute tolerance <$tolerance>, actual <$actual>."
+        (eR.hasSymbolIdenticalTo(aR) || eR.isApproximately(aR, absoluteTolerance)) &&
+                (eI.hasSymbolIdenticalTo(aI) || eI.isApproximately(aI, absoluteTolerance)),
+        messagePrefix(message) + mainMessage
     )
 }
 
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
 fun assertApproximation(
-    expected: AngleF, actual: AngleF, tolerance: AngleF = AngleF(0.00001f)
-) = assertTrue(
-    expected.radians.hasSymbolIdenticalTo(actual.radians) ||
-            expected.isApproximately(actual, tolerance),
-    "Expected <$expected> with absolute tolerance <$tolerance>, actual <$actual>."
-)
+    expected: AngleF,
+    actual: AngleF,
+    absoluteTolerance: AngleF = AngleF(0.00001f),
+    message: String? = null
+) {
+    val mainMessage =
+        "Expected <$expected> with absolute tolerance <$absoluteTolerance>, actual <$actual>."
 
-fun assertApproximation(expected: Annulus, actual: Annulus, tolerance: Float = 0.00001f) =
     assertTrue(
-        AnnulusTests.areApproximatelyEqual(expected, actual, tolerance),
+        expected.radians.hasSymbolIdenticalTo(actual.radians) ||
+                expected.isApproximately(actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Annulus, actual: Annulus, absoluteTolerance: Float = 0.00001f, message: String? = null
+) {
+    val mainMessage: String =
         """
         Expected <Annulus(
             center=${expected.center},
             orientation=${expected.orientation},
             outerRadius=${expected.outerRadius},
             innerRadius=${expected.innerRadius}
-        )> with absolute tolerance <$tolerance>,
+        )> with absolute tolerance <$absoluteTolerance>,
         actual <Annulus(
             center=${actual.center},
             orientation=${actual.orientation},
@@ -65,57 +119,104 @@ fun assertApproximation(expected: Annulus, actual: Annulus, tolerance: Float = 0
             innerRadius=${actual.innerRadius}
         )>.
         """.trimIndent()
-    )
 
-fun assertApproximation(expected: Circle, actual: Circle, tolerance: Float = 0.00001f) =
     assertTrue(
-        CircleTests.areApproximatelyEqual(expected, actual, tolerance),
+        AnnulusTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Circle, actual: Circle, absoluteTolerance: Float = 0.00001f, message: String? = null
+) {
+    val mainMessage: String =
         """
         Expected <Circle(
             center=${expected.center},
             orientation=${expected.orientation},
             radius=${expected.radius}
-        )> with absolute tolerance <$tolerance>,
+        )> with absolute tolerance <$absoluteTolerance>,
         actual <Circle(
             center=${actual.center},
             orientation=${actual.orientation},
             radius=${actual.radius}
         )>.
         """.trimIndent()
-    )
 
-fun assertApproximation(expected: LineSegment, actual: LineSegment, tolerance: Float = 0.00001f) =
     assertTrue(
-        LineSegmentTests.areApproximatelyEqual(expected, actual, tolerance),
+        CircleTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: LineSegment,
+    actual: LineSegment,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage: String =
         """
         Expected <LineSegment(
             pointA=${expected.pointA},
             pointB=${expected.pointB}
-        )> with absolute tolerance <$tolerance>,
+        )> with absolute tolerance <$absoluteTolerance>,
         actual <LineSegment(
             pointA=${actual.pointA},
             pointB=${actual.pointB}
         )>.
         """.trimIndent()
-    )
 
-fun assertApproximation(expected: Ray, actual: Ray, tolerance: Float = 0.00001f) = assertTrue(
-    RayTests.areApproximatelyEqual(expected, actual, tolerance),
-    """
-    Expected <Ray(
-        origin=${expected.origin},
-        direction=${expected.direction}
-    )> with absolute tolerance <$tolerance>,
-    actual <Ray(
-        origin=${actual.origin},
-        direction=${actual.direction}
-    )>.
-    """.trimIndent()
-)
-
-fun assertApproximation(expected: Rectangle, actual: Rectangle, tolerance: Float = 0.00001f) =
     assertTrue(
-        RectangleTests.areApproximatelyEqual(expected, actual, tolerance),
+        LineSegmentTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Ray, actual: Ray, absoluteTolerance: Float = 0.00001f, message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <Ray(
+            origin=${expected.origin},
+            direction=${expected.direction}
+        )> with absolute tolerance <$absoluteTolerance>,
+        actual <Ray(
+            origin=${actual.origin},
+            direction=${actual.direction}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RayTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Rectangle,
+    actual: Rectangle,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage: String =
         """
         Expected <Rectangle(
             center=${expected.center},
@@ -126,7 +227,7 @@ fun assertApproximation(expected: Rectangle, actual: Rectangle, tolerance: Float
             pointB=${expected.pointB},
             pointC=${expected.pointC},
             pointD=${expected.pointD}
-        )> with absolute tolerance <$tolerance>,
+        )> with absolute tolerance <$absoluteTolerance>,
         actual <Rectangle(
             center=${actual.center},
             orientation=${actual.orientation},
@@ -138,105 +239,151 @@ fun assertApproximation(expected: Rectangle, actual: Rectangle, tolerance: Float
             pointD=${actual.pointD}
         )>.
         """.trimIndent()
-    )
 
-fun assertApproximation(
-    expected: RegularPolygon, actual: RegularPolygon, tolerance: Float = 0.00001f
-) = assertTrue(
-    RegularPolygonTests.areApproximatelyEqual(expected, actual, tolerance),
-    """
-    Expected <RegularPolygon(
-        center=${expected.center},
-        orientation=${expected.orientation},
-        sideLength=${expected.sideLength},
-        points=${expected.points},
-        circumradius=${expected.circumradius}
-        inradius=${expected.inradius}
-    )> with absolute tolerance <$tolerance>,
-    actual <RegularPolygon(
-        center=${actual.center},
-        orientation=${actual.orientation},
-        sideLength=${actual.sideLength},
-        points=${actual.points},
-        circumradius=${actual.circumradius}
-        inradius=${actual.inradius}
-    )>.
-    """.trimIndent()
-)
-
-fun assertApproximation(
-    expected: RegularTriangle, actual: RegularTriangle, tolerance: Float = 0.00001f
-) = assertTrue(
-    RegularTriangleTests.areApproximatelyEqual(expected, actual, tolerance),
-    """
-    Expected <RegularTriangle(
-        center=${expected.center},
-        orientation=${expected.orientation},
-        sideLength=${expected.sideLength},
-        pointA=${expected.pointA},
-        pointB=${expected.pointB},
-        pointC=${expected.pointC}
-    )> with absolute tolerance <$tolerance>,
-    actual <RegularTriangle(
-        center=${actual.center},
-        orientation=${actual.orientation},
-        sideLength=${actual.sideLength},
-        pointA=${actual.pointA},
-        pointB=${actual.pointB},
-        pointC=${actual.pointC}
-    )>.
-    """.trimIndent()
-)
-
-fun assertApproximation(
-    expected: RoundedRectangle, actual: RoundedRectangle, tolerance: Float = 0.00001f
-) = assertTrue(
-    RoundedRectangleTests.areApproximatelyEqual(expected, actual, tolerance),
-    """
-    Expected <RoundedRectangle(
-        center=${expected.center},
-        orientation=${expected.orientation},
-        width=${expected.width},
-        height=${expected.height},
-        cornerRadius=${expected.cornerRadius},
-        pointA=${expected.pointA},
-        pointB=${expected.pointB},
-        pointC=${expected.pointC},
-        pointD=${expected.pointD},
-        pointE=${expected.pointE},
-        pointF=${expected.pointF},
-        pointG=${expected.pointG},
-        pointH=${expected.pointH},
-        cornerCenterA=${expected.cornerCenterA},
-        cornerCenterB=${expected.cornerCenterB},
-        cornerCenterC=${expected.cornerCenterC},
-        cornerCenterD=${expected.cornerCenterD}
-    )> with absolute tolerance <$tolerance>,
-    actual <RoundedRectangle(
-        center=${actual.center},
-        orientation=${actual.orientation},
-        width=${actual.width},
-        height=${actual.height},
-        cornerRadius=${actual.cornerRadius},
-        pointA=${actual.pointA},
-        pointB=${actual.pointB},
-        pointC=${actual.pointC},
-        pointD=${actual.pointD},
-        pointE=${actual.pointE},
-        pointF=${actual.pointF},
-        pointG=${actual.pointG},
-        pointH=${actual.pointH},
-        cornerCenterA=${actual.cornerCenterA},
-        cornerCenterB=${actual.cornerCenterB},
-        cornerCenterC=${actual.cornerCenterC},
-        cornerCenterD=${actual.cornerCenterD}
-    )>.
-    """.trimIndent()
-)
-
-fun assertApproximation(expected: Square, actual: Square, tolerance: Float = 0.00001f) =
     assertTrue(
-        SquareTests.areApproximatelyEqual(expected, actual, tolerance),
+        RectangleTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: RegularPolygon,
+    actual: RegularPolygon,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <RegularPolygon(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            sideLength=${expected.sideLength},
+            points=${expected.points},
+            circumradius=${expected.circumradius}
+            inradius=${expected.inradius}
+        )> with absolute tolerance <$absoluteTolerance>,
+        actual <RegularPolygon(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            sideLength=${actual.sideLength},
+            points=${actual.points},
+            circumradius=${actual.circumradius}
+            inradius=${actual.inradius}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RegularPolygonTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: RegularTriangle,
+    actual: RegularTriangle,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <RegularTriangle(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            sideLength=${expected.sideLength},
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC}
+        )> with absolute tolerance <$absoluteTolerance>,
+        actual <RegularTriangle(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            sideLength=${actual.sideLength},
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RegularTriangleTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: RoundedRectangle,
+    actual: RoundedRectangle,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage: String =
+        """
+        Expected <RoundedRectangle(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            width=${expected.width},
+            height=${expected.height},
+            cornerRadius=${expected.cornerRadius},
+            pointA=${expected.pointA},
+            pointB=${expected.pointB},
+            pointC=${expected.pointC},
+            pointD=${expected.pointD},
+            pointE=${expected.pointE},
+            pointF=${expected.pointF},
+            pointG=${expected.pointG},
+            pointH=${expected.pointH},
+            cornerCenterA=${expected.cornerCenterA},
+            cornerCenterB=${expected.cornerCenterB},
+            cornerCenterC=${expected.cornerCenterC},
+            cornerCenterD=${expected.cornerCenterD}
+        )> with absolute tolerance <$absoluteTolerance>,
+        actual <RoundedRectangle(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            width=${actual.width},
+            height=${actual.height},
+            cornerRadius=${actual.cornerRadius},
+            pointA=${actual.pointA},
+            pointB=${actual.pointB},
+            pointC=${actual.pointC},
+            pointD=${actual.pointD},
+            pointE=${actual.pointE},
+            pointF=${actual.pointF},
+            pointG=${actual.pointG},
+            pointH=${actual.pointH},
+            cornerCenterA=${actual.cornerCenterA},
+            cornerCenterB=${actual.cornerCenterB},
+            cornerCenterC=${actual.cornerCenterC},
+            cornerCenterD=${actual.cornerCenterD}
+        )>.
+        """.trimIndent()
+
+    assertTrue(
+        RoundedRectangleTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Square, actual: Square, absoluteTolerance: Float = 0.00001f, message: String? = null
+) {
+    val mainMessage: String =
         """
         Expected <Square(
             center=${expected.center},
@@ -246,7 +393,7 @@ fun assertApproximation(expected: Square, actual: Square, tolerance: Float = 0.0
             pointB=${expected.pointB},
             pointC=${expected.pointC},
             pointD=${expected.pointD}
-        )> with absolute tolerance <$tolerance>,
+        )> with absolute tolerance <$absoluteTolerance>,
         actual <Square(
             center=${actual.center},
             orientation=${actual.orientation},
@@ -257,11 +404,24 @@ fun assertApproximation(expected: Square, actual: Square, tolerance: Float = 0.0
             pointD=${actual.pointD}
         )>.
         """.trimIndent()
-    )
 
-fun assertApproximation(expected: Triangle, actual: Triangle, tolerance: Float = 0.00001f) =
     assertTrue(
-        TriangleTests.areApproximatelyEqual(expected, actual, tolerance),
+        SquareTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
+    )
+}
+
+/**
+ * Asserts that the [expected] value is approximately equal to the [actual] value within an
+ * [absoluteTolerance], with an optional [message].
+ */
+fun assertApproximation(
+    expected: Triangle,
+    actual: Triangle,
+    absoluteTolerance: Float = 0.00001f,
+    message: String? = null
+) {
+    val mainMessage: String =
         """
         Expected <Triangle(
             pointA=${expected.pointA},
@@ -269,7 +429,7 @@ fun assertApproximation(expected: Triangle, actual: Triangle, tolerance: Float =
             pointC=${expected.pointC},
             centroid=${expected.centroid},
             orientation=${expected.orientation}
-        )> with absolute tolerance <$tolerance>,
+        )> with absolute tolerance <$absoluteTolerance>,
         actual <Triangle(
             pointA=${actual.pointA},
             pointB=${actual.pointB},
@@ -278,7 +438,12 @@ fun assertApproximation(expected: Triangle, actual: Triangle, tolerance: Float =
             orientation=${actual.orientation}
         )>.
         """.trimIndent()
+
+    assertTrue(
+        TriangleTests.areApproximatelyEqual(expected, actual, absoluteTolerance),
+        messagePrefix(message) + mainMessage
     )
+}
 
 /**
  * Asserts that the [expected] value is equal to the [actual] value, with an optional [message].

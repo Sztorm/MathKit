@@ -21,29 +21,27 @@ class ComplexFTests {
     @ParameterizedTest
     @MethodSource("squaredMagnitudeArgs")
     fun squaredMagnitudeReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
-        assertApproximation(expected, complex.value.squaredMagnitude, tolerance = 0.001f)
+        assertApproximation(expected, complex.value.squaredMagnitude)
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
     fun magnitudeReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
-        assertApproximation(expected, complex.value.magnitude, tolerance = 0.001f)
+        assertApproximation(expected, complex.value.magnitude)
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
     fun absoluteValueReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
-        assertApproximation(expected, complex.value.absoluteValue, tolerance = 0.001f)
+        assertApproximation(expected, complex.value.absoluteValue)
 
     @ParameterizedTest
     @MethodSource("phaseArgs")
     fun phaseReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
-        assertApproximation(expected, complex.value.phase, tolerance = 0.001f)
+        assertApproximation(expected, complex.value.phase)
 
     @ParameterizedTest
     @MethodSource("phaseAngleArgs")
     fun phaseAngleReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<AngleF>) =
-        assertApproximation(
-            expected.value, complex.value.phaseAngle, tolerance = AngleF.fromRadians(0.001f)
-        )
+        assertApproximation(expected.value, complex.value.phaseAngle)
 
     @ParameterizedTest
     @MethodSource("conjugateArgs")
@@ -87,19 +85,19 @@ class ComplexFTests {
     @MethodSource("powComplexArgs")
     fun powComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value.pow(b.value), tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value.pow(b.value))
 
     @ParameterizedTest
     @MethodSource("powFloatArgs")
     fun powFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value.pow(b), tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value.pow(b))
 
     @ParameterizedTest
     @MethodSource("powIntArgs")
     fun powIntReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Int, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value.pow(b), tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value.pow(b))
 
     @ParameterizedTest
     @MethodSource("copyArgs")
@@ -134,85 +132,85 @@ class ComplexFTests {
     @MethodSource("complexFPlusComplexFArgs")
     fun complexPlusComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value + b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value + b.value)
 
     @ParameterizedTest
     @MethodSource("complexFPlusFloatArgs")
     fun complexPlusFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value + b, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value + b)
 
     @ParameterizedTest
     @MethodSource("floatPlusComplexFArgs")
     fun floatPlusComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a + b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a + b.value)
 
     @ParameterizedTest
     @MethodSource("complexFMinusComplexFArgs")
     fun complexMinusComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value - b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value - b.value)
 
     @ParameterizedTest
     @MethodSource("complexFMinusFloatArgs")
     fun complexMinusFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value - b, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value - b)
 
     @ParameterizedTest
     @MethodSource("floatMinusComplexFArgs")
     fun floatMinusComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a - b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a - b.value)
 
     @ParameterizedTest
     @MethodSource("complexFTimesComplexFArgs")
     fun complexTimesComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value * b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value * b.value)
 
     @ParameterizedTest
     @MethodSource("complexFTimesFloatArgs")
     fun complexTimesFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value * b, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value * b)
 
     @ParameterizedTest
     @MethodSource("complexFTimesVector2FArgs")
     fun complexTimesVectorReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, a.value * b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value * b.value)
 
     @ParameterizedTest
     @MethodSource("floatTimesComplexFArgs")
     fun floatTimesComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a * b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a * b.value)
 
     @ParameterizedTest
     @MethodSource("complexFDivComplexFArgs")
     fun complexDivComplexReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value / b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value / b.value)
 
     @ParameterizedTest
     @MethodSource("complexFDivFloatArgs")
     fun complexDivFloatReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a.value / b, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value / b)
 
     @ParameterizedTest
     @MethodSource("complexFDivVector2FArgs")
     fun complexDivVector2FReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, a.value / b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a.value / b.value)
 
     @ParameterizedTest
     @MethodSource("floatDivComplexFArgs")
     fun floatDivComplexReturnsCorrectValue(
         a: Float, b: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, a / b.value, tolerance = 0.001f)
+    ) = assertApproximation(expected.value, a / b.value)
 
     @ParameterizedTest
     @MethodSource("floatIArgs")
@@ -243,19 +241,17 @@ class ComplexFTests {
     @ParameterizedTest
     @MethodSource("fromPolarArgs")
     fun fromPolarReturnsCorrectValue(magnitude: Float, phase: Float, expected: Wrapper<ComplexF>) =
-        assertApproximation(
-            expected.value, ComplexF.fromPolar(magnitude, phase), tolerance = 0.001f
-        )
+        assertApproximation(expected.value, ComplexF.fromPolar(magnitude, phase))
 
     @ParameterizedTest
     @MethodSource("fromAngleArgs")
     fun fromAngleReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.fromAngle(angle.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.fromAngle(angle.value))
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
     fun absReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
-        assertApproximation(expected, ComplexF.abs(complex.value), tolerance = 0.001f)
+        assertApproximation(expected, ComplexF.abs(complex.value))
 
     @ParameterizedTest
     @MethodSource("companionConjugateArgs")
@@ -266,7 +262,7 @@ class ComplexFTests {
     @ParameterizedTest
     @MethodSource("expArgs")
     fun expReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.exp(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.exp(complex.value))
 
     @ParameterizedTest
     @MethodSource("lnArgs")
@@ -292,52 +288,52 @@ class ComplexFTests {
     @ParameterizedTest
     @MethodSource("cosArgs")
     fun cosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.cos(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.cos(complex.value))
 
     @ParameterizedTest
     @MethodSource("sinArgs")
     fun sinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.sin(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.sin(complex.value))
 
     @ParameterizedTest
     @MethodSource("tanArgs")
     fun tanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.tan(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.tan(complex.value))
 
     @ParameterizedTest
     @MethodSource("coshArgs")
     fun coshReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.cosh(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.cosh(complex.value))
 
     @ParameterizedTest
     @MethodSource("sinhArgs")
     fun sinhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.sinh(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.sinh(complex.value))
 
     @ParameterizedTest
     @MethodSource("tanhArgs")
     fun tanhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.tanh(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.tanh(complex.value))
 
     @ParameterizedTest
     @MethodSource("acosArgs")
     fun acosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.acos(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.acos(complex.value))
 
     @ParameterizedTest
     @MethodSource("asinArgs")
     fun asinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.asin(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.asin(complex.value))
 
     @ParameterizedTest
     @MethodSource("atanArgs")
     fun atanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.atan(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.atan(complex.value))
 
     @ParameterizedTest
     @MethodSource("sqrtArgs")
     fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
-        assertApproximation(expected.value, ComplexF.sqrt(complex.value), tolerance = 0.001f)
+        assertApproximation(expected.value, ComplexF.sqrt(complex.value))
 
     @Suppress("SpellCheckingInspection")
     @ParameterizedTest
@@ -391,13 +387,16 @@ class ComplexFTests {
         @JvmStatic
         fun phaseAngleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(ComplexF(3f, 4f)), Wrapper(AngleF.fromRadians(0.9273f))
+                Wrapper(ComplexF(3f, 4f)),
+                Wrapper(AngleF.fromRadians(0.9273f))
             ),
             Arguments.of(
-                Wrapper(ComplexF(0f, 2f)), Wrapper(AngleF.fromRadians(1.5708f))
+                Wrapper(ComplexF(0f, 2f)),
+                Wrapper(AngleF.fromRadians(1.5708f))
             ),
             Arguments.of(
-                Wrapper(ComplexF(0f, 0f)), Wrapper(AngleF.fromRadians(0f))
+                Wrapper(ComplexF(0f, 0f)),
+                Wrapper(AngleF.fromRadians(0f))
             ),
         )
 
