@@ -466,6 +466,27 @@ class MutableSquare : Square, MutableTransformable {
         _pointD = Vector2F(cX + addendA, cY - addendB)
     }
 
+    /**
+     * Calibrates the properties of this instance. If the [orientation] cannot be normalized, it
+     * will take the value of [ONE][ComplexF.ONE].
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = newOrientation
+        val halfSideLength: Float = _sideLength * 0.5f
+        val addendA: Float = halfSideLength * (oR + oI)
+        val addendB: Float = halfSideLength * (oR - oI)
+        _orientation = newOrientation
+        _pointA = Vector2F(cX + addendB, cY + addendA)
+        _pointB = Vector2F(cX - addendA, cY + addendB)
+        _pointC = Vector2F(cX - addendB, cY - addendA)
+        _pointD = Vector2F(cX + addendA, cY - addendB)
+    }
+
     private inline fun setInternal(center: Vector2F, orientation: ComplexF, sideLength: Float) {
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation

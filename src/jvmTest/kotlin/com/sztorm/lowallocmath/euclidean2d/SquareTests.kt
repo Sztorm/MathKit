@@ -157,6 +157,11 @@ class SquareTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesSquareCorrectly(square: MutableSquare, expected: MutableSquare) =
+        assertApproximation(expected, square.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesSquareCorrectly(
         square: MutableSquare,
@@ -741,6 +746,50 @@ class SquareTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 3.2f, AngleF.fromDegrees(60f).radians
+                    ),
+                    sideLength = 4f
+                ),
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                )
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.32f, AngleF.fromDegrees(60f).radians
+                    ),
+                    sideLength = 4f
+                ),
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
+                    sideLength = 4f
+                )
+            ),
+            Arguments.of(
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.ZERO,
+                    sideLength = 4f
+                ),
+                MutableSquare(
+                    center = Vector2F(3f, 1f),
+                    orientation = ComplexF.ONE,
+                    sideLength = 4f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
