@@ -345,11 +345,16 @@ value class ComplexF internal constructor(
         inline val ZERO
             @JvmStatic get() = ComplexF(0f, 0f)
 
-        /** Value of 1 **/
+        /**
+         * Value of 1, in polar form a complex number with [magnitude] of 1 and [phaseAngle] of 0°.
+         */
         inline val ONE
             @JvmStatic get() = ComplexF(1f, 0f)
 
-        /** Value of i **/
+        /**
+         * Value of i, in polar form a complex number with [magnitude] of 1 and [phaseAngle] of
+         * 90°.
+         */
         inline val IMAGINARY_ONE
             @JvmStatic get() = ComplexF(0f, 1f)
 

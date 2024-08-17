@@ -273,7 +273,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     }
 
     /**
-     * Calibrates the properties of this instance.
+     * Calibrates the properties of this instance. If the [direction] cannot be normalized, it
+     * will take the value of `Vector2F(x=1, y=0)`.
      *
      * Transformations and operations involving floating point numbers may introduce various
      * inaccuracies that can be countered by this method.

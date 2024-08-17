@@ -709,7 +709,8 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
     }
 
     /**
-     * Calibrates the properties of this instance.
+     * Calibrates the properties of this instance. If the [orientation] cannot be normalized, it
+     * will take the value of [ONE][ComplexF.ONE].
      *
      * Transformations and operations involving floating point numbers may introduce various
      * inaccuracies that can be countered by this method.
