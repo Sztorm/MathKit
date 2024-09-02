@@ -424,18 +424,24 @@ fun assertApproximation(
     val mainMessage: String =
         """
         Expected <Triangle(
+            centroid=${expected.centroid},
+            originPointA=${expected.originPointA},
+            originPointB=${expected.originPointB},
+            originPointC=${expected.originPointC},
+            orientation=${expected.orientation},
             pointA=${expected.pointA},
             pointB=${expected.pointB},
-            pointC=${expected.pointC},
-            centroid=${expected.centroid},
-            orientation=${expected.orientation}
+            pointC=${expected.pointC}
         )> with absolute tolerance <$absoluteTolerance>,
         actual <Triangle(
+            centroid=${actual.centroid},
+            originPointA=${actual.originPointA},
+            originPointB=${actual.originPointB},
+            originPointC=${actual.originPointC},
+            orientation=${actual.orientation},
             pointA=${actual.pointA},
             pointB=${actual.pointB},
-            pointC=${actual.pointC},
-            centroid=${actual.centroid},
-            orientation=${actual.orientation}
+            pointC=${actual.pointC}
         )>.
         """.trimIndent()
 
@@ -730,18 +736,24 @@ fun assertEquals(expected: Triangle, actual: Triangle, message: String? = null) 
     val mainMessage: String =
         """
         Expected <Triangle(
+            centroid=${expected.centroid},
+            originPointA=${expected.originPointA},
+            originPointB=${expected.originPointB},
+            originPointC=${expected.originPointC},
+            orientation=${expected.orientation},
             pointA=${expected.pointA},
             pointB=${expected.pointB},
-            pointC=${expected.pointC},
-            centroid=${expected.centroid},
-            orientation=${expected.orientation}
+            pointC=${expected.pointC}
         )>,
         actual <Triangle(
+            centroid=${actual.centroid},
+            originPointA=${actual.originPointA},
+            originPointB=${actual.originPointB},
+            originPointC=${actual.originPointC},
+            orientation=${actual.orientation},
             pointA=${actual.pointA},
             pointB=${actual.pointB},
-            pointC=${actual.pointC},
-            centroid=${actual.centroid},
-            orientation=${actual.orientation}
+            pointC=${actual.pointC}
         )>.
         """.trimIndent()
 

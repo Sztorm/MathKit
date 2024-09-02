@@ -11,34 +11,93 @@ import kotlin.math.withSign
 
 /** Represents a mutable transformable triangle in a two-dimensional Euclidean space. **/
 class MutableTriangle : Triangle, MutableTransformable {
+    private var _centroid: Vector2F
+    private var _originPointA: Vector2F
+    private var _originPointB: Vector2F
+    private var _originPointC: Vector2F
+    private var _orientation: ComplexF
     private var _pointA: Vector2F
     private var _pointB: Vector2F
     private var _pointC: Vector2F
-    private var _centroid: Vector2F
-    private var _orientation: ComplexF
+
+    /** Creates a new instance of [MutableTriangle]. **/
+    constructor(
+        centroid: Vector2F, originPointA: Vector2F, originPointB: Vector2F, originPointC: Vector2F
+    ) {
+        val (opAX: Float, opAY: Float) = originPointA
+        val (opBX: Float, opBY: Float) = originPointB
+        val (opCX: Float, opCY: Float) = originPointC
+        val (centroidX: Float, centroidY: Float) = centroid
+        val orientation: ComplexF = originPointA
+            .toComplexF()
+            .normalizedOrElse(ComplexF(1f, 0f))
+        val pointA = Vector2F(opAX + centroidX, opAY + centroidY)
+        val pointB = Vector2F(opBX + centroidX, opBY + centroidY)
+        val pointC = Vector2F(opCX + centroidX, opCY + centroidY)
+        _centroid = centroid
+        _originPointA = originPointA
+        _originPointB = originPointB
+        _originPointC = originPointC
+        _orientation = orientation
+        _pointA = pointA
+        _pointB = pointB
+        _pointC = pointC
+    }
 
     /** Creates a new instance of [MutableTriangle]. **/
     constructor(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) {
+        val (pAX: Float, pAY: Float) = pointA
+        val (pBX: Float, pBY: Float) = pointB
+        val (pCX: Float, pCY: Float) = pointC
+        val centroidX: Float = (pAX + pBX + pCX) * 0.3333333f
+        val centroidY: Float = (pAY + pBY + pCY) * 0.3333333f
+        val originPointA = Vector2F(pAX - centroidX, pAY - centroidY)
+        val originPointB = Vector2F(pBX - centroidX, pBY - centroidY)
+        val originPointC = Vector2F(pCX - centroidX, pCY - centroidY)
+        val orientation: ComplexF = originPointA
+            .toComplexF()
+            .normalizedOrElse(ComplexF(1f, 0f))
+        _originPointA = originPointA
+        _originPointB = originPointB
+        _originPointC = originPointC
+        _centroid = Vector2F(centroidX, centroidY)
+        _orientation = orientation
         _pointA = pointA
         _pointB = pointB
         _pointC = pointC
-        _centroid = (pointA + pointB + pointC) * 0.3333333f
-        _orientation = (pointA - _centroid).normalized.toComplexF()
     }
 
     private constructor(
+        centroid: Vector2F,
+        originPointA: Vector2F,
+        originPointB: Vector2F,
+        originPointC: Vector2F,
+        orientation: ComplexF,
         pointA: Vector2F,
         pointB: Vector2F,
-        pointC: Vector2F,
-        centroid: Vector2F,
-        orientation: ComplexF
+        pointC: Vector2F
     ) {
+        _centroid = centroid
+        _originPointA = originPointA
+        _originPointB = originPointB
+        _originPointC = originPointC
+        _orientation = orientation
         _pointA = pointA
         _pointB = pointB
         _pointC = pointC
-        _centroid = centroid
-        _orientation = orientation
     }
+
+    override val centroid: Vector2F
+        get() = _centroid
+
+    override val originPointA: Vector2F
+        get() = _originPointA
+
+    override val originPointB: Vector2F
+        get() = _originPointB
+
+    override val originPointC: Vector2F
+        get() = _originPointC
 
     override val pointA: Vector2F
         get() = _pointA
@@ -73,75 +132,82 @@ class MutableTriangle : Triangle, MutableTransformable {
         }
 
     override val sideLengthAB: Float
-        get() = _pointA.distanceTo(_pointB)
+        get() = _originPointA.distanceTo(_originPointB)
 
     override val sideLengthBC: Float
-        get() = _pointB.distanceTo(_pointC)
+        get() = _originPointB.distanceTo(_originPointC)
 
     override val sideLengthCA: Float
-        get() = _pointC.distanceTo(_pointA)
+        get() = _originPointC.distanceTo(_originPointA)
 
     override val position: Vector2F
         get() = _centroid
 
     override val incenter: Vector2F
         get() {
-            val pointA: Vector2F = _pointA
-            val pointB: Vector2F = _pointB
-            val pointC: Vector2F = _pointC
-            val abSide: Float = pointA.distanceTo(pointB)
-            val bcSide: Float = pointB.distanceTo(pointC)
-            val acSide: Float = pointA.distanceTo(pointC)
+            val (cX: Float, cY: Float) = _centroid
+            val (opAX: Float, opAY: Float) = _originPointA
+            val (opBX: Float, opBY: Float) = _originPointB
+            val (opCX: Float, opCY: Float) = _originPointC
+            val opABX: Float = opBX - opAX
+            val opABY: Float = opBY - opAY
+            val opBCX: Float = opCX - opBX
+            val opBCY: Float = opCY - opBY
+            val opACX: Float = opCX - opAX
+            val opACY: Float = opCY - opAY
+            val abSide: Float = sqrt(opABX * opABX + opABY * opABY)
+            val bcSide: Float = sqrt(opBCX * opBCX + opBCY * opBCY)
+            val acSide: Float = sqrt(opACX * opACX + opACY * opACY)
             val factor: Float = 1f / (abSide + bcSide + acSide)
 
             return Vector2F(
-                (bcSide * pointA.x + acSide * pointB.x + abSide * pointC.x) * factor,
-                (bcSide * pointA.y + acSide * pointB.y + abSide * pointC.y) * factor
+                (bcSide * opAX + acSide * opBX + abSide * opCX) * factor + cX,
+                (bcSide * opAY + acSide * opBY + abSide * opCY) * factor + cY
             )
         }
 
-    override val centroid: Vector2F
-        get() = _centroid
-
     override val circumcenter: Vector2F
         get() {
-            val (aX: Float, aY: Float) = _pointA
-            val (bX: Float, bY: Float) = _pointB
-            val (cX: Float, cY: Float) = _pointC
-            val pASquaredMagnitude: Float = aX * aX + aY * aY
-            val pBSquaredMagnitude: Float = bX * bX + bY * bY
-            val pCSquaredMagnitude: Float = cX * cX + cY * cY
-            val aDet: Float = aX * bY + aY * cX + bX * cY - bY * cX - aY * bX - aX * cY
+            val (cX: Float, cY: Float) = _centroid
+            val (opAX: Float, opAY: Float) = _originPointA
+            val (opBX: Float, opBY: Float) = _originPointB
+            val (opCX: Float, opCY: Float) = _originPointC
+            val opASquaredMagnitude: Float = opAX * opAX + opAY * opAY
+            val opBSquaredMagnitude: Float = opBX * opBX + opBY * opBY
+            val opCSquaredMagnitude: Float = opCX * opCX + opCY * opCY
+            val aDet: Float =
+                opAX * opBY + opAY * opCX + opBX * opCY - opBY * opCX - opAY * opBX - opAX * opCY
             val factor: Float = 0.5f / aDet
-            val xDet: Float = pASquaredMagnitude * bY + aY * pCSquaredMagnitude +
-                    pBSquaredMagnitude * cY - bY * pCSquaredMagnitude -
-                    aY * pBSquaredMagnitude - pASquaredMagnitude * cY
-            val yDet: Float = aX * pBSquaredMagnitude + pASquaredMagnitude * cX +
-                    bX * pCSquaredMagnitude - pBSquaredMagnitude * cX -
-                    pASquaredMagnitude * bX - aX * pCSquaredMagnitude
+            val xDet: Float = opASquaredMagnitude * opBY + opAY * opCSquaredMagnitude +
+                    opBSquaredMagnitude * opCY - opBY * opCSquaredMagnitude -
+                    opAY * opBSquaredMagnitude - opASquaredMagnitude * opCY
+            val yDet: Float = opAX * opBSquaredMagnitude + opASquaredMagnitude * opCX +
+                    opBX * opCSquaredMagnitude - opBSquaredMagnitude * opCX -
+                    opASquaredMagnitude * opBX - opAX * opCSquaredMagnitude
 
-            return Vector2F(xDet * factor, yDet * factor)
+            return Vector2F(xDet * factor + cX, yDet * factor + cY)
         }
 
     override val orthocenter: Vector2F
         get() {
-            val (aX: Float, aY: Float) = _pointA
-            val (bX: Float, bY: Float) = _pointB
-            val (cX: Float, cY: Float) = _pointC
             val (centroidX: Float, centroidY: Float) = _centroid
-            val pASquaredMagnitude: Float = aX * aX + aY * aY
-            val pBSquaredMagnitude: Float = bX * bX + bY * bY
-            val pCSquaredMagnitude: Float = cX * cX + cY * cY
-            val aDet: Float = aX * bY + aY * cX + bX * cY - bY * cX - aY * bX - aX * cY
+            val (opAX: Float, opAY: Float) = _originPointA
+            val (opBX: Float, opBY: Float) = _originPointB
+            val (opCX: Float, opCY: Float) = _originPointC
+            val opASquaredMagnitude: Float = opAX * opAX + opAY * opAY
+            val opBSquaredMagnitude: Float = opBX * opBX + opBY * opBY
+            val opCSquaredMagnitude: Float = opCX * opCX + opCY * opCY
+            val aDet: Float =
+                opAX * opBY + opAY * opCX + opBX * opCY - opBY * opCX - opAY * opBX - opAX * opCY
             val factor: Float = 0.5f / aDet
-            val xDet: Float = pASquaredMagnitude * bY + aY * pCSquaredMagnitude +
-                    pBSquaredMagnitude * cY - bY * pCSquaredMagnitude -
-                    aY * pBSquaredMagnitude - pASquaredMagnitude * cY
-            val yDet: Float = aX * pBSquaredMagnitude + pASquaredMagnitude * cX +
-                    bX * pCSquaredMagnitude - pBSquaredMagnitude * cX -
-                    pASquaredMagnitude * bX - aX * pCSquaredMagnitude
-            val circumcenterX: Float = xDet * factor
-            val circumcenterY: Float = yDet * factor
+            val xDet: Float = opASquaredMagnitude * opBY + opAY * opCSquaredMagnitude +
+                    opBSquaredMagnitude * opCY - opBY * opCSquaredMagnitude -
+                    opAY * opBSquaredMagnitude - opASquaredMagnitude * opCY
+            val yDet: Float = opAX * opBSquaredMagnitude + opASquaredMagnitude * opCX +
+                    opBX * opCSquaredMagnitude - opBSquaredMagnitude * opCX -
+                    opASquaredMagnitude * opBX - opAX * opCSquaredMagnitude
+            val circumcenterX: Float = xDet * factor + centroidX
+            val circumcenterY: Float = yDet * factor + centroidY
 
             return Vector2F(
                 circumcenterX + (centroidX - circumcenterX) * 3f,
@@ -150,22 +216,28 @@ class MutableTriangle : Triangle, MutableTransformable {
         }
 
     override fun movedBy(displacement: Vector2F) = MutableTriangle(
-        _pointA + displacement,
-        _pointB + displacement,
-        _pointC + displacement,
-        _centroid + displacement,
-        _orientation
+        centroid = _centroid + displacement,
+        _originPointA,
+        _originPointB,
+        _originPointC,
+        _orientation,
+        pointA = _pointA + displacement,
+        pointB = _pointB + displacement,
+        pointC = _pointC + displacement
     )
 
     override fun movedTo(position: Vector2F): MutableTriangle {
         val displacement: Vector2F = position - _centroid
 
         return MutableTriangle(
-            _pointA + displacement,
-            _pointB + displacement,
-            _pointC + displacement,
-            position,
-            _orientation
+            centroid = position,
+            _originPointA,
+            _originPointB,
+            _originPointC,
+            _orientation,
+            pointA = _pointA + displacement,
+            pointB = _pointB + displacement,
+            pointC = _pointC + displacement
         )
     }
 
@@ -184,646 +256,699 @@ class MutableTriangle : Triangle, MutableTransformable {
         _centroid = position
     }
 
-    override fun rotatedBy(rotation: AngleF): MutableTriangle =
-        rotatedBy(ComplexF.fromAngle(rotation))
-
-    override fun rotatedBy(rotation: ComplexF): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
+    private inline fun rotatedByImpl(rotation: ComplexF): MutableTriangle {
+        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
         val (rotR: Float, rotI: Float) = rotation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
 
         return MutableTriangle(
-            Vector2F(
-                caX * rotR - caY * rotI + centroidX, caY * rotR + caX * rotI + centroidY
-            ),
-            Vector2F(
-                cbX * rotR - cbY * rotI + centroidX, cbY * rotR + cbX * rotI + centroidY
-            ),
-            Vector2F(
-                ccX * rotR - ccY * rotI + centroidX, ccY * rotR + ccX * rotI + centroidY
-            ),
-            _centroid,
-            ComplexF(
-                startRotR * rotR - startRotI * rotI,
-                startRotI * rotR + startRotR * rotI
-            )
+            centroid,
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation = ComplexF(oR * rotR - oI * rotI, oI * rotR + oR * rotI),
+            pointA = Vector2F(originPointAX + cX, originPointAY + cY),
+            pointB = Vector2F(originPointBX + cX, originPointBY + cY),
+            pointC = Vector2F(originPointCX + cX, originPointCY + cY)
+        )
+    }
+
+    override fun rotatedBy(rotation: AngleF): MutableTriangle =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): MutableTriangle = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): MutableTriangle {
+        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+
+        return MutableTriangle(
+            centroid,
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation,
+            pointA = Vector2F(originPointAX + cX, originPointAY + cY),
+            pointB = Vector2F(originPointBX + cX, originPointBY + cY),
+            pointC = Vector2F(originPointCX + cX, originPointCY + cY)
         )
     }
 
     override fun rotatedTo(orientation: AngleF): MutableTriangle =
-        rotatedTo(ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
+    override fun rotatedTo(orientation: ComplexF): MutableTriangle = rotatedToImpl(orientation)
+
+    private inline fun rotatedAroundPointByImpl(
+        point: Vector2F, rotation: ComplexF
+    ): MutableTriangle {
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centroidX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val centroidY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
 
         return MutableTriangle(
-            Vector2F(
-                caX * rotR - caY * rotI + centroidX, caY * rotR + caX * rotI + centroidY
-            ),
-            Vector2F(
-                cbX * rotR - cbY * rotI + centroidX, cbY * rotR + cbX * rotI + centroidY
-            ),
-            Vector2F(
-                ccX * rotR - ccY * rotI + centroidX, ccY * rotR + ccX * rotI + centroidY
-            ),
-            _centroid,
-            orientation
+            centroid = Vector2F(centroidX, centroidY),
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation = ComplexF(oR * rotR - oI * rotI, oI * rotR + oR * rotI),
+            pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY),
+            pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY),
+            pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
         )
     }
 
     override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableTriangle =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
+        rotatedAroundPointByImpl(point, ComplexF.fromAngle(rotation))
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableTriangle =
+        rotatedAroundPointByImpl(point, rotation)
+
+    private inline fun rotatedAroundPointToImpl(
+        point: Vector2F, orientation: ComplexF
+    ): MutableTriangle {
+        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (startOR: Float, startOI: Float) = _orientation
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation
-        val cpDiffX: Float = centroidX - pX
-        val cpDiffY: Float = centroidY - pY
-        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
-        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
+        val (oR: Float, oI: Float) = orientation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centroidToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
-        return MutableTriangle(
-            pointA = Vector2F(
-                caX * rotR - caY * rotI + targetCenterX,
-                caY * rotR + caX * rotI + targetCenterY
-            ),
-            pointB = Vector2F(
-                cbX * rotR - cbY * rotI + targetCenterX,
-                cbY * rotR + cbX * rotI + targetCenterY
-            ),
-            pointC = Vector2F(
-                ccX * rotR - ccY * rotI + targetCenterX,
-                ccY * rotR + ccX * rotI + targetCenterY
-            ),
-            centroid = Vector2F(targetCenterX, targetCenterY),
-            orientation = ComplexF(
-                startRotR * rotR - startRotI * rotI,
-                startRotI * rotR + startRotR * rotI
+        if (centroidToPointDist > 0.00001f) {
+            val centroidToPointDistReciprocal: Float = 1f / centroidToPointDist
+            val pointRotR: Float = cpDiffX * centroidToPointDistReciprocal
+            val pointRotI: Float = cpDiffY * centroidToPointDistReciprocal
+            val pRotTimesStartOR: Float = pointRotR * startOR + pointRotI * startOI
+            val pRotTimesStartOI: Float = pointRotR * startOI - pointRotI * startOR
+            val pRotR: Float = pointRotR * oR + pointRotI * oI
+            val pRotI: Float = pointRotR * oI - pointRotI * oR
+            val originPointAX: Float = opAX * pRotR - opAY * pRotI
+            val originPointAY: Float = opAY * pRotR + opAX * pRotI
+            val originPointBX: Float = opBX * pRotR - opBY * pRotI
+            val originPointBY: Float = opBY * pRotR + opBX * pRotI
+            val originPointCX: Float = opCX * pRotR - opCY * pRotI
+            val originPointCY: Float = opCY * pRotR + opCX * pRotI
+            val centroidX: Float = oR * centroidToPointDist + pX
+            val centroidY: Float = oI * centroidToPointDist + pY
+
+            return MutableTriangle(
+                centroid = Vector2F(centroidX, centroidY),
+                originPointA = Vector2F(originPointAX, originPointAY),
+                originPointB = Vector2F(originPointBX, originPointBY),
+                originPointC = Vector2F(originPointCX, originPointCY),
+                orientation = ComplexF(
+                    pRotTimesStartOR * oR - pRotTimesStartOI * oI,
+                    pRotTimesStartOI * oR + pRotTimesStartOR * oI
+                ),
+                pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY),
+                pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY),
+                pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
             )
-        )
+        } else {
+            val pRotR: Float = oR * startOR + oI * startOI
+            val pRotI: Float = oI * startOR - oR * startOI
+            val originPointAX: Float = opAX * pRotR - opAY * pRotI
+            val originPointAY: Float = opAY * pRotR + opAX * pRotI
+            val originPointBX: Float = opBX * pRotR - opBY * pRotI
+            val originPointBY: Float = opBY * pRotR + opBX * pRotI
+            val originPointCX: Float = opCX * pRotR - opCY * pRotI
+            val originPointCY: Float = opCY * pRotR + opCX * pRotI
+
+            return MutableTriangle(
+                centroid,
+                originPointA = Vector2F(originPointAX, originPointAY),
+                originPointB = Vector2F(originPointBX, originPointBY),
+                originPointC = Vector2F(originPointCX, originPointCY),
+                orientation,
+                pointA = Vector2F(originPointAX + cX, originPointAY + cY),
+                pointB = Vector2F(originPointBX + cX, originPointBY + cY),
+                pointC = Vector2F(originPointCX + cX, originPointCY + cY)
+            )
+        }
     }
 
     override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): MutableTriangle =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
+        rotatedAroundPointToImpl(point, ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = orientation
-        val cpDiffX: Float = centroidX - pX
-        val cpDiffY: Float = centroidY - pY
-        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): MutableTriangle =
+        rotatedAroundPointToImpl(point, orientation)
 
-        if (centerToPointDist > 0.00001f) {
-            val pointRotR: Float = cpDiffX / centerToPointDist
-            val pointRotI: Float = cpDiffY / centerToPointDist
-            val pRotR: Float = pointRotR * rotR + pointRotI * rotI
-            val pRotI: Float = pointRotR * rotI - pointRotI * rotR
-            val targetCenterX: Float = rotR * centerToPointDist + pX
-            val targetCenterY: Float = rotI * centerToPointDist + pY
-
-            return MutableTriangle(
-                pointA = Vector2F(
-                    caX * pRotR - caY * pRotI + targetCenterX,
-                    caY * pRotR + caX * pRotI + targetCenterY
-                ),
-                pointB = Vector2F(
-                    cbX * pRotR - cbY * pRotI + targetCenterX,
-                    cbY * pRotR + cbX * pRotI + targetCenterY
-                ),
-                pointC = Vector2F(
-                    ccX * pRotR - ccY * pRotI + targetCenterX,
-                    ccY * pRotR + ccX * pRotI + targetCenterY
-                ),
-                centroid = Vector2F(targetCenterX, targetCenterY),
-                orientation = ComplexF(
-                    pRotR * startRotR - pRotI * startRotI,
-                    pRotI * startRotR + pRotR * startRotI
-                )
-            )
-        } else {
-            val pRotR: Float = rotR * startRotR + rotI * startRotI
-            val pRotI: Float = rotI * startRotR - rotR * startRotI
-
-            return MutableTriangle(
-                pointA = Vector2F(
-                    caX * pRotR - caY * pRotI + centroidX,
-                    caY * pRotR + caX * pRotI + centroidY
-                ),
-                pointB = Vector2F(
-                    cbX * pRotR - cbY * pRotI + centroidX,
-                    cbY * pRotR + cbX * pRotI + centroidY
-                ),
-                pointC = Vector2F(
-                    ccX * pRotR - ccY * pRotI + centroidX,
-                    ccY * pRotR + ccX * pRotI + centroidY
-                ),
-                _centroid,
-                orientation
-            )
-        }
-    }
-
-    override fun rotateBy(rotation: AngleF) = rotateBy(ComplexF.fromAngle(rotation))
-
-    override fun rotateBy(rotation: ComplexF) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
+    private inline fun rotateByImpl(rotation: ComplexF) {
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
         val (rotR: Float, rotI: Float) = rotation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        _pointA = Vector2F(
-            caX * rotR - caY * rotI + centroidX, caY * rotR + caX * rotI + centroidY
-        )
-        _pointB = Vector2F(
-            cbX * rotR - cbY * rotI + centroidX, cbY * rotR + cbX * rotI + centroidY
-        )
-        _pointC = Vector2F(
-            ccX * rotR - ccY * rotI + centroidX, ccY * rotR + ccX * rotI + centroidY
-        )
-        _orientation = ComplexF(
-            startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
-        )
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
+        _orientation = ComplexF(oR * rotR - oI * rotI, oI * rotR + oR * rotI)
+        _pointA = Vector2F(originPointAX + cX, originPointAY + cY)
+        _pointB = Vector2F(originPointBX + cX, originPointBY + cY)
+        _pointC = Vector2F(originPointCX + cX, originPointCY + cY)
     }
 
-    override fun rotateTo(orientation: AngleF) = rotateTo(ComplexF.fromAngle(orientation))
+    override fun rotateBy(rotation: AngleF) = rotateByImpl(ComplexF.fromAngle(rotation))
 
-    override fun rotateTo(orientation: ComplexF) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
+    override fun rotateBy(rotation: ComplexF) = rotateByImpl(rotation)
+
+    private inline fun rotateToImpl(orientation: ComplexF) {
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
         val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        _pointA = Vector2F(
-            caX * rotR - caY * rotI + centroidX, caY * rotR + caX * rotI + centroidY
-        )
-        _pointB = Vector2F(
-            cbX * rotR - cbY * rotI + centroidX, cbY * rotR + cbX * rotI + centroidY
-        )
-        _pointC = Vector2F(
-            ccX * rotR - ccY * rotI + centroidX, ccY * rotR + ccX * rotI + centroidY
-        )
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
         _orientation = orientation
+        _pointA = Vector2F(originPointAX + cX, originPointAY + cY)
+        _pointB = Vector2F(originPointBX + cX, originPointBY + cY)
+        _pointC = Vector2F(originPointCX + cX, originPointCY + cY)
+    }
+
+    override fun rotateTo(orientation: AngleF) = rotateToImpl(ComplexF.fromAngle(orientation))
+
+    override fun rotateTo(orientation: ComplexF) = rotateToImpl(orientation)
+
+    private inline fun rotateAroundPointByImpl(point: Vector2F, rotation: ComplexF) {
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = rotation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centroidX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val centroidY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+        _centroid = Vector2F(centroidX, centroidY)
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
+        _orientation = ComplexF(oR * rotR - oI * rotI, oI * rotR + oR * rotI)
+        _pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY)
+        _pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY)
+        _pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
     }
 
     override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
+        rotateAroundPointByImpl(point, ComplexF.fromAngle(rotation))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        rotateAroundPointByImpl(point, rotation)
+
+    private inline fun rotateAroundPointToImpl(point: Vector2F, orientation: ComplexF) {
+        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (startOR: Float, startOI: Float) = _orientation
         val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = rotation
-        val cpDiffX: Float = centroidX - pX
-        val cpDiffY: Float = centroidY - pY
-        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
-        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        _pointA = Vector2F(
-            caX * rotR - caY * rotI + targetCenterX,
-            caY * rotR + caX * rotI + targetCenterY
-        )
-        _pointB = Vector2F(
-            cbX * rotR - cbY * rotI + targetCenterX,
-            cbY * rotR + cbX * rotI + targetCenterY
-        )
-        _pointC = Vector2F(
-            ccX * rotR - ccY * rotI + targetCenterX,
-            ccY * rotR + ccX * rotI + targetCenterY
-        )
-        _centroid = Vector2F(targetCenterX, targetCenterY)
-        _orientation = ComplexF(
-            startRotR * rotR - startRotI * rotI,
-            startRotI * rotR + startRotR * rotI
-        )
-    }
+        val (oR: Float, oI: Float) = orientation
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centroidToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
-    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
-
-    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = orientation
-        val cpDiffX: Float = centroidX - pX
-        val cpDiffY: Float = centroidY - pY
-        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
-
-        if (centerToPointDist > 0.00001f) {
-            val pointRotR: Float = cpDiffX / centerToPointDist
-            val pointRotI: Float = cpDiffY / centerToPointDist
-            val pRotR: Float = pointRotR * rotR + pointRotI * rotI
-            val pRotI: Float = pointRotR * rotI - pointRotI * rotR
-            val targetCenterX: Float = rotR * centerToPointDist + pX
-            val targetCenterY: Float = rotI * centerToPointDist + pY
-            _pointA = Vector2F(
-                caX * pRotR - caY * pRotI + targetCenterX,
-                caY * pRotR + caX * pRotI + targetCenterY
-            )
-            _pointB = Vector2F(
-                cbX * pRotR - cbY * pRotI + targetCenterX,
-                cbY * pRotR + cbX * pRotI + targetCenterY
-            )
-            _pointC = Vector2F(
-                ccX * pRotR - ccY * pRotI + targetCenterX,
-                ccY * pRotR + ccX * pRotI + targetCenterY
-            )
-            _centroid = Vector2F(targetCenterX, targetCenterY)
+        if (centroidToPointDist > 0.00001f) {
+            val centroidToPointDistReciprocal: Float = 1f / centroidToPointDist
+            val pointRotR: Float = cpDiffX * centroidToPointDistReciprocal
+            val pointRotI: Float = cpDiffY * centroidToPointDistReciprocal
+            val pRotTimesStartOR: Float = pointRotR * startOR + pointRotI * startOI
+            val pRotTimesStartOI: Float = pointRotR * startOI - pointRotI * startOR
+            val pRotR: Float = pointRotR * oR + pointRotI * oI
+            val pRotI: Float = pointRotR * oI - pointRotI * oR
+            val originPointAX: Float = opAX * pRotR - opAY * pRotI
+            val originPointAY: Float = opAY * pRotR + opAX * pRotI
+            val originPointBX: Float = opBX * pRotR - opBY * pRotI
+            val originPointBY: Float = opBY * pRotR + opBX * pRotI
+            val originPointCX: Float = opCX * pRotR - opCY * pRotI
+            val originPointCY: Float = opCY * pRotR + opCX * pRotI
+            val centroidX: Float = oR * centroidToPointDist + pX
+            val centroidY: Float = oI * centroidToPointDist + pY
+            _centroid = Vector2F(centroidX, centroidY)
+            _originPointA = Vector2F(originPointAX, originPointAY)
+            _originPointB = Vector2F(originPointBX, originPointBY)
+            _originPointC = Vector2F(originPointCX, originPointCY)
             _orientation = ComplexF(
-                pRotR * startRotR - pRotI * startRotI,
-                pRotI * startRotR + pRotR * startRotI
+                pRotTimesStartOR * oR - pRotTimesStartOI * oI,
+                pRotTimesStartOI * oR + pRotTimesStartOR * oI
             )
+            _pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY)
+            _pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY)
+            _pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
+
         } else {
-            val pRotR: Float = rotR * startRotR + rotI * startRotI
-            val pRotI: Float = rotI * startRotR - rotR * startRotI
-            _pointA = Vector2F(
-                caX * pRotR - caY * pRotI + centroidX,
-                caY * pRotR + caX * pRotI + centroidY
-            )
-            _pointB = Vector2F(
-                cbX * pRotR - cbY * pRotI + centroidX,
-                cbY * pRotR + cbX * pRotI + centroidY
-            )
-            _pointC = Vector2F(
-                ccX * pRotR - ccY * pRotI + centroidX,
-                ccY * pRotR + ccX * pRotI + centroidY
-            )
+            val pRotR: Float = oR * startOR + oI * startOI
+            val pRotI: Float = oI * startOR - oR * startOI
+            val originPointAX: Float = opAX * pRotR - opAY * pRotI
+            val originPointAY: Float = opAY * pRotR + opAX * pRotI
+            val originPointBX: Float = opBX * pRotR - opBY * pRotI
+            val originPointBY: Float = opBY * pRotR + opBX * pRotI
+            val originPointCX: Float = opCX * pRotR - opCY * pRotI
+            val originPointCY: Float = opCY * pRotR + opCX * pRotI
+            _originPointA = Vector2F(originPointAX, originPointAY)
+            _originPointB = Vector2F(originPointBX, originPointBY)
+            _originPointC = Vector2F(originPointCX, originPointCY)
             _orientation = orientation
+            _pointA = Vector2F(originPointAX + cX, originPointAY + cY)
+            _pointB = Vector2F(originPointBX + cX, originPointBY + cY)
+            _pointC = Vector2F(originPointCX + cX, originPointCY + cY)
         }
     }
 
+    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
+        rotateAroundPointToImpl(point, ComplexF.fromAngle(orientation))
+
+    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) =
+        rotateAroundPointToImpl(point, orientation)
+
     override fun scaledBy(factor: Float): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val f: Float = 1f - factor
-        val addendX: Float = centroidX * f
-        val addendY: Float = centroidY * f
+        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val originPointAX: Float = opAX * factor
+        val originPointAY: Float = opAY * factor
+        val originPointBX: Float = opBX * factor
+        val originPointBY: Float = opBY * factor
+        val originPointCX: Float = opCX * factor
+        val originPointCY: Float = opCY * factor
 
         return MutableTriangle(
-            pointA = Vector2F(aX * factor + addendX, aY * factor + addendY),
-            pointB = Vector2F(bX * factor + addendX, bY * factor + addendY),
-            pointC = Vector2F(cX * factor + addendX, cY * factor + addendY),
-            _centroid,
-            _orientation * 1f.withSign(factor)
+            centroid,
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation = _orientation * 1f.withSign(factor),
+            pointA = Vector2F(originPointAX + cX, originPointAY + cY),
+            pointB = Vector2F(originPointBX + cX, originPointBY + cY),
+            pointC = Vector2F(originPointCX + cX, originPointCY + cY)
         )
     }
 
     override fun dilatedBy(point: Vector2F, factor: Float): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (pX: Float, pY: Float) = point
         val f: Float = 1f - factor
-        val addendX: Float = point.x * f
-        val addendY: Float = point.y * f
+        val originPointAX: Float = opAX * factor
+        val originPointAY: Float = opAY * factor
+        val originPointBX: Float = opBX * factor
+        val originPointBY: Float = opBY * factor
+        val originPointCX: Float = opCX * factor
+        val originPointCY: Float = opCY * factor
+        val centroidX: Float = cX * factor + pX * f
+        val centroidY: Float = cY * factor + pY * f
 
         return MutableTriangle(
-            pointA = Vector2F(aX * factor + addendX, aY * factor + addendY),
-            pointB = Vector2F(bX * factor + addendX, bY * factor + addendY),
-            pointC = Vector2F(cX * factor + addendX, cY * factor + addendY),
-            centroid = Vector2F(
-                centroidX * factor + addendX, centroidY * factor + addendY
-            ),
-            _orientation * 1f.withSign(factor)
+            centroid = Vector2F(centroidX, centroidY),
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation = _orientation * 1f.withSign(factor),
+            pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY),
+            pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY),
+            pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
         )
     }
 
     override fun scaleBy(factor: Float) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val f: Float = 1f - factor
-        val addendX: Float = centroidX * f
-        val addendY: Float = centroidY * f
-        _pointA = Vector2F(aX * factor + addendX, aY * factor + addendY)
-        _pointB = Vector2F(bX * factor + addendX, bY * factor + addendY)
-        _pointC = Vector2F(cX * factor + addendX, cY * factor + addendY)
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val originPointAX: Float = opAX * factor
+        val originPointAY: Float = opAY * factor
+        val originPointBX: Float = opBX * factor
+        val originPointBY: Float = opBY * factor
+        val originPointCX: Float = opCX * factor
+        val originPointCY: Float = opCY * factor
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
         _orientation *= 1f.withSign(factor)
+        _pointA = Vector2F(originPointAX + cX, originPointAY + cY)
+        _pointB = Vector2F(originPointBX + cX, originPointBY + cY)
+        _pointC = Vector2F(originPointCX + cX, originPointCY + cY)
     }
 
     override fun dilateBy(point: Vector2F, factor: Float) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (pX: Float, pY: Float) = point
         val f: Float = 1f - factor
-        val addendX: Float = point.x * f
-        val addendY: Float = point.y * f
-        _pointA = Vector2F(aX * factor + addendX, aY * factor + addendY)
-        _pointB = Vector2F(bX * factor + addendX, bY * factor + addendY)
-        _pointC = Vector2F(cX * factor + addendX, cY * factor + addendY)
-        _centroid = Vector2F(centroidX * factor + addendX, centroidY * factor + addendY)
+        val originPointAX: Float = opAX * factor
+        val originPointAY: Float = opAY * factor
+        val originPointBX: Float = opBX * factor
+        val originPointBY: Float = opBY * factor
+        val originPointCX: Float = opCX * factor
+        val originPointCY: Float = opCY * factor
+        val centroidX: Float = cX * factor + pX * f
+        val centroidY: Float = cY * factor + pY * f
+        _centroid = Vector2F(centroidX, centroidY)
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
         _orientation *= 1f.withSign(factor)
+        _pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY)
+        _pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY)
+        _pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
+    }
+
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): MutableTriangle {
+        val (dX: Float, dY: Float) = displacement
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
+        val (rotR: Float, rotI: Float) = rotation
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+
+        return MutableTriangle(
+            centroid = Vector2F(centroidX, centroidY),
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation = ComplexF(oR * rotR - oI * rotI, oI * rotR + oR * rotI),
+            pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY),
+            pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY),
+            pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
+        )
     }
 
     override fun transformedBy(displacement: Vector2F, rotation: AngleF): MutableTriangle =
-        transformedBy(displacement, ComplexF.fromAngle(rotation))
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
-        val (displacementX: Float, displacementY: Float) = displacement
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): MutableTriangle =
+        transformedByImpl(displacement, rotation)
+
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): MutableTriangle {
+        val (dX: Float, dY: Float) = displacement
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
         val (rotR: Float, rotI: Float) = rotation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        val targetPosX: Float = centroidX + displacementX
-        val targetPosY: Float = centroidY + displacementY
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
+        val originPointAX: Float = (opAX * rotR - opAY * rotI) * scaleFactor
+        val originPointAY: Float = (opAY * rotR + opAX * rotI) * scaleFactor
+        val originPointBX: Float = (opBX * rotR - opBY * rotI) * scaleFactor
+        val originPointBY: Float = (opBY * rotR + opBX * rotI) * scaleFactor
+        val originPointCX: Float = (opCX * rotR - opCY * rotI) * scaleFactor
+        val originPointCY: Float = (opCY * rotR + opCX * rotI) * scaleFactor
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
 
         return MutableTriangle(
-            Vector2F(
-                caX * rotR - caY * rotI + targetPosX,
-                caY * rotR + caX * rotI + targetPosY
+            centroid = Vector2F(centroidX, centroidY),
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation = ComplexF(
+                (oR * rotR - oI * rotI) * scaleFactorSign,
+                (oI * rotR + oR * rotI) * scaleFactorSign
             ),
-            Vector2F(
-                cbX * rotR - cbY * rotI + targetPosX,
-                cbY * rotR + cbX * rotI + targetPosY
-            ),
-            Vector2F(
-                ccX * rotR - ccY * rotI + targetPosX,
-                ccY * rotR + ccX * rotI + targetPosY
-            ),
-            Vector2F(targetPosX, targetPosY),
-            ComplexF(
-                startRotR * rotR - startRotI * rotI,
-                startRotI * rotR + startRotR * rotI
-            )
+            pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY),
+            pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY),
+            pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
         )
     }
 
     override fun transformedBy(
         displacement: Vector2F, rotation: AngleF, scaleFactor: Float
-    ): MutableTriangle = transformedBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+    ): MutableTriangle = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
     override fun transformedBy(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): MutableTriangle = transformedByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
     ): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
-        val (displacementX: Float, displacementY: Float) = displacement
-        val (rotR: Float, rotI: Float) = rotation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        val targetPosX: Float = centroidX + displacementX
-        val targetPosY: Float = centroidY + displacementY
-        val f: Float = 1f - scaleFactor
-        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
-        val addendX: Float = targetPosX * f
-        val addendY: Float = targetPosY * f
+        val (pX: Float, pY: Float) = position
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
 
         return MutableTriangle(
-            Vector2F(
-                (caX * rotR - caY * rotI + targetPosX) * scaleFactor + addendX,
-                (caY * rotR + caX * rotI + targetPosY) * scaleFactor + addendY
-            ),
-            Vector2F(
-                (cbX * rotR - cbY * rotI + targetPosX) * scaleFactor + addendX,
-                (cbY * rotR + cbX * rotI + targetPosY) * scaleFactor + addendY
-            ),
-            Vector2F(
-                (ccX * rotR - ccY * rotI + targetPosX) * scaleFactor + addendX,
-                (ccY * rotR + ccX * rotI + targetPosY) * scaleFactor + addendY
-            ),
-            Vector2F(targetPosX, targetPosY),
-            ComplexF(
-                (startRotR * rotR - startRotI * rotI) * scaleFactorSign,
-                (startRotI * rotR + startRotR * rotI) * scaleFactorSign
-            )
+            position,
+            originPointA = Vector2F(originPointAX, originPointAY),
+            originPointB = Vector2F(originPointBX, originPointBY),
+            originPointC = Vector2F(originPointCX, originPointCY),
+            orientation,
+            pointA = Vector2F(originPointAX + pX, originPointAY + pY),
+            pointB = Vector2F(originPointBX + pX, originPointBY + pY),
+            pointC = Vector2F(originPointCX + pX, originPointCY + pY)
         )
     }
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): MutableTriangle =
-        transformedTo(position, ComplexF.fromAngle(orientation))
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): MutableTriangle {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
-        val (pX: Float, pY: Float) = position
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): MutableTriangle =
+        transformedToImpl(position, orientation)
 
-        return MutableTriangle(
-            Vector2F(caX * rotR - caY * rotI + pX, caY * rotR + caX * rotI + pY),
-            Vector2F(cbX * rotR - cbY * rotI + pX, cbY * rotR + cbX * rotI + pY),
-            Vector2F(ccX * rotR - ccY * rotI + pX, ccY * rotR + ccX * rotI + pY),
-            position,
-            orientation
-        )
+    private inline fun transformByImpl(displacement: Vector2F, rotation: ComplexF) {
+        val (dX: Float, dY: Float) = displacement
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
+        val (rotR: Float, rotI: Float) = rotation
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+        _centroid = Vector2F(centroidX, centroidY)
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
+        _orientation = ComplexF(oR * rotR - oI * rotI, oI * rotR + oR * rotI)
+        _pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY)
+        _pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY)
+        _pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
     }
 
     override fun transformBy(displacement: Vector2F, rotation: AngleF) =
-        transformBy(displacement, ComplexF.fromAngle(rotation))
+        transformByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformBy(displacement: Vector2F, rotation: ComplexF) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
-        val (displacementX: Float, displacementY: Float) = displacement
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) =
+        transformByImpl(displacement, rotation)
+
+    private inline fun transformByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ) {
+        val (dX: Float, dY: Float) = displacement
+        val (cX: Float, cY: Float) = _centroid
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (oR: Float, oI: Float) = _orientation
         val (rotR: Float, rotI: Float) = rotation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        val targetPosX: Float = centroidX + displacementX
-        val targetPosY: Float = centroidY + displacementY
-        _pointA = Vector2F(
-            caX * rotR - caY * rotI + targetPosX, caY * rotR + caX * rotI + targetPosY
-        )
-        _pointB = Vector2F(
-            cbX * rotR - cbY * rotI + targetPosX, cbY * rotR + cbX * rotI + targetPosY
-        )
-        _pointC = Vector2F(
-            ccX * rotR - ccY * rotI + targetPosX, ccY * rotR + ccX * rotI + targetPosY
-        )
-        _centroid = Vector2F(targetPosX, targetPosY)
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
+        val originPointAX: Float = (opAX * rotR - opAY * rotI) * scaleFactor
+        val originPointAY: Float = (opAY * rotR + opAX * rotI) * scaleFactor
+        val originPointBX: Float = (opBX * rotR - opBY * rotI) * scaleFactor
+        val originPointBY: Float = (opBY * rotR + opBX * rotI) * scaleFactor
+        val originPointCX: Float = (opCX * rotR - opCY * rotI) * scaleFactor
+        val originPointCY: Float = (opCY * rotR + opCX * rotI) * scaleFactor
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
+        _centroid = Vector2F(centroidX, centroidY)
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
         _orientation = ComplexF(
-            startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
+            (oR * rotR - oI * rotI) * scaleFactorSign,
+            (oI * rotR + oR * rotI) * scaleFactorSign
         )
+        _pointA = Vector2F(originPointAX + centroidX, originPointAY + centroidY)
+        _pointB = Vector2F(originPointBX + centroidX, originPointBY + centroidY)
+        _pointC = Vector2F(originPointCX + centroidX, originPointCY + centroidY)
     }
 
     override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
-        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+        transformByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (startRotR: Float, startRotI: Float) = _orientation
-        val (displacementX: Float, displacementY: Float) = displacement
-        val (rotR: Float, rotI: Float) = rotation
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        val targetPosX: Float = centroidX + displacementX
-        val targetPosY: Float = centroidY + displacementY
-        val f: Float = 1f - scaleFactor
-        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
-        val addendX: Float = targetPosX * f
-        val addendY: Float = targetPosY * f
-        _pointA = Vector2F(
-            (caX * rotR - caY * rotI + targetPosX) * scaleFactor + addendX,
-            (caY * rotR + caX * rotI + targetPosY) * scaleFactor + addendY
-        )
-        _pointB = Vector2F(
-            (cbX * rotR - cbY * rotI + targetPosX) * scaleFactor + addendX,
-            (cbY * rotR + cbX * rotI + targetPosY) * scaleFactor + addendY
-        )
-        _pointC = Vector2F(
-            (ccX * rotR - ccY * rotI + targetPosX) * scaleFactor + addendX,
-            (ccY * rotR + ccX * rotI + targetPosY) * scaleFactor + addendY
-        )
-        _centroid = Vector2F(targetPosX, targetPosY)
-        _orientation = ComplexF(
-            (startRotR * rotR - startRotI * rotI) * scaleFactorSign,
-            (startRotI * rotR + startRotR * rotI) * scaleFactorSign
-        )
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) =
+        transformByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformToImpl(position: Vector2F, orientation: ComplexF) {
+        val (pX: Float, pY: Float) = position
+        val (opAX: Float, opAY: Float) = _originPointA
+        val (opBX: Float, opBY: Float) = _originPointB
+        val (opCX: Float, opCY: Float) = _originPointC
+        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
+        val originPointAX: Float = opAX * rotR - opAY * rotI
+        val originPointAY: Float = opAY * rotR + opAX * rotI
+        val originPointBX: Float = opBX * rotR - opBY * rotI
+        val originPointBY: Float = opBY * rotR + opBX * rotI
+        val originPointCX: Float = opCX * rotR - opCY * rotI
+        val originPointCY: Float = opCY * rotR + opCX * rotI
+        _centroid = position
+        _originPointA = Vector2F(originPointAX, originPointAY)
+        _originPointB = Vector2F(originPointBX, originPointBY)
+        _originPointC = Vector2F(originPointCX, originPointCY)
+        _orientation = orientation
+        _pointA = Vector2F(originPointAX + pX, originPointAY + pY)
+        _pointB = Vector2F(originPointBX + pX, originPointBY + pY)
+        _pointC = Vector2F(originPointCX + pX, originPointCY + pY)
+
     }
 
     override fun transformTo(position: Vector2F, orientation: AngleF) =
-        transformTo(position, ComplexF.fromAngle(orientation))
+        transformToImpl(position, ComplexF.fromAngle(orientation))
 
-    override fun transformTo(position: Vector2F, orientation: ComplexF) {
-        val (aX: Float, aY: Float) = _pointA
-        val (bX: Float, bY: Float) = _pointB
-        val (cX: Float, cY: Float) = _pointC
-        val (centroidX: Float, centroidY: Float) = _centroid
-        val (rotR: Float, rotI: Float) = _orientation.conjugate * orientation
-        val (pX: Float, pY: Float) = position
-        val caX: Float = aX - centroidX
-        val caY: Float = aY - centroidY
-        val cbX: Float = bX - centroidX
-        val cbY: Float = bY - centroidY
-        val ccX: Float = cX - centroidX
-        val ccY: Float = cY - centroidY
-        _pointA = Vector2F(caX * rotR - caY * rotI + pX, caY * rotR + caX * rotI + pY)
-        _pointB = Vector2F(cbX * rotR - cbY * rotI + pX, cbY * rotR + cbX * rotI + pY)
-        _pointC = Vector2F(ccX * rotR - ccY * rotI + pX, ccY * rotR + ccX * rotI + pY)
-        _centroid = position
+    override fun transformTo(position: Vector2F, orientation: ComplexF) =
+        transformToImpl(position, orientation)
+
+    private inline fun setInternal(
+        centroid: Vector2F, originPointA: Vector2F, originPointB: Vector2F, originPointC: Vector2F
+    ) {
+        val (opAX: Float, opAY: Float) = originPointA
+        val (opBX: Float, opBY: Float) = originPointB
+        val (opCX: Float, opCY: Float) = originPointC
+        val (centroidX: Float, centroidY: Float) = centroid
+        val orientation: ComplexF = originPointA
+            .toComplexF()
+            .normalizedOrElse(ComplexF(1f, 0f))
+        val pointA = Vector2F(opAX + centroidX, opAY + centroidY)
+        val pointB = Vector2F(opBX + centroidX, opBY + centroidY)
+        val pointC = Vector2F(opCX + centroidX, opCY + centroidY)
+        _centroid = centroid
+        _originPointA = originPointA
+        _originPointB = originPointB
+        _originPointC = originPointC
         _orientation = orientation
-    }
-
-    private inline fun setInternal(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) {
         _pointA = pointA
         _pointB = pointB
         _pointC = pointC
-        _centroid = (pointA + pointB + pointC) * 0.3333333f
-        _orientation = (pointA - _centroid).normalized.toComplexF()
     }
 
     /** Sets the specified properties of this instance. **/
     fun set(
-        pointA: Vector2F = this.pointA,
-        pointB: Vector2F = this.pointB,
-        pointC: Vector2F = this.pointC
-    ) = setInternal(pointA, pointB, pointC)
+        centroid: Vector2F = this.centroid,
+        originPointA: Vector2F = this.originPointA,
+        originPointB: Vector2F = this.originPointB,
+        originPointC: Vector2F = this.originPointC
+    ) = setInternal(centroid, originPointA, originPointB, originPointC)
 
-    override fun interpolated(to: Triangle, by: Float) = MutableTriangle(
-        pointA = Vector2F.lerp(_pointA, to.pointA, by),
-        pointB = Vector2F.lerp(_pointB, to.pointB, by),
-        pointC = Vector2F.lerp(_pointC, to.pointC, by)
-    )
+    override fun interpolated(to: Triangle, by: Float): MutableTriangle {
+        val fOpA: Vector2F = _originPointA
+        val fOpB: Vector2F = _originPointB
+        val fOpC: Vector2F = _originPointC
+        val tOpA: Vector2F = to.originPointA
+        val tOpB: Vector2F = to.originPointB
+        val tOpC: Vector2F = to.originPointC
+        val fromOrientation: ComplexF = _orientation
+        val toOrientation = tOpA.toComplexF().normalizedOrElse(ComplexF(1f, 0f))
+        val rotation = ComplexF.slerp(fromOrientation, toOrientation, by)
+        val fromRotation: ComplexF = fromOrientation.conjugate * rotation
+        val toRotation: ComplexF = toOrientation.conjugate * rotation
+        val fromOpA: Vector2F = fOpA * fromRotation
+        val fromOpB: Vector2F = fOpB * fromRotation
+        val fromOpC: Vector2F = fOpC * fromRotation
+        val toOpA: Vector2F = tOpA * toRotation
+        val toOpB: Vector2F = tOpB * toRotation
+        val toOpC: Vector2F = tOpC * toRotation
+        val originPointA = Vector2F.lerp(fromOpA, toOpA, by)
+        val originPointB = Vector2F.lerp(fromOpB, toOpB, by)
+        val originPointC = Vector2F.lerp(fromOpC, toOpC, by)
+        val centroid = Vector2F.lerp(_centroid, to.centroid, by)
+
+        return MutableTriangle(centroid, originPointA, originPointB, originPointC)
+    }
 
     /**
      * Sets this triangle with the result of interpolation [from] one triangle [to] another
@@ -833,11 +958,31 @@ class MutableTriangle : Triangle, MutableTransformable {
      * @param to the triangle at which the interpolation ends.
      * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
-    fun interpolate(from: Triangle, to: Triangle, by: Float) = setInternal(
-        pointA = Vector2F.lerp(from.pointA, to.pointA, by),
-        pointB = Vector2F.lerp(from.pointB, to.pointB, by),
-        pointC = Vector2F.lerp(from.pointC, to.pointC, by)
-    )
+    fun interpolate(from: Triangle, to: Triangle, by: Float) {
+        val fOpA: Vector2F = from.originPointA
+        val fOpB: Vector2F = from.originPointB
+        val fOpC: Vector2F = from.originPointC
+        val tOpA: Vector2F = to.originPointA
+        val tOpB: Vector2F = to.originPointB
+        val tOpC: Vector2F = to.originPointC
+        val fromOrientation = fOpA.toComplexF().normalizedOrElse(ComplexF(1f, 0f))
+        val toOrientation = tOpA.toComplexF().normalizedOrElse(ComplexF(1f, 0f))
+        val rotation = ComplexF.slerp(fromOrientation, toOrientation, by)
+        val fromRotation: ComplexF = fromOrientation.conjugate * rotation
+        val toRotation: ComplexF = toOrientation.conjugate * rotation
+        val fromOpA: Vector2F = fOpA * fromRotation
+        val fromOpB: Vector2F = fOpB * fromRotation
+        val fromOpC: Vector2F = fOpC * fromRotation
+        val toOpA: Vector2F = tOpA * toRotation
+        val toOpB: Vector2F = tOpB * toRotation
+        val toOpC: Vector2F = tOpC * toRotation
+        val originPointA = Vector2F.lerp(fromOpA, toOpA, by)
+        val originPointB = Vector2F.lerp(fromOpB, toOpB, by)
+        val originPointC = Vector2F.lerp(fromOpC, toOpC, by)
+        val centroid = Vector2F.lerp(from.centroid, to.centroid, by)
+
+        setInternal(centroid, originPointA, originPointB, originPointC)
+    }
 
     override fun closestPointTo(point: Vector2F): Vector2F {
         val a: Vector2F = _pointA
@@ -956,41 +1101,68 @@ class MutableTriangle : Triangle, MutableTransformable {
         return (abp == bcp) and (bcp == acp)
     }
 
+    override fun originPointIterator(): Vector2FIterator =
+        OriginPointIterator(this, index = 0)
+
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
-    override fun copy(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F) =
-        MutableTriangle(pointA, pointB, pointC)
+    override fun copy(
+        centroid: Vector2F, originPointA: Vector2F, originPointB: Vector2F, originPointC: Vector2F
+    ) = MutableTriangle(centroid, originPointA, originPointB, originPointC)
 
     override fun equals(other: Any?): Boolean = other is Triangle &&
-            _pointA == other.pointA &&
-            _pointB == other.pointB &&
-            _pointC == other.pointC
+            _centroid == other.centroid &&
+            _originPointA == other.originPointA &&
+            _originPointB == other.originPointB &&
+            _originPointC == other.originPointC
 
     /** Indicates whether the other [MutableTriangle] is equal to this one. **/
     fun equals(other: MutableTriangle): Boolean =
-        _pointA == other._pointA &&
-                _pointB == other._pointB &&
-                _pointC == other._pointC
+        _centroid == other._centroid &&
+                _originPointA == other._originPointA &&
+                _originPointB == other._originPointB &&
+                _originPointC == other._originPointC
 
     override fun hashCode(): Int {
-        val pointAHash: Int = _pointA.hashCode()
-        val pointBHash: Int = _pointB.hashCode()
-        val pointCHash: Int = _pointC.hashCode()
+        val centroidHash: Int = _centroid.hashCode()
+        val originPointAHash: Int = _originPointA.hashCode()
+        val originPointBHash: Int = _originPointB.hashCode()
+        val originPointCHash: Int = _originPointC.hashCode()
 
-        return pointAHash * 961 + pointBHash * 31 + pointCHash
+        return centroidHash * 29791 +
+                originPointAHash * 961 +
+                originPointBHash * 31 +
+                originPointCHash
     }
 
     override fun toString() =
-        StringBuilder("Triangle(pointA=").append(_pointA)
-            .append(", pointB=").append(_pointB)
-            .append(", pointC=").append(_pointC).append(")")
+        StringBuilder("Triangle(centroid=").append(_centroid)
+            .append(", originPointA=").append(_originPointA)
+            .append(", originPointB=").append(_originPointB)
+            .append(", originPointC=").append(_originPointC).append(")")
             .toString()
 
-    override operator fun component1(): Vector2F = _pointA
+    override operator fun component1(): Vector2F = _centroid
 
-    override operator fun component2(): Vector2F = _pointB
+    override operator fun component2(): Vector2F = _originPointA
 
-    override operator fun component3(): Vector2F = _pointC
+    override operator fun component3(): Vector2F = _originPointB
+
+    override operator fun component4(): Vector2F = _originPointC
+
+    private class OriginPointIterator(
+        private val triangle: MutableTriangle,
+        private var index: Int
+    ) : Vector2FIterator() {
+        override fun hasNext(): Boolean = index < 3
+
+        override fun nextVector2F(): Vector2F = when (index++) {
+            0 -> triangle._originPointA
+            1 -> triangle._originPointB
+            2 -> triangle._originPointC
+            else -> throw NoSuchElementException("${index - 1}")
+        }
+    }
 
     private class PointIterator(
         private val triangle: MutableTriangle,

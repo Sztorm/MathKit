@@ -769,9 +769,16 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     }
 
     override fun intersects(triangle: Triangle): Boolean {
-        val (aX: Float, aY: Float) = triangle.pointA
-        val (bX: Float, bY: Float) = triangle.pointB
-        val (cX: Float, cY: Float) = triangle.pointC
+        val (centroidX: Float, centroidY: Float) = triangle.centroid
+        val (opAX: Float, opAY: Float) = triangle.originPointA
+        val (opBX: Float, opBY: Float) = triangle.originPointB
+        val (opCX: Float, opCY: Float) = triangle.originPointC
+        val aX: Float = opAX + centroidX
+        val aY: Float = opAY + centroidY
+        val bX: Float = opBX + centroidX
+        val bY: Float = opBY + centroidY
+        val cX: Float = opCX + centroidX
+        val cY: Float = opCY + centroidY
         val (oX: Float, oY: Float) = _origin
         val (dirX: Float, dirY: Float) = _direction
         val aoX: Float = oX - aX

@@ -15,20 +15,75 @@ import kotlin.test.assertEquals
 
 class TriangleTests {
     @ParameterizedTest
-    @MethodSource("constructorArgs")
+    @MethodSource("constructorVector2Fx4Args")
+    fun constructorCreatesCorrectTriangle(
+        centroid: Wrapper<Vector2F>,
+        originPointA: Wrapper<Vector2F>,
+        originPointB: Wrapper<Vector2F>,
+        originPointC: Wrapper<Vector2F>
+    ) {
+        val mutableTriangle = MutableTriangle(
+            centroid.value, originPointA.value, originPointB.value, originPointC.value
+        )
+        val triangle = Triangle(
+            centroid.value, originPointA.value, originPointB.value, originPointC.value
+        )
+
+        assertEquals(centroid.value, mutableTriangle.centroid)
+        assertEquals(originPointA.value, mutableTriangle.originPointA)
+        assertEquals(originPointB.value, mutableTriangle.originPointB)
+        assertEquals(originPointC.value, mutableTriangle.originPointC)
+
+        assertEquals(centroid.value, triangle.centroid)
+        assertEquals(originPointA.value, triangle.originPointA)
+        assertEquals(originPointB.value, triangle.originPointB)
+        assertEquals(originPointC.value, triangle.originPointC)
+
+        assertApproximation(triangle.pointA, mutableTriangle.pointA)
+        assertApproximation(triangle.pointB, mutableTriangle.pointB)
+        assertApproximation(triangle.pointC, mutableTriangle.pointC)
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorVector2Fx3Args")
     fun constructorCreatesCorrectTriangle(
         pointA: Wrapper<Vector2F>, pointB: Wrapper<Vector2F>, pointC: Wrapper<Vector2F>
     ) {
         val mutableTriangle = MutableTriangle(pointA.value, pointB.value, pointC.value)
         val triangle = Triangle(pointA.value, pointB.value, pointC.value)
 
-        assertEquals(pointA.value, mutableTriangle.pointA)
-        assertEquals(pointB.value, mutableTriangle.pointB)
-        assertEquals(pointC.value, mutableTriangle.pointC)
+        assertApproximation(pointA.value, mutableTriangle.pointA)
+        assertApproximation(pointB.value, mutableTriangle.pointB)
+        assertApproximation(pointC.value, mutableTriangle.pointC)
 
-        assertEquals(pointA.value, triangle.pointA)
-        assertEquals(pointB.value, triangle.pointB)
-        assertEquals(pointC.value, triangle.pointC)
+        assertApproximation(pointA.value, triangle.pointA)
+        assertApproximation(pointB.value, triangle.pointB)
+        assertApproximation(pointC.value, triangle.pointC)
+
+        assertApproximation(triangle.centroid, mutableTriangle.centroid)
+        assertApproximation(triangle.originPointA, mutableTriangle.originPointA)
+        assertApproximation(triangle.originPointB, mutableTriangle.originPointB)
+        assertApproximation(triangle.originPointC, mutableTriangle.originPointC)
+    }
+
+    @ParameterizedTest
+    @MethodSource("centroidArgs")
+    fun centroidReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.centroid)
+        }
+
+    @ParameterizedTest
+    @MethodSource("originPointsArgs")
+    fun originPointsReturnCorrectValues(
+        triangle: Triangle,
+        expectedOriginPointA: Wrapper<Vector2F>,
+        expectedOriginPointB: Wrapper<Vector2F>,
+        expectedOriginPointC: Wrapper<Vector2F>,
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expectedOriginPointA.value, triangle.originPointA)
+        assertApproximation(expectedOriginPointB.value, triangle.originPointB)
+        assertApproximation(expectedOriginPointC.value, triangle.originPointC)
     }
 
     @ParameterizedTest
@@ -93,13 +148,6 @@ class TriangleTests {
         }
 
     @ParameterizedTest
-    @MethodSource("centroidArgs")
-    fun centroidReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
-        assertImmutabilityOf(triangle) {
-            assertApproximation(expected.value, triangle.centroid)
-        }
-
-    @ParameterizedTest
     @MethodSource("circumcenterArgs")
     fun circumcenterReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
         assertImmutabilityOf(triangle) {
@@ -117,11 +165,17 @@ class TriangleTests {
     @MethodSource("setArgs")
     fun setMutatesTriangleCorrectly(
         triangle: MutableTriangle,
-        pointA: Wrapper<Vector2F>,
-        pointB: Wrapper<Vector2F>,
-        pointC: Wrapper<Vector2F>,
+        centroid: Wrapper<Vector2F>,
+        originPointA: Wrapper<Vector2F>,
+        originPointB: Wrapper<Vector2F>,
+        originPointC: Wrapper<Vector2F>,
         expected: MutableTriangle
-    ) = assertEquals(expected, triangle.apply { set(pointA.value, pointB.value, pointC.value) })
+    ) = assertEquals(
+        expected,
+        triangle.apply {
+            set(centroid.value, originPointA.value, originPointB.value, originPointC.value)
+        }
+    )
 
     @ParameterizedTest
     @MethodSource("interpolatedArgs")
@@ -176,11 +230,15 @@ class TriangleTests {
     @MethodSource("copyArgs")
     fun copyReturnsCorrectValue(
         triangle: Triangle,
-        pointA: Wrapper<Vector2F>,
-        pointB: Wrapper<Vector2F>,
-        pointC: Wrapper<Vector2F>,
+        centroid: Wrapper<Vector2F>,
+        originPointA: Wrapper<Vector2F>,
+        originPointB: Wrapper<Vector2F>,
+        originPointC: Wrapper<Vector2F>,
         expected: Triangle
-    ) = assertEquals(expected, triangle.copy(pointA.value, pointB.value, pointC.value))
+    ) = assertEquals(
+        expected,
+        triangle.copy(centroid.value, originPointA.value, originPointB.value, originPointC.value)
+    )
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -221,35 +279,44 @@ class TriangleTests {
         triangle: Triangle,
         expectedComponent1: Wrapper<Vector2F>,
         expectedComponent2: Wrapper<Vector2F>,
-        expectedComponent3: Wrapper<Vector2F>
+        expectedComponent3: Wrapper<Vector2F>,
+        expectedComponent4: Wrapper<Vector2F>
     ) = assertImmutabilityOf(triangle) {
         val (
             actualComponent1: Vector2F,
             actualComponent2: Vector2F,
-            actualComponent3: Vector2F
+            actualComponent3: Vector2F,
+            actualComponent4: Vector2F
         ) = triangle
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
         assertEquals(expectedComponent3.value, actualComponent3)
+        assertEquals(expectedComponent4.value, actualComponent4)
     }
 
     companion object {
         @JvmStatic
         fun areApproximatelyEqual(a: Triangle, b: Triangle, tolerance: Float = 0.00001f): Boolean =
-            a.pointA.isApproximately(b.pointA, tolerance) and
+            a.centroid.isApproximately(b.centroid, tolerance) and
+                    a.originPointA.isApproximately(b.originPointA, tolerance) and
+                    a.originPointB.isApproximately(b.originPointB, tolerance) and
+                    a.originPointC.isApproximately(b.originPointC, tolerance) and
+                    a.orientation.isApproximately(b.orientation, tolerance) and
+                    a.pointA.isApproximately(b.pointA, tolerance) and
                     a.pointB.isApproximately(b.pointB, tolerance) and
-                    a.pointC.isApproximately(b.pointC, tolerance) and
-                    a.centroid.isApproximately(b.centroid, tolerance) and
-                    a.orientation.isApproximately(b.orientation, tolerance)
+                    a.pointC.isApproximately(b.pointC, tolerance)
 
         @JvmStatic
         fun areEqual(a: Triangle, b: Triangle): Boolean =
-            (a.pointA == b.pointA) and
+            (a.centroid == b.centroid) and
+                    (a.originPointA == b.originPointA) and
+                    (a.originPointB == b.originPointB) and
+                    (a.originPointC == b.originPointC) and
+                    (a.orientation == b.orientation) and
+                    (a.pointA == b.pointA) and
                     (a.pointB == b.pointB) and
-                    (a.pointC == b.pointC) and
-                    (a.centroid == b.centroid) and
-                    (a.orientation == b.orientation)
+                    (a.pointC == b.pointC)
 
         @JvmStatic
         fun clone(triangle: Triangle) = triangle.copy()
@@ -257,7 +324,9 @@ class TriangleTests {
         @JvmStatic
         fun List<Arguments>.mapTrianglesToDefaultTriangles() = map { args ->
             val argArray = args.get().map {
-                if (it is Triangle) DefaultTriangle(it.pointA, it.pointB, it.pointC)
+                if (it is Triangle) DefaultTriangle(
+                    it.centroid, it.originPointA, it.originPointB, it.originPointC
+                )
                 else it
             }.toTypedArray()
 
@@ -265,7 +334,29 @@ class TriangleTests {
         }
 
         @JvmStatic
-        fun constructorArgs(): List<Arguments> = listOf(
+        fun constructorVector2Fx4Args(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(-0.3333333f, 3f)),
+                Wrapper(Vector2F(-3.6666667f, -1f)),
+                Wrapper(Vector2F(2.3333333f, -1f)),
+                Wrapper(Vector2F(1.3333333f, 2f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
+                Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
+                Wrapper(Vector2F(2.3333333f, -3.3333333f))
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(8f, -4.8453f)),
+                Wrapper(Vector2F(0f, 2.3094f)),
+                Wrapper(Vector2F(2f, -1.1547f)),
+                Wrapper(Vector2F(-2f, -1.1547f))
+            ),
+        )
+
+        @JvmStatic
+        fun constructorVector2Fx3Args(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F(-4f, 2f)),
                 Wrapper(Vector2F(2f, 2f)),
@@ -284,11 +375,98 @@ class TriangleTests {
         )
 
         @JvmStatic
+        fun centroidArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
+                    ),
+                    Wrapper(Vector2F(-0.3333333f, 3f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
+                    ),
+                    Wrapper(Vector2F(8f, -4.8453f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun originPointsArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
+                    ),
+                    Wrapper(Vector2F(-3.6666667f, -1f)),
+                    Wrapper(Vector2F(2.3333333f, -1f)),
+                    Wrapper(Vector2F(1.3333333f, 2f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    ),
+                    Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
+                    Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
+                    Wrapper(Vector2F(2.3333333f, -3.3333333f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
+                    ),
+                    Wrapper(Vector2F(0f, 2.3094f)),
+                    Wrapper(Vector2F(2f, -1.1547f)),
+                    Wrapper(Vector2F(-2f, -1.1547f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(Vector2F(2f, 2f)),
@@ -296,7 +474,10 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-2f, 1f)),
                     Wrapper(Vector2F(-3f, -3f)),
@@ -304,9 +485,10 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     Wrapper(Vector2F(8f, -2.535898f)),
                     Wrapper(Vector2F(10f, -6f)),
@@ -326,21 +508,28 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
                 ),
@@ -358,21 +547,28 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     9f
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     9.5f
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     6.928203f
                 ),
@@ -390,21 +586,28 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     14.99323f
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     16.73888f
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     12f
                 ),
@@ -422,7 +625,10 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     6f,
                     3.1622777f,
@@ -430,7 +636,10 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     4.1231055f,
                     5.0f,
@@ -438,9 +647,10 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     4f,
                     4f,
@@ -463,53 +673,28 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     Wrapper(Vector2F(0.3343371f, 3.200542f))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-1.7160178f, -2.544134f))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
-                    ),
-                    Wrapper(Vector2F(8f, -4.8453f))
-                ),
-            )
-            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
-
-            return listOf(
-                mutableTriangleArgs,
-                defaultTriangleArgs
-            ).flatten()
-        }
-
-        @JvmStatic
-        fun centroidArgs(): List<Arguments> {
-            val mutableTriangleArgs = listOf(
-                Arguments.of(
-                    MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                    ),
-                    Wrapper(Vector2F(-0.3333333f, 3f))
-                ),
-                Arguments.of(
-                    MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    ),
-                    Wrapper(Vector2F(-1.3333333f, -2.6666667f))
-                ),
-                Arguments.of(
-                    MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -527,21 +712,28 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     Wrapper(Vector2F(-1f, 2.6666667f))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(0.9736842f, -1.868421f))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -559,21 +751,28 @@ class TriangleTests {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
                     ),
                     Wrapper(Vector2F(1f, 3.6666667f))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-5.947368f, -4.263158f))
                 ),
                 Arguments.of(
                     MutableTriangle(
-                        Vector2F(8f, -2.535898f),
-                        Vector2F(10f, -6f),
-                        Vector2F(6f, -6f)
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -590,35 +789,56 @@ class TriangleTests {
         fun setArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(Vector2F(2f, 2f)),
-                Wrapper(Vector2F(1f, 5f)),
+                Wrapper(Vector2F(-0.3333333f, 3f)),
+                Wrapper(Vector2F(-3.6666667f, -1f)),
+                Wrapper(Vector2F(2.3333333f, -1f)),
+                Wrapper(Vector2F(1.3333333f, 2f)),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
+                ),
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(Vector2F(-3.6666667f, -1f)),
+                Wrapper(Vector2F(2.3333333f, -1f)),
+                Wrapper(Vector2F(2.3333333f, -3.3333333f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 )
             ),
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
-                Wrapper(Vector2F(-4f, 2f)),
-                Wrapper(Vector2F(-3f, -3f)),
-                Wrapper(Vector2F(1f, -6f)),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
+                Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
+                Wrapper(Vector2F(2.3333333f, -3.3333333f)),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                )
-            ),
-            Arguments.of(
-                MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                ),
-                Wrapper(Vector2F(-2f, 1f)),
-                Wrapper(Vector2F(-3f, -3f)),
-                Wrapper(Vector2F(1f, -6f)),
-                MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 )
             ),
         )
@@ -640,64 +860,164 @@ class TriangleTests {
         fun interpolateArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableTriangle(
-                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                    centroid = Vector2F.ZERO,
+                    originPointA = Vector2F(1f, 0f),
+                    originPointB = Vector2F(-1f, 0f),
+                    originPointC = Vector2F(0f, 1f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 0.5f,
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 )
             ),
             Arguments.of(
                 MutableTriangle(
-                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                    centroid = Vector2F.ZERO,
+                    originPointA = Vector2F(1f, 0f),
+                    originPointB = Vector2F(-1f, 0f),
+                    originPointC = Vector2F(0f, 1f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 ),
                 0f,
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 )
             ),
             Arguments.of(
                 MutableTriangle(
-                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                    centroid = Vector2F.ZERO,
+                    originPointA = Vector2F(1f, 0f),
+                    originPointB = Vector2F(-1f, 0f),
+                    originPointC = Vector2F(0f, 1f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 ),
-                1f,
+                0.25f,
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-0.5833333f, 1.5833333f),
+                    originPointA = Vector2F(-3.7407613f, 0.5578891f),
+                    originPointB = Vector2F(1.2447404f, -1.8123132f),
+                    originPointC = Vector2F(2.4960206f, 1.2544241f)
                 )
             ),
             Arguments.of(
                 MutableTriangle(
-                    pointA = Vector2F.ZERO, pointB = Vector2F.ONE, pointC = Vector2F(1f, -1f)
+                    centroid = Vector2F.ZERO,
+                    originPointA = Vector2F(1f, 0f),
+                    originPointB = Vector2F(-1f, 0f),
+                    originPointC = Vector2F(0f, 1f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 ),
                 0.5f,
                 MutableTriangle(
-                    Vector2F(-3f, 1.5f),
-                    Vector2F(-0.5f, -0.5f),
-                    Vector2F(1f, -0.5f)
+                    centroid = Vector2F(-0.83333325f, 0.16666651f),
+                    originPointA = Vector2F(-3.1841016f, 2.0066895f),
+                    originPointB = Vector2F(-0.020358026f, -1.9245749f),
+                    originPointC = Vector2F(3.2044594f, -0.08211458f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F.ZERO,
+                    originPointA = Vector2F(1f, 0f),
+                    originPointB = Vector2F(-1f, 0f),
+                    originPointC = Vector2F(0f, 1f)
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                ),
+                0.75f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.0833333f, -1.25f),
+                    originPointA = Vector2F(-2.0966048f, 3.1033862f),
+                    originPointB = Vector2F(-1.0924258f, -1.3648026f),
+                    originPointC = Vector2F(3.1890304f, -1.7385836f)
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F.ZERO,
+                    originPointA = Vector2F(1f, 0f),
+                    originPointB = Vector2F(-1f, 0f),
+                    originPointC = Vector2F(0f, 1f)
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                ),
+                1f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 )
             ),
         )
@@ -705,7 +1025,10 @@ class TriangleTests {
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
             val triangleA = MutableTriangle(
-                Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                centroid = Vector2F(-0.3333333f, 3f),
+                originPointA = Vector2F(-3.6666667f, -1f),
+                originPointB = Vector2F(2.3333333f, -1f),
+                originPointC = Vector2F(1.3333333f, 2f)
             )
             val triangleAArgs = listOf(
                 Arguments.of(
@@ -715,13 +1038,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleA,
-                    Wrapper(Vector2F(-4.0f, 2.0f)),
-                    Wrapper(Vector2F(-4.0f, 2.0f))
+                    Wrapper(Vector2F(-4f, 2f)),
+                    Wrapper(Vector2F(-4f, 2f))
                 ),
                 Arguments.of(
                     triangleA,
                     Wrapper(Vector2F(-4.0963717f, 1.9733067f)),
-                    Wrapper(Vector2F(-4.0f, 2.0f))
+                    Wrapper(Vector2F(-4f, 2f))
                 ),
                 Arguments.of(
                     triangleA,
@@ -730,13 +1053,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleA,
-                    Wrapper(Vector2F(2.0f, 2.0f)),
-                    Wrapper(Vector2F(2.0f, 2.0f))
+                    Wrapper(Vector2F(2f, 2f)),
+                    Wrapper(Vector2F(2f, 2f))
                 ),
                 Arguments.of(
                     triangleA,
                     Wrapper(Vector2F(2.081124f, 1.941529f)),
-                    Wrapper(Vector2F(2.0f, 2.0f))
+                    Wrapper(Vector2F(2f, 2f))
                 ),
                 Arguments.of(
                     triangleA,
@@ -745,28 +1068,28 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleA,
-                    Wrapper(Vector2F(1.0f, 5.0f)),
-                    Wrapper(Vector2F(1.0f, 5.0f))
+                    Wrapper(Vector2F(1f, 5f)),
+                    Wrapper(Vector2F(1f, 5f))
                 ),
                 Arguments.of(
                     triangleA,
                     Wrapper(Vector2F(1.0346946f, 5.093788f)),
-                    Wrapper(Vector2F(1.0f, 5.0f))
+                    Wrapper(Vector2F(1f, 5f))
                 ),
                 Arguments.of(
                     triangleA,
-                    Wrapper(Vector2F(-1.0f, 2.1f)),
-                    Wrapper(Vector2F(-1.0f, 2.1f))
+                    Wrapper(Vector2F(-1f, 2.1f)),
+                    Wrapper(Vector2F(-1f, 2.1f))
                 ),
                 Arguments.of(
                     triangleA,
-                    Wrapper(Vector2F(-1.0f, 2.0f)),
-                    Wrapper(Vector2F(-1.0f, 2.0f))
+                    Wrapper(Vector2F(-1f, 2f)),
+                    Wrapper(Vector2F(-1f, 2f))
                 ),
                 Arguments.of(
                     triangleA,
-                    Wrapper(Vector2F(-1.0f, 1.9f)),
-                    Wrapper(Vector2F(-1.0f, 2.0f))
+                    Wrapper(Vector2F(-1f, 1.9f)),
+                    Wrapper(Vector2F(-1f, 2f))
                 ),
                 Arguments.of(
                     triangleA,
@@ -812,7 +1135,10 @@ class TriangleTests {
                 ),
             )
             val triangleB = MutableTriangle(
-                Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                centroid = Vector2F(-1.3333333f, -2.6666667f),
+                originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                originPointC = Vector2F(2.3333333f, -3.3333333f)
             )
             val triangleBArgs = listOf(
                 Arguments.of(
@@ -822,13 +1148,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleB,
-                    Wrapper(Vector2F(-2.0f, 1.0f)),
-                    Wrapper(Vector2F(-2.0f, 1.0f))
+                    Wrapper(Vector2F(-2f, 1f)),
+                    Wrapper(Vector2F(-2f, 1f))
                 ),
                 Arguments.of(
                     triangleB,
                     Wrapper(Vector2F(-2.007987f, 1.0996807f)),
-                    Wrapper(Vector2F(-2.0f, 1.0f))
+                    Wrapper(Vector2F(-2f, 1f))
                 ),
                 Arguments.of(
                     triangleB,
@@ -837,13 +1163,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleB,
-                    Wrapper(Vector2F(-3.0f, -3.0f)),
-                    Wrapper(Vector2F(-3.0f, -3.0f))
+                    Wrapper(Vector2F(-3f, -3f)),
+                    Wrapper(Vector2F(-3f, -3f))
                 ),
                 Arguments.of(
                     triangleB,
                     Wrapper(Vector2F(-3.0942369f, -3.033458f)),
-                    Wrapper(Vector2F(-3.0f, -3.0f))
+                    Wrapper(Vector2F(-3f, -3f))
                 ),
                 Arguments.of(
                     triangleB,
@@ -852,13 +1178,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleB,
-                    Wrapper(Vector2F(1.0f, -6.0f)),
-                    Wrapper(Vector2F(1.0f, -6.0f))
+                    Wrapper(Vector2F(1f, -6f)),
+                    Wrapper(Vector2F(1f, -6f))
                 ),
                 Arguments.of(
                     triangleB,
                     Wrapper(Vector2F(1.0617917f, -6.078624f)),
-                    Wrapper(Vector2F(1.0f, -6.0f))
+                    Wrapper(Vector2F(1f, -6f))
                 ),
                 Arguments.of(
                     triangleB,
@@ -867,13 +1193,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleB,
-                    Wrapper(Vector2F(-2.5f, -1.0f)),
-                    Wrapper(Vector2F(-2.5f, -1.0f))
+                    Wrapper(Vector2F(-2.5f, -1f)),
+                    Wrapper(Vector2F(-2.5f, -1f))
                 ),
                 Arguments.of(
                     triangleB,
                     Wrapper(Vector2F(-2.5970142f, -0.97574645f)),
-                    Wrapper(Vector2F(-2.5f, -1.0f))
+                    Wrapper(Vector2F(-2.5f, -1f))
                 ),
                 Arguments.of(
                     triangleB,
@@ -882,13 +1208,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleB,
-                    Wrapper(Vector2F(-1.0f, -4.5f)),
-                    Wrapper(Vector2F(-1.0f, -4.5f))
+                    Wrapper(Vector2F(-1f, -4.5f)),
+                    Wrapper(Vector2F(-1f, -4.5f))
                 ),
                 Arguments.of(
                     triangleB,
                     Wrapper(Vector2F(-1.06f, -4.58f)),
-                    Wrapper(Vector2F(-1.0f, -4.5f))
+                    Wrapper(Vector2F(-1f, -4.5f))
                 ),
                 Arguments.of(
                     triangleB,
@@ -923,25 +1249,26 @@ class TriangleTests {
                 ),
             )
             val triangleC = MutableTriangle(
-                Vector2F(8f, -2.535898f),
-                Vector2F(10f, -6f),
-                Vector2F(6f, -6f)
+                centroid = Vector2F(8f, -4.8453f),
+                originPointA = Vector2F(0f, 2.3094f),
+                originPointB = Vector2F(2f, -1.1547f),
+                originPointC = Vector2F(-2f, -1.1547f)
             )
             val triangleCArgs = listOf(
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(8.0f, -2.6358979f)),
-                    Wrapper(Vector2F(8.0f, -2.6358979f))
+                    Wrapper(Vector2F(8f, -2.6358979f)),
+                    Wrapper(Vector2F(8f, -2.6358979f))
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(8.0f, -2.535898f)),
-                    Wrapper(Vector2F(8.0f, -2.535898f))
+                    Wrapper(Vector2F(8f, -2.535898f)),
+                    Wrapper(Vector2F(8f, -2.535898f))
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(8.0f, -2.435898f)),
-                    Wrapper(Vector2F(8.0f, -2.535898f))
+                    Wrapper(Vector2F(8f, -2.435898f)),
+                    Wrapper(Vector2F(8f, -2.535898f))
                 ),
                 Arguments.of(
                     triangleC,
@@ -950,13 +1277,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(10.0f, -6.0f)),
-                    Wrapper(Vector2F(10.0f, -6.0f))
+                    Wrapper(Vector2F(10f, -6f)),
+                    Wrapper(Vector2F(10f, -6f))
                 ),
                 Arguments.of(
                     triangleC,
                     Wrapper(Vector2F(10.086602f, -6.05f)),
-                    Wrapper(Vector2F(10.0f, -6.0f))
+                    Wrapper(Vector2F(10f, -6f))
                 ),
                 Arguments.of(
                     triangleC,
@@ -965,13 +1292,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(6.0f, -6.0f)),
-                    Wrapper(Vector2F(6.0f, -6.0f))
+                    Wrapper(Vector2F(6f, -6f)),
+                    Wrapper(Vector2F(6f, -6f))
                 ),
                 Arguments.of(
                     triangleC,
                     Wrapper(Vector2F(5.913398f, -6.05f)),
-                    Wrapper(Vector2F(6.0f, -6.0f))
+                    Wrapper(Vector2F(6f, -6f))
                 ),
                 Arguments.of(
                     triangleC,
@@ -980,28 +1307,28 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(9.0f, -4.267949f)),
-                    Wrapper(Vector2F(9.0f, -4.267949f))
+                    Wrapper(Vector2F(9f, -4.267949f)),
+                    Wrapper(Vector2F(9f, -4.267949f))
                 ),
                 Arguments.of(
                     triangleC,
                     Wrapper(Vector2F(9.086602f, -4.217949f)),
-                    Wrapper(Vector2F(9.0f, -4.267949f))
+                    Wrapper(Vector2F(9f, -4.267949f))
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(8.0f, -5.9f)),
-                    Wrapper(Vector2F(8.0f, -5.9f))
+                    Wrapper(Vector2F(8f, -5.9f)),
+                    Wrapper(Vector2F(8f, -5.9f))
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(8.0f, -6.0f)),
-                    Wrapper(Vector2F(8.0f, -6.0f))
+                    Wrapper(Vector2F(8f, -6f)),
+                    Wrapper(Vector2F(8f, -6f))
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(8.0f, -6.1f)),
-                    Wrapper(Vector2F(8.0f, -6.0f))
+                    Wrapper(Vector2F(8f, -6.1f)),
+                    Wrapper(Vector2F(8f, -6f))
                 ),
                 Arguments.of(
                     triangleC,
@@ -1010,13 +1337,13 @@ class TriangleTests {
                 ),
                 Arguments.of(
                     triangleC,
-                    Wrapper(Vector2F(7.0f, -4.267949f)),
-                    Wrapper(Vector2F(7.0f, -4.267949f))
+                    Wrapper(Vector2F(7f, -4.267949f)),
+                    Wrapper(Vector2F(7f, -4.267949f))
                 ),
                 Arguments.of(
                     triangleC,
                     Wrapper(Vector2F(6.9133973f, -4.217949f)),
-                    Wrapper(Vector2F(7.0f, -4.267949f))
+                    Wrapper(Vector2F(7f, -4.267949f))
                 ),
                 Arguments.of(
                     triangleC, Wrapper(triangleC.centroid), Wrapper(triangleC.centroid)
@@ -1053,7 +1380,10 @@ class TriangleTests {
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
             val triangleA = MutableTriangle(
-                Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                centroid = Vector2F(-0.3333333f, 3f),
+                originPointA = Vector2F(-3.6666667f, -1f),
+                originPointB = Vector2F(2.3333333f, -1f),
+                originPointC = Vector2F(1.3333333f, 2f)
             )
             val triangleAArgs = listOf(
                 Arguments.of(triangleA, Wrapper(Vector2F(-3.903629f, 2.0266933f)), true),
@@ -1074,7 +1404,10 @@ class TriangleTests {
                 Arguments.of(triangleA, Wrapper(triangleA.circumcenter), true),
             )
             val triangleB = MutableTriangle(
-                Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                centroid = Vector2F(-1.3333333f, -2.6666667f),
+                originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                originPointC = Vector2F(2.3333333f, -3.3333333f)
             )
             val triangleBArgs = listOf(
                 Arguments.of(triangleB, Wrapper(Vector2F(-1.9920129f, 0.9003196f)), true),
@@ -1095,9 +1428,10 @@ class TriangleTests {
                 Arguments.of(triangleB, Wrapper(triangleB.circumcenter), false),
             )
             val triangleC = MutableTriangle(
-                Vector2F(8f, -2.535898f),
-                Vector2F(10f, -6f),
-                Vector2F(6f, -6f)
+                centroid = Vector2F(8f, -4.8453f),
+                originPointA = Vector2F(0f, 2.3094f),
+                originPointB = Vector2F(2f, -1.1547f),
+                originPointC = Vector2F(-2f, -1.1547f)
             )
             val triangleCArgs = listOf(
                 Arguments.of(triangleC, Wrapper(Vector2F(8.0f, -2.6358979f)), true),
@@ -1145,26 +1479,41 @@ class TriangleTests {
         fun equalsAnyArgs(): List<Arguments> = equalsMutableTriangleArgs() + listOf(
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 null,
                 false
             ),
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 DefaultTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 true
             ),
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 DefaultTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1.1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3f, 2f)
                 ),
                 false
             ),
@@ -1174,19 +1523,31 @@ class TriangleTests {
         fun equalsMutableTriangleArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 true
             ),
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1.1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3f, 2f)
                 ),
                 false
             ),
@@ -1196,19 +1557,31 @@ class TriangleTests {
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
-                ),
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
+                )
             ),
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 ),
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                ),
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                )
             ),
         )
 
@@ -1216,25 +1589,78 @@ class TriangleTests {
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    originPointA = Vector2F(-3.6666667f, -1f),
+                    originPointB = Vector2F(2.3333333f, -1f),
+                    originPointC = Vector2F(1.3333333f, 2f)
                 ),
                 "Triangle(" +
-                        "pointA=${Vector2F(-4f, 2f)}, " +
-                        "pointB=${Vector2F(2f, 2f)}, " +
-                        "pointC=${Vector2F(1f, 5f)})"
+                        "centroid=${Vector2F(-0.3333333f, 3f)}, " +
+                        "originPointA=${Vector2F(-3.6666667f, -1f)}, " +
+                        "originPointB=${Vector2F(2.3333333f, -1f)}, " +
+                        "originPointC=${Vector2F(1.3333333f, 2f)})"
             ),
             Arguments.of(
                 MutableTriangle(
-                    Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                    originPointC = Vector2F(2.3333333f, -3.3333333f)
                 ),
                 "Triangle(" +
-                        "pointA=${Vector2F(-2f, 1f)}, " +
-                        "pointB=${Vector2F(-3f, -3f)}, " +
-                        "pointC=${Vector2F(1f, -6f)})"
+                        "centroid=${Vector2F(-1.3333333f, -2.6666667f)}, " +
+                        "originPointA=${Vector2F(-0.6666667f, 3.6666667f)}, " +
+                        "originPointB=${Vector2F(-1.6666667f, -0.3333333f)}, " +
+                        "originPointC=${Vector2F(2.3333333f, -3.3333333f)})"
             ),
         )
 
         @JvmStatic
-        fun componentsArgs(): List<Arguments> = pointsArgs()
+        fun componentsArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        originPointA = Vector2F(-3.6666667f, -1f),
+                        originPointB = Vector2F(2.3333333f, -1f),
+                        originPointC = Vector2F(1.3333333f, 2f)
+                    ),
+                    Wrapper(Vector2F(-0.3333333f, 3f)),
+                    Wrapper(Vector2F(-3.6666667f, -1f)),
+                    Wrapper(Vector2F(2.3333333f, -1f)),
+                    Wrapper(Vector2F(1.3333333f, 2f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    ),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                    Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
+                    Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
+                    Wrapper(Vector2F(2.3333333f, -3.3333333f))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(8f, -4.8453f),
+                        originPointA = Vector2F(0f, 2.3094f),
+                        originPointB = Vector2F(2f, -1.1547f),
+                        originPointC = Vector2F(-2f, -1.1547f)
+                    ),
+                    Wrapper(Vector2F(8f, -4.8453f)),
+                    Wrapper(Vector2F(0f, 2.3094f)),
+                    Wrapper(Vector2F(2f, -1.1547f)),
+                    Wrapper(Vector2F(-2f, -1.1547f))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
     }
 }

@@ -3018,7 +3018,10 @@ class RayTests {
         @JvmStatic
         fun intersectsTriangleArgs(): List<Arguments> {
             val triangle = MutableTriangle(
-                Vector2F(-4f, 2f), Vector2F(2f, 2f), Vector2F(1f, 5f)
+                centroid = Vector2F(-0.3333333f, 3f),
+                originPointA = Vector2F(-3.6666667f, -1f),
+                originPointB = Vector2F(2.3333333f, -1f),
+                originPointC = Vector2F(1.3333333f, 2f)
             )
             val mutableRayMutableTriangleArgs = listOf(
                 Arguments.of(

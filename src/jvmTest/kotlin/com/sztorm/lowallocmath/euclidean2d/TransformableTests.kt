@@ -1031,24 +1031,34 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableTriangle(
-                        Vector2F(-6f, 3f), Vector2F(-7f, -1f), Vector2F(-3f, -4f)
+                        centroid = Vector2F(-5.333333f, -0.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableTriangle(
-                        Vector2F(-1.5f, 1f),
-                        Vector2F(-2.5f, -3f),
-                        Vector2F(1.5f, -6f)
+                        centroid = Vector2F(-0.8333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     )
                 ),
             )
@@ -1390,26 +1400,34 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableTriangle(
-                        Vector2F(-4.666667f, 5.666667f),
-                        Vector2F(-5.666667f, 1.6666667f),
-                        Vector2F(-1.6666667f, -1.3333333f)
+                        centroid = Vector2F(-4f, 2f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableTriangle(
-                        Vector2F(-0.1666667f, 3.666667f),
-                        Vector2F(-1.1666667f, -0.3333333f),
-                        Vector2F(2.8333333f, -3.3333333f)
+                        centroid = Vector2F(0.5f, 0f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     )
                 ),
             )
@@ -1869,26 +1887,34 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(-4.397463f, -0.54534626f),
-                        Vector2F(-2.2761421f, -4.08088f),
-                        Vector2F(2.6736052f, -3.3737736f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
+                        originPointB = Vector2F(-0.942809f, -1.4142137f),
+                        originPointC = Vector2F(4.0069385f, -0.70710707f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-1.9609454f, -6.3402195f),
-                        Vector2F(0.34682798f, -2.923469f),
-                        Vector2F(-2.385882f, 1.2636895f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.62761235f, -3.6735532f),
+                        originPointB = Vector2F(1.680161f, -0.2568028f),
+                        originPointC = Vector2F(-1.0525489f, 3.9303558f)
                     )
                 ),
             )
@@ -2246,26 +2272,34 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(1.301898f, -0.03143549f),
-                        Vector2F(-2.5560806f, -1.4860829f),
-                        Vector2F(-2.7458177f, -6.482481f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(2.6352313f, 2.6352308f),
+                        originPointB = Vector2F(-1.2227473f, 1.1805834f),
+                        originPointC = Vector2F(-1.4124844f, -3.8158147f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-4.8353605f, -1.3920327f),
-                        Vector2F(-1.88655f, -4.273788f),
-                        Vector2F(2.7219107f, -2.334179f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-3.5020275f, 1.2746335f),
+                        originPointB = Vector2F(-0.5532168f, -1.6071217f),
+                        originPointC = Vector2F(4.055244f, 0.33248734f)
                     )
                 ),
             )
@@ -2942,56 +2976,72 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(-2.4852815f, -5.828427f),
-                        Vector2F(-0.3639611f, -9.363961f),
-                        Vector2F(4.5857863f, -8.656855f)
+                        centroid = Vector2F(0.5788478f, -7.949747f),
+                        originPointA = Vector2F(-3.0641294f, 2.1213202f),
+                        originPointB = Vector2F(-0.9428089f, -1.4142141f),
+                        originPointC = Vector2F(4.0069385f, -0.70710754f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(12.14946f, -9.494932f),
-                        Vector2F(14.457233f, -6.0781813f),
-                        Vector2F(11.724524f, -1.8910227f)
+                        centroid = Vector2F(12.777071f, -5.821378f),
+                        originPointA = Vector2F(-0.62761116f, -3.673554f),
+                        originPointB = Vector2F(1.6801624f, -0.25680304f),
+                        originPointC = Vector2F(-1.0525475f, 3.9303555f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(-4.397463f, -0.54534626f),
-                        Vector2F(-2.2761421f, -4.08088f),
-                        Vector2F(2.6736052f, -3.3737736f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
+                        originPointB = Vector2F(-0.942809f, -1.4142137f),
+                        originPointC = Vector2F(4.0069385f, -0.70710707f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-1.9609454f, -6.3402195f),
-                        Vector2F(0.34682798f, -2.923469f),
-                        Vector2F(-2.385882f, 1.2636895f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.62761235f, -3.6735532f),
+                        originPointB = Vector2F(1.680161f, -0.2568028f),
+                        originPointC = Vector2F(-1.0525489f, 3.9303558f)
                     )
                 ),
             )
@@ -3672,56 +3722,72 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(14.348097f, 0.21080625f),
-                        Vector2F(12.068424f, 3.6463695f),
-                        Vector2F(7.15589f, 2.7152355f)
+                        centroid = Vector2F(11.190803f, 2.1908038f),
+                        originPointA = Vector2F(3.1572943f, -1.9799975f),
+                        originPointB = Vector2F(0.87762165f, 1.4555657f),
+                        originPointC = Vector2F(-4.0349126f, 0.5244317f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-0.43803674f, 3.2089996f),
-                        Vector2F(-2.588283f, -0.3090171f),
-                        Vector2F(0.33173776f, -4.3677707f)
+                        centroid = Vector2F(-0.89819396f, -0.4892627f),
+                        originPointA = Vector2F(0.46015722f, 3.6982622f),
+                        originPointB = Vector2F(-1.6900891f, 0.18024561f),
+                        originPointC = Vector2F(1.2299317f, -3.878508f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(1.301898f, -0.03143549f),
-                        Vector2F(-2.5560806f, -1.4860829f),
-                        Vector2F(-2.7458177f, -6.482481f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(2.6352313f, 2.6352308f),
+                        originPointB = Vector2F(-1.2227473f, 1.1805834f),
+                        originPointC = Vector2F(-1.4124844f, -3.8158147f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-4.8353605f, -1.3920327f),
-                        Vector2F(-1.88655f, -4.273788f),
-                        Vector2F(2.7219107f, -2.334179f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-3.5020275f, 1.2746335f),
+                        originPointB = Vector2F(-0.5532168f, -1.6071217f),
+                        originPointC = Vector2F(4.055244f, 0.33248734f)
                     )
                 ),
             )
@@ -4426,51 +4492,69 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     2f,
                     MutableTriangle(
-                        Vector2F(-2.6666667f, 4.6666665f),
-                        Vector2F(-4.666667f, -3.3333335f),
-                        Vector2F(3.3333333f, -9.333334f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-1.3333333f, 7.333333f),
+                        originPointB = Vector2F(-3.3333333f, -0.6666667f),
+                        originPointC = Vector2F(4.666667f, -6.666667f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     0.3f,
                     MutableTriangle(
-                        Vector2F(-1.5333333f, -1.5666666f),
-                        Vector2F(-1.8333333f, -2.7666667f),
-                        Vector2F(-0.63333327f, -3.6666665f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.2f, 1.1f),
+                        originPointB = Vector2F(-0.5f, -0.1f),
+                        originPointC = Vector2F(0.7f, -1f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     1f,
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    ),
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     -1f,
                     MutableTriangle(
-                        Vector2F(-0.6666667f, -6.333333f),
-                        Vector2F(0.3333335f, -2.333333f),
-                        Vector2F(-3.6666665f, 0.666667f)
-                    ),
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(0.6666667f, -3.6666667f),
+                        originPointB = Vector2F(1.6666667f, 0.3333333f),
+                        originPointC = Vector2F(-2.3333333f, 3.3333333f)
+                    )
                 ),
             )
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
@@ -5267,66 +5351,90 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     2f,
                     MutableTriangle(
-                        Vector2F(-10f, 5f),
-                        Vector2F(-12f, -3f),
-                        Vector2F(-4f, -9f)
+                        centroid = Vector2F(-8.666666f, -2.3333333f),
+                        originPointA = Vector2F(-1.3333333f, 7.333333f),
+                        originPointB = Vector2F(-3.3333333f, -0.6666667f),
+                        originPointC = Vector2F(4.666667f, -6.666667f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     0.3f,
                     MutableTriangle(
-                        Vector2F(3.6f, -1.8f),
-                        Vector2F(3.2999997f, -3.0f),
-                        Vector2F(4.5f, -3.9f)
+                        centroid = Vector2F(3.8f, -2.9f),
+                        originPointA = Vector2F(-0.2f, 1.1f),
+                        originPointB = Vector2F(-0.5f, -0.1f),
+                        originPointC = Vector2F(0.7f, -1f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     1f,
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
-                    ),
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     -1f,
                     MutableTriangle(
-                        Vector2F(14f, -7f), Vector2F(15f, -3f), Vector2F(11f, 0f)
-                    ),
+                        centroid = Vector2F(13.333333f, -3.3333333f),
+                        originPointA = Vector2F(0.6666667f, -3.6666667f),
+                        originPointB = Vector2F(1.6666667f, 0.3333333f),
+                        originPointC = Vector2F(-2.3333333f, 3.3333333f)
+                    )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
-                    Wrapper(Vector2F(-1.3333333f, -2.6666665f)),
+                    Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     2f,
                     MutableTriangle(
-                        Vector2F(-2.6666667f, 4.6666665f),
-                        Vector2F(-4.666667f, -3.3333335f),
-                        Vector2F(3.3333333f, -9.333334f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-1.3333333f, 7.333333f),
+                        originPointB = Vector2F(-3.3333333f, -0.6666667f),
+                        originPointC = Vector2F(4.666667f, -6.666667f)
                     )
                 ),
             )
@@ -5712,28 +5820,36 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(-8.397463f, 1.4546535f),
-                        Vector2F(-6.276142f, -2.0808804f),
-                        Vector2F(-1.3263946f, -1.3737737f)
+                        centroid = Vector2F(-5.333333f, -0.6666667f),
+                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
+                        originPointB = Vector2F(-0.9428091f, -1.4142137f),
+                        originPointC = Vector2F(4.0069385f, -0.7071069f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-1.4609454f, -6.3402195f),
-                        Vector2F(0.846828f, -2.923469f),
-                        Vector2F(-1.885882f, 1.2636895f)
+                        centroid = Vector2F(-0.8333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.62761223f, -3.6735532f),
+                        originPointB = Vector2F(1.6801611f, -0.2568028f),
+                        originPointC = Vector2F(-1.0525489f, 3.9303558f)
                     )
                 ),
             )
@@ -6446,60 +6562,76 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     2f,
                     MutableTriangle(
-                        Vector2F(-11.461593f, 3.5759735f),
-                        Vector2F(-7.218951f, -3.4950943f),
-                        Vector2F(2.680544f, -2.0808809f)
+                        centroid = Vector2F(-5.333333f, -0.6666667f),
+                        originPointA = Vector2F(-6.1282597f, 4.2426405f),
+                        originPointB = Vector2F(-1.8856182f, -2.828427f),
+                        originPointC = Vector2F(8.013877f, -1.4142137f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     0.3f,
                     MutableTriangle(
-                        Vector2F(-1.0216169f, -3.7687325f),
-                        Vector2F(-0.32928485f, -2.7437072f),
-                        Vector2F(-1.1490979f, -1.4875597f)
+                        centroid = Vector2F(-0.8333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.18828374f, -1.1020663f),
+                        originPointB = Vector2F(0.50404835f, -0.07704091f),
+                        originPointC = Vector2F(-0.31576473f, 1.1791066f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     1f,
                     MutableTriangle(
-                        Vector2F(-8.397463f, 1.4546535f),
-                        Vector2F(-6.276142f, -2.0808804f),
-                        Vector2F(-1.3263946f, -1.3737737f)
+                        centroid = Vector2F(-5.333333f, -0.6666667f),
+                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
+                        originPointB = Vector2F(-0.9428091f, -1.4142137f),
+                        originPointC = Vector2F(4.0069385f, -0.7071069f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     -1f,
                     MutableTriangle(
-                        Vector2F(-2.2692032f, -2.7879863f),
-                        Vector2F(-4.390524f, 0.7475475f),
-                        Vector2F(-9.340271f, 0.04044032f)
+                        centroid = Vector2F(-5.333333f, -0.6666667f),
+                        originPointA = Vector2F(3.0641294f, -2.1213202f),
+                        originPointB = Vector2F(0.9428086f, 1.4142137f),
+                        originPointC = Vector2F(-4.0069385f, 0.7071064f)
                     )
                 ),
             )
@@ -6876,28 +7008,36 @@ class TransformableTests {
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
-                        Vector2F(-1.364769f, 4.635231f),
-                        Vector2F(-5.222748f, 3.1805837f),
-                        Vector2F(-5.412484f, -1.8158145f)
+                        centroid = Vector2F(-4f, 2f),
+                        originPointA = Vector2F(2.635231f, 2.635231f),
+                        originPointB = Vector2F(-1.2227478f, 1.1805837f),
+                        originPointC = Vector2F(-1.4124842f, -3.8158145f)
                     )
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
-                        Vector2F(-2f, 1f), Vector2F(-3f, -3f), Vector2F(1f, -6f)
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
+                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
+                        originPointC = Vector2F(2.3333333f, -3.3333333f)
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
-                        Vector2F(-3.0020273f, 1.2746338f),
-                        Vector2F(-0.053216696f, -1.6071216f),
-                        Vector2F(4.555244f, 0.33248746f)
+                        centroid = Vector2F(0.5f, 0f),
+                        originPointA = Vector2F(-3.5020273f, 1.2746339f),
+                        originPointB = Vector2F(-0.5532167f, -1.6071215f),
+                        originPointC = Vector2F(4.055244f, 0.33248758f)
                     )
                 ),
             )

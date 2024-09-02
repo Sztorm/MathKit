@@ -659,11 +659,18 @@ interface Ray : Transformable {
 
     /** Returns `true` if this ray intersects the given [triangle]. **/
     fun intersects(triangle: Triangle): Boolean {
-        val (aX: Float, aY: Float) = triangle.pointA
-        val (bX: Float, bY: Float) = triangle.pointB
-        val (cX: Float, cY: Float) = triangle.pointC
+        val (centroidX: Float, centroidY: Float) = triangle.centroid
+        val (opAX: Float, opAY: Float) = triangle.originPointA
+        val (opBX: Float, opBY: Float) = triangle.originPointB
+        val (opCX: Float, opCY: Float) = triangle.originPointC
         val (oX: Float, oY: Float) = origin
         val (dirX: Float, dirY: Float) = direction
+        val aX: Float = opAX + centroidX
+        val aY: Float = opAY + centroidY
+        val bX: Float = opBX + centroidX
+        val bY: Float = opBY + centroidY
+        val cX: Float = opCX + centroidX
+        val cY: Float = opCY + centroidY
         val aoX: Float = oX - aX
         val aoY: Float = oY - aY
         val abX: Float = bX - aX
