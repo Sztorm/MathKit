@@ -166,10 +166,16 @@ fun assertApproximation(
     val mainMessage: String =
         """
         Expected <LineSegment(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            length=${expected.length},
             pointA=${expected.pointA},
             pointB=${expected.pointB}
         )> with absolute tolerance <$absoluteTolerance>,
         actual <LineSegment(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            length=${actual.length},
             pointA=${actual.pointA},
             pointB=${actual.pointB}
         )>.
@@ -508,10 +514,16 @@ fun assertEquals(expected: LineSegment, actual: LineSegment, message: String? = 
     val mainMessage: String =
         """
         Expected <LineSegment(
+            center=${expected.center},
+            orientation=${expected.orientation},
+            length=${expected.length},
             pointA=${expected.pointA},
             pointB=${expected.pointB}
         )>,
         actual <LineSegment(
+            center=${actual.center},
+            orientation=${actual.orientation},
+            length=${actual.length},
             pointA=${actual.pointA},
             pointB=${actual.pointB}
         )>.

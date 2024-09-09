@@ -237,8 +237,15 @@ interface Ray : Transformable {
     fun intersects(lineSegment: LineSegment): Boolean {
         val (oX: Float, oY: Float) = origin
         val (dirX: Float, dirY: Float) = direction
-        val (aX: Float, aY: Float) = lineSegment.pointA
-        val (bX: Float, bY: Float) = lineSegment.pointB
+        val (cX: Float, cY: Float) = lineSegment.center
+        val (oR: Float, oI: Float) = lineSegment.orientation
+        val halfLength: Float = lineSegment.length * 0.5f
+        val originPointAX: Float = halfLength * oR
+        val originPointAY: Float = halfLength * oI
+        val aX: Float = cX + originPointAX
+        val aY: Float = cY + originPointAY
+        val bX: Float = cX - originPointAX
+        val bY: Float = cY - originPointAY
         val aoX: Float = oX - aX
         val aoY: Float = oY - aY
         val abX: Float = bX - aX

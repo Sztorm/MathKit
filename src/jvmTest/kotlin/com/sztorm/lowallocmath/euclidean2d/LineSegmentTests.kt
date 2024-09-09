@@ -6,9 +6,11 @@ import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultLineSegment
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
+import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.utils.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -16,19 +18,80 @@ import kotlin.test.assertEquals
 
 class LineSegmentTests {
     @ParameterizedTest
-    @MethodSource("constructorArgs")
+    @MethodSource("constructorVector2FComplexFFloatArgs")
+    fun constructorCreatesCorrectLineSegment(
+        center: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, length: Float,
+    ) {
+        val mutableLineSegment = MutableLineSegment(center.value, orientation.value, length)
+        val lineSegment = LineSegment(center.value, orientation.value, length)
+
+        assertEquals(center.value, mutableLineSegment.center)
+        assertEquals(orientation.value, mutableLineSegment.orientation)
+        assertEquals(length, mutableLineSegment.length)
+
+        assertEquals(center.value, lineSegment.center)
+        assertEquals(orientation.value, lineSegment.orientation)
+        assertEquals(length, lineSegment.length)
+
+        assertApproximation(mutableLineSegment.pointA, lineSegment.pointA)
+        assertApproximation(mutableLineSegment.pointB, lineSegment.pointB)
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorVector2Fx2Args")
     fun constructorCreatesCorrectLineSegment(
         pointA: Wrapper<Vector2F>, pointB: Wrapper<Vector2F>
     ) {
         val mutableLineSegment = MutableLineSegment(pointA.value, pointB.value)
         val lineSegment = LineSegment(pointA.value, pointB.value)
 
-        assertEquals(pointA.value, mutableLineSegment.pointA)
-        assertEquals(pointB.value, mutableLineSegment.pointB)
+        assertApproximation(pointA.value, mutableLineSegment.pointA)
+        assertApproximation(pointB.value, mutableLineSegment.pointB)
 
-        assertEquals(pointA.value, lineSegment.pointA)
-        assertEquals(pointB.value, lineSegment.pointB)
+        assertApproximation(pointA.value, lineSegment.pointA)
+        assertApproximation(pointB.value, lineSegment.pointB)
+
+        assertApproximation(mutableLineSegment.center, lineSegment.center)
+        assertApproximation(mutableLineSegment.orientation, lineSegment.orientation)
+        assertApproximation(mutableLineSegment.length, lineSegment.length)
     }
+
+    @ParameterizedTest
+    @MethodSource("constructorThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        length: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableLineSegment(center.value, orientation.value, length)
+        }
+        assertThrows(expectedExceptionClass) {
+            LineSegment(center.value, orientation.value, length)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("centerArgs")
+    fun centerReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<Vector2F>) =
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected.value, lineSegment.center)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected.value, lineSegment.orientation)
+        }
+
+    @ParameterizedTest
+    @MethodSource("lengthArgs")
+    fun lengthReturnsCorrectValue(lineSegment: LineSegment, expected: Float) =
+        assertImmutabilityOf(lineSegment) {
+            assertApproximation(expected, lineSegment.length)
+        }
 
     @ParameterizedTest
     @MethodSource("pointsArgs")
@@ -49,34 +112,14 @@ class LineSegmentTests {
         }
 
     @ParameterizedTest
-    @MethodSource("orientationArgs")
-    fun orientationReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<ComplexF>) =
-        assertImmutabilityOf(lineSegment) {
-            assertApproximation(expected.value, lineSegment.orientation)
-        }
-
-    @ParameterizedTest
-    @MethodSource("centerArgs")
-    fun centerReturnsCorrectValue(lineSegment: LineSegment, expected: Wrapper<Vector2F>) =
-        assertImmutabilityOf(lineSegment) {
-            assertApproximation(expected.value, lineSegment.center)
-        }
-
-    @ParameterizedTest
-    @MethodSource("lengthArgs")
-    fun lengthReturnsCorrectValue(lineSegment: LineSegment, expected: Float) =
-        assertImmutabilityOf(lineSegment) {
-            assertApproximation(expected, lineSegment.length)
-        }
-
-    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesLineSegmentCorrectly(
         lineSegment: MutableLineSegment,
-        pointA: Wrapper<Vector2F>,
-        pointB: Wrapper<Vector2F>,
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        length: Float,
         expected: MutableLineSegment
-    ) = assertEquals(expected, lineSegment.apply { set(pointA.value, pointB.value) })
+    ) = assertEquals(expected, lineSegment.apply { set(center.value, orientation.value, length) })
 
     @ParameterizedTest
     @MethodSource("interpolatedArgs")
@@ -131,10 +174,11 @@ class LineSegmentTests {
     @MethodSource("copyArgs")
     fun copyReturnsCorrectValue(
         lineSegment: LineSegment,
-        pointA: Wrapper<Vector2F>,
-        pointB: Wrapper<Vector2F>,
+        center: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        length: Float,
         expected: LineSegment
-    ) = assertEquals(expected, lineSegment.copy(pointA.value, pointB.value))
+    ) = assertEquals(expected, lineSegment.copy(center.value, orientation.value, length))
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -175,24 +219,37 @@ class LineSegmentTests {
     fun componentsReturnCorrectValues(
         lineSegment: LineSegment,
         expectedComponent1: Wrapper<Vector2F>,
-        expectedComponent2: Wrapper<Vector2F>
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float,
     ) = assertImmutabilityOf(lineSegment) {
-        val (actualComponent1: Vector2F, actualComponent2: Vector2F) = lineSegment
+        val (
+            actualComponent1: Vector2F,
+            actualComponent2: ComplexF,
+            actualComponent3: Float
+        ) = lineSegment
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
+        assertEquals(expectedComponent3, actualComponent3)
     }
 
     companion object {
         @JvmStatic
         fun areApproximatelyEqual(
             a: LineSegment, b: LineSegment, tolerance: Float = 0.00001f
-        ): Boolean = a.pointA.isApproximately(b.pointA, tolerance) and
+        ): Boolean = a.center.isApproximately(b.center, tolerance) and
+                a.orientation.isApproximately(b.orientation, tolerance) and
+                a.length.isApproximately(b.length, tolerance) and
+                a.pointA.isApproximately(b.pointA, tolerance) and
                 a.pointB.isApproximately(b.pointB, tolerance)
 
         @JvmStatic
         fun areEqual(a: LineSegment, b: LineSegment): Boolean =
-            (a.pointA == b.pointA) and (a.pointB == b.pointB)
+            (a.center == b.center) and
+                    (a.orientation == b.orientation) and
+                    (a.length == b.length) and
+                    (a.pointA == b.pointA) and
+                    (a.pointB == b.pointB)
 
         @JvmStatic
         fun clone(lineSegment: LineSegment) = lineSegment.copy()
@@ -200,7 +257,7 @@ class LineSegmentTests {
         @JvmStatic
         fun List<Arguments>.mapLineSegmentsToDefaultLineSegments() = map { args ->
             val argArray = args.get().map {
-                if (it is LineSegment) DefaultLineSegment(it.pointA, it.pointB)
+                if (it is LineSegment) DefaultLineSegment(it.center, it.orientation, it.length)
                 else it
             }.toTypedArray()
 
@@ -208,7 +265,26 @@ class LineSegmentTests {
         }
 
         @JvmStatic
-        fun constructorArgs(): List<Arguments> = listOf(
+        fun constructorVector2FComplexFFloatArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F(0f, 5f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                4f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(3f, -0.5f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                5f
+            ),
+            Arguments.of(
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f))),
+                4.472136f
+            ),
+        )
+
+        @JvmStatic
+        fun constructorVector2Fx2Args(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F(-2f, 5f)),
                 Wrapper(Vector2F(2f, 5f))
@@ -224,20 +300,159 @@ class LineSegmentTests {
         )
 
         @JvmStatic
+        fun constructorThrowsExceptionArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.ONE),
+                -0.1f,
+                IllegalArgumentException::class.java
+            ),
+        )
+
+        @JvmStatic
+        fun centerArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = listOf(
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(0f, 5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                        length = 4f
+                    ),
+                    Wrapper(Vector2F(0f, 5f))
+                ),
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(3f, -0.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        length = 5f
+                    ),
+                    Wrapper(Vector2F(3f, -0.5f))
+                ),
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(-3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                        length = 4.472136f
+                    ),
+                    Wrapper(Vector2F(-3f, 1f))
+                ),
+            )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun orientationArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = listOf(
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(0f, 5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                        length = 4f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f)))
+                ),
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(3f, -0.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        length = 5f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
+                ),
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(-3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                        length = 4.472136f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)))
+                ),
+            )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun lengthArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = listOf(
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(0f, 5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                        length = 4f
+                    ),
+                    4f,
+                ),
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(3f, -0.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        length = 5f
+                    ),
+                    5f
+                ),
+                Arguments.of(
+                    MutableLineSegment(
+                        center = Vector2F(-3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                        length = 4.472136f
+                    ),
+                    4.472136f
+                ),
+            )
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
         fun pointsArgs(): List<Arguments> {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                    MutableLineSegment(
+                        center = Vector2F(0f, 5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                        length = 4f
+                    ),
                     Wrapper(Vector2F(-2f, 5f)),
                     Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
-                    MutableLineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f)),
+                    MutableLineSegment(
+                        center = Vector2F(3f, -0.5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        length = 5f
+                    ),
                     Wrapper(Vector2F(3f, 2f)),
                     Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                    MutableLineSegment(
+                        center = Vector2F(-3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                        length = 4.472136f
+                    ),
                     Wrapper(Vector2F(-4f, 3f)),
                     Wrapper(Vector2F(-2f, -1f))
                 ),
@@ -255,99 +470,51 @@ class LineSegmentTests {
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
-        fun orientationArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f)))
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)))
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
-
-            return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs
-            ).flatten()
-        }
-
-        @JvmStatic
-        fun centerArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(Vector2F(0f, 5f))
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f)),
-                    Wrapper(Vector2F(3f, -0.5f))
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                    Wrapper(Vector2F(-3f, 1f))
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
-
-            return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs
-            ).flatten()
-        }
-
-        @JvmStatic
-        fun lengthArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    4f,
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f)),
-                    5f
-                ),
-                Arguments.of(
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                    4.472136f
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
-
-            return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs
-            ).flatten()
-        }
-
-        @JvmStatic
         fun setArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                Wrapper(Vector2F(-2f, 5f)),
-                Wrapper(Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                Wrapper(Vector2F(0f, 5f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                4f,
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                )
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                Wrapper(Vector2F(-2f, 5f)),
-                Wrapper(Vector2F(-2f, -1f)),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(-2f, -1f))
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                Wrapper(Vector2F(-2f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                6f,
+                MutableLineSegment(
+                    center = Vector2F(-2f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    length = 6f
+                )
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                Wrapper(Vector2F(-4f, 3f)),
-                Wrapper(Vector2F(-2f, -1f)),
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f))
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f))),
+                4.472136f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
             ),
         )
 
@@ -368,38 +535,152 @@ class LineSegmentTests {
         @JvmStatic
         fun interpolateArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    length = 1f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
                 0.5f,
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                )
             ),
             Arguments.of(
-                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                MutableLineSegment(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    length = 1f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
                 0f,
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
             ),
             Arguments.of(
-                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                1f,
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f))
+                MutableLineSegment(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    length = 1f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                0.25f,
+                MutableLineSegment(
+                    center = Vector2F(-0.75f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(164.1413f)),
+                    length = 4.118034f
+                ),
             ),
             Arguments.of(
-                MutableLineSegment(pointA = Vector2F.ZERO, pointB = Vector2F.ONE),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
+                MutableLineSegment(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    length = 1f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
                 0.5f,
-                MutableLineSegment(Vector2F(-3f, 4f), Vector2F(0f, 2f))
+                MutableLineSegment(
+                    center = Vector2F(-1.5f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(148.28253f)),
+                    length = 4.236068f
+                ),
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    length = 1f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                0.75f,
+                MutableLineSegment(
+                    center = Vector2F(-2.25f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(132.4238f)),
+                    length = 4.354102f
+                ),
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F.ZERO,
+                    orientation = ComplexF.ONE,
+                    length = 1f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                1f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
             ),
         )
 
         @JvmStatic
         fun closestPointToArgs(): List<Arguments> {
-            val lineSegmentA = MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+            val lineSegmentA = MutableLineSegment(
+                center = Vector2F(0f, 5f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                length = 4f
+            )
             val segmentAArgs = listOf(
                 Arguments.of(
                     lineSegmentA,
@@ -418,33 +699,33 @@ class LineSegmentTests {
                 ),
                 Arguments.of(
                     lineSegmentA,
-                    Wrapper(lineSegmentA.pointA),
-                    Wrapper(lineSegmentA.pointA)
+                    Wrapper(Vector2F(-2f, 5f)),
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(-2f, 5.1f)),
-                    Wrapper(lineSegmentA.pointA)
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(-2f, 4.9f)),
-                    Wrapper(lineSegmentA.pointA)
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(-2.1f, 5f)),
-                    Wrapper(lineSegmentA.pointA)
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(-2.1f, 5.1f)),
-                    Wrapper(lineSegmentA.pointA)
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(-2.1f, 4.9f)),
-                    Wrapper(lineSegmentA.pointA)
+                    Wrapper(Vector2F(-2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
@@ -463,33 +744,33 @@ class LineSegmentTests {
                 ),
                 Arguments.of(
                     lineSegmentA,
-                    Wrapper(lineSegmentA.pointB),
-                    Wrapper(lineSegmentA.pointB)
+                    Wrapper(Vector2F(2f, 5f)),
+                    Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(2f, 5.1f)),
-                    Wrapper(lineSegmentA.pointB)
+                    Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(2f, 4.9f)),
-                    Wrapper(lineSegmentA.pointB)
+                    Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(2.1f, 5f)),
-                    Wrapper(lineSegmentA.pointB)
+                    Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(2.1f, 5.1f)),
-                    Wrapper(lineSegmentA.pointB)
+                    Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
                     Wrapper(Vector2F(2.1f, 4.9f)),
-                    Wrapper(lineSegmentA.pointB)
+                    Wrapper(Vector2F(2f, 5f))
                 ),
                 Arguments.of(
                     lineSegmentA,
@@ -507,7 +788,11 @@ class LineSegmentTests {
                     Wrapper(Vector2F(0f, 5f))
                 ),
             )
-            val lineSegmentB = MutableLineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f))
+            val lineSegmentB = MutableLineSegment(
+                center = Vector2F(3f, -0.5f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                length = 5f
+            )
             val segmentBArgs = listOf(
                 Arguments.of(
                     lineSegmentB,
@@ -526,33 +811,33 @@ class LineSegmentTests {
                 ),
                 Arguments.of(
                     lineSegmentB,
-                    Wrapper(lineSegmentB.pointA),
-                    Wrapper(lineSegmentB.pointA)
+                    Wrapper(Vector2F(3f, 2f)),
+                    Wrapper(Vector2F(3f, 2f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(2.9f, 2f)),
-                    Wrapper(lineSegmentB.pointA)
+                    Wrapper(Vector2F(3f, 2f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(3.1f, 2f)),
-                    Wrapper(lineSegmentB.pointA)
+                    Wrapper(Vector2F(3f, 2f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(3f, 2.1f)),
-                    Wrapper(lineSegmentB.pointA)
+                    Wrapper(Vector2F(3f, 2f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(2.9f, 2.1f)),
-                    Wrapper(lineSegmentB.pointA)
+                    Wrapper(Vector2F(3f, 2f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(3.1f, 2.1f)),
-                    Wrapper(lineSegmentB.pointA)
+                    Wrapper(Vector2F(3f, 2f))
                 ),
                 Arguments.of(
                     lineSegmentB,
@@ -571,33 +856,33 @@ class LineSegmentTests {
                 ),
                 Arguments.of(
                     lineSegmentB,
-                    Wrapper(lineSegmentB.pointB),
-                    Wrapper(lineSegmentB.pointB)
+                    Wrapper(Vector2F(3f, -3f)),
+                    Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(2.9f, -3f)),
-                    Wrapper(lineSegmentB.pointB)
+                    Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(3.1f, -3f)),
-                    Wrapper(lineSegmentB.pointB)
+                    Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(3f, -3.1f)),
-                    Wrapper(lineSegmentB.pointB)
+                    Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(2.9f, -3.1f)),
-                    Wrapper(lineSegmentB.pointB)
+                    Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
                     lineSegmentB,
                     Wrapper(Vector2F(3.1f, -3.1f)),
-                    Wrapper(lineSegmentB.pointB)
+                    Wrapper(Vector2F(3f, -3f))
                 ),
                 Arguments.of(
                     lineSegmentB,
@@ -616,7 +901,9 @@ class LineSegmentTests {
                 ),
             )
             val lineSegmentC = MutableLineSegment(
-                Vector2F(-4f, 3f), Vector2F(-2f, -1f)
+                center = Vector2F(-3f, 1f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                length = 4.472136f
             )
             val segmentCArgs = listOf(
                 Arguments.of(
@@ -637,32 +924,32 @@ class LineSegmentTests {
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-2.0894427f, -1.0447214f)),
-                    Wrapper(lineSegmentC.pointB)
+                    Wrapper(Vector2F(-2f, -1f))
                 ),
                 Arguments.of(
                     lineSegmentC,
-                    Wrapper(lineSegmentC.pointB),
-                    Wrapper(lineSegmentC.pointB)
+                    Wrapper(Vector2F(-2f, -1f)),
+                    Wrapper(Vector2F(-2f, -1f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-1.9105573f, -0.95527864f)),
-                    Wrapper(lineSegmentC.pointB)
+                    Wrapper(Vector2F(-2f, -1f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-2.0447214f, -1.1341641f)),
-                    Wrapper(lineSegmentC.pointB)
+                    Wrapper(Vector2F(-2f, -1f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-1.9552786f, -1.0894427f)),
-                    Wrapper(lineSegmentC.pointB)
+                    Wrapper(Vector2F(-2f, -1f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-1.8658359f, -1.0447214f)),
-                    Wrapper(lineSegmentC.pointB)
+                    Wrapper(Vector2F(-2f, -1f))
                 ),
                 Arguments.of(
                     lineSegmentC,
@@ -682,32 +969,32 @@ class LineSegmentTests {
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-4.0894427f, 2.9552786f)),
-                    Wrapper(lineSegmentC.pointA)
+                    Wrapper(Vector2F(-4f, 3f))
                 ),
                 Arguments.of(
                     lineSegmentC,
-                    Wrapper(lineSegmentC.pointA),
-                    Wrapper(lineSegmentC.pointA)
+                    Wrapper(Vector2F(-4f, 3f)),
+                    Wrapper(Vector2F(-4f, 3f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-3.9105573f, 3.0447214f)),
-                    Wrapper(lineSegmentC.pointA)
+                    Wrapper(Vector2F(-4f, 3f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-4.134164f, 3.0447214f)),
-                    Wrapper(lineSegmentC.pointA)
+                    Wrapper(Vector2F(-4f, 3f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-4.0447216f, 3.0894427f)),
-                    Wrapper(lineSegmentC.pointA)
+                    Wrapper(Vector2F(-4f, 3f))
                 ),
                 Arguments.of(
                     lineSegmentC,
                     Wrapper(Vector2F(-3.9552786f, 3.134164f)),
-                    Wrapper(lineSegmentC.pointA)
+                    Wrapper(Vector2F(-4f, 3f))
                 ),
                 Arguments.of(
                     lineSegmentC,
@@ -726,35 +1013,55 @@ class LineSegmentTests {
                 ),
             )
             val lineSegmentD = MutableLineSegment(
-                Vector2F(4f, 4f), Vector2F(4.000001f, 4f)
+                center = Vector2F(4.0000005f, 4f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                length = 0.000001f
             )
             val segmentDArgs = listOf(
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(3.9f, 4f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(3.9f, 4f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(lineSegmentD.pointA), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(4f, 4f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(4.1f, 4f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(4.1f, 4f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(3.9f, 4.1f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(3.9f, 4.1f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(4f, 4.1f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(4f, 4.1f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(4.1f, 4.1f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(4.1f, 4.1f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(3.9f, 3.9f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(3.9f, 3.9f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(4f, 3.9f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(4f, 3.9f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
                 Arguments.of(
-                    lineSegmentD, Wrapper(Vector2F(4.1f, 3.9f)), Wrapper(lineSegmentD.pointA)
+                    lineSegmentD,
+                    Wrapper(Vector2F(4.1f, 3.9f)),
+                    Wrapper(Vector2F(4f, 4f))
                 ),
             )
             val mutableLineSegmentArgs = listOf(
@@ -776,7 +1083,11 @@ class LineSegmentTests {
         fun intersectsRayArgs(): List<Arguments> {
             fun List<Arguments>.withLineSegmentPointsSwapped() = map { args ->
                 val argArray = args.get().map {
-                    if (it is LineSegment) LineSegment(it.pointB, it.pointA)
+                    if (it is LineSegment) LineSegment(
+                        center = it.center,
+                        orientation = it.orientation * ComplexF.fromAngle(AngleF.STRAIGHT),
+                        length = it.length
+                    )
                     else it
                 }.toTypedArray()
 
@@ -784,86 +1095,106 @@ class LineSegmentTests {
             }
 
             fun createMutableLineSegmentMutableRayArgs(): List<Arguments> {
+                val lineSegmentA = MutableLineSegment(
+                    center = Vector2F(0.5f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 5f
+                )
+                val lineSegmentB = MutableLineSegment(
+                    center = Vector2F(-2f, -3.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    length = 5f
+                )
+                val lineSegmentC = MutableLineSegment(
+                    center = Vector2F(3f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    length = 5.656854f
+                )
+                val lineSegmentD = MutableLineSegment(
+                    center = Vector2F(6f, -6.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(9.462322f)),
+                    length = 6.0827627f
+                )
                 val parallelArgs = listOf(
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(-2.1f, 5f), direction = Vector2F(1f, 0f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(2.9f, 5f), direction = Vector2F(1f, 0f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(3.1f, 5f), direction = Vector2F(1f, 0f)
                         ),
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(-2.1f, 5.1f), direction = Vector2F(1f, 0f)
                         ),
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(3.1f, 5f), direction = Vector2F(-1f, 0f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(-1.9f, 5f), direction = Vector2F(-1f, 0f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(-2.1f, 5f), direction = Vector2F(-1f, 0f)
                         ),
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, 5f), Vector2F(3f, 5f)),
+                        lineSegmentA,
                         MutableRay(
                             origin = Vector2F(3.1f, 4.9f), direction = Vector2F(-1f, 0f)
                         ),
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, 1f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2f, -1.1f), direction = Vector2F(0f, 1f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, 1f)
                         ),
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2.1f, -6.1f),
                             direction = Vector2F(0f, 1f)
@@ -871,28 +1202,28 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, -1f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2f, -5.9f), direction = Vector2F(0f, -1f)
                         ),
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, -1f)
                         ),
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(-2f, -1f), Vector2F(-2f, -6f)),
+                        lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-1.9f, -0.9f),
                             direction = Vector2F(0f, -1f)
@@ -900,7 +1231,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(5.1f, -2.1f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
@@ -909,7 +1240,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(1.1f, 1.9f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
@@ -918,7 +1249,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(0.9f, 2.1f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
@@ -927,7 +1258,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(5.2f, -2.1f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
@@ -936,7 +1267,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(0.9f, 2.1f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
@@ -945,7 +1276,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(4.9f, -1.9f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
@@ -954,7 +1285,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(5.1f, -2.1f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
@@ -963,7 +1294,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(1f, 2f), Vector2F(5f, -2f)),
+                        lineSegmentC,
                         MutableRay(
                             origin = Vector2F(0.9f, 2.2f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
@@ -974,7 +1305,7 @@ class LineSegmentTests {
                 )
                 val nonParallelArgs = listOf(
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
@@ -983,7 +1314,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(30f))
@@ -992,7 +1323,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(60f))
@@ -1001,7 +1332,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(90f))
@@ -1010,7 +1341,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(120f))
@@ -1019,7 +1350,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
@@ -1028,7 +1359,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
@@ -1037,7 +1368,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-150f))
@@ -1046,7 +1377,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-120f))
@@ -1055,7 +1386,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-90f))
@@ -1064,7 +1395,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-60f))
@@ -1073,7 +1404,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-30f))
@@ -1082,7 +1413,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-66.8f))
@@ -1091,7 +1422,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-74.05f))
@@ -1100,7 +1431,7 @@ class LineSegmentTests {
                         true
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-144.46f))
@@ -1109,7 +1440,7 @@ class LineSegmentTests {
                         false
                     ),
                     Arguments.of(
-                        MutableLineSegment(Vector2F(9f, -6f), Vector2F(3f, -7f)),
+                        lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
                             direction = ComplexF.fromAngle(AngleF.fromDegrees(-140.19f))
@@ -1118,7 +1449,6 @@ class LineSegmentTests {
                         true
                     ),
                 )
-
                 return listOf(
                     parallelArgs,
                     parallelArgs.withLineSegmentPointsSwapped(),
@@ -1145,12 +1475,16 @@ class LineSegmentTests {
 
         @JvmStatic
         fun containsVector2FArgs(): List<Arguments> {
-            val lineSegmentA = MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+            val lineSegmentA = MutableLineSegment(
+                center = Vector2F(0f, 5f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                length = 4f
+            )
             val segmentAArgs = listOf(
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(-1.9f, 5f)), true),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(-1.9f, 5.1f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(-1.9f, 4.9f)), false),
-                Arguments.of(lineSegmentA, Wrapper(lineSegmentA.pointA), true),
+                Arguments.of(lineSegmentA, Wrapper(Vector2F(-2f, 5f)), true),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(-2f, 5.1f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(-2f, 4.9f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(-2.1f, 5f)), false),
@@ -1159,7 +1493,7 @@ class LineSegmentTests {
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(1.9f, 5f)), true),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(1.9f, 5.1f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(1.9f, 4.9f)), false),
-                Arguments.of(lineSegmentA, Wrapper(lineSegmentA.pointB), true),
+                Arguments.of(lineSegmentA, Wrapper(Vector2F(2f, 5f)), true),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(2f, 5.1f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(2f, 4.9f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(2.1f, 5f)), false),
@@ -1169,12 +1503,16 @@ class LineSegmentTests {
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(0f, 5.1f)), false),
                 Arguments.of(lineSegmentA, Wrapper(Vector2F(0f, 4.9f)), false),
             )
-            val lineSegmentB = MutableLineSegment(Vector2F(3f, 2f), Vector2F(3f, -3f))
+            val lineSegmentB = MutableLineSegment(
+                center = Vector2F(3f, -0.5f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                length = 5f
+            )
             val segmentBArgs = listOf(
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3f, 1.9f)), true),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(2.9f, 1.9f)), false),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3.1f, 1.9f)), false),
-                Arguments.of(lineSegmentB, Wrapper(lineSegmentB.pointA), true),
+                Arguments.of(lineSegmentB, Wrapper(Vector2F(3f, 2f)), true),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(2.9f, 2f)), false),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3.1f, 2f)), false),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3f, 2.1f)), false),
@@ -1183,7 +1521,7 @@ class LineSegmentTests {
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3f, -2.9f)), true),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(2.9f, -2.9f)), false),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3.1f, -2.9f)), false),
-                Arguments.of(lineSegmentB, Wrapper(lineSegmentB.pointB), true),
+                Arguments.of(lineSegmentB, Wrapper(Vector2F(3f, -3f)), true),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(2.9f, -3f)), false),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3.1f, -3f)), false),
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3f, -3.1f)), false),
@@ -1194,7 +1532,9 @@ class LineSegmentTests {
                 Arguments.of(lineSegmentB, Wrapper(Vector2F(3.1f, -0.5f)), false),
             )
             val lineSegmentC = MutableLineSegment(
-                Vector2F(-4f, 3f), Vector2F(-2f, -1f)
+                center = Vector2F(-3f, 1f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                length = 4.472136f
             )
             val segmentCArgs = listOf(
                 Arguments.of(
@@ -1210,7 +1550,7 @@ class LineSegmentTests {
                     lineSegmentC, Wrapper(Vector2F(-2.0894427f, -1.0447214f)), false
                 ),
                 Arguments.of(
-                    lineSegmentC, Wrapper(lineSegmentC.pointB), true
+                    lineSegmentC, Wrapper(Vector2F(-4f, 3f)), true
                 ),
                 Arguments.of(
                     lineSegmentC, Wrapper(Vector2F(-1.9105573f, -0.95527864f)), false
@@ -1237,7 +1577,7 @@ class LineSegmentTests {
                     lineSegmentC, Wrapper(Vector2F(-4.0894427f, 2.9552786f)), false
                 ),
                 Arguments.of(
-                    lineSegmentC, Wrapper(lineSegmentC.pointA), true
+                    lineSegmentC, Wrapper(Vector2F(-2f, -1f)), true
                 ),
                 Arguments.of(
                     lineSegmentC, Wrapper(Vector2F(-3.9105573f, 3.0447214f)), false
@@ -1262,11 +1602,13 @@ class LineSegmentTests {
                 ),
             )
             val lineSegmentD = MutableLineSegment(
-                Vector2F(4f, 4f), Vector2F(4.000001f, 4f)
+                center = Vector2F(4.0000005f, 4f),
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                length = 0.000001f
             )
             val segmentDArgs = listOf(
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(3.9f, 4f)), false),
-                Arguments.of(lineSegmentD, Wrapper(lineSegmentD.pointA), true),
+                Arguments.of(lineSegmentD, Wrapper(Vector2F(4f, 4f)), true),
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(4.1f, 4f)), false),
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(3.9f, 4.1f)), false),
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(4f, 4.1f)), false),
@@ -1274,7 +1616,7 @@ class LineSegmentTests {
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(3.9f, 3.9f)), false),
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(4f, 3.9f)), false),
                 Arguments.of(lineSegmentD, Wrapper(Vector2F(4.1f, 3.9f)), false),
-                Arguments.of(lineSegmentD, Wrapper(lineSegmentD.pointB), true),
+                Arguments.of(lineSegmentD, Wrapper(Vector2F(4.000001f, 4f)), true),
             )
             val mutableLineSegmentArgs = listOf(
                 segmentAArgs,
@@ -1306,18 +1648,38 @@ class LineSegmentTests {
         @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableLineSegmentArgs() + listOf(
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
                 null,
                 false
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                DefaultLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                DefaultLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
                 true
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                DefaultLineSegment(Vector2F(-2f, 5f), Vector2F(2.1f, 5f)),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                DefaultLineSegment(
+                    center = Vector2F(0.05f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
                 false
             ),
         )
@@ -1325,13 +1687,29 @@ class LineSegmentTests {
         @JvmStatic
         fun equalsMutableLineSegmentArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
                 true
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2.1f, 5f)),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0.05f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
                 false
             ),
         )
@@ -1339,24 +1717,54 @@ class LineSegmentTests {
         @JvmStatic
         fun hashCodeArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f))
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                )
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f))
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
             ),
         )
 
         @JvmStatic
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
-                MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                "LineSegment(pointA=${Vector2F(-2f, 5f)}, pointB=${Vector2F(2f, 5f)})"
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                ),
+                "LineSegment(" +
+                        "center=${Vector2F(0f, 5f)}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(180f))}, " +
+                        "length=${4f})"
             ),
             Arguments.of(
-                MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                "LineSegment(pointA=${Vector2F(-4f, 3f)}, pointB=${Vector2F(-2f, -1f)})"
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                "LineSegment(" +
+                        "center=${Vector2F(-3f, 1f)}, " +
+                        "orientation=${ComplexF.fromAngle(AngleF.fromDegrees(116.56505f))}, " +
+                        "length=${4.472136f})"
             ),
         )
 
@@ -1364,14 +1772,24 @@ class LineSegmentTests {
         fun componentsArgs(): List<Arguments> {
             val mutableLineSegmentArgs = listOf(
                 Arguments.of(
-                    MutableLineSegment(Vector2F(-2f, 5f), Vector2F(2f, 5f)),
-                    Wrapper(Vector2F(-2f, 5f)),
-                    Wrapper(Vector2F(2f, 5f))
+                    MutableLineSegment(
+                        center = Vector2F(0f, 5f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                        length = 4f
+                    ),
+                    Wrapper(Vector2F(0f, 5f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                    4f
                 ),
                 Arguments.of(
-                    MutableLineSegment(Vector2F(-4f, 3f), Vector2F(-2f, -1f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(Vector2F(-2f, -1f))
+                    MutableLineSegment(
+                        center = Vector2F(-3f, 1f),
+                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                        length = 4.472136f
+                    ),
+                    Wrapper(Vector2F(-3f, 1f)),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(116.56505f))),
+                    4.472136f
                 ),
             )
             val defaultLineSegmentArgs = mutableLineSegmentArgs

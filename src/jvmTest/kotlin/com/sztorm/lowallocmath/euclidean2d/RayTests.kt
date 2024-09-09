@@ -142,7 +142,7 @@ class RayTests {
 
     @ParameterizedTest
     @MethodSource("intersectsRectangleArgs")
-    fun intersectsRectangleReturnsCorrectValue(ray: Ray, rectangle: Rectangle, expected: Boolean) =
+    fun intersectsReturnsCorrectValue(ray: Ray, rectangle: Rectangle, expected: Boolean) =
         assertImmutabilityOf(ray) {
             assertImmutabilityOf(rectangle) {
                 assertEquals(expected, ray.intersects(rectangle))
@@ -151,7 +151,7 @@ class RayTests {
 
     @ParameterizedTest
     @MethodSource("intersectsRegularPolygonArgs")
-    fun intersectsRegularPolygonReturnsCorrectValue(
+    fun intersectsReturnsCorrectValue(
         ray: Ray, polygon: RegularPolygon, expected: Boolean
     ) = assertImmutabilityOf(ray) {
         assertImmutabilityOf(polygon) {
@@ -161,7 +161,7 @@ class RayTests {
 
     @ParameterizedTest
     @MethodSource("intersectsRegularTriangleArgs")
-    fun intersectsRegularTriangleReturnsCorrectValue(
+    fun intersectsReturnsCorrectValue(
         ray: Ray, triangle: RegularTriangle, expected: Boolean
     ) = assertImmutabilityOf(ray) {
         assertImmutabilityOf(triangle) {
@@ -171,7 +171,7 @@ class RayTests {
 
     @ParameterizedTest
     @MethodSource("intersectsRoundedRectangleArgs")
-    fun intersectsRoundedRectangleReturnsCorrectValue(
+    fun intersectsReturnsCorrectValue(
         ray: Ray, rectangle: RoundedRectangle, expected: Boolean
     ) = assertImmutabilityOf(ray) {
         assertImmutabilityOf(rectangle) {
@@ -181,7 +181,7 @@ class RayTests {
 
     @ParameterizedTest
     @MethodSource("intersectsSquareArgs")
-    fun intersectsSquareReturnsCorrectValue(ray: Ray, square: Square, expected: Boolean) =
+    fun intersectsReturnsCorrectValue(ray: Ray, square: Square, expected: Boolean) =
         assertImmutabilityOf(ray) {
             assertImmutabilityOf(square) {
                 assertEquals(expected, ray.intersects(square))
@@ -190,7 +190,7 @@ class RayTests {
 
     @ParameterizedTest
     @MethodSource("intersectsTriangleArgs")
-    fun intersectsTriangleReturnsCorrectValue(ray: Ray, triangle: Triangle, expected: Boolean) =
+    fun intersectsReturnsCorrectValue(ray: Ray, triangle: Triangle, expected: Boolean) =
         assertImmutabilityOf(ray) {
             assertImmutabilityOf(triangle) {
                 assertEquals(expected, ray.intersects(triangle))
