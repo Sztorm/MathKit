@@ -112,6 +112,12 @@ class LineSegmentTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment, expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesLineSegmentCorrectly(
         lineSegment: MutableLineSegment,
@@ -468,6 +474,50 @@ class LineSegmentTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 5.8f, phase = AngleF.fromDegrees(180f).radians
+                    ),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromPolar(
+                        magnitude = 0.58f, phase = AngleF.fromDegrees(180f).radians
+                    ),
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    length = 4f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.ZERO,
+                    length = 4f
+                ),
+                MutableLineSegment(
+                    center = Vector2F(0f, 5f),
+                    orientation = ComplexF.ONE,
+                    length = 4f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(

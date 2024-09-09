@@ -608,6 +608,25 @@ class MutableLineSegment : LineSegment, MutableTransformable {
     override fun transformTo(position: Vector2F, orientation: ComplexF) =
         transformToImpl(position, orientation)
 
+    /**
+     * Calibrates the properties of this instance. If the [orientation] cannot be normalized, it
+     * will take the value of [ONE][ComplexF.ONE].
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = newOrientation
+        val halfLength: Float = _length * 0.5f
+        val originPointAX: Float = halfLength * oR
+        val originPointAY: Float = halfLength * oI
+        _orientation = newOrientation
+        _pointA = Vector2F(cX + originPointAX, cY + originPointAY)
+        _pointB = Vector2F(cX - originPointAX, cY - originPointAY)
+    }
+
     private inline fun setInternal(center: Vector2F, orientation: ComplexF, length: Float) {
         val (cX: Float, cY: Float) = center
         val (oR: Float, oI: Float) = orientation
