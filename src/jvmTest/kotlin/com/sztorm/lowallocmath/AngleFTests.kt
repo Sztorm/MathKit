@@ -6,21 +6,19 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.math.PI
-import kotlin.math.sign
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class AngleFTests {
     @ParameterizedTest
     @MethodSource("radiansArgs")
     fun radiansReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
-        assertTrue(expected.isApproximately(angle.value.radians))
+        assertApproximation(expected, angle.value.radians)
 
     @ParameterizedTest
     @MethodSource("degreesArgs")
     fun degreesReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
-        assertTrue(expected.isApproximately(angle.value.degrees))
+        assertApproximation(expected, angle.value.degrees)
 
     @ParameterizedTest
     @MethodSource("isAcuteArgs")
@@ -41,7 +39,7 @@ class AngleFTests {
     @MethodSource("getMinimalPositiveCoterminalArgs")
     fun getMinimalPositiveCoterminalReturnsCorrectValue(
         angle: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(angle.value.getMinimalPositiveCoterminal()))
+    ) = assertApproximation(expected.value, angle.value.getMinimalPositiveCoterminal())
 
     @ParameterizedTest
     @MethodSource("isApproximatelyArgs")
@@ -59,13 +57,13 @@ class AngleFTests {
     @MethodSource("coerceAtLeastArgs")
     fun coerceAtLeastReturnsCorrectValue(
         angle: Wrapper<AngleF>, minimum: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(angle.value.coerceAtLeast(minimum.value)))
+    ) = assertApproximation(expected.value, angle.value.coerceAtLeast(minimum.value))
 
     @ParameterizedTest
     @MethodSource("coerceAtMostArgs")
     fun coerceAtMostReturnsCorrectValue(
         angle: Wrapper<AngleF>, maximum: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(angle.value.coerceAtMost(maximum.value)))
+    ) = assertApproximation(expected.value, angle.value.coerceAtMost(maximum.value))
 
     @ParameterizedTest
     @MethodSource("coerceInArgs")
@@ -74,15 +72,24 @@ class AngleFTests {
         minimum: Wrapper<AngleF>,
         maximum: Wrapper<AngleF>,
         expected: Wrapper<AngleF>
-    ) = assertTrue(
-        expected.value.isApproximately(angle.value.coerceIn(minimum.value, maximum.value))
-    )
+    ) = assertApproximation(expected.value, angle.value.coerceIn(minimum.value, maximum.value))
 
     @ParameterizedTest
     @MethodSource("modArgs")
     fun modReturnsCorrectValue(
         angle: Wrapper<AngleF>, other: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(angle.value.mod(other.value)))
+    ) = assertApproximation(expected.value, angle.value.mod(other.value))
+
+    @ParameterizedTest
+    @MethodSource("toComplexFArgs")
+    fun toComplexFReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Wrapper<ComplexF>) =
+        assertApproximation(expected.value, angle.value.toComplexF())
+
+    @ParameterizedTest
+    @MethodSource("toDirectionVectorFArgs")
+    fun toDirectionVectorFReturnsCorrectValue(
+        angle: Wrapper<AngleF>, expected: Wrapper<Vector2F>
+    ) = assertApproximation(expected.value, angle.value.toDirectionVectorF())
 
     @ParameterizedTest
     @MethodSource("compareToArgs")
@@ -93,41 +100,41 @@ class AngleFTests {
     @ParameterizedTest
     @MethodSource("plusAngleArgs")
     fun unaryPlusReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Wrapper<AngleF>) =
-        assertTrue(equalsBitwise(expected.value, +angle.value))
+        assertEquals(expected.value, +angle.value)
 
     @ParameterizedTest
     @MethodSource("minusAngleArgs")
     fun unaryMinusReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Wrapper<AngleF>) =
-        assertTrue(equalsBitwise(expected.value, -angle.value))
+        assertEquals(expected.value, -angle.value)
 
     @ParameterizedTest
     @MethodSource("anglePlusAngleArgs")
     fun anglePlusAngleReturnsCorrectValue(
         a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(a.value + b.value))
+    ) = assertApproximation(expected.value, a.value + b.value)
 
     @ParameterizedTest
     @MethodSource("angleMinusAngleArgs")
     fun angleMinusAngleReturnsCorrectValue(
         a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(a.value - b.value))
+    ) = assertApproximation(expected.value, a.value - b.value)
 
     @ParameterizedTest
     @MethodSource("angleTimesFloatArgs")
     fun angleTimesFloatReturnsCorrectValue(
         a: Wrapper<AngleF>, b: Float, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(a.value * b))
+    ) = assertApproximation(expected.value, a.value * b)
 
     @ParameterizedTest
     @MethodSource("floatTimesAngleArgs")
     fun floatTimesAngleReturnsCorrectValue(
         a: Float, b: Wrapper<AngleF>, expected: Wrapper<AngleF>
-    ) = assertTrue(expected.value.isApproximately(a * b.value))
+    ) = assertApproximation(expected.value, a * b.value)
 
     @ParameterizedTest
     @MethodSource("angleDivFloatArgs")
     fun angleDivFloatReturnsCorrectValue(a: Wrapper<AngleF>, b: Float, expected: Wrapper<AngleF>) =
-        assertTrue(expected.value.isApproximately(a.value / b))
+        assertApproximation(expected.value, a.value / b)
 
     @Test
     fun sizeBitsReturnsCorrectValue() = assertEquals(AngleF.SIZE_BITS, 32)
@@ -159,87 +166,59 @@ class AngleFTests {
     @ParameterizedTest
     @MethodSource("fromDegreesArgs")
     fun fromDegreesReturnsCorrectValue(degrees: Float, expected: Wrapper<AngleF>) =
-        assertTrue(expected.value.isApproximately(AngleF.fromDegrees(degrees)))
+        assertApproximation(expected.value, AngleF.fromDegrees(degrees))
 
     @ParameterizedTest
     @MethodSource("fromRadiansArgs")
     fun fromRadiansReturnsCorrectValue(radians: Float, expected: Wrapper<AngleF>) =
-        assertTrue(expected.value.isApproximately(AngleF.fromRadians(radians)))
+        assertApproximation(expected.value, AngleF.fromRadians(radians))
 
     @ParameterizedTest
     @MethodSource("sinArgs")
-    fun sinReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) = assertTrue(
-        expected.isApproximately(AngleF.sin(angle.value)) ||
-                areEquallySpecial(expected, AngleF.sin(angle.value))
-    )
+    fun sinReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
+        assertApproximation(expected, AngleF.sin(angle.value))
 
     @ParameterizedTest
     @MethodSource("cosArgs")
-    fun cosReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) = assertTrue(
-        expected.isApproximately(AngleF.cos(angle.value)) ||
-                areEquallySpecial(expected, AngleF.cos(angle.value))
-    )
+    fun cosReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
+        assertApproximation(expected, AngleF.cos(angle.value))
 
     @ParameterizedTest
     @MethodSource("tanArgs")
-    fun tanReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) = assertTrue(
-        expected.isApproximately(AngleF.tan(angle.value)) ||
-                areEquallySpecial(expected, AngleF.tan(angle.value))
-    )
+    fun tanReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
+        assertApproximation(expected, AngleF.tan(angle.value))
 
     @ParameterizedTest
     @MethodSource("asinArgs")
-    fun asinReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) = assertTrue(
-        expected.value.isApproximately(AngleF.asin(x)) ||
-                areEquallySpecial(expected.value.degrees, AngleF.asin(x).degrees)
-    )
+    fun asinReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) =
+        assertApproximation(expected.value, AngleF.asin(x))
 
     @ParameterizedTest
     @MethodSource("acosArgs")
-    fun acosReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) = assertTrue(
-        expected.value.isApproximately(AngleF.acos(x)) ||
-                areEquallySpecial(expected.value.degrees, AngleF.acos(x).degrees)
-    )
+    fun acosReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) =
+        assertApproximation(expected.value, AngleF.acos(x))
 
     @ParameterizedTest
     @MethodSource("atanArgs")
-    fun atanReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) = assertTrue(
-        expected.value.isApproximately(AngleF.atan(x)) ||
-                areEquallySpecial(expected.value.degrees, AngleF.atan(x).degrees)
-    )
+    fun atanReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) =
+        assertApproximation(expected.value, AngleF.atan(x))
 
     @ParameterizedTest
     @MethodSource("atan2Args")
-    fun atan2ReturnsCorrectValue(y: Float, x: Float, expected: Wrapper<AngleF>) = assertTrue(
-        expected.value.isApproximately(AngleF.atan2(y, x)) ||
-                areEquallySpecial(expected.value.degrees, AngleF.atan2(y, x).degrees)
-    )
+    fun atan2ReturnsCorrectValue(y: Float, x: Float, expected: Wrapper<AngleF>) =
+        assertApproximation(expected.value, AngleF.atan2(y, x))
 
     @ParameterizedTest
     @MethodSource("minArgs")
     fun minReturnsCorrectValue(a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>) =
-        assertTrue(expected.value.isApproximately(AngleF.min(a.value, b.value)))
+        assertApproximation(expected.value, AngleF.min(a.value, b.value))
 
     @ParameterizedTest
     @MethodSource("maxArgs")
     fun maxReturnsCorrectValue(a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>) =
-        assertTrue(expected.value.isApproximately(AngleF.max(a.value, b.value)))
+        assertApproximation(expected.value, AngleF.max(a.value, b.value))
 
     companion object {
-        /** Compares angles bitwise. Useful when comparing NaNs. **/
-        @JvmStatic
-        fun equalsBitwise(a: AngleF, b: AngleF) =
-            a.radians.toRawBits() == b.radians.toRawBits()
-
-        /**
-         * Returns `true` if both a and b are `NaN`s or are infinities with the same sign, `false`
-         * otherwise.
-         */
-        @JvmStatic
-        fun areEquallySpecial(a: Float, b: Float): Boolean =
-            (a.isNaN() && b.isNaN()) ||
-                    ((a.isInfinite() && b.isInfinite()) && (a.sign == b.sign))
-
         @JvmStatic
         fun radiansArgs(): List<Arguments> = listOf(
             Arguments.of(Wrapper(AngleF.fromRadians(0f)), 0f),
@@ -419,6 +398,34 @@ class AngleFTests {
                 Wrapper(AngleF(2f)),
             ),
         )
+
+        @JvmStatic
+        fun toComplexFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(0f)),
+                Wrapper(ComplexF(1f, 0f)),
+            ),
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(45f)),
+                Wrapper(ComplexF(0.7071068f, 0.7071068f)),
+            ),
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(-120f)),
+                Wrapper(ComplexF(-0.5f, -0.8660254f)),
+            ),
+            Arguments.of(
+                Wrapper(AngleF.fromDegrees(765f)),
+                Wrapper(ComplexF(0.7071068f, 0.7071068f)),
+            ),
+        )
+
+        @JvmStatic
+        fun toDirectionVectorFArgs(): List<Arguments> = toComplexFArgs().map { args ->
+            val argArray: Array<Any> = args.get()
+            val complexArg: ComplexF = (argArray[1] as Wrapper<*>).value as ComplexF
+
+            Arguments.of(argArray[0], Wrapper(Vector2F(complexArg.real, complexArg.imaginary)))
+        }
 
         @JvmStatic
         fun compareToArgs(): List<Arguments> = listOf(
