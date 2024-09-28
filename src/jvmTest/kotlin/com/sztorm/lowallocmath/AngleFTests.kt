@@ -86,10 +86,10 @@ class AngleFTests {
         assertApproximation(expected.value, angle.value.toComplexF())
 
     @ParameterizedTest
-    @MethodSource("toDirectionVectorFArgs")
-    fun toDirectionVectorFReturnsCorrectValue(
+    @MethodSource("toVector2FArgs")
+    fun toVector2FReturnsCorrectValue(
         angle: Wrapper<AngleF>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, angle.value.toDirectionVectorF())
+    ) = assertApproximation(expected.value, angle.value.toVector2F())
 
     @ParameterizedTest
     @MethodSource("compareToArgs")
@@ -420,7 +420,7 @@ class AngleFTests {
         )
 
         @JvmStatic
-        fun toDirectionVectorFArgs(): List<Arguments> = toComplexFArgs().map { args ->
+        fun toVector2FArgs(): List<Arguments> = toComplexFArgs().map { args ->
             val argArray: Array<Any> = args.get()
             val complexArg: ComplexF = (argArray[1] as Wrapper<*>).value as ComplexF
 

@@ -89,14 +89,18 @@ value class AngleF(val radians: Float) : Comparable<AngleF> {
     /**
      * Converts this [AngleF] value to unit [ComplexF] with [phaseAngle][ComplexF.phaseAngle]
      * represented by the value of this instance.
+     *
+     * The returned complex may be used to represent rotation.
      */
     inline fun toComplexF() = ComplexF(cos(radians), sin(radians))
 
     /**
      * Converts this [AngleF] value to unit [Vector2F] with [x][Vector2F.x] and [y][Vector2F.y]
      * components represented by the value of this instance.
+     *
+     * The returned vector may be used to represent direction.
      */
-    inline fun toDirectionVectorF() = Vector2F(cos(radians), sin(radians))
+    inline fun toVector2F() = Vector2F(cos(radians), sin(radians))
 
     /**
      * Compares this value with the specified value for order. Returns zero if this value is equal
