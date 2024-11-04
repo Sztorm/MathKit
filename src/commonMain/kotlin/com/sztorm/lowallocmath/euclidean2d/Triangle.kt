@@ -1,17 +1,37 @@
 package com.sztorm.lowallocmath.euclidean2d
 
-import com.sztorm.lowallocmath.AngleF
-import com.sztorm.lowallocmath.ComplexF
-import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.Vector2FIterator
-import kotlin.math.abs
+import com.sztorm.lowallocmath.*
 import kotlin.math.absoluteValue
 import kotlin.math.sqrt
+import kotlin.math.withSign
 
-/** Creates a new instance of [Triangle]. **/
+/**
+ * Creates a new instance of [Triangle].
+ *
+ * @param pathRotorA the value is expected to be [normalized][ComplexF.normalized].
+ * @param pathRotorAB the value is expected to be [normalized][ComplexF.normalized].
+ * @param pathRotorAC the value is expected to be [normalized][ComplexF.normalized].
+ * @throws IllegalArgumentException when [pointDistanceA] is less than zero.
+ * @throws IllegalArgumentException when [pointDistanceB] is less than zero.
+ * @throws IllegalArgumentException when [pointDistanceC] is less than zero.
+ */
 fun Triangle(
-    centroid: Vector2F, originPointA: Vector2F, originPointB: Vector2F, originPointC: Vector2F
-): Triangle = MutableTriangle(centroid, originPointA, originPointB, originPointC)
+    centroid: Vector2F,
+    pathRotorA: ComplexF,
+    pointDistanceA: Float,
+    pathRotorAB: ComplexF,
+    pointDistanceB: Float,
+    pathRotorAC: ComplexF,
+    pointDistanceC: Float
+): Triangle = MutableTriangle(
+    centroid,
+    pathRotorA,
+    pointDistanceA,
+    pathRotorAB,
+    pointDistanceB,
+    pathRotorAC,
+    pointDistanceC
+)
 
 /** Creates a new instance of [Triangle]. **/
 fun Triangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F): Triangle =
@@ -21,8 +41,9 @@ fun Triangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F): Triangle =
  * Represents a transformable triangle in a two-dimensional Euclidean space.
  *
  * Implementations that use default-implemented members of this interface must make sure that the
- * properties [originPointA], [originPointB], [originPointC], [centroid] and the [copy] method are
- * independent of other members and the computational complexity of these members is trivial.
+ * properties [centroid], [pathRotorA], [pointDistanceA], [pathRotorAB], [pointDistanceB],
+ * [pathRotorAC], [pointDistanceC] and the [copy] method are independent of other members and the
+ * computational complexity of these members is trivial.
  */
 interface Triangle : TriangleShape, Transformable {
     /**
@@ -31,26 +52,79 @@ interface Triangle : TriangleShape, Transformable {
      */
     val centroid: Vector2F
 
-    /** Returns the point _A_ in reference to the [centroid] of this triangle. **/
-    val originPointA: Vector2F
+    /**
+     * Returns the rotation from [ComplexF.ONE] to the normalized position of [pointA] that is
+     * relative to [centroid] of this triangle.
+     */
+    val pathRotorA: ComplexF
 
-    /** Returns the point _B_ in reference to the [centroid] of this triangle. **/
-    val originPointB: Vector2F
+    /**
+     * Returns the distance from [centroid] to [pointA] of this triangle. The distance is equal to
+     * 2/3 of median length that starts at point _A_ and ends at midpoint of _BC_ side.
+     */
+    val pointDistanceA: Float
 
-    /** Returns the point _C_ in reference to the [centroid] of this triangle. **/
-    val originPointC: Vector2F
+    /**
+     * Returns the rotation from [pathRotorA] to the normalized position of [pointB] that is
+     * relative to [centroid] of this triangle.
+     */
+    val pathRotorAB: ComplexF
+
+    /**
+     * Returns the distance from [centroid] to [pointB] of this triangle. The distance is equal to
+     * 2/3 of median length that starts at point _B_ and ends at midpoint of _AC_ side.
+     */
+    val pointDistanceB: Float
+
+    /**
+     * Returns the rotation from [pathRotorA] to the normalized position of [pointC] that is
+     * relative to [centroid] of this triangle.
+     */
+    val pathRotorAC: ComplexF
+
+    /**
+     * Returns the distance from [centroid] to [pointC] of this triangle. The distance is equal to
+     * 2/3 of median length that starts at point _C_ and ends at midpoint of _AB_ side.
+     */
+    val pointDistanceC: Float
 
     /** Returns the point _A_ of this triangle. **/
     val pointA: Vector2F
-        get() = originPointA + centroid
+        get() {
+            val (cX: Float, cY: Float) = centroid
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val pdA: Float = pointDistanceA
+
+            return Vector2F(prAR * pdA + cX, prAI * pdA + cY)
+        }
 
     /** Returns the point _B_ of this triangle. **/
     val pointB: Vector2F
-        get() = originPointB + centroid
+        get() {
+            val (cX: Float, cY: Float) = centroid
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val (prABR: Float, prABI: Float) = pathRotorAB
+            val pdB: Float = pointDistanceB
+
+            return Vector2F(
+                (prAR * prABR - prAI * prABI) * pdB + cX,
+                (prAI * prABR + prAR * prABI) * pdB + cY
+            )
+        }
 
     /** Returns the point _C_ of this triangle. **/
     val pointC: Vector2F
-        get() = originPointC + centroid
+        get() {
+            val (cX: Float, cY: Float) = centroid
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val (prACR: Float, prACI: Float) = pathRotorAC
+            val pdC: Float = pointDistanceC
+
+            return Vector2F(
+                (prAR * prACR - prAI * prACI) * pdC + cX,
+                (prAI * prACR + prAR * prACI) * pdC + cY
+            )
+        }
 
     /**
      * Returns the incenter of this triangle. Incenter is the center of the triangle's inscribed
@@ -59,24 +133,28 @@ interface Triangle : TriangleShape, Transformable {
     val incenter: Vector2F
         get() {
             val (cX: Float, cY: Float) = centroid
-            val (opAX: Float, opAY: Float) = originPointA
-            val (opBX: Float, opBY: Float) = originPointB
-            val (opCX: Float, opCY: Float) = originPointC
-            val opABX: Float = opBX - opAX
-            val opABY: Float = opBY - opAY
-            val opBCX: Float = opCX - opBX
-            val opBCY: Float = opCY - opBY
-            val opACX: Float = opCX - opAX
-            val opACY: Float = opCY - opAY
-            val abSide: Float = sqrt(opABX * opABX + opABY * opABY)
-            val bcSide: Float = sqrt(opBCX * opBCX + opBCY * opBCY)
-            val acSide: Float = sqrt(opACX * opACX + opACY * opACY)
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val pdA: Float = pointDistanceA
+            val (prABR: Float, prABI: Float) = pathRotorAB
+            val pdB: Float = pointDistanceB
+            val (prACR: Float, prACI: Float) = pathRotorAC
+            val pdC: Float = pointDistanceC
+            val pdASquared: Float = pdA * pdA
+            val pdBSquared: Float = pdB * pdB
+            val pdCSquared: Float = pdC * pdC
+            val pathSpinorABR: Float = prABR * pdB
+            val pathSpinorABI: Float = prABI * pdB
+            val pathSpinorACR: Float = prACR * pdC
+            val pathSpinorACI: Float = prACI * pdC
+            val abSide: Float = sqrt(2f * (pdASquared + pdBSquared) - pdCSquared)
+            val bcSide: Float = sqrt(2f * (pdBSquared + pdCSquared) - pdASquared)
+            val acSide: Float = sqrt(2f * (pdASquared + pdCSquared) - pdBSquared)
             val factor: Float = 1f / (abSide + bcSide + acSide)
+            val icX: Float =
+                (bcSide * pdA + acSide * pathSpinorABR + abSide * pathSpinorACR) * factor
+            val icY: Float = (acSide * pathSpinorABI + abSide * pathSpinorACI) * factor
 
-            return Vector2F(
-                (bcSide * opAX + acSide * opBX + abSide * opCX) * factor + cX,
-                (bcSide * opAY + acSide * opBY + abSide * opCY) * factor + cY
-            )
+            return Vector2F(icX * prAR - icY * prAI + cX, icX * prAI + icY * prAR + cY)
         }
 
     /**
@@ -86,23 +164,26 @@ interface Triangle : TriangleShape, Transformable {
     val circumcenter: Vector2F
         get() {
             val (cX: Float, cY: Float) = centroid
-            val (opAX: Float, opAY: Float) = originPointA
-            val (opBX: Float, opBY: Float) = originPointB
-            val (opCX: Float, opCY: Float) = originPointC
-            val opASquaredMagnitude: Float = opAX * opAX + opAY * opAY
-            val opBSquaredMagnitude: Float = opBX * opBX + opBY * opBY
-            val opCSquaredMagnitude: Float = opCX * opCX + opCY * opCY
-            val aDet: Float =
-                opAX * opBY + opAY * opCX + opBX * opCY - opBY * opCX - opAY * opBX - opAX * opCY
-            val factor: Float = 0.5f / aDet
-            val xDet: Float = opASquaredMagnitude * opBY + opAY * opCSquaredMagnitude +
-                    opBSquaredMagnitude * opCY - opBY * opCSquaredMagnitude -
-                    opAY * opBSquaredMagnitude - opASquaredMagnitude * opCY
-            val yDet: Float = opAX * opBSquaredMagnitude + opASquaredMagnitude * opCX +
-                    opBX * opCSquaredMagnitude - opBSquaredMagnitude * opCX -
-                    opASquaredMagnitude * opBX - opAX * opCSquaredMagnitude
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val pdA: Float = pointDistanceA
+            val (prABR: Float, prABI: Float) = pathRotorAB
+            val pdB: Float = pointDistanceB
+            val (prACR: Float, prACI: Float) = pathRotorAC
+            val pdC: Float = pointDistanceC
+            val pathSpinorABR: Float = prABR * pdB
+            val pathSpinorABI: Float = prABI * pdB
+            val pathSpinorACR: Float = prACR * pdC
+            val pathSpinorACI: Float = prACI * pdC
+            val addendA: Float = pathSpinorABR - pdA
+            val addendB: Float = pdA - pathSpinorACR
+            val factor: Float =
+                (addendB * (pathSpinorABR - pathSpinorACR) -
+                        pathSpinorACI * (pathSpinorABI - pathSpinorACI)) /
+                        (pathSpinorACI * addendA + pathSpinorABI * addendB)
+            val ccX: Float = 0.5f * (pdA + pathSpinorABR - pathSpinorABI * factor)
+            val ccY: Float = 0.5f * (pathSpinorABI + addendA * factor)
 
-            return Vector2F(xDet * factor + cX, yDet * factor + cY)
+            return Vector2F(ccX * prAR - ccY * prAI + cX, ccX * prAI + ccY * prAR + cY)
         }
 
     /**
@@ -111,57 +192,82 @@ interface Triangle : TriangleShape, Transformable {
      */
     val orthocenter: Vector2F
         get() {
-            val (centroidX: Float, centroidY: Float) = centroid
-            val (opAX: Float, opAY: Float) = originPointA
-            val (opBX: Float, opBY: Float) = originPointB
-            val (opCX: Float, opCY: Float) = originPointC
-            val opASquaredMagnitude: Float = opAX * opAX + opAY * opAY
-            val opBSquaredMagnitude: Float = opBX * opBX + opBY * opBY
-            val opCSquaredMagnitude: Float = opCX * opCX + opCY * opCY
-            val aDet: Float =
-                opAX * opBY + opAY * opCX + opBX * opCY - opBY * opCX - opAY * opBX - opAX * opCY
-            val factor: Float = 0.5f / aDet
-            val xDet: Float = opASquaredMagnitude * opBY + opAY * opCSquaredMagnitude +
-                    opBSquaredMagnitude * opCY - opBY * opCSquaredMagnitude -
-                    opAY * opBSquaredMagnitude - opASquaredMagnitude * opCY
-            val yDet: Float = opAX * opBSquaredMagnitude + opASquaredMagnitude * opCX +
-                    opBX * opCSquaredMagnitude - opBSquaredMagnitude * opCX -
-                    opASquaredMagnitude * opBX - opAX * opCSquaredMagnitude
-            val circumcenterX: Float = xDet * factor + centroidX
-            val circumcenterY: Float = yDet * factor + centroidY
+            val (cX: Float, cY: Float) = centroid
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val pdA: Float = pointDistanceA
+            val (prABR: Float, prABI: Float) = pathRotorAB
+            val pdB: Float = pointDistanceB
+            val (prACR: Float, prACI: Float) = pathRotorAC
+            val pdC: Float = pointDistanceC
+            val pathSpinorABR: Float = prABR * pdB
+            val pathSpinorABI: Float = prABI * pdB
+            val pathSpinorACR: Float = prACR * pdC
+            val pathSpinorACI: Float = prACI * pdC
+            val addendA: Float = pathSpinorABR - pdA
+            val addendB: Float = pdA - pathSpinorACR
+            val factor: Float =
+                (addendB * (pathSpinorABR - pathSpinorACR) -
+                        pathSpinorACI * (pathSpinorABI - pathSpinorACI)) /
+                        (pathSpinorACI * addendA + pathSpinorABI * addendB)
+            val ccX: Float = pdA + pathSpinorABR - pathSpinorABI * factor
+            val ccY: Float = pathSpinorABI + addendA * factor
 
             return Vector2F(
-                circumcenterX + (centroidX - circumcenterX) * 3f,
-                circumcenterY + (centroidY - circumcenterY) * 3f
+                cX - ccX * prAR + ccY * prAI,
+                cY - ccX * prAI - ccY * prAR
             )
         }
 
     override val area: Float
         get() {
-            val (aX: Float, aY: Float) = originPointA
-            val (bX: Float, bY: Float) = originPointB
-            val (cX: Float, cY: Float) = originPointC
+            val pdA: Float = pointDistanceA
+            val pdB: Float = pointDistanceB
+            val pdC: Float = pointDistanceC
+            val s: Float = (pdA + pdB + pdC) * 0.5f
 
-            return 0.5f * abs((aX - cX) * (bY - cY) - (bX - cX) * (aY - cY))
+            return 3f * sqrt(s * (s - pdA) * (s - pdB) * (s - pdC))
         }
 
     override val perimeter: Float
         get() {
-            val opA: Vector2F = originPointA
-            val opB: Vector2F = originPointB
-            val opC: Vector2F = originPointC
+            val pdA: Float = pointDistanceA
+            val pdB: Float = pointDistanceB
+            val pdC: Float = pointDistanceC
+            val pdASquared: Float = pdA * pdA
+            val pdBSquared: Float = pdB * pdB
+            val pdCSquared: Float = pdC * pdC
+            val s: Float = (pdASquared + pdBSquared + pdCSquared) * 0.6666667f
 
-            return opA.distanceTo(opB) + opB.distanceTo(opC) + opC.distanceTo(opA)
+            return 1.7320508f *
+                    (sqrt(s - pdCSquared) + sqrt(s - pdASquared) + sqrt(s - pdBSquared))
         }
 
     override val sideLengthAB: Float
-        get() = originPointA.distanceTo(originPointB)
+        get() {
+            val pdA: Float = pointDistanceA
+            val pdB: Float = pointDistanceB
+            val pdC: Float = pointDistanceC
+
+            return sqrt(2f * (pdA * pdA + pdB * pdB) - pdC * pdC)
+        }
 
     override val sideLengthBC: Float
-        get() = originPointB.distanceTo(originPointC)
+        get() {
+            val pdA: Float = pointDistanceA
+            val pdB: Float = pointDistanceB
+            val pdC: Float = pointDistanceC
 
-    override val sideLengthCA: Float
-        get() = originPointC.distanceTo(originPointA)
+            return sqrt(2f * (pdB * pdB + pdC * pdC) - pdA * pdA)
+        }
+
+    override val sideLengthAC: Float
+        get() {
+            val pdA: Float = pointDistanceA
+            val pdB: Float = pointDistanceB
+            val pdC: Float = pointDistanceC
+
+            return sqrt(2f * (pdA * pdA + pdC * pdC) - pdB * pdB)
+        }
 
     /**
      * Returns the position of this object in reference to the origin of [Vector2F.ZERO].
@@ -174,10 +280,10 @@ interface Triangle : TriangleShape, Transformable {
     /**
      * Returns the orientation of this object in reference to the origin of [ComplexF.ONE].
      *
-     * This property is determined by the direction of [originPointA].
+     * This property is equal to [pathRotorA].
      */
     override val orientation: ComplexF
-        get() = originPointA.toComplexF().normalizedOrElse(ComplexF(1f, 0f))
+        get() = pathRotorA
 
     override fun movedBy(displacement: Vector2F): Triangle =
         copy(centroid = centroid + displacement)
@@ -185,17 +291,13 @@ interface Triangle : TriangleShape, Transformable {
     override fun movedTo(position: Vector2F): Triangle =
         copy(centroid = position)
 
-    private fun rotatedByImpl(rotation: ComplexF): Triangle {
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
+    private inline fun rotatedByImpl(rotation: ComplexF): Triangle {
+        val (prAR: Float, prAI: Float) = pathRotorA
         val (rotR: Float, rotI: Float) = rotation
+        val pathRotorAR: Float = prAR * rotR - prAI * rotI
+        val pathRotorAI: Float = prAI * rotR + prAR * rotI
 
-        return copy(
-            originPointA = Vector2F(opAX * rotR - opAY * rotI, opAY * rotR + opAX * rotI),
-            originPointB = Vector2F(opBX * rotR - opBY * rotI, opBY * rotR + opBX * rotI),
-            originPointC = Vector2F(opCX * rotR - opCY * rotI, opCY * rotR + opCX * rotI)
-        )
+        return copy(pathRotorA = ComplexF(pathRotorAR, pathRotorAI))
     }
 
     override fun rotatedBy(rotation: AngleF): Triangle =
@@ -203,44 +305,29 @@ interface Triangle : TriangleShape, Transformable {
 
     override fun rotatedBy(rotation: ComplexF): Triangle = rotatedByImpl(rotation)
 
-    private fun rotatedToImpl(orientation: ComplexF): Triangle {
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val conjugatedOrientation = ComplexF(opAX, -opAY)
-            .normalizedOrElse(ComplexF(1f, 0f))
-        val (rotR: Float, rotI: Float) = conjugatedOrientation * orientation
-
-        return copy(
-            originPointA = Vector2F(opAX * rotR - opAY * rotI, opAY * rotR + opAX * rotI),
-            originPointB = Vector2F(opBX * rotR - opBY * rotI, opBY * rotR + opBX * rotI),
-            originPointC = Vector2F(opCX * rotR - opCY * rotI, opCY * rotR + opCX * rotI)
-        )
-    }
+    private inline fun rotatedToImpl(orientation: ComplexF): Triangle =
+        copy(pathRotorA = orientation)
 
     override fun rotatedTo(orientation: AngleF): Triangle =
         rotatedToImpl(ComplexF.fromAngle(orientation))
 
     override fun rotatedTo(orientation: ComplexF): Triangle = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Triangle {
+    private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Triangle {
         val (cX: Float, cY: Float) = centroid
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
+        val (prAR: Float, prAI: Float) = pathRotorA
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
+        val centroidX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val centroidY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val pathRotorAR: Float = prAR * rotR - prAI * rotI
+        val pathRotorAI: Float = prAI * rotR + prAR * rotI
 
         return copy(
-            centroid = Vector2F(
-                cpDiffX * rotR - cpDiffY * rotI + pX,
-                cpDiffY * rotR + cpDiffX * rotI + pY
-            ),
-            originPointA = Vector2F(opAX * rotR - opAY * rotI, opAY * rotR + opAX * rotI),
-            originPointB = Vector2F(opBX * rotR - opBY * rotI, opBY * rotR + opBX * rotI),
-            originPointC = Vector2F(opCX * rotR - opCY * rotI, opCY * rotR + opCX * rotI)
+            centroid = Vector2F(centroidX, centroidY),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI)
         )
     }
 
@@ -250,13 +337,9 @@ interface Triangle : TriangleShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Triangle =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Triangle {
+    private inline fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Triangle {
         val (cX: Float, cY: Float) = centroid
-        val opA: Vector2F = originPointA
-        val (opAX: Float, opAY: Float) = opA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val (startOR: Float, startOI: Float) = opA.normalizedOrElse(Vector2F(1f, 0f))
+        val (prAR: Float, prAI: Float) = pathRotorA
         val (pX: Float, pY: Float) = point
         val (oR: Float, oI: Float) = orientation
         val cpDiffX: Float = cX - pX
@@ -267,38 +350,19 @@ interface Triangle : TriangleShape, Transformable {
             val centroidToPointDistReciprocal: Float = 1f / centroidToPointDist
             val pointRotR: Float = cpDiffX * centroidToPointDistReciprocal
             val pointRotI: Float = cpDiffY * centroidToPointDistReciprocal
-            val pRotR: Float = pointRotR * oR + pointRotI * oI
-            val pRotI: Float = pointRotR * oI - pointRotI * oR
+            val pRotTimesStartOR: Float = pointRotR * prAR + pointRotI * prAI
+            val pRotTimesStartOI: Float = pointRotR * prAI - pointRotI * prAR
             val centroidX: Float = oR * centroidToPointDist + pX
             val centroidY: Float = oI * centroidToPointDist + pY
+            val pathRotorAR: Float = pRotTimesStartOR * oR - pRotTimesStartOI * oI
+            val pathRotorAI: Float = pRotTimesStartOI * oR + pRotTimesStartOR * oI
 
             return copy(
                 centroid = Vector2F(centroidX, centroidY),
-                originPointA = Vector2F(
-                    opAX * pRotR - opAY * pRotI, opAY * pRotR + opAX * pRotI
-                ),
-                originPointB = Vector2F(
-                    opBX * pRotR - opBY * pRotI, opBY * pRotR + opBX * pRotI
-                ),
-                originPointC = Vector2F(
-                    opCX * pRotR - opCY * pRotI, opCY * pRotR + opCX * pRotI
-                )
+                pathRotorA = ComplexF(pathRotorAR, pathRotorAI)
             )
         } else {
-            val pRotR: Float = oR * startOR + oI * startOI
-            val pRotI: Float = oI * startOR - oR * startOI
-
-            return copy(
-                originPointA = Vector2F(
-                    opAX * pRotR - opAY * pRotI, opAY * pRotR + opAX * pRotI
-                ),
-                originPointB = Vector2F(
-                    opBX * pRotR - opBY * pRotI, opBY * pRotR + opBX * pRotI
-                ),
-                originPointC = Vector2F(
-                    opCX * pRotR - opCY * pRotI, opCY * pRotR + opCX * pRotI
-                )
-            )
+            return copy(pathRotorA = orientation)
         }
     }
 
@@ -308,41 +372,61 @@ interface Triangle : TriangleShape, Transformable {
     override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Triangle =
         rotatedAroundPointToImpl(point, orientation)
 
-    override fun scaledBy(factor: Float): Triangle = copy(
-        originPointA = originPointA * factor,
-        originPointB = originPointB * factor,
-        originPointC = originPointC * factor,
-    )
-
-    override fun dilatedBy(point: Vector2F, factor: Float): Triangle {
-        val (cX: Float, cY: Float) = centroid
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val (pX: Float, pY: Float) = point
-        val f: Float = 1f - factor
+    override fun scaledBy(factor: Float): Triangle {
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val factorSign: Float = 1f.withSign(factor)
+        val pathRotorAR: Float = prAR * factorSign
+        val pathRotorAI: Float = prAI * factorSign
+        val absFactor: Float = factor.absoluteValue
+        val pointDistanceA: Float = pointDistanceA * absFactor
+        val pointDistanceB: Float = pointDistanceB * absFactor
+        val pointDistanceC: Float = pointDistanceC * absFactor
 
         return copy(
-            centroid = Vector2F(cX * factor + pX * f, cY * factor + pY * f),
-            originPointA = Vector2F(opAX * factor, opAY * factor),
-            originPointB = Vector2F(opBX * factor, opBY * factor),
-            originPointC = Vector2F(opCX * factor, opCY * factor),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
+            pointDistanceA = pointDistanceA,
+            pointDistanceB = pointDistanceB,
+            pointDistanceC = pointDistanceC
         )
     }
 
-    private fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): Triangle {
-        val (dX: Float, dY: Float) = displacement
+    override fun dilatedBy(point: Vector2F, factor: Float): Triangle {
         val (cX: Float, cY: Float) = centroid
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val (rotR: Float, rotI: Float) = rotation
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val (pX: Float, pY: Float) = point
+        val f: Float = 1f - factor
+        val centroidX: Float = cX * factor + pX * f
+        val centroidY: Float = cY * factor + pY * f
+        val factorSign: Float = 1f.withSign(factor)
+        val pathRotorAR: Float = prAR * factorSign
+        val pathRotorAI: Float = prAI * factorSign
+        val absFactor: Float = factor.absoluteValue
+        val pointDistanceA: Float = pointDistanceA * absFactor
+        val pointDistanceB: Float = pointDistanceB * absFactor
+        val pointDistanceC: Float = pointDistanceC * absFactor
 
         return copy(
-            centroid = Vector2F(cX + dX, cY + dY),
-            originPointA = Vector2F(opAX * rotR - opAY * rotI, opAY * rotR + opAX * rotI),
-            originPointB = Vector2F(opBX * rotR - opBY * rotI, opBY * rotR + opBX * rotI),
-            originPointC = Vector2F(opCX * rotR - opCY * rotI, opCY * rotR + opCX * rotI)
+            centroid = Vector2F(centroidX, centroidY),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
+            pointDistanceA = pointDistanceA,
+            pointDistanceB = pointDistanceB,
+            pointDistanceC = pointDistanceC
+        )
+    }
+
+    private inline fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): Triangle {
+        val (cX: Float, cY: Float) = centroid
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val (displacementX: Float, displacementY: Float) = displacement
+        val (rotR: Float, rotI: Float) = rotation
+        val centroidX: Float = cX + displacementX
+        val centroidY: Float = cY + displacementY
+        val pathRotorAR: Float = prAR * rotR - prAI * rotI
+        val pathRotorAI: Float = prAI * rotR + prAR * rotI
+
+        return copy(
+            centroid = Vector2F(centroidX, centroidY),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI)
         )
     }
 
@@ -352,30 +436,29 @@ interface Triangle : TriangleShape, Transformable {
     override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Triangle =
         transformedByImpl(displacement, rotation)
 
-    private fun transformedByImpl(
+    private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Triangle {
-        val (dX: Float, dY: Float) = displacement
         val (cX: Float, cY: Float) = centroid
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val (displacementX: Float, displacementY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
+        val centroidX: Float = cX + displacementX
+        val centroidY: Float = cY + displacementY
+        val factorSign: Float = 1f.withSign(scaleFactor)
+        val pathRotorAR: Float = (prAR * rotR - prAI * rotI) * factorSign
+        val pathRotorAI: Float = (prAI * rotR + prAR * rotI) * factorSign
+        val absFactor: Float = scaleFactor.absoluteValue
+        val pointDistanceA: Float = pointDistanceA * absFactor
+        val pointDistanceB: Float = pointDistanceB * absFactor
+        val pointDistanceC: Float = pointDistanceC * absFactor
 
         return copy(
-            centroid = Vector2F(cX + dX, cY + dY),
-            originPointA = Vector2F(
-                (opAX * rotR - opAY * rotI) * scaleFactor,
-                (opAY * rotR + opAX * rotI) * scaleFactor
-            ),
-            originPointB = Vector2F(
-                (opBX * rotR - opBY * rotI) * scaleFactor,
-                (opBY * rotR + opBX * rotI) * scaleFactor
-            ),
-            originPointC = Vector2F(
-                (opCX * rotR - opCY * rotI) * scaleFactor,
-                (opCY * rotR + opCX * rotI) * scaleFactor
-            )
+            centroid = Vector2F(centroidX, centroidY),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
+            pointDistanceA = pointDistanceA,
+            pointDistanceB = pointDistanceB,
+            pointDistanceC = pointDistanceC,
         )
     }
 
@@ -387,21 +470,12 @@ interface Triangle : TriangleShape, Transformable {
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Triangle = transformedByImpl(displacement, rotation, scaleFactor)
 
-    private fun transformedToImpl(position: Vector2F, orientation: ComplexF): Triangle {
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val conjugatedOrientation = ComplexF(opAX, -opAY)
-            .normalizedOrElse(ComplexF(1f, 0f))
-        val (rotR: Float, rotI: Float) = conjugatedOrientation * orientation
-
-        return copy(
-            centroid = position,
-            originPointA = Vector2F(opAX * rotR - opAY * rotI, opAY * rotR + opAX * rotI),
-            originPointB = Vector2F(opBX * rotR - opBY * rotI, opBY * rotR + opBX * rotI),
-            originPointC = Vector2F(opCX * rotR - opCY * rotI, opCY * rotR + opCX * rotI)
-        )
-    }
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
+    ): Triangle = copy(
+        centroid = position,
+        pathRotorA = orientation
+    )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): Triangle =
         transformedToImpl(position, ComplexF.fromAngle(orientation))
@@ -416,102 +490,131 @@ interface Triangle : TriangleShape, Transformable {
      * @param by the interpolation factor which is expected to be in the range of `[0, 1]`.
      */
     fun interpolated(to: Triangle, by: Float): Triangle {
-        val fOpA: Vector2F = originPointA
-        val fOpB: Vector2F = originPointB
-        val fOpC: Vector2F = originPointC
-        val tOpA: Vector2F = to.originPointA
-        val tOpB: Vector2F = to.originPointB
-        val tOpC: Vector2F = to.originPointC
-        val fromOrientation = fOpA.toComplexF().normalizedOrElse(ComplexF(1f, 0f))
-        val toOrientation = tOpA.toComplexF().normalizedOrElse(ComplexF(1f, 0f))
-        val rotation = ComplexF.slerp(fromOrientation, toOrientation, by)
-        val fromRotation: ComplexF = fromOrientation.conjugate * rotation
-        val toRotation: ComplexF = toOrientation.conjugate * rotation
-        val fromOpA: Vector2F = fOpA * fromRotation
-        val fromOpB: Vector2F = fOpB * fromRotation
-        val fromOpC: Vector2F = fOpC * fromRotation
-        val toOpA: Vector2F = tOpA * toRotation
-        val toOpB: Vector2F = tOpB * toRotation
-        val toOpC: Vector2F = tOpC * toRotation
-        val originPointA = Vector2F.lerp(fromOpA, toOpA, by)
-        val originPointB = Vector2F.lerp(fromOpB, toOpB, by)
-        val originPointC = Vector2F.lerp(fromOpC, toOpC, by)
-        val centroid = Vector2F.lerp(centroid, to.centroid, by)
+        val centroid = Vector2F.lerp(this.centroid, to.centroid, by)
+        val pathRotorA = ComplexF.slerp(this.pathRotorA, to.pathRotorA, by)
+        val pointDistanceA = Float.lerp(this.pointDistanceA, to.pointDistanceA, by)
+        val (fPrABR: Float, fPrABI: Float) = this.pathRotorAB
+        val (fPrACR: Float, fPrACI: Float) = this.pathRotorAC
+        val (tPrABR: Float, tPrABI: Float) = to.pathRotorAB
+        val (tPrACR: Float, tPrACI: Float) = to.pathRotorAC
+        val oneMinusBy: Float = 1f - by
+        val pointSpinorBFactorA: Float = this.pointDistanceB * oneMinusBy
+        val pointSpinorBFactorB: Float = to.pointDistanceB * by
+        val pointSpinorBR: Float = fPrABR * pointSpinorBFactorA +
+                tPrABR * pointSpinorBFactorB
+        val pointSpinorBI: Float = fPrABI * pointSpinorBFactorA +
+                tPrABI * pointSpinorBFactorB
+        val pointSpinorCFactorA: Float = this.pointDistanceC * oneMinusBy
+        val pointSpinorCFactorB: Float = to.pointDistanceC * by
+        val pointSpinorCR: Float = fPrACR * pointSpinorCFactorA +
+                tPrACR * pointSpinorCFactorB
+        val pointSpinorCI: Float = fPrACI * pointSpinorCFactorA +
+                tPrACI * pointSpinorCFactorB
+        val pointDistanceB: Float =
+            sqrt(pointSpinorBR * pointSpinorBR + pointSpinorBI * pointSpinorBI)
+        val pathRotorAB: ComplexF =
+            if (pointDistanceB > 0.00001f) ComplexF(
+                pointSpinorBR / pointDistanceB, pointSpinorBI / pointDistanceB
+            ) else ComplexF(1f, 0f)
+        val pointDistanceC: Float =
+            sqrt(pointSpinorCR * pointSpinorCR + pointSpinorCI * pointSpinorCI)
+        val pathRotorAC: ComplexF =
+            if (pointDistanceC > 0.00001f) ComplexF(
+                pointSpinorCR / pointDistanceC, pointSpinorCI / pointDistanceC
+            ) else ComplexF(1f, 0f)
 
-        return copy(centroid, originPointA, originPointB, originPointC)
+        return copy(
+            centroid,
+            pathRotorA,
+            pointDistanceA,
+            pathRotorAB,
+            pointDistanceB,
+            pathRotorAC,
+            pointDistanceC
+        )
     }
 
     /** Returns the closest point on this triangle to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
-        val (centroidX: Float, centroidY: Float) = centroid
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val a = Vector2F(opAX + centroidX, opAY + centroidY)
-        val b = Vector2F(opBX + centroidX, opBY + centroidY)
-        val c = Vector2F(opCX + centroidX, opCY + centroidY)
+        val centroid: Vector2F = centroid
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val pdA: Float = pointDistanceA
+        val (prABR: Float, prABI: Float) = pathRotorAB
+        val pdB: Float = pointDistanceB
+        val (prACR: Float, prACI: Float) = pathRotorAC
+        val pdC: Float = pointDistanceC
+        val a = Vector2F(prAR * pdA, prAI * pdA)
+        val b = Vector2F(
+            (prAR * prABR - prAI * prABI) * pdB, (prAI * prABR + prAR * prABI) * pdB
+        )
+        val c = Vector2F(
+            (prAR * prACR - prAI * prACI) * pdC, (prAI * prACR + prAR * prACI) * pdC
+        )
+        val p = point - centroid
         val ab: Vector2F = b - a
         val ac: Vector2F = c - a
-        val ap: Vector2F = point - a
+        val ap: Vector2F = p - a
         val d1: Float = ab dot ap
         val d2: Float = ac dot ap
 
         if (d1 <= 0f && d2 <= 0f) {
-            return a
+            return a + centroid
         }
-        val bp: Vector2F = point - b
+        val bp: Vector2F = p - b
         val d3: Float = ab dot bp
         val d4: Float = ac dot bp
 
         if (d3 >= 0f && d4 <= d3) {
-            return b
+            return b + centroid
         }
-        val cp: Vector2F = point - c
+        val cp: Vector2F = p - c
         val d5: Float = ab dot cp
         val d6: Float = ac dot cp
 
         if (d6 >= 0f && d5 <= d6) {
-            return c
+            return c + centroid
         }
         val vc: Float = d1 * d4 - d3 * d2
 
         if (vc <= 0f && d1 >= 0f && d3 <= 0f) {
             val v: Float = d1 / (d1 - d3)
-            return a + ab * v
+            return a + ab * v + centroid
         }
         val vb: Float = d5 * d2 - d1 * d6
 
         if (vb <= 0f && d2 >= 0f && d6 <= 0f) {
             val v: Float = d2 / (d2 - d6)
-            return a + ac * v
+            return a + ac * v + centroid
         }
         val va: Float = d3 * d6 - d5 * d4
 
         if (va <= 0f && (d4 - d3) >= 0f && (d5 - d6) >= 0f) {
             val v: Float = (d4 - d3) / ((d4 - d3) + (d5 - d6))
-            return b + (c - b) * v
+            return b + (c - b) * v + centroid
         }
         val denominator: Float = 1f / (va + vb + vc)
         val v: Float = vb * denominator
         val w: Float = vc * denominator
 
-        return a + ab * v + ac * w
+        return a + ab * v + ac * w + centroid
     }
 
     /** Returns `true` if this triangle intersects the given [ray]. **/
     fun intersects(ray: Ray): Boolean {
-        val (centroidX: Float, centroidY: Float) = centroid
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val (oX: Float, oY: Float) = ray.origin
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val pdA: Float = pointDistanceA
+        val (prABR: Float, prABI: Float) = pathRotorAB
+        val pdB: Float = pointDistanceB
+        val (prACR: Float, prACI: Float) = pathRotorAC
+        val pdC: Float = pointDistanceC
+        val (oX: Float, oY: Float) = ray.origin - centroid
         val (dirX: Float, dirY: Float) = ray.direction
-        val aX: Float = opAX + centroidX
-        val aY: Float = opAY + centroidY
-        val bX: Float = opBX + centroidX
-        val bY: Float = opBY + centroidY
-        val cX: Float = opCX + centroidX
-        val cY: Float = opCY + centroidY
+        val aX: Float = prAR * pdA
+        val aY: Float = prAI * pdA
+        val bX: Float = (prAR * prABR - prAI * prABI) * pdB
+        val bY: Float = (prAI * prABR + prAR * prABI) * pdB
+        val cX: Float = (prAR * prACR - prAI * prACI) * pdC
+        val cY: Float = (prAI * prACR + prAR * prACI) * pdC
         val aoX: Float = oX - aX
         val aoY: Float = oY - aY
         val abX: Float = bX - aX
@@ -561,19 +664,16 @@ interface Triangle : TriangleShape, Transformable {
 
     /** Returns `true` if this triangle contains the given [point]. **/
     operator fun contains(point: Vector2F): Boolean {
-        val (opAX: Float, opAY: Float) = originPointA
-        val (opBX: Float, opBY: Float) = originPointB
-        val (opCX: Float, opCY: Float) = originPointC
-        val (opX: Float, opY: Float) = point - centroid
-        val abp: Boolean = ((opX - opAX) * (opAY - opBY) + (opY - opAY) * (opBX - opAX)) >= 0f
+        val (opX: Float, opY: Float) = (point - centroid) * pathRotorA.conjugate
+        val opAX: Float = pointDistanceA
+        val (opBX: Float, opBY: Float) = pathRotorAB * pointDistanceB
+        val (opCX: Float, opCY: Float) = pathRotorAC * pointDistanceC
+        val abp: Boolean = ((opX - opAX) * -opBY + opY * (opBX - opAX)) >= 0f
         val bcp: Boolean = ((opX - opBX) * (opBY - opCY) + (opY - opBY) * (opCX - opBX)) >= 0f
-        val acp: Boolean = ((opX - opCX) * (opCY - opAY) + (opY - opCY) * (opAX - opCX)) >= 0f
+        val acp: Boolean = ((opX - opCX) * opCY + (opY - opCY) * (opAX - opCX)) >= 0f
 
         return (abp == bcp) and (bcp == acp)
     }
-
-    /** Creates an iterator over the origin points of this triangle. **/
-    fun originPointIterator(): Vector2FIterator = OriginPointIterator(this, index = 0)
 
     /** Creates an iterator over the points of this triangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
@@ -581,36 +681,34 @@ interface Triangle : TriangleShape, Transformable {
     /** Returns a copy of this instance with specified properties changed. **/
     fun copy(
         centroid: Vector2F = this.centroid,
-        originPointA: Vector2F = this.originPointA,
-        originPointB: Vector2F = this.originPointB,
-        originPointC: Vector2F = this.originPointC
+        pathRotorA: ComplexF = this.pathRotorA,
+        pointDistanceA: Float = this.pointDistanceA,
+        pathRotorAB: ComplexF = this.pathRotorAB,
+        pointDistanceB: Float = this.pointDistanceB,
+        pathRotorAC: ComplexF = this.pathRotorAC,
+        pointDistanceC: Float = this.pointDistanceC
     ): Triangle
 
     /** Returns the [centroid] of this triangle. **/
     operator fun component1(): Vector2F = centroid
 
-    /** Returns the [originPointA] of this triangle. **/
-    operator fun component2(): Vector2F = originPointA
+    /** Returns the [pathRotorA] of this triangle. **/
+    operator fun component2(): ComplexF = pathRotorA
 
-    /** Returns the [originPointB] of this triangle. **/
-    operator fun component3(): Vector2F = originPointB
+    /** Returns the [pointDistanceA] of this triangle. **/
+    operator fun component3(): Float = pointDistanceA
 
-    /** Returns the [originPointC] of this triangle. **/
-    operator fun component4(): Vector2F = originPointC
+    /** Returns the [pathRotorAB] of this triangle. **/
+    operator fun component4(): ComplexF = pathRotorAB
 
-    private class OriginPointIterator(
-        private val triangle: Triangle,
-        private var index: Int
-    ) : Vector2FIterator() {
-        override fun hasNext(): Boolean = index < 3
+    /** Returns the [pointDistanceB] of this triangle. **/
+    operator fun component5(): Float = pointDistanceB
 
-        override fun nextVector2F(): Vector2F = when (index++) {
-            0 -> triangle.originPointA
-            1 -> triangle.originPointB
-            2 -> triangle.originPointC
-            else -> throw NoSuchElementException("${index - 1}")
-        }
-    }
+    /** Returns the [pathRotorAC] of this triangle. **/
+    operator fun component6(): ComplexF = pathRotorAC
+
+    /** Returns the [pointDistanceC] of this triangle. **/
+    operator fun component7(): Float = pointDistanceC
 
     private class PointIterator(triangle: Triangle, index: Int) : Vector2FIterator() {
         private val _pointA: Vector2F
@@ -619,10 +717,22 @@ interface Triangle : TriangleShape, Transformable {
         private var _index: Int
 
         init {
-            val centroid: Vector2F = triangle.centroid
-            _pointA = triangle.originPointA + centroid
-            _pointB = triangle.originPointB + centroid
-            _pointC = triangle.originPointC + centroid
+            val (cX: Float, cY: Float) = triangle.centroid
+            val (prAR: Float, prAI: Float) = triangle.pathRotorA
+            val pdA: Float = triangle.pointDistanceA
+            val (prABR: Float, prABI: Float) = triangle.pathRotorAB
+            val pdB: Float = triangle.pointDistanceB
+            val (prACR: Float, prACI: Float) = triangle.pathRotorAC
+            val pdC: Float = triangle.pointDistanceC
+            _pointA = Vector2F(prAR * pdA + cX, prAI * pdA + cY)
+            _pointB = Vector2F(
+                (prAR * prABR - prAI * prABI) * pdB + cX,
+                (prAI * prABR + prAR * prABI) * pdB + cY
+            )
+            _pointC = Vector2F(
+                (prAR * prACR - prAI * prACI) * pdC + cX,
+                (prAI * prACR + prAR * prACI) * pdC + cY
+            )
             _index = index
         }
 

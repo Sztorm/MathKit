@@ -5,9 +5,12 @@ import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultTriangle
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
+import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
 import com.sztorm.lowallocmath.utils.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -15,33 +18,89 @@ import kotlin.test.assertEquals
 
 class TriangleTests {
     @ParameterizedTest
-    @MethodSource("constructorVector2Fx4Args")
+    @MethodSource("constructorVector2FComplexFFloatComplexFFloatComplexFFloatArgs")
     fun constructorCreatesCorrectTriangle(
         centroid: Wrapper<Vector2F>,
-        originPointA: Wrapper<Vector2F>,
-        originPointB: Wrapper<Vector2F>,
-        originPointC: Wrapper<Vector2F>
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float
     ) {
         val mutableTriangle = MutableTriangle(
-            centroid.value, originPointA.value, originPointB.value, originPointC.value
+            centroid.value,
+            pathRotorA.value,
+            pointDistanceA,
+            pathRotorAB.value,
+            pointDistanceB,
+            pathRotorAC.value,
+            pointDistanceC
         )
         val triangle = Triangle(
-            centroid.value, originPointA.value, originPointB.value, originPointC.value
+            centroid.value,
+            pathRotorA.value,
+            pointDistanceA,
+            pathRotorAB.value,
+            pointDistanceB,
+            pathRotorAC.value,
+            pointDistanceC
         )
-
         assertEquals(centroid.value, mutableTriangle.centroid)
-        assertEquals(originPointA.value, mutableTriangle.originPointA)
-        assertEquals(originPointB.value, mutableTriangle.originPointB)
-        assertEquals(originPointC.value, mutableTriangle.originPointC)
+        assertEquals(pathRotorA.value, mutableTriangle.pathRotorA)
+        assertEquals(pointDistanceA, mutableTriangle.pointDistanceA)
+        assertEquals(pathRotorAB.value, mutableTriangle.pathRotorAB)
+        assertEquals(pointDistanceB, mutableTriangle.pointDistanceB)
+        assertEquals(pathRotorAC.value, mutableTriangle.pathRotorAC)
+        assertEquals(pointDistanceC, mutableTriangle.pointDistanceC)
 
         assertEquals(centroid.value, triangle.centroid)
-        assertEquals(originPointA.value, triangle.originPointA)
-        assertEquals(originPointB.value, triangle.originPointB)
-        assertEquals(originPointC.value, triangle.originPointC)
+        assertEquals(pathRotorA.value, triangle.pathRotorA)
+        assertEquals(pointDistanceA, triangle.pointDistanceA)
+        assertEquals(pathRotorAB.value, triangle.pathRotorAB)
+        assertEquals(pointDistanceB, triangle.pointDistanceB)
+        assertEquals(pathRotorAC.value, triangle.pathRotorAC)
+        assertEquals(pointDistanceC, triangle.pointDistanceC)
 
         assertApproximation(triangle.pointA, mutableTriangle.pointA)
         assertApproximation(triangle.pointB, mutableTriangle.pointB)
         assertApproximation(triangle.pointC, mutableTriangle.pointC)
+    }
+
+    @ParameterizedTest
+    @MethodSource("constructorVector2FComplexFFloatComplexFFloatComplexFFloatThrowsExceptionArgs")
+    fun constructorThrowsCorrectException(
+        centroid: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        assertThrows(expectedExceptionClass) {
+            MutableTriangle(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
+        }
+        assertThrows(expectedExceptionClass) {
+            Triangle(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
+        }
     }
 
     @ParameterizedTest
@@ -61,9 +120,12 @@ class TriangleTests {
         assertApproximation(pointC.value, triangle.pointC)
 
         assertApproximation(triangle.centroid, mutableTriangle.centroid)
-        assertApproximation(triangle.originPointA, mutableTriangle.originPointA)
-        assertApproximation(triangle.originPointB, mutableTriangle.originPointB)
-        assertApproximation(triangle.originPointC, mutableTriangle.originPointC)
+        assertApproximation(triangle.pathRotorA, mutableTriangle.pathRotorA)
+        assertApproximation(triangle.pointDistanceA, mutableTriangle.pointDistanceA)
+        assertApproximation(triangle.pathRotorAB, mutableTriangle.pathRotorAB)
+        assertApproximation(triangle.pointDistanceB, mutableTriangle.pointDistanceB)
+        assertApproximation(triangle.pathRotorAC, mutableTriangle.pathRotorAC)
+        assertApproximation(triangle.pointDistanceC, mutableTriangle.pointDistanceC)
     }
 
     @ParameterizedTest
@@ -72,19 +134,6 @@ class TriangleTests {
         assertImmutabilityOf(triangle) {
             assertApproximation(expected.value, triangle.centroid)
         }
-
-    @ParameterizedTest
-    @MethodSource("originPointsArgs")
-    fun originPointsReturnCorrectValues(
-        triangle: Triangle,
-        expectedOriginPointA: Wrapper<Vector2F>,
-        expectedOriginPointB: Wrapper<Vector2F>,
-        expectedOriginPointC: Wrapper<Vector2F>,
-    ) = assertImmutabilityOf(triangle) {
-        assertApproximation(expectedOriginPointA.value, triangle.originPointA)
-        assertApproximation(expectedOriginPointB.value, triangle.originPointB)
-        assertApproximation(expectedOriginPointC.value, triangle.originPointC)
-    }
 
     @ParameterizedTest
     @MethodSource("pointsArgs")
@@ -100,11 +149,30 @@ class TriangleTests {
     }
 
     @ParameterizedTest
-    @MethodSource("orientationArgs")
-    fun orientationReturnsCorrectValue(triangle: Triangle, expected: Wrapper<ComplexF>) =
-        assertImmutabilityOf(triangle) {
-            assertApproximation(expected.value, triangle.orientation)
-        }
+    @MethodSource("pathRotorArgs")
+    fun pathRotorsReturnCorrectValues(
+        triangle: Triangle,
+        expectedPathRotorA: Wrapper<ComplexF>,
+        expectedPathRotorAB: Wrapper<ComplexF>,
+        expectedPathRotorAC: Wrapper<ComplexF>
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expectedPathRotorA.value, triangle.pathRotorA)
+        assertApproximation(expectedPathRotorAB.value, triangle.pathRotorAB)
+        assertApproximation(expectedPathRotorAC.value, triangle.pathRotorAC)
+    }
+
+    @ParameterizedTest
+    @MethodSource("pointDistanceArgs")
+    fun pointDistancesReturnCorrectValues(
+        triangle: Triangle,
+        expectedPointDistanceA: Float,
+        expectedPointDistanceB: Float,
+        expectedPointDistanceC: Float
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expectedPointDistanceA, triangle.pointDistanceA)
+        assertApproximation(expectedPointDistanceB, triangle.pointDistanceB)
+        assertApproximation(expectedPointDistanceC, triangle.pointDistanceC)
+    }
 
     @ParameterizedTest
     @MethodSource("areaArgs")
@@ -130,7 +198,7 @@ class TriangleTests {
     ) = assertImmutabilityOf(triangle) {
         assertApproximation(expectedSideLengthAB, triangle.sideLengthAB)
         assertApproximation(expectedSideLengthBC, triangle.sideLengthBC)
-        assertApproximation(expectedSideLengthCA, triangle.sideLengthCA)
+        assertApproximation(expectedSideLengthCA, triangle.sideLengthAC)
     }
 
     @ParameterizedTest
@@ -138,6 +206,13 @@ class TriangleTests {
     fun positionReturnsCorrectValue(triangle: Triangle, expected: Wrapper<Vector2F>) =
         assertImmutabilityOf(triangle) {
             assertApproximation(expected.value, triangle.position)
+        }
+
+    @ParameterizedTest
+    @MethodSource("orientationArgs")
+    fun orientationReturnsCorrectValue(triangle: Triangle, expected: Wrapper<ComplexF>) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected.value, triangle.orientation)
         }
 
     @ParameterizedTest
@@ -166,16 +241,94 @@ class TriangleTests {
     fun setMutatesTriangleCorrectly(
         triangle: MutableTriangle,
         centroid: Wrapper<Vector2F>,
-        originPointA: Wrapper<Vector2F>,
-        originPointB: Wrapper<Vector2F>,
-        originPointC: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float,
         expected: MutableTriangle
     ) = assertEquals(
         expected,
         triangle.apply {
-            set(centroid.value, originPointA.value, originPointB.value, originPointC.value)
+            set(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
         }
     )
+
+    @ParameterizedTest
+    @MethodSource("setThrowsExceptionArgs")
+    fun setThrowsCorrectException(
+        centroid: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val triangle = MutableTriangle(
+            centroid = Vector2F.ZERO,
+            pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+            pointDistanceA = 1f,
+            pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+            pointDistanceB = 1f,
+            pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+            pointDistanceC = 1f
+        )
+        assertThrows(expectedExceptionClass) {
+            triangle.set(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("setDoesNotThrowExceptionArgs")
+    fun setDoesNotThrowException(
+        centroid: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float
+    ) {
+        val triangle = MutableTriangle(
+            centroid = Vector2F.ZERO,
+            pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+            pointDistanceA = 1f,
+            pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+            pointDistanceB = 1f,
+            pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+            pointDistanceC = 1f
+        )
+        assertDoesNotThrow {
+            triangle.set(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("interpolatedArgs")
@@ -231,14 +384,92 @@ class TriangleTests {
     fun copyReturnsCorrectValue(
         triangle: Triangle,
         centroid: Wrapper<Vector2F>,
-        originPointA: Wrapper<Vector2F>,
-        originPointB: Wrapper<Vector2F>,
-        originPointC: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float,
         expected: Triangle
     ) = assertEquals(
         expected,
-        triangle.copy(centroid.value, originPointA.value, originPointB.value, originPointC.value)
+        triangle.copy(
+            centroid.value,
+            pathRotorA.value,
+            pointDistanceA,
+            pathRotorAB.value,
+            pointDistanceB,
+            pathRotorAC.value,
+            pointDistanceC
+        )
     )
+
+    @ParameterizedTest
+    @MethodSource("copyThrowsExceptionArgs")
+    fun copyThrowsCorrectException(
+        centroid: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float,
+        expectedExceptionClass: Class<Throwable>
+    ) {
+        val triangle = MutableTriangle(
+            centroid = Vector2F.ZERO,
+            pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+            pointDistanceA = 1f,
+            pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+            pointDistanceB = 1f,
+            pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+            pointDistanceC = 1f
+        )
+        assertThrows(expectedExceptionClass) {
+            triangle.copy(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("copyDoesNotThrowExceptionArgs")
+    fun copyDoesNotThrowException(
+        centroid: Wrapper<Vector2F>,
+        pathRotorA: Wrapper<ComplexF>,
+        pointDistanceA: Float,
+        pathRotorAB: Wrapper<ComplexF>,
+        pointDistanceB: Float,
+        pathRotorAC: Wrapper<ComplexF>,
+        pointDistanceC: Float
+    ) {
+        val triangle = MutableTriangle(
+            centroid = Vector2F.ZERO,
+            pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+            pointDistanceA = 1f,
+            pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+            pointDistanceB = 1f,
+            pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+            pointDistanceC = 1f
+        )
+        assertDoesNotThrow {
+            triangle.copy(
+                centroid.value,
+                pathRotorA.value,
+                pointDistanceA,
+                pathRotorAB.value,
+                pointDistanceB,
+                pathRotorAC.value,
+                pointDistanceC
+            )
+        }
+    }
 
     @ParameterizedTest
     @MethodSource("equalsAnyArgs")
@@ -278,31 +509,42 @@ class TriangleTests {
     fun componentsReturnCorrectValues(
         triangle: Triangle,
         expectedComponent1: Wrapper<Vector2F>,
-        expectedComponent2: Wrapper<Vector2F>,
-        expectedComponent3: Wrapper<Vector2F>,
-        expectedComponent4: Wrapper<Vector2F>
+        expectedComponent2: Wrapper<ComplexF>,
+        expectedComponent3: Float,
+        expectedComponent4: Wrapper<ComplexF>,
+        expectedComponent5: Float,
+        expectedComponent6: Wrapper<ComplexF>,
+        expectedComponent7: Float
     ) = assertImmutabilityOf(triangle) {
         val (
             actualComponent1: Vector2F,
-            actualComponent2: Vector2F,
-            actualComponent3: Vector2F,
-            actualComponent4: Vector2F
+            actualComponent2: ComplexF,
+            actualComponent3: Float,
+            actualComponent4: ComplexF,
+            actualComponent5: Float,
+            actualComponent6: ComplexF,
+            actualComponent7: Float
         ) = triangle
 
         assertEquals(expectedComponent1.value, actualComponent1)
         assertEquals(expectedComponent2.value, actualComponent2)
-        assertEquals(expectedComponent3.value, actualComponent3)
+        assertEquals(expectedComponent3, actualComponent3)
         assertEquals(expectedComponent4.value, actualComponent4)
+        assertEquals(expectedComponent5, actualComponent5)
+        assertEquals(expectedComponent6.value, actualComponent6)
+        assertEquals(expectedComponent7, actualComponent7)
     }
 
     companion object {
         @JvmStatic
         fun areApproximatelyEqual(a: Triangle, b: Triangle, tolerance: Float = 0.00001f): Boolean =
             a.centroid.isApproximately(b.centroid, tolerance) and
-                    a.originPointA.isApproximately(b.originPointA, tolerance) and
-                    a.originPointB.isApproximately(b.originPointB, tolerance) and
-                    a.originPointC.isApproximately(b.originPointC, tolerance) and
-                    a.orientation.isApproximately(b.orientation, tolerance) and
+                    a.pathRotorA.isApproximately(b.pathRotorA, tolerance) and
+                    a.pointDistanceA.isApproximately(b.pointDistanceA, tolerance) and
+                    a.pathRotorAB.isApproximately(b.pathRotorAB, tolerance) and
+                    a.pointDistanceB.isApproximately(b.pointDistanceB, tolerance) and
+                    a.pathRotorAC.isApproximately(b.pathRotorAC, tolerance) and
+                    a.pointDistanceC.isApproximately(b.pointDistanceC, tolerance) and
                     a.pointA.isApproximately(b.pointA, tolerance) and
                     a.pointB.isApproximately(b.pointB, tolerance) and
                     a.pointC.isApproximately(b.pointC, tolerance)
@@ -310,10 +552,12 @@ class TriangleTests {
         @JvmStatic
         fun areEqual(a: Triangle, b: Triangle): Boolean =
             (a.centroid == b.centroid) and
-                    (a.originPointA == b.originPointA) and
-                    (a.originPointB == b.originPointB) and
-                    (a.originPointC == b.originPointC) and
-                    (a.orientation == b.orientation) and
+                    (a.pathRotorA == b.pathRotorA) and
+                    (a.pointDistanceA == b.pointDistanceA) and
+                    (a.pathRotorAB == b.pathRotorAB) and
+                    (a.pointDistanceB == b.pointDistanceB) and
+                    (a.pathRotorAC == b.pathRotorAC) and
+                    (a.pointDistanceC == b.pointDistanceC) and
                     (a.pointA == b.pointA) and
                     (a.pointB == b.pointB) and
                     (a.pointC == b.pointC)
@@ -325,33 +569,123 @@ class TriangleTests {
         fun List<Arguments>.mapTrianglesToDefaultTriangles() = map { args ->
             val argArray = args.get().map {
                 if (it is Triangle) DefaultTriangle(
-                    it.centroid, it.originPointA, it.originPointB, it.originPointC
-                )
-                else it
+                    it.centroid,
+                    it.pathRotorA,
+                    it.pointDistanceA,
+                    it.pathRotorAB,
+                    it.pointDistanceB,
+                    it.pathRotorAC,
+                    it.pointDistanceC
+                ) else it
             }.toTypedArray()
 
             Arguments.of(*argArray)
         }
 
         @JvmStatic
-        fun constructorVector2Fx4Args(): List<Arguments> = listOf(
+        fun constructorVector2FComplexFFloatComplexFFloatComplexFFloatArgs(
+        ): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2F(-0.3333333f, 3f)),
-                Wrapper(Vector2F(-3.6666667f, -1f)),
-                Wrapper(Vector2F(2.3333333f, -1f)),
-                Wrapper(Vector2F(1.3333333f, 2f))
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f))),
+                3.8005848f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(141.54628f))),
+                2.538591f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f))),
+                2.4037008f
             ),
             Arguments.of(
                 Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
-                Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
-                Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
-                Wrapper(Vector2F(2.3333333f, -3.3333333f))
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f))),
+                3.72678f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(91.00509f))),
+                1.6996733f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f))),
+                4.068852f
             ),
             Arguments.of(
                 Wrapper(Vector2F(8f, -4.8453f)),
-                Wrapper(Vector2F(0f, 2.3094f)),
-                Wrapper(Vector2F(2f, -1.1547f)),
-                Wrapper(Vector2F(-2f, -1.1547f))
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                2.3094f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-120f))),
+                2.3094f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                2.3094f
+            ),
+        )
+
+        @JvmStatic
+        fun constructorVector2FComplexFFloatComplexFFloatComplexFFloatThrowsExceptionArgs(
+        ): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                -1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                -1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                -1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                -1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                -0.5f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                -0.5f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                -1f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                -1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                -0.5f,
+                IllegalArgumentException::class.java
+            ),
+            Arguments.of(
+                Wrapper(Vector2F.ZERO),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(0f))),
+                -0.1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(180f))),
+                -1f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                -0.5f,
+                IllegalArgumentException::class.java
             ),
         )
 
@@ -380,27 +714,36 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     Wrapper(Vector2F(-0.3333333f, 3f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -414,40 +757,103 @@ class TriangleTests {
         }
 
         @JvmStatic
-        fun originPointsArgs(): List<Arguments> {
+        fun pathRotorArgs(): List<Arguments> {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
-                    Wrapper(Vector2F(-3.6666667f, -1f)),
-                    Wrapper(Vector2F(2.3333333f, -1f)),
-                    Wrapper(Vector2F(1.3333333f, 2f))
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(141.54628f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
-                    Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
-                    Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
-                    Wrapper(Vector2F(2.3333333f, -3.3333333f))
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(91.00509f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
-                    Wrapper(Vector2F(0f, 2.3094f)),
-                    Wrapper(Vector2F(2f, -1.1547f)),
-                    Wrapper(Vector2F(-2f, -1.1547f))
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-120f))),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f)))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun pointDistanceArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
+                    ),
+                    3.8005848f,
+                    2.538591f,
+                    2.4037008f
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
+                    ),
+                    3.72678f,
+                    1.6996733f,
+                    4.068852f
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(8f, -4.8453f),
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
+                    ),
+                    2.3094f,
+                    2.3094f,
+                    2.3094f
                 ),
             )
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
@@ -464,9 +870,12 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(Vector2F(2f, 2f)),
@@ -475,9 +884,12 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-2f, 1f)),
                     Wrapper(Vector2F(-3f, -3f)),
@@ -486,52 +898,16 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     Wrapper(Vector2F(8f, -2.535898f)),
                     Wrapper(Vector2F(10f, -6f)),
                     Wrapper(Vector2F(6f, -6f))
-                ),
-            )
-            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
-
-            return listOf(
-                mutableTriangleArgs,
-                defaultTriangleArgs
-            ).flatten()
-        }
-
-        @JvmStatic
-        fun orientationArgs(): List<Arguments> {
-            val mutableTriangleArgs = listOf(
-                Arguments.of(
-                    MutableTriangle(
-                        centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
-                ),
-                Arguments.of(
-                    MutableTriangle(
-                        centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
-                ),
-                Arguments.of(
-                    MutableTriangle(
-                        centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
-                    ),
-                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
                 ),
             )
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
@@ -548,27 +924,36 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     9f
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     9.5f
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     6.928203f
                 ),
@@ -587,27 +972,36 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     14.99323f
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     16.73888f
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     12f
                 ),
@@ -626,9 +1020,12 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     6f,
                     3.1622777f,
@@ -637,9 +1034,12 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     4.1231055f,
                     5.0f,
@@ -648,9 +1048,12 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     4f,
                     4f,
@@ -669,32 +1072,89 @@ class TriangleTests {
         fun positionArgs(): List<Arguments> = centroidArgs()
 
         @JvmStatic
+        fun orientationArgs(): List<Arguments> {
+            val mutableTriangleArgs = listOf(
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-0.3333333f, 3f),
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(-1.3333333f, -2.6666667f),
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)))
+                ),
+                Arguments.of(
+                    MutableTriangle(
+                        centroid = Vector2F(8f, -4.8453f),
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
+                    ),
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f)))
+                ),
+            )
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
         fun incenterArgs(): List<Arguments> {
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     Wrapper(Vector2F(0.3343371f, 3.200542f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.7160178f, -2.544134f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -713,27 +1173,36 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     Wrapper(Vector2F(-1f, 2.6666667f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(0.9736842f, -1.868421f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -752,27 +1221,36 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     Wrapper(Vector2F(1f, 3.6666667f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-5.947368f, -4.263158f))
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     Wrapper(Vector2F(8f, -4.8453f))
                 ),
@@ -790,58 +1268,93 @@ class TriangleTests {
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 Wrapper(Vector2F(-0.3333333f, 3f)),
-                Wrapper(Vector2F(-3.6666667f, -1f)),
-                Wrapper(Vector2F(2.3333333f, -1f)),
-                Wrapper(Vector2F(1.3333333f, 2f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f))),
+                3.8005848f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(141.54628f))),
+                2.538591f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f))),
+                2.4037008f,
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
-                ),
-            ),
-            Arguments.of(
-                MutableTriangle(
-                    centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
-                ),
-                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
-                Wrapper(Vector2F(-3.6666667f, -1f)),
-                Wrapper(Vector2F(2.3333333f, -1f)),
-                Wrapper(Vector2F(2.3333333f, -3.3333333f)),
-                MutableTriangle(
-                    centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
-                Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
-                Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
-                Wrapper(Vector2F(2.3333333f, -3.3333333f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f))),
+                3.8005848f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(141.54628f))),
+                2.538591f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(109.73689f))),
+                4.068852f,
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(109.73689f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f))),
+                3.72678f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(91.00509f))),
+                1.6996733f,
+                Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f))),
+                4.068852f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 )
             ),
         )
+
+        @JvmStatic
+        fun setThrowsExceptionArgs(): List<Arguments> =
+            constructorVector2FComplexFFloatComplexFFloatComplexFFloatThrowsExceptionArgs()
+
+        @JvmStatic
+        fun setDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorVector2FComplexFFloatComplexFFloatComplexFFloatArgs()
 
         @JvmStatic
         fun interpolatedArgs(): List<Arguments> {
@@ -861,163 +1374,235 @@ class TriangleTests {
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F.ZERO,
-                    originPointA = Vector2F(1f, 0f),
-                    originPointB = Vector2F(-1f, 0f),
-                    originPointC = Vector2F(0f, 1f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    pointDistanceA = 1f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    pointDistanceB = 1f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    pointDistanceC = 1f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 0.5f,
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F.ZERO,
-                    originPointA = Vector2F(1f, 0f),
-                    originPointB = Vector2F(-1f, 0f),
-                    originPointC = Vector2F(0f, 1f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    pointDistanceA = 1f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    pointDistanceB = 1f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    pointDistanceC = 1f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 0f,
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F.ZERO,
-                    originPointA = Vector2F(1f, 0f),
-                    originPointB = Vector2F(-1f, 0f),
-                    originPointC = Vector2F(0f, 1f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    pointDistanceA = 1f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    pointDistanceB = 1f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    pointDistanceC = 1f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 0.25f,
                 MutableTriangle(
                     centroid = Vector2F(-0.5833333f, 1.5833333f),
-                    originPointA = Vector2F(-3.7407613f, 0.5578891f),
-                    originPointB = Vector2F(1.2447404f, -1.8123132f),
-                    originPointC = Vector2F(2.4960206f, 1.2544241f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(171.51755f)),
+                    pointDistanceA = 3.7821336f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(132.96468f)),
+                    pointDistanceB = 2.1986036f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-144.83484f)),
+                    pointDistanceC = 2.79351f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F.ZERO,
-                    originPointA = Vector2F(1f, 0f),
-                    originPointB = Vector2F(-1f, 0f),
-                    originPointC = Vector2F(0f, 1f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    pointDistanceA = 1f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    pointDistanceB = 1f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    pointDistanceC = 1f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 0.5f,
                 MutableTriangle(
-                    centroid = Vector2F(-0.83333325f, 0.16666651f),
-                    originPointA = Vector2F(-3.1841016f, 2.0066895f),
-                    originPointB = Vector2F(-0.020358026f, -1.9245749f),
-                    originPointC = Vector2F(3.2044594f, -0.08211458f)
+                    centroid = Vector2F(-0.8333333f, 0.16666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(147.77998f)),
+                    pointDistanceA = 3.7636826f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(121.61397f)),
+                    pointDistanceB = 1.9246825f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-149.24788f)),
+                    pointDistanceC = 3.2055113f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F.ZERO,
-                    originPointA = Vector2F(1f, 0f),
-                    originPointB = Vector2F(-1f, 0f),
-                    originPointC = Vector2F(0f, 1f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    pointDistanceA = 1f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    pointDistanceB = 1f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    pointDistanceC = 1f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 0.75f,
                 MutableTriangle(
                     centroid = Vector2F(-1.0833333f, -1.25f),
-                    originPointA = Vector2F(-2.0966048f, 3.1033862f),
-                    originPointB = Vector2F(-1.0924258f, -1.3648026f),
-                    originPointC = Vector2F(3.1890304f, -1.7385836f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(124.04243f)),
+                    pointDistanceA = 3.7452312f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(107.28284f)),
+                    pointDistanceB = 1.7481649f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-152.6406f)),
+                    pointDistanceC = 3.6321602f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F.ZERO,
-                    originPointA = Vector2F(1f, 0f),
-                    originPointB = Vector2F(-1f, 0f),
-                    originPointC = Vector2F(0f, 1f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    pointDistanceA = 1f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
+                    pointDistanceB = 1f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    pointDistanceC = 1f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 1f,
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 )
             ),
         )
@@ -1026,9 +1611,12 @@ class TriangleTests {
         fun closestPointToArgs(): List<Arguments> {
             val triangleA = MutableTriangle(
                 centroid = Vector2F(-0.3333333f, 3f),
-                originPointA = Vector2F(-3.6666667f, -1f),
-                originPointB = Vector2F(2.3333333f, -1f),
-                originPointC = Vector2F(1.3333333f, 2f)
+                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                pointDistanceA = 3.8005848f,
+                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                pointDistanceB = 2.538591f,
+                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                pointDistanceC = 2.4037008f
             )
             val triangleAArgs = listOf(
                 Arguments.of(
@@ -1136,9 +1724,12 @@ class TriangleTests {
             )
             val triangleB = MutableTriangle(
                 centroid = Vector2F(-1.3333333f, -2.6666667f),
-                originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                originPointC = Vector2F(2.3333333f, -3.3333333f)
+                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                pointDistanceA = 3.72678f,
+                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                pointDistanceB = 1.6996733f,
+                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                pointDistanceC = 4.068852f
             )
             val triangleBArgs = listOf(
                 Arguments.of(
@@ -1250,9 +1841,12 @@ class TriangleTests {
             )
             val triangleC = MutableTriangle(
                 centroid = Vector2F(8f, -4.8453f),
-                originPointA = Vector2F(0f, 2.3094f),
-                originPointB = Vector2F(2f, -1.1547f),
-                originPointC = Vector2F(-2f, -1.1547f)
+                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                pointDistanceA = 2.3094f,
+                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                pointDistanceB = 2.3094f,
+                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                pointDistanceC = 2.3094f
             )
             val triangleCArgs = listOf(
                 Arguments.of(
@@ -1381,9 +1975,12 @@ class TriangleTests {
         fun containsVector2FArgs(): List<Arguments> {
             val triangleA = MutableTriangle(
                 centroid = Vector2F(-0.3333333f, 3f),
-                originPointA = Vector2F(-3.6666667f, -1f),
-                originPointB = Vector2F(2.3333333f, -1f),
-                originPointC = Vector2F(1.3333333f, 2f)
+                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                pointDistanceA = 3.8005848f,
+                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                pointDistanceB = 2.538591f,
+                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                pointDistanceC = 2.4037008f
             )
             val triangleAArgs = listOf(
                 Arguments.of(triangleA, Wrapper(Vector2F(-3.903629f, 2.0266933f)), true),
@@ -1405,9 +2002,12 @@ class TriangleTests {
             )
             val triangleB = MutableTriangle(
                 centroid = Vector2F(-1.3333333f, -2.6666667f),
-                originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                originPointC = Vector2F(2.3333333f, -3.3333333f)
+                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                pointDistanceA = 3.72678f,
+                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                pointDistanceB = 1.6996733f,
+                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                pointDistanceC = 4.068852f
             )
             val triangleBArgs = listOf(
                 Arguments.of(triangleB, Wrapper(Vector2F(-1.9920129f, 0.9003196f)), true),
@@ -1429,9 +2029,12 @@ class TriangleTests {
             )
             val triangleC = MutableTriangle(
                 centroid = Vector2F(8f, -4.8453f),
-                originPointA = Vector2F(0f, 2.3094f),
-                originPointB = Vector2F(2f, -1.1547f),
-                originPointC = Vector2F(-2f, -1.1547f)
+                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                pointDistanceA = 2.3094f,
+                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                pointDistanceB = 2.3094f,
+                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                pointDistanceC = 2.3094f
             )
             val triangleCArgs = listOf(
                 Arguments.of(triangleC, Wrapper(Vector2F(8.0f, -2.6358979f)), true),
@@ -1476,13 +2079,24 @@ class TriangleTests {
         }
 
         @JvmStatic
+        fun copyThrowsExceptionArgs(): List<Arguments> =
+            constructorVector2FComplexFFloatComplexFFloatComplexFFloatThrowsExceptionArgs()
+
+        @JvmStatic
+        fun copyDoesNotThrowExceptionArgs(): List<Arguments> =
+            constructorVector2FComplexFFloatComplexFFloatComplexFFloatArgs()
+
+        @JvmStatic
         fun equalsAnyArgs(): List<Arguments> = equalsMutableTriangleArgs() + listOf(
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 null,
                 false
@@ -1490,30 +2104,42 @@ class TriangleTests {
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 DefaultTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 true
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 DefaultTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-139f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 false
             ),
@@ -1524,30 +2150,42 @@ class TriangleTests {
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 true
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-139f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 false
             ),
@@ -1558,29 +2196,41 @@ class TriangleTests {
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 )
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 )
             ),
         )
@@ -1590,28 +2240,40 @@ class TriangleTests {
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-0.3333333f, 3f),
-                    originPointA = Vector2F(-3.6666667f, -1f),
-                    originPointB = Vector2F(2.3333333f, -1f),
-                    originPointC = Vector2F(1.3333333f, 2f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
                 ),
                 "Triangle(" +
                         "centroid=${Vector2F(-0.3333333f, 3f)}, " +
-                        "originPointA=${Vector2F(-3.6666667f, -1f)}, " +
-                        "originPointB=${Vector2F(2.3333333f, -1f)}, " +
-                        "originPointC=${Vector2F(1.3333333f, 2f)})"
+                        "pathRotorA=${ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f))}, " +
+                        "pointDistanceA=${3.8005848f}, " +
+                        "pathRotorAB=${ComplexF.fromAngle(AngleF.fromDegrees(141.54628f))}, " +
+                        "pointDistanceB=${2.538591f}, " +
+                        "pathRotorAC=${ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f))}, " +
+                        "pointDistanceC=${2.4037008f})"
             ),
             Arguments.of(
                 MutableTriangle(
                     centroid = Vector2F(-1.3333333f, -2.6666667f),
-                    originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                    originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                    originPointC = Vector2F(2.3333333f, -3.3333333f)
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
                 ),
                 "Triangle(" +
                         "centroid=${Vector2F(-1.3333333f, -2.6666667f)}, " +
-                        "originPointA=${Vector2F(-0.6666667f, 3.6666667f)}, " +
-                        "originPointB=${Vector2F(-1.6666667f, -0.3333333f)}, " +
-                        "originPointC=${Vector2F(2.3333333f, -3.3333333f)})"
+                        "pathRotorA=${ComplexF.fromAngle(AngleF.fromDegrees(100.30485f))}, " +
+                        "pointDistanceA=${3.72678f}, " +
+                        "pathRotorAB=${ComplexF.fromAngle(AngleF.fromDegrees(91.00509f))}, " +
+                        "pointDistanceB=${1.6996733f}, " +
+                        "pathRotorAC=${ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f))}, " +
+                        "pointDistanceC=${4.068852f})"
             ),
         )
 
@@ -1621,38 +2283,56 @@ class TriangleTests {
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-0.3333333f, 3f),
-                        originPointA = Vector2F(-3.6666667f, -1f),
-                        originPointB = Vector2F(2.3333333f, -1f),
-                        originPointC = Vector2F(1.3333333f, 2f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                        pointDistanceA = 3.8005848f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                        pointDistanceB = 2.538591f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                        pointDistanceC = 2.4037008f
                     ),
                     Wrapper(Vector2F(-0.3333333f, 3f)),
-                    Wrapper(Vector2F(-3.6666667f, -1f)),
-                    Wrapper(Vector2F(2.3333333f, -1f)),
-                    Wrapper(Vector2F(1.3333333f, 2f))
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f))),
+                    3.8005848f,
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(141.54628f))),
+                    2.538591f,
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f))),
+                    2.4037008f
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
-                    Wrapper(Vector2F(-0.6666667f, 3.6666667f)),
-                    Wrapper(Vector2F(-1.6666667f, -0.3333333f)),
-                    Wrapper(Vector2F(2.3333333f, -3.3333333f))
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(100.30485f))),
+                    3.72678f,
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(91.00509f))),
+                    1.6996733f,
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f))),
+                    4.068852f
                 ),
                 Arguments.of(
                     MutableTriangle(
                         centroid = Vector2F(8f, -4.8453f),
-                        originPointA = Vector2F(0f, 2.3094f),
-                        originPointB = Vector2F(2f, -1.1547f),
-                        originPointC = Vector2F(-2f, -1.1547f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                        pointDistanceA = 2.3094f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(-120f)),
+                        pointDistanceB = 2.3094f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                        pointDistanceC = 2.3094f
                     ),
                     Wrapper(Vector2F(8f, -4.8453f)),
-                    Wrapper(Vector2F(0f, 2.3094f)),
-                    Wrapper(Vector2F(2f, -1.1547f)),
-                    Wrapper(Vector2F(-2f, -1.1547f))
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(90f))),
+                    2.3094f,
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(-120f))),
+                    2.3094f,
+                    Wrapper(ComplexF.fromAngle(AngleF.fromDegrees(120f))),
+                    2.3094f
                 ),
             )
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()

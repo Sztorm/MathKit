@@ -115,7 +115,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     override val sideLengthBC: Float
         get() = sideLength
 
-    override val sideLengthCA: Float
+    override val sideLengthAC: Float
         get() = sideLength
 
     override val sideCount: Int

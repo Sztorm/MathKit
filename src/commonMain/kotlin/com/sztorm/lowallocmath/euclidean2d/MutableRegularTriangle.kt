@@ -98,7 +98,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override val sideLengthBC: Float
         get() = _sideLength
 
-    override val sideLengthCA: Float
+    override val sideLengthAC: Float
         get() = _sideLength
 
     override inline val sideCount: Int

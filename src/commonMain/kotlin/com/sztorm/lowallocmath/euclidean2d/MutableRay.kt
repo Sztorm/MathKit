@@ -776,18 +776,20 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     }
 
     override fun intersects(triangle: Triangle): Boolean {
-        val (centroidX: Float, centroidY: Float) = triangle.centroid
-        val (opAX: Float, opAY: Float) = triangle.originPointA
-        val (opBX: Float, opBY: Float) = triangle.originPointB
-        val (opCX: Float, opCY: Float) = triangle.originPointC
-        val aX: Float = opAX + centroidX
-        val aY: Float = opAY + centroidY
-        val bX: Float = opBX + centroidX
-        val bY: Float = opBY + centroidY
-        val cX: Float = opCX + centroidX
-        val cY: Float = opCY + centroidY
-        val (oX: Float, oY: Float) = _origin
+        val (prAR: Float, prAI: Float) = triangle.pathRotorA
+        val pdA: Float = triangle.pointDistanceA
+        val (prBR: Float, prBI: Float) = triangle.pathRotorAB
+        val pdB: Float = triangle.pointDistanceB
+        val (prCR: Float, prCI: Float) = triangle.pathRotorAC
+        val pdC: Float = triangle.pointDistanceC
+        val (oX: Float, oY: Float) = _origin - triangle.centroid
         val (dirX: Float, dirY: Float) = _direction
+        val aX: Float = prAR * pdA
+        val aY: Float = prAI * pdA
+        val bX: Float = (prAR * prBR - prAI * prBI) * pdB
+        val bY: Float = (prAI * prBR + prAR * prBI) * pdB
+        val cX: Float = (prAR * prCR - prAI * prCI) * pdC
+        val cY: Float = (prAI * prCR + prAR * prCI) * pdC
         val aoX: Float = oX - aX
         val aoY: Float = oY - aY
         val abX: Float = bX - aX

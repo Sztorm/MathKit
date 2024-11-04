@@ -1048,16 +1048,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableTriangle(
                         centroid = Vector2F(-5.333333f, -0.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -1065,16 +1071,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableTriangle(
                         centroid = Vector2F(-0.8333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -1433,16 +1445,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     MutableTriangle(
                         centroid = Vector2F(-4f, 2f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -1450,16 +1468,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     MutableTriangle(
                         centroid = Vector2F(0.5f, 0f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -1930,16 +1954,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
-                        originPointB = Vector2F(-0.942809f, -1.4142137f),
-                        originPointC = Vector2F(4.0069385f, -0.70710707f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -1947,16 +1977,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.62761235f, -3.6735532f),
-                        originPointB = Vector2F(1.680161f, -0.2568028f),
-                        originPointC = Vector2F(-1.0525489f, 3.9303558f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -2325,16 +2361,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(2.6352313f, 2.6352308f),
-                        originPointB = Vector2F(-1.2227473f, 1.1805834f),
-                        originPointC = Vector2F(-1.4124844f, -3.8158147f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -2342,16 +2384,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-3.5020275f, 1.2746335f),
-                        originPointB = Vector2F(-0.5532168f, -1.6071217f),
-                        originPointC = Vector2F(4.055244f, 0.33248734f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -3049,17 +3097,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(0.5788478f, -7.949747f),
-                        originPointA = Vector2F(-3.0641294f, 2.1213202f),
-                        originPointB = Vector2F(-0.9428089f, -1.4142141f),
-                        originPointC = Vector2F(4.0069385f, -0.70710754f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -3067,17 +3121,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(12.777071f, -5.821378f),
-                        originPointA = Vector2F(-0.62761116f, -3.673554f),
-                        originPointB = Vector2F(1.6801624f, -0.25680304f),
-                        originPointC = Vector2F(-1.0525475f, 3.9303555f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -3085,17 +3145,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
-                        originPointB = Vector2F(-0.942809f, -1.4142137f),
-                        originPointC = Vector2F(4.0069385f, -0.70710707f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -3103,17 +3169,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.62761235f, -3.6735532f),
-                        originPointB = Vector2F(1.680161f, -0.2568028f),
-                        originPointC = Vector2F(-1.0525489f, 3.9303558f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -3815,17 +3887,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(11.190803f, 2.1908038f),
-                        originPointA = Vector2F(3.1572943f, -1.9799975f),
-                        originPointB = Vector2F(0.87762165f, 1.4555657f),
-                        originPointC = Vector2F(-4.0349126f, 0.5244317f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-32.092594f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -3833,17 +3911,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(-0.89819396f, -0.4892627f),
-                        originPointA = Vector2F(0.46015722f, 3.6982622f),
-                        originPointB = Vector2F(-1.6900891f, 0.18024561f),
-                        originPointC = Vector2F(1.2299317f, -3.878508f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(82.90741f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -3851,17 +3935,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(2.6352313f, 2.6352308f),
-                        originPointB = Vector2F(-1.2227473f, 1.1805834f),
-                        originPointC = Vector2F(-1.4124844f, -3.8158147f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -3869,17 +3959,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-3.5020275f, 1.2746335f),
-                        originPointB = Vector2F(-0.5532168f, -1.6071217f),
-                        originPointC = Vector2F(4.055244f, 0.33248734f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -4615,50 +4711,68 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     2f,
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-1.3333333f, 7.333333f),
-                        originPointB = Vector2F(-3.3333333f, -0.6666667f),
-                        originPointC = Vector2F(4.666667f, -6.666667f)
-                    )
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 7.45356f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 3.3993466f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 8.137704f
+                    ),
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     0.3f,
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.2f, 1.1f),
-                        originPointB = Vector2F(-0.5f, -0.1f),
-                        originPointC = Vector2F(0.7f, -1f)
-                    )
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 1.118034f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 0.509902f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 1.2206556f
+                    ),
                 ),
                 Arguments.of(
                     TriangleTests.Companion::clone,
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     1f,
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -4666,16 +4780,22 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     -1f,
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(0.6666667f, -3.6666667f),
-                        originPointB = Vector2F(1.6666667f, 0.3333333f),
-                        originPointC = Vector2F(-2.3333333f, 3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-79.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -5514,17 +5634,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     2f,
                     MutableTriangle(
                         centroid = Vector2F(-8.666666f, -2.3333333f),
-                        originPointA = Vector2F(-1.3333333f, 7.333333f),
-                        originPointB = Vector2F(-3.3333333f, -0.6666667f),
-                        originPointC = Vector2F(4.666667f, -6.666667f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 7.45356f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 3.3993466f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 8.137704f
                     )
                 ),
                 Arguments.of(
@@ -5532,17 +5658,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     0.3f,
                     MutableTriangle(
                         centroid = Vector2F(3.8f, -2.9f),
-                        originPointA = Vector2F(-0.2f, 1.1f),
-                        originPointB = Vector2F(-0.5f, -0.1f),
-                        originPointC = Vector2F(0.7f, -1f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 1.118034f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 0.509902f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 1.2206556f
                     )
                 ),
                 Arguments.of(
@@ -5550,17 +5682,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     1f,
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -5568,17 +5706,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(6f, -3f)),
                     -1f,
                     MutableTriangle(
                         centroid = Vector2F(13.333333f, -3.3333333f),
-                        originPointA = Vector2F(0.6666667f, -3.6666667f),
-                        originPointB = Vector2F(1.6666667f, 0.3333333f),
-                        originPointC = Vector2F(-2.3333333f, 3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-79.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -5586,17 +5730,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
                     2f,
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-1.3333333f, 7.333333f),
-                        originPointB = Vector2F(-3.3333333f, -0.6666667f),
-                        originPointC = Vector2F(4.666667f, -6.666667f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 7.45356f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 3.3993466f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 8.137704f
                     )
                 ),
             )
@@ -5993,17 +6143,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(-5.333333f, -0.6666667f),
-                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
-                        originPointB = Vector2F(-0.9428091f, -1.4142137f),
-                        originPointC = Vector2F(4.0069385f, -0.7071069f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -6011,17 +6167,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(-0.8333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.62761223f, -3.6735532f),
-                        originPointB = Vector2F(1.6801611f, -0.2568028f),
-                        originPointC = Vector2F(-1.0525489f, 3.9303558f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -6755,18 +6917,24 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     2f,
                     MutableTriangle(
                         centroid = Vector2F(-5.333333f, -0.6666667f),
-                        originPointA = Vector2F(-6.1282597f, 4.2426405f),
-                        originPointB = Vector2F(-1.8856182f, -2.828427f),
-                        originPointC = Vector2F(8.013877f, -1.4142137f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                        pointDistanceA = 7.45356f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 3.3993466f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 8.137704f
                     )
                 ),
                 Arguments.of(
@@ -6774,18 +6942,24 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     0.3f,
                     MutableTriangle(
                         centroid = Vector2F(-0.8333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.18828374f, -1.1020663f),
-                        originPointB = Vector2F(0.50404835f, -0.07704091f),
-                        originPointC = Vector2F(-0.31576473f, 1.1791066f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                        pointDistanceA = 1.118034f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 0.509902f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 1.2206556f
                     )
                 ),
                 Arguments.of(
@@ -6793,18 +6967,24 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     1f,
                     MutableTriangle(
                         centroid = Vector2F(-5.333333f, -0.6666667f),
-                        originPointA = Vector2F(-3.0641298f, 2.1213202f),
-                        originPointB = Vector2F(-0.9428091f, -1.4142137f),
-                        originPointC = Vector2F(4.0069385f, -0.7071069f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -6812,18 +6992,24 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     -1f,
                     MutableTriangle(
                         centroid = Vector2F(-5.333333f, -0.6666667f),
-                        originPointA = Vector2F(3.0641294f, -2.1213202f),
-                        originPointB = Vector2F(0.9428086f, 1.4142137f),
-                        originPointC = Vector2F(-4.0069385f, 0.7071064f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-34.69515f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )
@@ -7211,17 +7397,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(-4f, 2f)),
                     Wrapper(AngleF.fromDegrees(45f)),
                     MutableTriangle(
                         centroid = Vector2F(-4f, 2f),
-                        originPointA = Vector2F(2.635231f, 2.635231f),
-                        originPointB = Vector2F(-1.2227478f, 1.1805837f),
-                        originPointC = Vector2F(-1.4124842f, -3.8158145f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
                 Arguments.of(
@@ -7229,17 +7421,23 @@ class TransformableTests {
                     { a: Triangle, b: Triangle -> TriangleTests.areApproximatelyEqual(a, b) },
                     MutableTriangle(
                         centroid = Vector2F(-1.3333333f, -2.6666667f),
-                        originPointA = Vector2F(-0.6666667f, 3.6666667f),
-                        originPointB = Vector2F(-1.6666667f, -0.3333333f),
-                        originPointC = Vector2F(2.3333333f, -3.3333333f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     ),
                     Wrapper(Vector2F(0.5f, 0f)),
                     Wrapper(AngleF.fromDegrees(-200f)),
                     MutableTriangle(
                         centroid = Vector2F(0.5f, 0f),
-                        originPointA = Vector2F(-3.5020273f, 1.2746339f),
-                        originPointB = Vector2F(-0.5532167f, -1.6071215f),
-                        originPointC = Vector2F(4.055244f, 0.33248758f)
+                        pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                        pointDistanceA = 3.72678f,
+                        pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                        pointDistanceB = 1.6996733f,
+                        pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                        pointDistanceC = 4.068852f
                     )
                 ),
             )

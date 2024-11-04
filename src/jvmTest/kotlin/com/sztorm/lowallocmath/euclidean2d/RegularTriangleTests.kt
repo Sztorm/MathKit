@@ -104,7 +104,7 @@ class RegularTriangleTests {
         assertImmutabilityOf(triangle) {
             assertApproximation(expected, triangle.sideLengthAB)
             assertApproximation(expected, triangle.sideLengthBC)
-            assertApproximation(expected, triangle.sideLengthCA)
+            assertApproximation(expected, triangle.sideLengthAC)
         }
 
     @ParameterizedTest

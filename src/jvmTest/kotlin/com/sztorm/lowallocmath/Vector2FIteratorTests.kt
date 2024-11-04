@@ -98,11 +98,7 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ lineSegment.pointIterator() }, 0..1)
             }
-            val triangleArgs = TriangleTests.originPointsArgs().map {
-                val triangle = it.get()[0] as Triangle
-
-                Arguments.of({ triangle.originPointIterator() }, 0..2)
-            } + TriangleTests.pointsArgs().map {
+            val triangleArgs = TriangleTests.pointsArgs().map {
                 val triangle = it.get()[0] as Triangle
 
                 Arguments.of({ triangle.pointIterator() }, 0..2)
@@ -208,14 +204,7 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ lineSegment.pointIterator() }, points)
             }
-            val triangleArgs = TriangleTests.originPointsArgs().map {
-                val triangle = it.get()[0] as Triangle
-                val originPoints = listOf(
-                    triangle.originPointA, triangle.originPointB, triangle.originPointC
-                )
-
-                Arguments.of({ triangle.originPointIterator() }, originPoints)
-            } + TriangleTests.pointsArgs().map {
+            val triangleArgs = TriangleTests.pointsArgs().map {
                 val triangle = it.get()[0] as Triangle
                 val points = listOf(triangle.pointA, triangle.pointB, triangle.pointC)
 
