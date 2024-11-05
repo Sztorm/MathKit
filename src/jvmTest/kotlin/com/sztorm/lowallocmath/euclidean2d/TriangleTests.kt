@@ -237,6 +237,11 @@ class TriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("calibrateArgs")
+    fun calibrateMutatesTriangleCorrectly(triangle: MutableTriangle, expected: MutableTriangle) =
+        assertApproximation(expected, triangle.apply { calibrate() })
+
+    @ParameterizedTest
     @MethodSource("setArgs")
     fun setMutatesTriangleCorrectly(
         triangle: MutableTriangle,
@@ -1262,6 +1267,82 @@ class TriangleTests {
                 defaultTriangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun calibrateArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.fromPolar(
+                        magnitude = 7.1f, AngleF.fromDegrees(-164.74489f).radians
+                    ),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromPolar(
+                        magnitude = 1.6f, AngleF.fromDegrees(141.54628f).radians
+                    ),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromPolar(
+                        magnitude = 3.8f, AngleF.fromDegrees(-138.94519f).radians
+                    ),
+                    pointDistanceC = 2.4037008f
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.fromPolar(
+                        magnitude = 0.71f, AngleF.fromDegrees(-164.74489f).radians
+                    ),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromPolar(
+                        magnitude = 0.16f, AngleF.fromDegrees(141.54628f).radians
+                    ),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromPolar(
+                        magnitude = 0.38f, AngleF.fromDegrees(-138.94519f).radians
+                    ),
+                    pointDistanceC = 2.4037008f
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
+                    pointDistanceC = 2.4037008f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.ZERO,
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.ZERO,
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.ZERO,
+                    pointDistanceC = 2.4037008f
+                ),
+                MutableTriangle(
+                    centroid = Vector2F(-0.3333333f, 3f),
+                    pathRotorA = ComplexF.ONE,
+                    pointDistanceA = 3.8005848f,
+                    pathRotorAB = ComplexF.ONE,
+                    pointDistanceB = 2.538591f,
+                    pathRotorAC = ComplexF.ONE,
+                    pointDistanceC = 2.4037008f
+                )
+            ),
+        )
 
         @JvmStatic
         fun setArgs(): List<Arguments> = listOf(

@@ -1128,6 +1128,38 @@ class MutableTriangle : Triangle, MutableTransformable {
     override fun transformTo(position: Vector2F, orientation: ComplexF) =
         transformToImpl(position, orientation)
 
+    /**
+     * Calibrates the properties of this instance. If the [pathRotorA], [pathRotorAB], or
+     * [pathRotorAC] cannot be normalized, it will take the value of [ONE][ComplexF.ONE].
+     *
+     * Transformations and operations involving floating point numbers may introduce various
+     * inaccuracies that can be countered by this method.
+     */
+    fun calibrate() {
+        val pathRotorA: ComplexF = _pathRotorA.normalizedOrElse(ComplexF(1f, 0f))
+        val pathRotorAB: ComplexF = _pathRotorAB.normalizedOrElse(ComplexF(1f, 0f))
+        val pathRotorAC: ComplexF = _pathRotorAC.normalizedOrElse(ComplexF(1f, 0f))
+        val (cX: Float, cY: Float) = _centroid
+        val pdA: Float = _pointDistanceA
+        val pdB: Float = _pointDistanceB
+        val pdC: Float = _pointDistanceC
+        val (prAR: Float, prAI: Float) = pathRotorA
+        val (prABR: Float, prABI: Float) = pathRotorAB
+        val (prACR: Float, prACI: Float) = pathRotorAC
+        _pathRotorA = pathRotorA
+        _pathRotorAB = pathRotorAB
+        _pathRotorAC = pathRotorAC
+        _pointA = Vector2F(prAR * pdA + cX, prAI * pdA + cY)
+        _pointB = Vector2F(
+            (prAR * prABR - prAI * prABI) * pdB + cX,
+            (prAI * prABR + prAR * prABI) * pdB + cY
+        )
+        _pointC = Vector2F(
+            (prAR * prACR - prAI * prACI) * pdC + cX,
+            (prAI * prACR + prAR * prACI) * pdC + cY
+        )
+    }
+
     private inline fun setInternal(
         centroid: Vector2F,
         pathRotorA: ComplexF,
