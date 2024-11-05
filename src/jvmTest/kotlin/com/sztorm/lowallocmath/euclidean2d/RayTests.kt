@@ -10,10 +10,11 @@ import com.sztorm.lowallocmath.euclidean2d.RoundedRectangleTests.Companion.mapRo
 import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.TriangleTests.Companion.mapTrianglesToDefaultTriangles
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRay
+import com.sztorm.lowallocmath.euclidean2d.utils.assertApproximation
+import com.sztorm.lowallocmath.euclidean2d.utils.assertEquals
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource

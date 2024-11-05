@@ -4,11 +4,12 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 import com.sztorm.lowallocmath.euclidean2d.utils.DefaultRegularTriangle
+import com.sztorm.lowallocmath.euclidean2d.utils.assertApproximation
+import com.sztorm.lowallocmath.euclidean2d.utils.assertEquals
 import com.sztorm.lowallocmath.euclidean2d.utils.assertImmutabilityOf
 import com.sztorm.lowallocmath.isApproximately
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
-import com.sztorm.lowallocmath.utils.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
