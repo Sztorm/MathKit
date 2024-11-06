@@ -3,7 +3,6 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.euclidean2d.AnnulusTests.Companion.mapAnnulusesToDefaultAnnuluses
 import com.sztorm.lowallocmath.euclidean2d.CircleTests.Companion.mapCirclesToDefaultCircles
 import com.sztorm.lowallocmath.euclidean2d.LineSegmentTests.Companion.mapLineSegmentsToDefaultLineSegments
 import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
@@ -627,13 +626,6 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val annulusArgs = AnnulusTests.positionArgs().map {
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    *it.get()
-                )
-            }
             val circleArgs = CircleTests.positionArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -706,7 +698,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -721,43 +712,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableAnnulus(
-                        center = Vector2F(-0.5f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1093,8 +1047,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -1118,43 +1070,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedToArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableAnnulus(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1490,8 +1405,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -1533,13 +1446,6 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val annulusArgs = AnnulusTests.orientationArgs().map {
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    *it.get()
-                )
-            }
             val circleArgs = CircleTests.orientationArgs().map {
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1612,7 +1518,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                annulusArgs,
                 circleArgs,
                 lineSegmentArgs,
                 rayArgs,
@@ -1627,43 +1532,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -1999,8 +1867,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -2034,43 +1900,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -2406,8 +2235,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -2441,81 +2268,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-2.485281f, -4.4142137f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(10.867748f, -10.092604f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -3192,8 +2944,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -3228,81 +2978,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(12.082763f, 3.0827627f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-144.46233f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(-2.0835419f, -0.057831287f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-29.462322f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -3982,8 +3657,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -4094,77 +3767,6 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    2f,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 8f,
-                        innerRadius = 4f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    0.3f,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 1.2f,
-                        innerRadius = 0.6f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    1f,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    -1f,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -4802,8 +4404,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -4827,99 +4427,6 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    2f,
-                    MutableAnnulus(
-                        center = Vector2F(-8f, 7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 8f,
-                        innerRadius = 4f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    0.3f,
-                    MutableAnnulus(
-                        center = Vector2F(3.9f, -1.5f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 1.2f,
-                        innerRadius = 0.6f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    1f,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    -1f,
-                    MutableAnnulus(
-                        center = Vector2F(13f, -8f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-1f, 2f)),
-                    2f,
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 8f,
-                        innerRadius = 4f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -5753,8 +5260,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -5796,45 +5301,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(-0.5f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -6190,8 +5656,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -6226,85 +5690,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    2f,
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 8f,
-                        innerRadius = 4f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    0.3f,
-                    MutableAnnulus(
-                        center = Vector2F(-0.5f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-245f)),
-                        outerRadius = 1.2f,
-                        innerRadius = 0.6f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    1f,
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    -1f,
-                    MutableAnnulus(
-                        center = Vector2F(-5f, 4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(180f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -7016,8 +6401,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
@@ -7052,45 +6435,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val mutableAnnulusArgs = listOf(
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableAnnulus(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    AnnulusTests.Companion::clone,
-                    { a: Annulus, b: Annulus -> AnnulusTests.areApproximatelyEqual(a, b) },
-                    MutableAnnulus(
-                        center = Vector2F(-1f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-45f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableAnnulus(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        outerRadius = 4f,
-                        innerRadius = 2f
-                    )
-                ),
-            )
-            val defaultAnnulusArgs = mutableAnnulusArgs.mapAnnulusesToDefaultAnnuluses()
             val mutableCircleArgs = listOf(
                 Arguments.of(
                     CircleTests.Companion::clone,
@@ -7444,8 +6788,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableAnnulusArgs,
-                defaultAnnulusArgs,
                 mutableCircleArgs,
                 defaultCircleArgs,
                 mutableLineSegmentArgs,
