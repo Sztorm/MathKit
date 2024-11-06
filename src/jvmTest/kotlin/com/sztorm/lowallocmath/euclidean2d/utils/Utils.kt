@@ -695,6 +695,7 @@ fun assertEquals(expected: Triangle, actual: Triangle, message: String? = null) 
     )
 }
 
+/** Asserts that the [annulus] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(annulus: Annulus, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -704,6 +705,7 @@ inline fun assertImmutabilityOf(annulus: Annulus, block: () -> Unit) {
     assertEquals(copy, annulus, "Annulus must not be mutated.")
 }
 
+/** Asserts that the [circle] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(circle: Circle, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -713,6 +715,7 @@ inline fun assertImmutabilityOf(circle: Circle, block: () -> Unit) {
     assertEquals(copy, circle, "Circle must not be mutated.")
 }
 
+/** Asserts that the [lineSegment] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(lineSegment: LineSegment, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -722,6 +725,7 @@ inline fun assertImmutabilityOf(lineSegment: LineSegment, block: () -> Unit) {
     assertEquals(copy, lineSegment, "LineSegment must not be mutated.")
 }
 
+/** Asserts that the [ray] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(ray: Ray, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -731,6 +735,7 @@ inline fun assertImmutabilityOf(ray: Ray, block: () -> Unit) {
     assertEquals(copy, ray, "Ray must not be mutated.")
 }
 
+/** Asserts that the [rectangle] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(rectangle: Rectangle, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -740,6 +745,7 @@ inline fun assertImmutabilityOf(rectangle: Rectangle, block: () -> Unit) {
     assertEquals(copy, rectangle, "Rectangle must not be mutated.")
 }
 
+/** Asserts that the [regularPolygon] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(regularPolygon: RegularPolygon, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -749,6 +755,7 @@ inline fun assertImmutabilityOf(regularPolygon: RegularPolygon, block: () -> Uni
     assertEquals(copy, regularPolygon, "RegularPolygon must not be mutated.")
 }
 
+/** Asserts that the [regularTriangle] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(regularTriangle: RegularTriangle, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -758,6 +765,7 @@ inline fun assertImmutabilityOf(regularTriangle: RegularTriangle, block: () -> U
     assertEquals(copy, regularTriangle, "RegularTriangle must not be mutated.")
 }
 
+/** Asserts that the [rectangle] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(rectangle: RoundedRectangle, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -767,6 +775,7 @@ inline fun assertImmutabilityOf(rectangle: RoundedRectangle, block: () -> Unit) 
     assertEquals(copy, rectangle, "RoundedRectangle must not be mutated.")
 }
 
+/** Asserts that the [square] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(square: Square, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
@@ -776,6 +785,7 @@ inline fun assertImmutabilityOf(square: Square, block: () -> Unit) {
     assertEquals(copy, square, "Square must not be mutated.")
 }
 
+/** Asserts that the [triangle] will not be mutated in the following [block]. */
 @OptIn(ExperimentalContracts::class)
 inline fun assertImmutabilityOf(triangle: Triangle, block: () -> Unit) {
     contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
