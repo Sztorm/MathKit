@@ -102,6 +102,334 @@ class CircleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("movedByArgs")
+    fun movedByReturnsCorrectValue(
+        circle: Circle, displacement: Wrapper<Vector2F>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.movedBy(displacement.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("movedToArgs")
+    fun movedToReturnsCorrectValue(
+        circle: Circle, position: Wrapper<Vector2F>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.movedTo(position.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("moveByArgs")
+    fun moveByMutatesCircleCorrectly(
+        circle: MutableCircle, displacement: Wrapper<Vector2F>, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { moveBy(displacement.value) })
+
+    @ParameterizedTest
+    @MethodSource("moveToArgs")
+    fun moveToMutatesCircleCorrectly(
+        circle: MutableCircle, position: Wrapper<Vector2F>, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { moveTo(position.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotatedByAngleFArgs")
+    fun rotatedByAngleFReturnsCorrectValue(
+        circle: Circle, rotation: Wrapper<AngleF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedByComplexFArgs")
+    fun rotatedByComplexFReturnsCorrectValue(
+        circle: Circle, rotation: Wrapper<ComplexF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToAngleFArgs")
+    fun rotatedToAngleFReturnsCorrectValue(
+        circle: Circle, orientation: Wrapper<AngleF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToComplexFArgs")
+    fun rotatedToComplexFReturnsCorrectValue(
+        circle: Circle, orientation: Wrapper<ComplexF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
+    fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
+        circle: Circle, point: Wrapper<Vector2F>, rotation: Wrapper<AngleF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedAroundPointBy(point.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
+    fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
+        circle: Circle, point: Wrapper<Vector2F>, rotation: Wrapper<ComplexF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedAroundPointBy(point.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
+    fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
+        circle: Circle, point: Wrapper<Vector2F>, orientation: Wrapper<AngleF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedAroundPointTo(point.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
+    fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
+        circle: Circle, point: Wrapper<Vector2F>, orientation: Wrapper<ComplexF>, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.rotatedAroundPointTo(point.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotateByAngleFArgs")
+    fun rotateByAngleFMutatesCircleCorrectly(
+        circle: MutableCircle, rotation: Wrapper<AngleF>, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateByComplexFArgs")
+    fun rotateByComplexFMutatesCircleCorrectly(
+        circle: MutableCircle, rotation: Wrapper<ComplexF>, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToAngleFArgs")
+    fun rotateToAngleFMutatesCircleCorrectly(
+        circle: MutableCircle, orientation: Wrapper<AngleF>, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToComplexFArgs")
+    fun rotateToComplexFMutatesCircleCorrectly(
+        circle: MutableCircle, orientation: Wrapper<ComplexF>, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FAngleFArgs")
+    fun rotateAroundPointByVector2FAngleFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FComplexFArgs")
+    fun rotateAroundPointByVector2FComplexFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FAngleFArgs")
+    fun rotateAroundPointToVector2FAngleFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FComplexFArgs")
+    fun rotateAroundPointToVector2FComplexFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("scaledByArgs")
+    fun scaledByReturnsCorrectValue(
+        circle: Circle, factor: Float, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.scaledBy(factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("dilatedByArgs")
+    fun dilatedByReturnsCorrectValue(
+        circle: Circle, point: Wrapper<Vector2F>, factor: Float, expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.dilatedBy(point.value, factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("scaleByArgs")
+    fun scaleByMutatesCircleCorrectly(
+        circle: MutableCircle, factor: Float, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { scaleBy(factor) })
+
+    @ParameterizedTest
+    @MethodSource("dilateByArgs")
+    fun dilateByMutatesCircleCorrectly(
+        circle: MutableCircle, point: Wrapper<Vector2F>, factor: Float, expected: MutableCircle
+    ) = assertApproximation(expected, circle.apply { dilateBy(point.value, factor) })
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFArgs")
+    fun transformedByVector2FAngleFReturnsCorrectValue(
+        circle: Circle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.transformedBy(displacement.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFArgs")
+    fun transformedByVector2FComplexFReturnsCorrectValue(
+        circle: Circle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.transformedBy(displacement.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFFloatArgs")
+    fun transformedByVector2FAngleFFloatReturnsCorrectValue(
+        circle: Circle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(
+            expected, circle.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFFloatArgs")
+    fun transformedByVector2FComplexFFloatReturnsCorrectValue(
+        circle: Circle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(
+            expected, circle.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FAngleFArgs")
+    fun transformedToVector2FAngleFReturnsCorrectValue(
+        circle: Circle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FComplexFArgs")
+    fun transformedToVector2FComplexFReturnsCorrectValue(
+        circle: Circle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: Circle
+    ) = assertImmutabilityOf(circle) {
+        assertApproximation(expected, circle.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFArgs")
+    fun transformByVector2FAngleFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFArgs")
+    fun transformByVector2FComplexFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFFloatArgs")
+    fun transformByVector2FAngleFFloatMutatesCircleCorrectly(
+        circle: MutableCircle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFFloatArgs")
+    fun transformByVector2FComplexFFloatMutatesCircleCorrectly(
+        circle: MutableCircle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FAngleFArgs")
+    fun transformToVector2FAngleFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FComplexFArgs")
+    fun transformToVector2FComplexFMutatesCircleCorrectly(
+        circle: MutableCircle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableCircle
+    ) = assertApproximation(
+        expected, circle.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
     @MethodSource("calibrateArgs")
     fun calibrateMutatesCircleCorrectly(circle: MutableCircle, expected: MutableCircle) =
         assertApproximation(expected, circle.apply { calibrate() })
@@ -322,9 +650,6 @@ class CircleTests {
             (a.center == b.center) and
                     (a.orientation == b.orientation) and
                     (a.radius == b.radius)
-
-        @JvmStatic
-        fun clone(circle: Circle) = circle.copy()
 
         @JvmStatic
         fun List<Arguments>.mapCirclesToDefaultCircles() = map { args ->
@@ -552,6 +877,775 @@ class CircleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun movedByArgs(): List<Arguments> {
+            val mutableCircleArgs = moveByArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun movedToArgs(): List<Arguments> {
+            val mutableCircleArgs = moveToArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun moveByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableCircle(
+                    center = Vector2F(-3f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableCircle(
+                    center = Vector2F(1.5f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun moveToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableCircle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableCircle(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotatedByAngleFArgs(): List<Arguments> {
+            val mutableCircleArgs = rotateByAngleFArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedByComplexFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedToAngleFArgs(): List<Arguments> {
+            val mutableCircleArgs = rotateToAngleFArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedToComplexFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val mutableCircleArgs = rotateAroundPointByVector2FAngleFArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val mutableCircleArgs = rotateAroundPointToVector2FAngleFArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateByAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateByComplexFArgs(): List<Arguments> = rotateByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateToAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateToComplexFArgs(): List<Arguments> = rotateToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(-1.0710678f, -3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(8.988362f, -9.408564f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(1f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(1f, 2f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(11f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(-0.64463043f, -0.58155227f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(115f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(1f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(1f, 2f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun scaledByArgs(): List<Arguments> {
+            val mutableCircleArgs = scaleByArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun dilatedByArgs(): List<Arguments> {
+            val mutableCircleArgs = dilateByArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun scaleByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                2f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 8f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                0.3f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 1.2f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                1f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                -1f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(270f)),
+                    radius = 4f
+                ),
+            ),
+        )
+
+        @JvmStatic
+        fun dilateByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                2f,
+                MutableCircle(
+                    center = Vector2F(-4f, 7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 8f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                0.3f,
+                MutableCircle(
+                    center = Vector2F(4.5f, -1.5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 1.2f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                1f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                -1f,
+                MutableCircle(
+                    center = Vector2F(11f, -8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(270f)),
+                    radius = 4f
+                ),
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(1f, 2f)),
+                2f,
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 8f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformedByVector2FAngleFArgs(): List<Arguments> {
+            val mutableCircleArgs = transformByVector2FAngleFArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
+            val mutableCircleArgs = transformByVector2FAngleFFloatArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformedByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedToVector2FAngleFArgs(): List<Arguments> {
+            val mutableCircleArgs = transformToVector2FAngleFArgs()
+            val defaultCircleArgs = mutableCircleArgs.mapCirclesToDefaultCircles()
+
+            return listOf(
+                mutableCircleArgs,
+                defaultCircleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedToVector2FComplexFArgs(): List<Arguments> =
+            transformedToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(-3f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(1.5f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFArgs(): List<Arguments> =
+            transformByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFFloatArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                2f,
+                MutableCircle(
+                    center = Vector2F(-3f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    radius = 8f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                0.3f,
+                MutableCircle(
+                    center = Vector2F(1.5f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-110f)),
+                    radius = 1.2f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                1f,
+                MutableCircle(
+                    center = Vector2F(-3f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(135f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                -1f,
+                MutableCircle(
+                    center = Vector2F(-3f, 4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(315f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableCircle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    radius = 4f
+                )
+            ),
+            Arguments.of(
+                MutableCircle(
+                    center = Vector2F(1f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(90f)),
+                    radius = 4f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableCircle(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    radius = 4f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformToVector2FComplexFArgs(): List<Arguments> =
+            transformToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
 
         @JvmStatic
         fun calibrateArgs(): List<Arguments> = listOf(
