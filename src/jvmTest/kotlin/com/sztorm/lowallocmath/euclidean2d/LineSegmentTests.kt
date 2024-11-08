@@ -113,6 +113,369 @@ class LineSegmentTests {
         }
 
     @ParameterizedTest
+    @MethodSource("movedByArgs")
+    fun movedByReturnsCorrectValue(
+        lineSegment: LineSegment, displacement: Wrapper<Vector2F>, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.movedBy(displacement.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("movedToArgs")
+    fun movedToReturnsCorrectValue(
+        lineSegment: LineSegment, position: Wrapper<Vector2F>, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.movedTo(position.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("moveByArgs")
+    fun moveByMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        displacement: Wrapper<Vector2F>,
+        expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { moveBy(displacement.value) })
+
+    @ParameterizedTest
+    @MethodSource("moveToArgs")
+    fun moveToMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        position: Wrapper<Vector2F>,
+        expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { moveTo(position.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotatedByAngleFArgs")
+    fun rotatedByAngleFReturnsCorrectValue(
+        lineSegment: LineSegment, rotation: Wrapper<AngleF>, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedByComplexFArgs")
+    fun rotatedByComplexFReturnsCorrectValue(
+        lineSegment: LineSegment, rotation: Wrapper<ComplexF>, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToAngleFArgs")
+    fun rotatedToAngleFReturnsCorrectValue(
+        lineSegment: LineSegment, orientation: Wrapper<AngleF>, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToComplexFArgs")
+    fun rotatedToComplexFReturnsCorrectValue(
+        lineSegment: LineSegment, orientation: Wrapper<ComplexF>, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
+    fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.rotatedAroundPointBy(point.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
+    fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.rotatedAroundPointBy(point.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
+    fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
+    fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotateByAngleFArgs")
+    fun rotateByAngleFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment, rotation: Wrapper<AngleF>, expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateByComplexFArgs")
+    fun rotateByComplexFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment, rotation: Wrapper<ComplexF>, expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToAngleFArgs")
+    fun rotateToAngleFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment, orientation: Wrapper<AngleF>, expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToComplexFArgs")
+    fun rotateToComplexFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FAngleFArgs")
+    fun rotateAroundPointByVector2FAngleFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FComplexFArgs")
+    fun rotateAroundPointByVector2FComplexFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FAngleFArgs")
+    fun rotateAroundPointToVector2FAngleFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FComplexFArgs")
+    fun rotateAroundPointToVector2FComplexFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("scaledByArgs")
+    fun scaledByReturnsCorrectValue(
+        lineSegment: LineSegment, factor: Float, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.scaledBy(factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("dilatedByArgs")
+    fun dilatedByReturnsCorrectValue(
+        lineSegment: LineSegment, point: Wrapper<Vector2F>, factor: Float, expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.dilatedBy(point.value, factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("scaleByArgs")
+    fun scaleByMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment, factor: Float, expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { scaleBy(factor) })
+
+    @ParameterizedTest
+    @MethodSource("dilateByArgs")
+    fun dilateByMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: MutableLineSegment
+    ) = assertApproximation(expected, lineSegment.apply { dilateBy(point.value, factor) })
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFArgs")
+    fun transformedByVector2FAngleFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.transformedBy(displacement.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFArgs")
+    fun transformedByVector2FComplexFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.transformedBy(displacement.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFFloatArgs")
+    fun transformedByVector2FAngleFFloatReturnsCorrectValue(
+        lineSegment: LineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFFloatArgs")
+    fun transformedByVector2FComplexFFloatReturnsCorrectValue(
+        lineSegment: LineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(
+            expected, lineSegment.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FAngleFArgs")
+    fun transformedToVector2FAngleFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FComplexFArgs")
+    fun transformedToVector2FComplexFReturnsCorrectValue(
+        lineSegment: LineSegment,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: LineSegment
+    ) = assertImmutabilityOf(lineSegment) {
+        assertApproximation(expected, lineSegment.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFArgs")
+    fun transformByVector2FAngleFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFArgs")
+    fun transformByVector2FComplexFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFFloatArgs")
+    fun transformByVector2FAngleFFloatMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected,
+        lineSegment.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFFloatArgs")
+    fun transformByVector2FComplexFFloatMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected,
+        lineSegment.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FAngleFArgs")
+    fun transformToVector2FAngleFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FComplexFArgs")
+    fun transformToVector2FComplexFMutatesLineSegmentCorrectly(
+        lineSegment: MutableLineSegment,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableLineSegment
+    ) = assertApproximation(
+        expected, lineSegment.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
     @MethodSource("calibrateArgs")
     fun calibrateMutatesLineSegmentCorrectly(
         lineSegment: MutableLineSegment, expected: MutableLineSegment
@@ -257,9 +620,6 @@ class LineSegmentTests {
                     (a.length == b.length) and
                     (a.pointA == b.pointA) and
                     (a.pointB == b.pointB)
-
-        @JvmStatic
-        fun clone(lineSegment: LineSegment) = lineSegment.copy()
 
         @JvmStatic
         fun List<Arguments>.mapLineSegmentsToDefaultLineSegments() = map { args ->
@@ -475,6 +835,786 @@ class LineSegmentTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun movedByArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = moveByArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun movedToArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = moveToArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun moveByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableLineSegment(
+                    center = Vector2F(-7f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableLineSegment(
+                    center = Vector2F(-2.5f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun moveToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableLineSegment(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableLineSegment(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotatedByAngleFArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = rotateByAngleFArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedByComplexFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedToAngleFArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = rotateToAngleFArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedToComplexFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = rotateAroundPointByVector2FAngleFArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = rotateAroundPointToVector2FAngleFArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateByAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateByComplexFArgs(): List<Arguments> = rotateByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateToAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateToComplexFArgs(): List<Arguments> = rotateToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-3.1923876f, -6.535534f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(13.089153f, -9.836952f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-3.0f, 1.0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(-3.0f, 1.0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(12.964194f, 3.9641943f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(5.527539f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(-3.254899f, 0.36850786f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120.52754f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-3f, 1f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun scaledByArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = scaleByArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun dilatedByArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = dilateByArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun scaleByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                2f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 8.944272f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                0.3f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 1.3416408f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                1f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                -1f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-63.43495f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun dilateByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                2f,
+                MutableLineSegment(
+                    center = Vector2F(-12f, 5f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 8.944272f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                0.3f,
+                MutableLineSegment(
+                    center = Vector2F(3.3f, -1.8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 1.3416408f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                1f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                -1f,
+                MutableLineSegment(
+                    center = Vector2F(15f, -7f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-63.43495f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-3f, 1f)),
+                2f,
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 8.944272f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformedByVector2FAngleFArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = transformByVector2FAngleFArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = transformByVector2FAngleFFloatArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformedByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedToVector2FAngleFArgs(): List<Arguments> {
+            val mutableLineSegmentArgs = transformToVector2FAngleFArgs()
+            val defaultLineSegmentArgs = mutableLineSegmentArgs
+                .mapLineSegmentsToDefaultLineSegments()
+
+            return listOf(
+                mutableLineSegmentArgs,
+                defaultLineSegmentArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedToVector2FComplexFArgs(): List<Arguments> =
+            transformedToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-7f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(-2.5f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFArgs(): List<Arguments> =
+            transformByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFFloatArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                2f,
+                MutableLineSegment(
+                    center = Vector2F(-7f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
+                    length = 8.944272f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                0.3f,
+                MutableLineSegment(
+                    center = Vector2F(-2.5f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
+                    length = 1.3416408f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                1f,
+                MutableLineSegment(
+                    center = Vector2F(-7f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                -1f,
+                MutableLineSegment(
+                    center = Vector2F(-7f, 3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-18.43495f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableLineSegment(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    length = 4.472136f
+                )
+            ),
+            Arguments.of(
+                MutableLineSegment(
+                    center = Vector2F(-3f, 1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
+                    length = 4.472136f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableLineSegment(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    length = 4.472136f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformToVector2FComplexFArgs(): List<Arguments> =
+            transformToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
 
         @JvmStatic
         fun calibrateArgs(): List<Arguments> = listOf(

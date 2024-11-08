@@ -3,7 +3,6 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.euclidean2d.LineSegmentTests.Companion.mapLineSegmentsToDefaultLineSegments
 import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.euclidean2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
 import com.sztorm.lowallocmath.euclidean2d.RegularPolygonTests.Companion.mapRegularPolygonsToDefaultRegularPolygons
@@ -625,15 +624,6 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val lineSegmentArgs = LineSegmentTests.positionArgs().map {
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    *it.get()
-                )
-            }
             val rayArgs = RayTests.positionArgs().map {
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -690,7 +680,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -703,44 +692,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableLineSegment(
-                        center = Vector2F(-7f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableLineSegment(
-                        center = Vector2F(-2.5f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1005,8 +956,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -1026,44 +975,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedToArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableLineSegment(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableLineSegment(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1328,8 +1239,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -1367,15 +1276,6 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val lineSegmentArgs = LineSegmentTests.orientationArgs().map {
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    *it.get()
-                )
-            }
             val rayArgs = RayTests.orientationArgs().map {
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1432,7 +1332,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                lineSegmentArgs,
                 rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
@@ -1445,44 +1344,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -1747,8 +1608,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -1778,44 +1637,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -2080,8 +1901,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -2111,82 +1930,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3.1923876f, -6.535534f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(13.089153f, -9.836952f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3.0f, 1.0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3.0f, 1.0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -2720,8 +2463,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -2752,82 +2493,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(12.964194f, 3.9641943f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(5.527539f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3.254899f, 0.36850786f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120.52754f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        length = 4.472136f
-                    ),
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        length = 4.472136f
-                    ),
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -3364,8 +3029,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -3472,78 +3135,6 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    2f,
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 8.944272f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    0.3f,
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 1.3416408f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    1f,
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    -1f,
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-63.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -4046,8 +3637,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -4067,100 +3656,6 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    2f,
-                    MutableLineSegment(
-                        center = Vector2F(-12f, 5f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 8.944272f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    0.3f,
-                    MutableLineSegment(
-                        center = Vector2F(3.3f, -1.8f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 1.3416408f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    1f,
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    -1f,
-                    MutableLineSegment(
-                        center = Vector2F(15f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-63.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-3f, 1f)),
-                    2f,
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 8.944272f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -4817,8 +4312,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -4856,46 +4349,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-7f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(-2.5f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -5176,8 +4629,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -5208,86 +4659,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    2f,
-                    MutableLineSegment(
-                        center = Vector2F(-7f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
-                        length = 8.944272f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    0.3f,
-                    MutableLineSegment(
-                        center = Vector2F(-2.5f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-83.43495f)),
-                        length = 1.3416408f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    1f,
-                    MutableLineSegment(
-                        center = Vector2F(-7f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.56505f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    -1f,
-                    MutableLineSegment(
-                        center = Vector2F(-7f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-18.43495f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -5848,8 +5219,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
@@ -5880,46 +5249,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val mutableLineSegmentArgs = listOf(
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableLineSegment(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        length = 4.472136f
-                    )
-                ),
-                Arguments.of(
-                    LineSegmentTests.Companion::clone,
-                    { a: LineSegment, b: LineSegment ->
-                        LineSegmentTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableLineSegment(
-                        center = Vector2F(-3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(116.56505f)),
-                        length = 4.472136f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableLineSegment(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        length = 4.472136f
-                    )
-                ),
-            )
-            val defaultLineSegmentArgs = mutableLineSegmentArgs
-                .mapLineSegmentsToDefaultLineSegments()
             val mutableRayArgs = listOf(
                 Arguments.of(
                     RayTests.Companion::clone,
@@ -6198,8 +5527,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableLineSegmentArgs,
-                defaultLineSegmentArgs,
                 mutableRayArgs,
                 defaultRayArgs,
                 mutableRectangleArgs,
