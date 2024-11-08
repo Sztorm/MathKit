@@ -95,18 +95,3 @@ fun assertApproximation(
         messagePrefix(message) + mainMessage
     )
 }
-
-/**
- * Asserts that the [expected] value is equal to the [actual] value using [equalityComparator],
- * with an optional [message].
- */
-inline fun <reified T> assertEquals(
-    expected: T, actual: T, equalityComparator: (T, T) -> Boolean, message: String? = null
-) {
-    val prefix: String = if (message == null) "" else "$message. "
-
-    assertTrue(
-        equalityComparator(expected, actual),
-        prefix + "Expected <$expected>, actual <$actual>."
-    )
-}
