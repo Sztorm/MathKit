@@ -1940,7 +1940,8 @@ class CircleTests {
                 Arguments.of(
                     circle,
                     MutableRay(
-                        origin = Vector2F(-8.1f, 0f), direction = Vector2F(0f, 1f)
+                        origin = Vector2F(-8.1f, 0f),
+                        direction = AngleF.fromDegrees(90f).toVector2F()
                     ),
                     false
                 ),
@@ -1948,21 +1949,23 @@ class CircleTests {
                     circle,
                     MutableRay(
                         origin = Vector2F(-8.1f, 0f),
-                        direction = Vector2F(0.17365f, 0.98481f)
+                        direction = AngleF.fromDegrees(80f).toVector2F()
                     ),
                     true
                 ),
                 Arguments.of(
                     circle,
                     MutableRay(
-                        origin = Vector2F(-4f, 7.9f), direction = Vector2F(1f, 0f)
+                        origin = Vector2F(-4f, 7.9f),
+                        direction = AngleF.fromDegrees(0f).toVector2F()
                     ),
                     true
                 ),
                 Arguments.of(
                     circle,
                     MutableRay(
-                        origin = Vector2F(-4f, 8.1f), direction = Vector2F(1f, 0f)
+                        origin = Vector2F(-4f, 8.1f),
+                        direction = AngleF.fromDegrees(0f).toVector2F()
                     ),
                     false
                 ),
@@ -1970,7 +1973,7 @@ class CircleTests {
                     circle,
                     MutableRay(
                         origin = Vector2F(-4f, 7.9f),
-                        direction = Vector2F(-0.70711f, -0.70711f)
+                        direction = AngleF.fromDegrees(-135f).toVector2F()
                     ),
                     true
                 ),
@@ -1978,7 +1981,7 @@ class CircleTests {
                     circle,
                     MutableRay(
                         origin = Vector2F(-4f, -2f),
-                        direction = Vector2F(0.76604f, 0.64279f)
+                        direction = AngleF.fromDegrees(40f).toVector2F()
                     ),
                     false
                 ),
@@ -1986,7 +1989,7 @@ class CircleTests {
                     circle,
                     MutableRay(
                         origin = Vector2F(-4f, -2f),
-                        direction = Vector2F(0.64279f, 0.76604f)
+                        direction = AngleF.fromDegrees(50f).toVector2F()
                     ),
                     true
                 ),

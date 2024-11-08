@@ -3,7 +3,6 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.euclidean2d.RayTests.Companion.mapRaysToDefaultRays
 import com.sztorm.lowallocmath.euclidean2d.RectangleTests.Companion.mapRectanglesToDefaultRectangles
 import com.sztorm.lowallocmath.euclidean2d.RegularPolygonTests.Companion.mapRegularPolygonsToDefaultRegularPolygons
 import com.sztorm.lowallocmath.euclidean2d.RegularTriangleTests.Companion.mapRegularTrianglesToDefaultRegularTriangles
@@ -624,13 +623,6 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val rayArgs = RayTests.positionArgs().map {
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    *it.get()
-                )
-            }
             val rectangleArgs = RectangleTests.positionArgs().map {
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -680,7 +672,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -692,23 +683,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableRay(Vector2F(-8f, 5f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableRay(Vector2F(-3.5f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -956,8 +930,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -975,23 +947,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedToArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableRay(Vector2F(-4f, 2f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableRay(Vector2F(0.5f, 0f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -1239,8 +1194,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -1276,13 +1229,6 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val rayArgs = RayTests.orientationArgs().map {
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    *it.get()
-                )
-            }
             val rectangleArgs = RectangleTests.orientationArgs().map {
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -1332,7 +1278,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                rayArgs,
                 rectangleArgs,
                 regularPolygonArgs,
                 regularTriangleArgs,
@@ -1344,23 +1289,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(1f, 0f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.42261827f, 0.9063078f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -1608,8 +1536,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -1637,23 +1563,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.70710677f, 0.70710677f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.9396926f, 0.34202015f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -1901,8 +1810,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -1930,44 +1837,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-5.3137083f, -5.8284273f), Vector2F(1f, 0f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(
-                        Vector2F(13.344805f, -12.058357f),
-                        Vector2F(-0.42261827f, 0.9063078f)
-                    ),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(1f, 0f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.42261827f, 0.9063078f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -2463,8 +2332,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -2493,47 +2360,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(
-                        Vector2F(14.246211f, 5.246211f),
-                        Vector2F(-0.85749304f, -0.51449573f)
-                    ),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(
-                        Vector2F(-4.958605f, 0.988606f),
-                        Vector2F(0.82868373f, -0.5597173f)
-                    ),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.70710677f, 0.70710677f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.9396926f, 0.34202015f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -3029,8 +2855,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -3135,37 +2959,6 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    2f,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    0.3f,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    1f,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    -1f,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(-0.7071068f, 0.7071068f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -3637,8 +3430,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -3656,49 +3447,6 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    2f,
-                    MutableRay(Vector2F(-14f, 9f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    0.3f,
-                    MutableRay(Vector2F(3f, -1.2f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    1f,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(6f, -3f)),
-                    -1f,
-                    MutableRay(Vector2F(16f, -9f), Vector2F(-0.7071068f, 0.7071068f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 3f)),
-                    2f,
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -4312,8 +4060,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -4349,27 +4095,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-8f, 5f), Vector2F(1f, 0f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(
-                        Vector2F(-3.5f, 3f), Vector2F(-0.42261827f, 0.9063078f)
-                    ),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -4629,8 +4354,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -4659,47 +4382,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    2f,
-                    MutableRay(Vector2F(-8f, 5f), Vector2F(1f, 0f))
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    0.3f,
-                    MutableRay(
-                        Vector2F(-3.5f, 3f), Vector2F(-0.42261827f, 0.9063078f)
-                    )
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    1f,
-                    MutableRay(Vector2F(-8f, 5f), Vector2F(1f, 0f))
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    -1f,
-                    MutableRay(Vector2F(-8f, 5f), Vector2F(-1f, 0f))
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -5219,8 +4901,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,
@@ -5249,25 +4929,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val mutableRayArgs = listOf(
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRay(Vector2F(-4f, 2f), Vector2F(0.70710677f, 0.70710677f)),
-                ),
-                Arguments.of(
-                    RayTests.Companion::clone,
-                    { a: Ray, b: Ray -> RayTests.areApproximatelyEqual(a, b) },
-                    MutableRay(Vector2F(-4f, 3f), Vector2F(0.7071068f, -0.7071068f)),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRay(Vector2F(0.5f, 0f), Vector2F(-0.9396926f, 0.34202015f)),
-                ),
-            )
-            val defaultRayArgs = mutableRayArgs.mapRaysToDefaultRays()
             val mutableRectangleArgs = listOf(
                 Arguments.of(
                     RectangleTests.Companion::clone,
@@ -5527,8 +5188,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRayArgs,
-                defaultRayArgs,
                 mutableRectangleArgs,
                 defaultRectangleArgs,
                 mutableRegularPolygonArgs,

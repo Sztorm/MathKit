@@ -2310,77 +2310,88 @@ class LineSegmentTests {
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(-2.1f, 5f), direction = Vector2F(1f, 0f)
+                            origin = Vector2F(-2.1f, 5f),
+                            direction = AngleF.fromDegrees(0f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(2.9f, 5f), direction = Vector2F(1f, 0f)
+                            origin = Vector2F(2.9f, 5f),
+                            direction = AngleF.fromDegrees(0f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(3.1f, 5f), direction = Vector2F(1f, 0f)
+                            origin = Vector2F(3.1f, 5f),
+                            direction = AngleF.fromDegrees(0f).toVector2F()
                         ),
                         false
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(-2.1f, 5.1f), direction = Vector2F(1f, 0f)
+                            origin = Vector2F(-2.1f, 5.1f),
+                            direction = AngleF.fromDegrees(0f).toVector2F()
                         ),
                         false
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(3.1f, 5f), direction = Vector2F(-1f, 0f)
+                            origin = Vector2F(3.1f, 5f),
+                            direction = AngleF.fromDegrees(180f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(-1.9f, 5f), direction = Vector2F(-1f, 0f)
+                            origin = Vector2F(-1.9f, 5f),
+                            direction = AngleF.fromDegrees(180f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(-2.1f, 5f), direction = Vector2F(-1f, 0f)
+                            origin = Vector2F(-2.1f, 5f),
+                            direction = AngleF.fromDegrees(180f).toVector2F()
                         ),
                         false
                     ),
                     Arguments.of(
                         lineSegmentA,
                         MutableRay(
-                            origin = Vector2F(3.1f, 4.9f), direction = Vector2F(-1f, 0f)
+                            origin = Vector2F(3.1f, 4.9f),
+                            direction = AngleF.fromDegrees(180f).toVector2F()
                         ),
                         false
                     ),
                     Arguments.of(
                         lineSegmentB,
                         MutableRay(
-                            origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, 1f)
+                            origin = Vector2F(-2f, -6.1f),
+                            direction = AngleF.fromDegrees(90f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentB,
                         MutableRay(
-                            origin = Vector2F(-2f, -1.1f), direction = Vector2F(0f, 1f)
+                            origin = Vector2F(-2f, -1.1f),
+                            direction = AngleF.fromDegrees(90f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentB,
                         MutableRay(
-                            origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, 1f)
+                            origin = Vector2F(-2f, -0.9f),
+                            direction = AngleF.fromDegrees(90f).toVector2F()
                         ),
                         false
                     ),
@@ -2388,28 +2399,31 @@ class LineSegmentTests {
                         lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-2.1f, -6.1f),
-                            direction = Vector2F(0f, 1f)
+                            direction = AngleF.fromDegrees(90f).toVector2F()
                         ),
                         false
                     ),
                     Arguments.of(
                         lineSegmentB,
                         MutableRay(
-                            origin = Vector2F(-2f, -0.9f), direction = Vector2F(0f, -1f)
+                            origin = Vector2F(-2f, -0.9f),
+                            direction = AngleF.fromDegrees(-90f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentB,
                         MutableRay(
-                            origin = Vector2F(-2f, -5.9f), direction = Vector2F(0f, -1f)
+                            origin = Vector2F(-2f, -5.9f),
+                            direction = AngleF.fromDegrees(-90f).toVector2F()
                         ),
                         true
                     ),
                     Arguments.of(
                         lineSegmentB,
                         MutableRay(
-                            origin = Vector2F(-2f, -6.1f), direction = Vector2F(0f, -1f)
+                            origin = Vector2F(-2f, -6.1f),
+                            direction = AngleF.fromDegrees(-90f).toVector2F()
                         ),
                         false
                     ),
@@ -2417,7 +2431,7 @@ class LineSegmentTests {
                         lineSegmentB,
                         MutableRay(
                             origin = Vector2F(-1.9f, -0.9f),
-                            direction = Vector2F(0f, -1f)
+                            direction = AngleF.fromDegrees(-90f).toVector2F()
                         ),
                         false
                     ),
@@ -2425,8 +2439,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(5.1f, -2.1f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(135f).toVector2F()
                         ),
                         true
                     ),
@@ -2434,8 +2447,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(1.1f, 1.9f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(135f).toVector2F()
                         ),
                         true
                     ),
@@ -2443,8 +2455,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(0.9f, 2.1f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(135f).toVector2F()
                         ),
                         false
                     ),
@@ -2452,8 +2463,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(5.2f, -2.1f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(135f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(135f).toVector2F()
                         ),
                         false
                     ),
@@ -2461,8 +2471,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(0.9f, 2.1f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-45f).toVector2F()
                         ),
                         true
                     ),
@@ -2470,8 +2479,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(4.9f, -1.9f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-45f).toVector2F()
                         ),
                         true
                     ),
@@ -2479,8 +2487,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(5.1f, -2.1f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-45f).toVector2F()
                         ),
                         false
                     ),
@@ -2488,8 +2495,7 @@ class LineSegmentTests {
                         lineSegmentC,
                         MutableRay(
                             origin = Vector2F(0.9f, 2.2f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-45f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-45f).toVector2F()
                         ),
                         false
                     ),
@@ -2499,8 +2505,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(0f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(0f).toVector2F()
                         ),
                         false
                     ),
@@ -2508,8 +2513,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(30f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(30f).toVector2F()
                         ),
                         false
                     ),
@@ -2517,8 +2521,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(60f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(60f).toVector2F()
                         ),
                         false
                     ),
@@ -2526,8 +2529,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(90f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(90f).toVector2F()
                         ),
                         false
                     ),
@@ -2535,8 +2537,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(120f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(120f).toVector2F()
                         ),
                         false
                     ),
@@ -2544,8 +2545,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(150f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(150f).toVector2F()
                         ),
                         false
                     ),
@@ -2553,8 +2553,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(180f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(180f).toVector2F()
                         ),
                         false
                     ),
@@ -2562,8 +2561,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-150f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-150f).toVector2F()
                         ),
                         false
                     ),
@@ -2571,8 +2569,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-120f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-120f).toVector2F()
                         ),
                         true
                     ),
@@ -2580,8 +2577,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-90f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-90f).toVector2F()
                         ),
                         true
                     ),
@@ -2589,8 +2585,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-60f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-60f).toVector2F()
                         ),
                         false
                     ),
@@ -2598,8 +2593,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-30f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-30f).toVector2F()
                         ),
                         false
                     ),
@@ -2607,8 +2601,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-66.8f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-66.8f).toVector2F()
                         ),
                         false
                     ),
@@ -2616,8 +2609,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-74.05f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-74.05f).toVector2F()
                         ),
                         true
                     ),
@@ -2625,8 +2617,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-144.46f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-144.46f).toVector2F()
                         ),
                         false
                     ),
@@ -2634,8 +2625,7 @@ class LineSegmentTests {
                         lineSegmentD,
                         MutableRay(
                             origin = Vector2F(8f, -3f),
-                            direction = ComplexF.fromAngle(AngleF.fromDegrees(-140.19f))
-                                .toVector2F()
+                            direction = AngleF.fromDegrees(-140.19f).toVector2F()
                         ),
                         true
                     ),
