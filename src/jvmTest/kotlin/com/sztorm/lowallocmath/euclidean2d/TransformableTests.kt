@@ -3,7 +3,6 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.euclidean2d.RoundedRectangleTests.Companion.mapRoundedRectanglesToDefaultRoundedRectangles
 import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.TriangleTests.Companion.mapTrianglesToDefaultTriangles
 import com.sztorm.lowallocmath.utils.Wrapper
@@ -620,15 +619,6 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val roundedRectangleArgs = RoundedRectangleTests.positionArgs().map {
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    *it.get()
-                )
-            }
             val squareArgs = SquareTests.positionArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -644,7 +634,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                roundedRectangleArgs,
                 squareArgs,
                 triangleArgs
             ).flatten()
@@ -652,52 +641,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-7f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-2.5f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -782,8 +725,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -793,52 +734,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedToArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -923,8 +818,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -952,15 +845,6 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val roundedRectangleArgs = RoundedRectangleTests.orientationArgs().map {
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    *it.get()
-                )
-            }
             val squareArgs = SquareTests.orientationArgs().map {
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -976,7 +860,6 @@ class TransformableTests {
                 )
             }
             return listOf(
-                roundedRectangleArgs,
                 squareArgs,
                 triangleArgs
             ).flatten()
@@ -984,52 +867,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -1114,8 +951,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -1135,52 +970,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -1265,8 +1054,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -1286,98 +1073,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(0.34314585f, -10.071068f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(14.799253f, -5.138489f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-3f, -4f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-3f, -4f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -1546,8 +1241,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -1568,98 +1261,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(12.403124f, 3.4031243f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(158.6598f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-2.5092793f, 0.09712434f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-86.340195f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-3f, -4f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-3f, -4f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -1828,8 +1429,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -1926,94 +1525,6 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    2f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 16f,
-                        height = 8f,
-                        cornerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    0.3f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 2.4f,
-                        height = 1.2f,
-                        cornerRadius = 0.3f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    1f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    -1f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -2174,8 +1685,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -2185,120 +1694,6 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    2f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-12f, -5f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 16f,
-                        height = 8f,
-                        cornerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    0.3f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(3.2999997f, -3.3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 2.4f,
-                        height = 1.2f,
-                        cornerRadius = 0.3f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    1f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    -1f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(15f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-3f, -4f)),
-                    2f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 16f,
-                        height = 8f,
-                        cornerRadius = 2f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -2507,8 +1902,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -2536,54 +1929,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-7f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-2.5f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -2672,8 +2017,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -2694,102 +2037,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    2f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-7f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
-                        width = 16f,
-                        height = 8f,
-                        cornerRadius = 2f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    0.3f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-2.5f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-260f)),
-                        width = 2.4f,
-                        height = 1.2f,
-                        cornerRadius = 0.3f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    1f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-7f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-15f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    -1f,
-                    MutableRoundedRectangle(
-                        center = Vector2F(-7f, -2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -2966,8 +2213,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
@@ -2988,54 +2233,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val mutableRoundedRectangleArgs = listOf(
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-                Arguments.of(
-                    RoundedRectangleTests.Companion::clone,
-                    { a: RoundedRectangle, b: RoundedRectangle ->
-                        RoundedRectangleTests.areApproximatelyEqual(a, b)
-                    },
-                    MutableRoundedRectangle(
-                        center = Vector2F(-3f, -4f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-60f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableRoundedRectangle(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        width = 8f,
-                        height = 4f,
-                        cornerRadius = 1f
-                    )
-                ),
-            )
-            val defaultRoundedRectangleArgs = mutableRoundedRectangleArgs
-                .mapRoundedRectanglesToDefaultRoundedRectangles()
             val mutableSquareArgs = listOf(
                 Arguments.of(
                     SquareTests.Companion::clone,
@@ -3124,8 +2321,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableRoundedRectangleArgs,
-                defaultRoundedRectangleArgs,
                 mutableSquareArgs,
                 defaultSquareArgs,
                 mutableTriangleArgs,
