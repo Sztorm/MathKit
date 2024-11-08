@@ -3,7 +3,6 @@ package com.sztorm.lowallocmath.euclidean2d
 import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
-import com.sztorm.lowallocmath.euclidean2d.SquareTests.Companion.mapSquaresToDefaultSquares
 import com.sztorm.lowallocmath.euclidean2d.TriangleTests.Companion.mapTrianglesToDefaultTriangles
 import com.sztorm.lowallocmath.utils.Wrapper
 import com.sztorm.lowallocmath.utils.assertApproximation
@@ -619,13 +618,6 @@ class TransformableTests {
     companion object {
         @JvmStatic
         fun positionArgs(): List<Arguments> {
-            val squareArgs = SquareTests.positionArgs().map {
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    *it.get()
-                )
-            }
             val triangleArgs = TriangleTests.positionArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -634,46 +626,12 @@ class TransformableTests {
                 )
             }
             return listOf(
-                squareArgs,
                 triangleArgs
             ).flatten()
         }
 
         @JvmStatic
         fun movedByArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableSquare(
-                        center = Vector2F(-1f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableSquare(
-                        center = Vector2F(3.5f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -725,8 +683,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -734,39 +690,6 @@ class TransformableTests {
 
         @JvmStatic
         fun movedToArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    MutableSquare(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    MutableSquare(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -818,8 +741,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -845,13 +766,6 @@ class TransformableTests {
 
         @JvmStatic
         fun orientationArgs(): List<Arguments> {
-            val squareArgs = SquareTests.orientationArgs().map {
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    *it.get()
-                )
-            }
             val triangleArgs = TriangleTests.orientationArgs().map {
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -860,46 +774,12 @@ class TransformableTests {
                 )
             }
             return listOf(
-                squareArgs,
                 triangleArgs
             ).flatten()
         }
 
         @JvmStatic
         fun rotatedByAngleFArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -951,8 +831,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -970,39 +848,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedToAngleFArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1054,8 +899,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -1073,73 +916,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(1.0502529f, -2.2928932f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(7.4509974f, -7.784831f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1241,8 +1017,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -1261,73 +1035,6 @@ class TransformableTests {
 
         @JvmStatic
         fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(9.535534f, 0.5355339f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-21.869894f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(1.301537f, -1.2898992f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(93.13011f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3f, 1f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1429,8 +1136,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -1525,69 +1230,6 @@ class TransformableTests {
 
         @JvmStatic
         fun scaledByArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    2f,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 8f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    0.3f,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 1.2f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    1f,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    -1f,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(240f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1685,8 +1327,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -1694,89 +1334,6 @@ class TransformableTests {
 
         @JvmStatic
         fun dilatedByArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    2f,
-                    MutableSquare(
-                        center = Vector2F(0f, 5f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 8f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    0.3f,
-                    MutableSquare(
-                        center = Vector2F(5.1f, -1.8f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 1.2f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    1f,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(6f, -3f)),
-                    -1f,
-                    MutableSquare(
-                        center = Vector2F(9f, -7f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(240f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(3f, 1f)),
-                    2f,
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 8f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -1902,8 +1459,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -1929,41 +1484,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(-1f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(3.5f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -2017,8 +1537,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -2037,77 +1555,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    2f,
-                    MutableSquare(
-                        center = Vector2F(-1f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
-                        sideLength = 8f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    0.3f,
-                    MutableSquare(
-                        center = Vector2F(3.5f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-140f)),
-                        sideLength = 1.2f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    1f,
-                    MutableSquare(
-                        center = Vector2F(-1f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(105f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    -1f,
-                    MutableSquare(
-                        center = Vector2F(-1f, 3f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(285f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -2213,8 +1660,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
@@ -2233,41 +1678,6 @@ class TransformableTests {
 
         @JvmStatic
         fun transformedToVector2FAngleFArgs(): List<Arguments> {
-            val mutableSquareArgs = listOf(
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(-4f, 2f)),
-                    Wrapper(AngleF.fromDegrees(45f)),
-                    MutableSquare(
-                        center = Vector2F(-4f, 2f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
-                        sideLength = 4f
-                    )
-                ),
-                Arguments.of(
-                    SquareTests.Companion::clone,
-                    { a: Square, b: Square -> SquareTests.areApproximatelyEqual(a, b) },
-                    MutableSquare(
-                        center = Vector2F(3f, 1f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(60f)),
-                        sideLength = 4f
-                    ),
-                    Wrapper(Vector2F(0.5f, 0f)),
-                    Wrapper(AngleF.fromDegrees(-200f)),
-                    MutableSquare(
-                        center = Vector2F(0.5f, 0f),
-                        orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
-                        sideLength = 4f
-                    )
-                ),
-            )
-            val defaultSquareArgs = mutableSquareArgs.mapSquaresToDefaultSquares()
             val mutableTriangleArgs = listOf(
                 Arguments.of(
                     TriangleTests.Companion::clone,
@@ -2321,8 +1731,6 @@ class TransformableTests {
             val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
 
             return listOf(
-                mutableSquareArgs,
-                defaultSquareArgs,
                 mutableTriangleArgs,
                 defaultTriangleArgs
             ).flatten()
