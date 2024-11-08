@@ -119,6 +119,359 @@ class RectangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("movedByArgs")
+    fun movedByReturnsCorrectValue(
+        rectangle: Rectangle, displacement: Wrapper<Vector2F>, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.movedBy(displacement.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("movedToArgs")
+    fun movedToReturnsCorrectValue(
+        rectangle: Rectangle, position: Wrapper<Vector2F>, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.movedTo(position.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("moveByArgs")
+    fun moveByMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, displacement: Wrapper<Vector2F>, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { moveBy(displacement.value) })
+
+    @ParameterizedTest
+    @MethodSource("moveToArgs")
+    fun moveToMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, position: Wrapper<Vector2F>, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { moveTo(position.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotatedByAngleFArgs")
+    fun rotatedByAngleFReturnsCorrectValue(
+        rectangle: Rectangle, rotation: Wrapper<AngleF>, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedByComplexFArgs")
+    fun rotatedByComplexFReturnsCorrectValue(
+        rectangle: Rectangle, rotation: Wrapper<ComplexF>, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToAngleFArgs")
+    fun rotatedToAngleFReturnsCorrectValue(
+        rectangle: Rectangle, orientation: Wrapper<AngleF>, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToComplexFArgs")
+    fun rotatedToComplexFReturnsCorrectValue(
+        rectangle: Rectangle, orientation: Wrapper<ComplexF>, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
+    fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
+        rectangle: Rectangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.rotatedAroundPointBy(point.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
+    fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
+        rectangle: Rectangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.rotatedAroundPointBy(point.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
+    fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
+        rectangle: Rectangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(
+            expected, rectangle.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
+    fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
+        rectangle: Rectangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(
+            expected, rectangle.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotateByAngleFArgs")
+    fun rotateByAngleFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, rotation: Wrapper<AngleF>, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateByComplexFArgs")
+    fun rotateByComplexFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, rotation: Wrapper<ComplexF>, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToAngleFArgs")
+    fun rotateToAngleFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, orientation: Wrapper<AngleF>, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToComplexFArgs")
+    fun rotateToComplexFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, orientation: Wrapper<ComplexF>, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FAngleFArgs")
+    fun rotateAroundPointByVector2FAngleFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected, rectangle.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FComplexFArgs")
+    fun rotateAroundPointByVector2FComplexFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected, rectangle.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FAngleFArgs")
+    fun rotateAroundPointToVector2FAngleFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected, rectangle.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FComplexFArgs")
+    fun rotateAroundPointToVector2FComplexFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected, rectangle.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("scaledByArgs")
+    fun scaledByReturnsCorrectValue(
+        rectangle: Rectangle, factor: Float, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.scaledBy(factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("dilatedByArgs")
+    fun dilatedByReturnsCorrectValue(
+        rectangle: Rectangle, point: Wrapper<Vector2F>, factor: Float, expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.dilatedBy(point.value, factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("scaleByArgs")
+    fun scaleByMutatesRectangleCorrectly(
+        rectangle: MutableRectangle, factor: Float, expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { scaleBy(factor) })
+
+    @ParameterizedTest
+    @MethodSource("dilateByArgs")
+    fun dilateByMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: MutableRectangle
+    ) = assertApproximation(expected, rectangle.apply { dilateBy(point.value, factor) })
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFArgs")
+    fun transformedByVector2FAngleFReturnsCorrectValue(
+        rectangle: Rectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.transformedBy(displacement.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFArgs")
+    fun transformedByVector2FComplexFReturnsCorrectValue(
+        rectangle: Rectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.transformedBy(displacement.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFFloatArgs")
+    fun transformedByVector2FAngleFFloatReturnsCorrectValue(
+        rectangle: Rectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(
+            expected, rectangle.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFFloatArgs")
+    fun transformedByVector2FComplexFFloatReturnsCorrectValue(
+        rectangle: Rectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(
+            expected, rectangle.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FAngleFArgs")
+    fun transformedToVector2FAngleFReturnsCorrectValue(
+        rectangle: Rectangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FComplexFArgs")
+    fun transformedToVector2FComplexFReturnsCorrectValue(
+        rectangle: Rectangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: Rectangle
+    ) = assertImmutabilityOf(rectangle) {
+        assertApproximation(expected, rectangle.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFArgs")
+    fun transformByVector2FAngleFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected,
+        rectangle.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFArgs")
+    fun transformByVector2FComplexFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected,
+        rectangle.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFFloatArgs")
+    fun transformByVector2FAngleFFloatMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected,
+        rectangle.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFFloatArgs")
+    fun transformByVector2FComplexFFloatMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected,
+        rectangle.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FAngleFArgs")
+    fun transformToVector2FAngleFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected,
+        rectangle.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FComplexFArgs")
+    fun transformToVector2FComplexFMutatesRectangleCorrectly(
+        rectangle: MutableRectangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableRectangle
+    ) = assertApproximation(
+        expected,
+        rectangle.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
     @MethodSource("calibrateArgs")
     fun calibrateMutatesRectangleCorrectly(
         rectangle: MutableRectangle, expected: MutableRectangle
@@ -349,9 +702,6 @@ class RectangleTests {
                     (a.pointB == b.pointB) and
                     (a.pointC == b.pointC) and
                     (a.pointD == b.pointD)
-
-        @JvmStatic
-        fun clone(rectangle: Rectangle) = rectangle.copy()
 
         @JvmStatic
         fun List<Arguments>.mapRectanglesToDefaultRectangles() = map { args ->
@@ -678,6 +1028,841 @@ class RectangleTests {
 
         @JvmStatic
         fun positionArgs(): List<Arguments> = centerArgs()
+
+        @JvmStatic
+        fun movedByArgs(): List<Arguments> {
+            val mutableRectangleArgs = moveByArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun movedToArgs(): List<Arguments> {
+            val mutableRectangleArgs = moveToArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun moveByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableRectangle(
+                    center = Vector2F(-5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableRectangle(
+                    center = Vector2F(-0.5f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun moveToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableRectangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableRectangle(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotatedByAngleFArgs(): List<Arguments> {
+            val mutableRectangleArgs = rotateByAngleFArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedByComplexFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedToAngleFArgs(): List<Arguments> {
+            val mutableRectangleArgs = rotateToAngleFArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedToComplexFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val mutableRectangleArgs = rotateAroundPointByVector2FAngleFArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val mutableRectangleArgs = rotateAroundPointToVector2FAngleFArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateByAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateByComplexFArgs(): List<Arguments> = rotateByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateToAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateToComplexFArgs(): List<Arguments> = rotateToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(0.34314585f, -7.242641f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(12.235828f, -6.3338337f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(11f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-6.8698964f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(-0.64463043f, -0.58155227f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(108.130104f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-1f, -2f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun scaledByArgs(): List<Arguments> {
+            val mutableRectangleArgs = scaleByArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun dilatedByArgs(): List<Arguments> {
+            val mutableRectangleArgs = dilateByArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun scaleByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                2f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 6f,
+                    height = 10f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                0.3f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 0.9f,
+                    height = 1.5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                1f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                -1f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(300f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun dilateByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                2f,
+                MutableRectangle(
+                    center = Vector2F(-8f, -1f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 6f,
+                    height = 10f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                0.3f,
+                MutableRectangle(
+                    center = Vector2F(3.8999999f, -2.6999998f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 0.9f,
+                    height = 1.5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                1f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                -1f,
+                MutableRectangle(
+                    center = Vector2F(13f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(300f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-1f, -2f)),
+                2f,
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 6f,
+                    height = 10f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformedByVector2FAngleFArgs(): List<Arguments> {
+            val mutableRectangleArgs = transformByVector2FAngleFArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
+            val mutableRectangleArgs = transformByVector2FAngleFFloatArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformedByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedToVector2FAngleFArgs(): List<Arguments> {
+            val mutableRectangleArgs = transformToVector2FAngleFArgs()
+            val defaultRectangleArgs = mutableRectangleArgs.mapRectanglesToDefaultRectangles()
+
+            return listOf(
+                mutableRectangleArgs,
+                defaultRectangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedToVector2FComplexFArgs(): List<Arguments> =
+            transformedToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(-5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(-0.5f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFArgs(): List<Arguments> =
+            transformByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFFloatArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                2f,
+                MutableRectangle(
+                    center = Vector2F(-5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    width = 6f,
+                    height = 10f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                0.3f,
+                MutableRectangle(
+                    center = Vector2F(-0.5f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    width = 0.9f,
+                    height = 1.5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                1f,
+                MutableRectangle(
+                    center = Vector2F(-5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                -1f,
+                MutableRectangle(
+                    center = Vector2F(-5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(345f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRectangle(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+            Arguments.of(
+                MutableRectangle(
+                    center = Vector2F(-1f, -2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    width = 3f,
+                    height = 5f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRectangle(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    width = 3f,
+                    height = 5f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformToVector2FComplexFArgs(): List<Arguments> =
+            transformToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
 
         @JvmStatic
         fun calibrateArgs(): List<Arguments> = listOf(
