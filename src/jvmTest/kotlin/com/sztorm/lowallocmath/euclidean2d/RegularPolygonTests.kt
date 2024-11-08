@@ -187,6 +187,382 @@ class RegularPolygonTests {
         }
 
     @ParameterizedTest
+    @MethodSource("movedByArgs")
+    fun movedByReturnsCorrectValue(
+        regularPolygon: RegularPolygon, displacement: Wrapper<Vector2F>, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.movedBy(displacement.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("movedToArgs")
+    fun movedToReturnsCorrectValue(
+        regularPolygon: RegularPolygon, position: Wrapper<Vector2F>, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.movedTo(position.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("moveByArgs")
+    fun moveByMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { moveBy(displacement.value) })
+
+    @ParameterizedTest
+    @MethodSource("moveToArgs")
+    fun moveToMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        position: Wrapper<Vector2F>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { moveTo(position.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotatedByAngleFArgs")
+    fun rotatedByAngleFReturnsCorrectValue(
+        regularPolygon: RegularPolygon, rotation: Wrapper<AngleF>, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedByComplexFArgs")
+    fun rotatedByComplexFReturnsCorrectValue(
+        regularPolygon: RegularPolygon, rotation: Wrapper<ComplexF>, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToAngleFArgs")
+    fun rotatedToAngleFReturnsCorrectValue(
+        regularPolygon: RegularPolygon, orientation: Wrapper<AngleF>, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToComplexFArgs")
+    fun rotatedToComplexFReturnsCorrectValue(
+        regularPolygon: RegularPolygon, orientation: Wrapper<ComplexF>, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
+    fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.rotatedAroundPointBy(point.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
+    fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.rotatedAroundPointBy(point.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
+    fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
+    fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotateByAngleFArgs")
+    fun rotateByAngleFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        rotation: Wrapper<AngleF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateByComplexFArgs")
+    fun rotateByComplexFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToAngleFArgs")
+    fun rotateToAngleFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        orientation: Wrapper<AngleF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToComplexFArgs")
+    fun rotateToComplexFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FAngleFArgs")
+    fun rotateAroundPointByVector2FAngleFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FComplexFArgs")
+    fun rotateAroundPointByVector2FComplexFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FAngleFArgs")
+    fun rotateAroundPointToVector2FAngleFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FComplexFArgs")
+    fun rotateAroundPointToVector2FComplexFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("scaledByArgs")
+    fun scaledByReturnsCorrectValue(
+        regularPolygon: RegularPolygon, factor: Float, expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.scaledBy(factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("dilatedByArgs")
+    fun dilatedByReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(expected, regularPolygon.dilatedBy(point.value, factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("scaleByArgs")
+    fun scaleByMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon, factor: Float, expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { scaleBy(factor) })
+
+    @ParameterizedTest
+    @MethodSource("dilateByArgs")
+    fun dilateByMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(expected, regularPolygon.apply { dilateBy(point.value, factor) })
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFArgs")
+    fun transformedByVector2FAngleFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.transformedBy(displacement.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFArgs")
+    fun transformedByVector2FComplexFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.transformedBy(displacement.value, rotation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFFloatArgs")
+    fun transformedByVector2FAngleFFloatReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFFloatArgs")
+    fun transformedByVector2FComplexFFloatReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FAngleFArgs")
+    fun transformedToVector2FAngleFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.transformedTo(position.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FComplexFArgs")
+    fun transformedToVector2FComplexFReturnsCorrectValue(
+        regularPolygon: RegularPolygon,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: RegularPolygon
+    ) = assertImmutabilityOf(regularPolygon) {
+        assertApproximation(
+            expected, regularPolygon.transformedTo(position.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFArgs")
+    fun transformByVector2FAngleFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFArgs")
+    fun transformByVector2FComplexFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFFloatArgs")
+    fun transformByVector2FAngleFFloatMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected,
+        regularPolygon.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFFloatArgs")
+    fun transformByVector2FComplexFFloatMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected,
+        regularPolygon.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FAngleFArgs")
+    fun transformToVector2FAngleFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FComplexFArgs")
+    fun transformToVector2FComplexFMutatesRegularPolygonCorrectly(
+        regularPolygon: MutableRegularPolygon,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableRegularPolygon
+    ) = assertApproximation(
+        expected, regularPolygon.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
     @MethodSource("calibrateArgs")
     fun calibrateMutatesRegularPolygonCorrectly(
         polygon: MutableRegularPolygon, expected: MutableRegularPolygon
@@ -423,9 +799,6 @@ class RegularPolygonTests {
                     } and
                     (a.circumradius == b.circumradius) and
                     (a.inradius == b.inradius)
-
-        @JvmStatic
-        fun clone(polygon: RegularPolygon) = polygon.copy()
 
         @JvmStatic
         fun List<Arguments>.mapRegularPolygonsToDefaultRegularPolygons() = map { args ->
@@ -1380,6 +1753,852 @@ class RegularPolygonTests {
         fun positionArgs(): List<Arguments> = centerArgs()
 
         @JvmStatic
+        fun movedByArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = moveByArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun movedToArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = moveToArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun moveByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 10f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0.5f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun moveToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotatedByAngleFArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = rotateByAngleFArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedByComplexFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedToAngleFArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = rotateToAngleFArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedToComplexFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = rotateAroundPointByVector2FAngleFArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = rotateAroundPointToVector2FAngleFArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateByAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateByComplexFArgs(): List<Arguments> = rotateByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateToAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateToComplexFArgs(): List<Arguments> = rotateToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(-6.020815f, 0.5355339f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(7.875934f, -15.38874f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(14.860023f, 5.8600225f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(46.38954f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(-5.774315f, 1.2855005f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(161.38954f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun scaledByArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = scaleByArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun dilatedByArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = dilateByArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun scaleByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                2f,
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 6f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                0.3f,
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 0.9f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                1f,
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                -1f,
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(300f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun dilateByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                2f,
+                MutableRegularPolygon(
+                    center = Vector2F(-6f, 19f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 6f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                0.3f,
+                MutableRegularPolygon(
+                    center = Vector2F(4.2f, 0.3f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 0.9f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                1f,
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                -1f,
+                MutableRegularPolygon(
+                    center = Vector2F(12f, -14f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(300f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0f, 8f)),
+                2f,
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 6f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformedByVector2FAngleFArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = transformByVector2FAngleFArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = transformByVector2FAngleFFloatArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformedByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedToVector2FAngleFArgs(): List<Arguments> {
+            val mutableRegularPolygonArgs = transformToVector2FAngleFArgs()
+            val defaultRegularPolygonArgs = mutableRegularPolygonArgs
+                .mapRegularPolygonsToDefaultRegularPolygons()
+
+            return listOf(
+                mutableRegularPolygonArgs,
+                defaultRegularPolygonArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedToVector2FComplexFArgs(): List<Arguments> =
+            transformedToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 10f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0.5f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFArgs(): List<Arguments> =
+            transformByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFFloatArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                2f,
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 10f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    sideLength = 6f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                0.3f,
+                MutableRegularPolygon(
+                    center = Vector2F(0.5f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-80f)),
+                    sideLength = 0.9f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                1f,
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 10f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(165f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                -1f,
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 10f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(345f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableRegularPolygon(
+                    center = Vector2F(-4f, 2f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+            Arguments.of(
+                MutableRegularPolygon(
+                    center = Vector2F(0f, 8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(120f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableRegularPolygon(
+                    center = Vector2F(0.5f, 0f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    sideLength = 3f,
+                    sideCount = 7
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformToVector2FComplexFArgs(): List<Arguments> =
+            transformToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
         fun calibrateArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
@@ -1479,8 +2698,8 @@ class RegularPolygonTests {
         fun setArgs(): List<Arguments> = listOf(
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    center = Vector2F(-7.5f, -8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 5
                 ),
@@ -1489,16 +2708,16 @@ class RegularPolygonTests {
                 4f,
                 5,
                 MutableRegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    center = Vector2F(-7.5f, -8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 5
                 )
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    center = Vector2F(-7.5f, -8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 5
                 ),
@@ -1507,16 +2726,16 @@ class RegularPolygonTests {
                 4f,
                 3,
                 MutableRegularPolygon(
-                    Vector2F(2f, -4f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    center = Vector2F(2f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 3
                 )
             ),
             Arguments.of(
                 MutableRegularPolygon(
-                    Vector2F(-7.5f, -8f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    center = Vector2F(-7.5f, -8f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
                     sideLength = 4f,
                     sideCount = 5
                 ),
@@ -1525,8 +2744,8 @@ class RegularPolygonTests {
                 2f,
                 3,
                 MutableRegularPolygon(
-                    Vector2F(2f, -4f),
-                    ComplexF.fromAngle(AngleF.fromDegrees(0f)),
+                    center = Vector2F(2f, -4f),
+                    orientation = ComplexF.fromAngle(AngleF.fromDegrees(0f)),
                     sideLength = 2f,
                     sideCount = 3
                 )
