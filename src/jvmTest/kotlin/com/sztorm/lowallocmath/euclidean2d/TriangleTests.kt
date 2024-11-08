@@ -238,6 +238,349 @@ class TriangleTests {
         }
 
     @ParameterizedTest
+    @MethodSource("movedByArgs")
+    fun movedByReturnsCorrectValue(
+        triangle: Triangle, displacement: Wrapper<Vector2F>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.movedBy(displacement.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("movedToArgs")
+    fun movedToReturnsCorrectValue(
+        triangle: Triangle, position: Wrapper<Vector2F>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.movedTo(position.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("moveByArgs")
+    fun moveByMutatesTriangleCorrectly(
+        triangle: MutableTriangle, displacement: Wrapper<Vector2F>, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { moveBy(displacement.value) })
+
+    @ParameterizedTest
+    @MethodSource("moveToArgs")
+    fun moveToMutatesTriangleCorrectly(
+        triangle: MutableTriangle, position: Wrapper<Vector2F>, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { moveTo(position.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotatedByAngleFArgs")
+    fun rotatedByAngleFReturnsCorrectValue(
+        triangle: Triangle, rotation: Wrapper<AngleF>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedByComplexFArgs")
+    fun rotatedByComplexFReturnsCorrectValue(
+        triangle: Triangle, rotation: Wrapper<ComplexF>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.rotatedBy(rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToAngleFArgs")
+    fun rotatedToAngleFReturnsCorrectValue(
+        triangle: Triangle, orientation: Wrapper<AngleF>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedToComplexFArgs")
+    fun rotatedToComplexFReturnsCorrectValue(
+        triangle: Triangle, orientation: Wrapper<ComplexF>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.rotatedTo(orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FAngleFArgs")
+    fun rotatedAroundPointByVector2FAngleFReturnsCorrectValue(
+        triangle: Triangle, point: Wrapper<Vector2F>, rotation: Wrapper<AngleF>, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.rotatedAroundPointBy(point.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointByVector2FComplexFArgs")
+    fun rotatedAroundPointByVector2FComplexFReturnsCorrectValue(
+        triangle: Triangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.rotatedAroundPointBy(point.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FAngleFArgs")
+    fun rotatedAroundPointToVector2FAngleFReturnsCorrectValue(
+        triangle: Triangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(
+            expected, triangle.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotatedAroundPointToVector2FComplexFArgs")
+    fun rotatedAroundPointToVector2FComplexFReturnsCorrectValue(
+        triangle: Triangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(
+            expected, triangle.rotatedAroundPointTo(point.value, orientation.value)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotateByAngleFArgs")
+    fun rotateByAngleFMutatesTriangleCorrectly(
+        triangle: MutableTriangle, rotation: Wrapper<AngleF>, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateByComplexFArgs")
+    fun rotateByComplexFMutatesTriangleCorrectly(
+        triangle: MutableTriangle, rotation: Wrapper<ComplexF>, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { rotateBy(rotation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToAngleFArgs")
+    fun rotateToAngleFMutatesTriangleCorrectly(
+        triangle: MutableTriangle, orientation: Wrapper<AngleF>, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateToComplexFArgs")
+    fun rotateToComplexFMutatesTriangleCorrectly(
+        triangle: MutableTriangle, orientation: Wrapper<ComplexF>, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { rotateTo(orientation.value) })
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FAngleFArgs")
+    fun rotateAroundPointByVector2FAngleFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointByVector2FComplexFArgs")
+    fun rotateAroundPointByVector2FComplexFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        point: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { rotateAroundPointBy(point.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FAngleFArgs")
+    fun rotateAroundPointToVector2FAngleFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("rotateAroundPointToVector2FComplexFArgs")
+    fun rotateAroundPointToVector2FComplexFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        point: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { rotateAroundPointTo(point.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("scaledByArgs")
+    fun scaledByReturnsCorrectValue(triangle: Triangle, factor: Float, expected: Triangle) =
+        assertImmutabilityOf(triangle) {
+            assertApproximation(expected, triangle.scaledBy(factor))
+        }
+
+    @ParameterizedTest
+    @MethodSource("dilatedByArgs")
+    fun dilatedByReturnsCorrectValue(
+        triangle: Triangle, point: Wrapper<Vector2F>, factor: Float, expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.dilatedBy(point.value, factor))
+    }
+
+    @ParameterizedTest
+    @MethodSource("scaleByArgs")
+    fun scaleByMutatesTriangleCorrectly(
+        triangle: MutableTriangle, factor: Float, expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { scaleBy(factor) })
+
+    @ParameterizedTest
+    @MethodSource("dilateByArgs")
+    fun dilateByMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        point: Wrapper<Vector2F>,
+        factor: Float,
+        expected: MutableTriangle
+    ) = assertApproximation(expected, triangle.apply { dilateBy(point.value, factor) })
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFArgs")
+    fun transformedByVector2FAngleFReturnsCorrectValue(
+        triangle: Triangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.transformedBy(displacement.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFArgs")
+    fun transformedByVector2FComplexFReturnsCorrectValue(
+        triangle: Triangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.transformedBy(displacement.value, rotation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FAngleFFloatArgs")
+    fun transformedByVector2FAngleFFloatReturnsCorrectValue(
+        triangle: Triangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(
+            expected, triangle.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedByVector2FComplexFFloatArgs")
+    fun transformedByVector2FComplexFFloatReturnsCorrectValue(
+        triangle: Triangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(
+            expected, triangle.transformedBy(displacement.value, rotation.value, scaleFactor)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FAngleFArgs")
+    fun transformedToVector2FAngleFReturnsCorrectValue(
+        triangle: Triangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformedToVector2FComplexFArgs")
+    fun transformedToVector2FComplexFReturnsCorrectValue(
+        triangle: Triangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: Triangle
+    ) = assertImmutabilityOf(triangle) {
+        assertApproximation(expected, triangle.transformedTo(position.value, orientation.value))
+    }
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFArgs")
+    fun transformByVector2FAngleFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFArgs")
+    fun transformByVector2FComplexFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { transformBy(displacement.value, rotation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FAngleFFloatArgs")
+    fun transformByVector2FAngleFFloatMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<AngleF>,
+        scaleFactor: Float,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformByVector2FComplexFFloatArgs")
+    fun transformByVector2FComplexFFloatMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        displacement: Wrapper<Vector2F>,
+        rotation: Wrapper<ComplexF>,
+        scaleFactor: Float,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { transformBy(displacement.value, rotation.value, scaleFactor) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FAngleFArgs")
+    fun transformToVector2FAngleFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<AngleF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
+    @MethodSource("transformToVector2FComplexFArgs")
+    fun transformToVector2FComplexFMutatesTriangleCorrectly(
+        triangle: MutableTriangle,
+        position: Wrapper<Vector2F>,
+        orientation: Wrapper<ComplexF>,
+        expected: MutableTriangle
+    ) = assertApproximation(
+        expected, triangle.apply { transformTo(position.value, orientation.value) }
+    )
+
+    @ParameterizedTest
     @MethodSource("calibrateArgs")
     fun calibrateMutatesTriangleCorrectly(triangle: MutableTriangle, expected: MutableTriangle) =
         assertApproximation(expected, triangle.apply { calibrate() })
@@ -567,9 +910,6 @@ class TriangleTests {
                     (a.pointA == b.pointA) and
                     (a.pointB == b.pointB) and
                     (a.pointC == b.pointC)
-
-        @JvmStatic
-        fun clone(triangle: Triangle) = triangle.copy()
 
         @JvmStatic
         fun List<Arguments>.mapTrianglesToDefaultTriangles() = map { args ->
@@ -1268,6 +1608,1039 @@ class TriangleTests {
                 defaultTriangleArgs
             ).flatten()
         }
+
+        @JvmStatic
+        fun movedByArgs(): List<Arguments> {
+            val mutableTriangleArgs = moveByArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun movedToArgs(): List<Arguments> {
+            val mutableTriangleArgs = moveToArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun moveByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableTriangle(
+                    centroid = Vector2F(-5.333333f, -0.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableTriangle(
+                    centroid = Vector2F(-0.8333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun moveToArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                MutableTriangle(
+                    centroid = Vector2F(-4f, 2f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                MutableTriangle(
+                    centroid = Vector2F(0.5f, 0f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotatedByAngleFArgs(): List<Arguments> {
+            val mutableTriangleArgs = rotateByAngleFArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedByComplexFArgs(): List<Arguments> = rotatedByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedToAngleFArgs(): List<Arguments> {
+            val mutableTriangleArgs = rotateToAngleFArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedToComplexFArgs(): List<Arguments> = rotatedToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FAngleFArgs(): List<Arguments> {
+            val mutableTriangleArgs = rotateAroundPointByVector2FAngleFArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FAngleFArgs(): List<Arguments> {
+            val mutableTriangleArgs = rotateAroundPointToVector2FAngleFArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun rotatedAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotatedAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateByAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateByComplexFArgs(): List<Arguments> = rotateByAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateToAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateToComplexFArgs(): List<Arguments> = rotateToAngleFArgs().map { args ->
+            Arguments.of(
+                *args.get().copyOf().apply {
+                    val angle = (get(1) as Wrapper<*>).value as AngleF
+                    set(1, Wrapper(ComplexF.fromAngle(angle)))
+                }
+            )
+        }
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(0.5788478f, -7.949747f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(12.777071f, -5.821378f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointByVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(11.190803f, 2.1908038f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-32.092594f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(-0.89819396f, -0.4892627f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(82.90741f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun rotateAroundPointToVector2FComplexFArgs(): List<Arguments> =
+            rotateAroundPointToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun scaledByArgs(): List<Arguments> {
+            val mutableTriangleArgs = scaleByArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun dilatedByArgs(): List<Arguments> {
+            val mutableTriangleArgs = dilateByArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun scaleByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                2f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 7.45356f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 3.3993466f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 8.137704f
+                ),
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                0.3f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 1.118034f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 0.509902f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 1.2206556f
+                ),
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                1f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                -1f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-79.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun dilateByArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                2f,
+                MutableTriangle(
+                    centroid = Vector2F(-8.666666f, -2.3333333f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 7.45356f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 3.3993466f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 8.137704f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                0.3f,
+                MutableTriangle(
+                    centroid = Vector2F(3.8f, -2.9f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 1.118034f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 0.509902f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 1.2206556f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                1f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(6f, -3f)),
+                -1f,
+                MutableTriangle(
+                    centroid = Vector2F(13.333333f, -3.3333333f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-79.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-1.3333333f, -2.6666667f)),
+                2f,
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 7.45356f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 3.3993466f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 8.137704f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformedByVector2FAngleFArgs(): List<Arguments> {
+            val mutableTriangleArgs = transformByVector2FAngleFArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFArgs(): List<Arguments> =
+            transformedByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedByVector2FAngleFFloatArgs(): List<Arguments> {
+            val mutableTriangleArgs = transformByVector2FAngleFFloatArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformedByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformedToVector2FAngleFArgs(): List<Arguments> {
+            val mutableTriangleArgs = transformToVector2FAngleFArgs()
+            val defaultTriangleArgs = mutableTriangleArgs.mapTrianglesToDefaultTriangles()
+
+            return listOf(
+                mutableTriangleArgs,
+                defaultTriangleArgs
+            ).flatten()
+        }
+
+        @JvmStatic
+        fun transformedToVector2FComplexFArgs(): List<Arguments> =
+            transformedToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(-5.333333f, -0.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(-0.8333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFArgs(): List<Arguments> =
+            transformByVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformByVector2FAngleFFloatArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                2f,
+                MutableTriangle(
+                    centroid = Vector2F(-5.333333f, -0.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                    pointDistanceA = 7.45356f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 3.3993466f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 8.137704f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                0.3f,
+                MutableTriangle(
+                    centroid = Vector2F(-0.8333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-99.69515f)),
+                    pointDistanceA = 1.118034f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 0.509902f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 1.2206556f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                1f,
+                MutableTriangle(
+                    centroid = Vector2F(-5.333333f, -0.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(145.3049f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                -1f,
+                MutableTriangle(
+                    centroid = Vector2F(-5.333333f, -0.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-34.69515f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformByVector2FComplexFFloatArgs(): List<Arguments> =
+            transformByVector2FAngleFFloatArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
+
+        @JvmStatic
+        fun transformToVector2FAngleFArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(-4f, 2f)),
+                Wrapper(AngleF.fromDegrees(45f)),
+                MutableTriangle(
+                    centroid = Vector2F(-4f, 2f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(45f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+            Arguments.of(
+                MutableTriangle(
+                    centroid = Vector2F(-1.3333333f, -2.6666667f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(100.30485f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                ),
+                Wrapper(Vector2F(0.5f, 0f)),
+                Wrapper(AngleF.fromDegrees(-200f)),
+                MutableTriangle(
+                    centroid = Vector2F(0.5f, 0f),
+                    pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-200f)),
+                    pointDistanceA = 3.72678f,
+                    pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(91.00509f)),
+                    pointDistanceB = 1.6996733f,
+                    pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-155.31284f)),
+                    pointDistanceC = 4.068852f
+                )
+            ),
+        )
+
+        @JvmStatic
+        fun transformToVector2FComplexFArgs(): List<Arguments> =
+            transformToVector2FAngleFArgs().map { args ->
+                Arguments.of(
+                    *args.get().copyOf().apply {
+                        val angle = (get(2) as Wrapper<*>).value as AngleF
+                        set(2, Wrapper(ComplexF.fromAngle(angle)))
+                    }
+                )
+            }
 
         @JvmStatic
         fun calibrateArgs(): List<Arguments> = listOf(
