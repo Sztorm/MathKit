@@ -68,16 +68,22 @@ interface LineSegment : Transformable {
 
     override fun movedTo(position: Vector2F): LineSegment = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): LineSegment =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF): LineSegment =
+        copy(orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE))
 
-    override fun rotatedBy(rotation: ComplexF): LineSegment =
-        copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): LineSegment =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): LineSegment = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): LineSegment = copy(
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
+    )
 
     override fun rotatedTo(orientation: AngleF): LineSegment =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): LineSegment = copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): LineSegment = rotatedToImpl(orientation)
 
     private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): LineSegment {
         val (cX: Float, cY: Float) = center
@@ -93,7 +99,7 @@ interface LineSegment : Transformable {
 
         return copy(
             center = Vector2F(centerX, centerY),
-            orientation = ComplexF(orientationR, orientationI)
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -127,10 +133,10 @@ interface LineSegment : Transformable {
 
             return copy(
                 center = Vector2F(centerX, centerY),
-                orientation = ComplexF(orientationR, orientationI)
+                orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE)
             )
         }
-        return copy(orientation = orientation)
+        return copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
     }
 
     override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): LineSegment =
@@ -163,23 +169,48 @@ interface LineSegment : Transformable {
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): LineSegment = copy(
-        center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
-    )
+    private inline fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): LineSegment {
+        val (cX: Float, cY: Float) = center
+        val (oR: Float, oI: Float) = orientation
+        val (dX: Float, dY: Float) = displacement
+        val (rotR: Float, rotI: Float) = rotation
+        val orientationR: Float = (oR * rotR - oI * rotI)
+        val orientationI: Float = (oI * rotR + oR * rotI)
+        val centerX: Float = cX + dX
+        val centerY: Float = cY + dY
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): LineSegment = copy(
-        center = center + displacement,
-        orientation = orientation * rotation
-    )
+        return copy(
+            center = Vector2F(centerX, centerY),
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE)
+        )
+    }
+
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): LineSegment =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
+
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): LineSegment =
+        transformedByImpl(displacement, rotation)
 
     private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
-    ): LineSegment = copy(
-        center = center + displacement,
-        orientation = orientation * rotation * 1f.withSign(scaleFactor),
-        length = length * scaleFactor.absoluteValue
-    )
+    ): LineSegment {
+        val (cX: Float, cY: Float) = center
+        val (oR: Float, oI: Float) = orientation
+        val length: Float = length * scaleFactor.absoluteValue
+        val factorSign: Float = 1f.withSign(scaleFactor)
+        val (dX: Float, dY: Float) = displacement
+        val (rotR: Float, rotI: Float) = rotation
+        val orientationR: Float = (oR * rotR - oI * rotI) * factorSign
+        val orientationI: Float = (oI * rotR + oR * rotI) * factorSign
+        val centerX: Float = cX + dX
+        val centerY: Float = cY + dY
+
+        return copy(
+            center = Vector2F(centerX, centerY),
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE),
+            length,
+        )
+    }
 
     override fun transformedBy(
         displacement: Vector2F, rotation: AngleF, scaleFactor: Float
@@ -189,15 +220,18 @@ interface LineSegment : Transformable {
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): LineSegment = transformedByImpl(displacement, rotation, scaleFactor)
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): LineSegment = copy(
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
+    ): LineSegment = copy(
         center = position,
-        orientation = ComplexF.fromAngle(orientation)
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): LineSegment = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): LineSegment =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): LineSegment =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this line segment interpolated [to] other line segment [by] a factor.
@@ -207,7 +241,8 @@ interface LineSegment : Transformable {
      */
     fun interpolated(to: LineSegment, by: Float): LineSegment = copy(
         center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         length = Float.lerp(length, to.length, by)
     )
 
@@ -307,7 +342,11 @@ interface LineSegment : Transformable {
     /** Creates an iterator over the points of this line segment. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
-    /** Returns a copy of this instance with specified properties changed. **/
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         center: Vector2F = this.center,
         orientation: ComplexF = this.orientation,

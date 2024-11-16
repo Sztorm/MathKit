@@ -41,7 +41,7 @@ class MutableLineSegment : LineSegment, MutableTransformable {
         val vBAX: Float = aX - bX
         val vBAY: Float = aY - bY
         _center = Vector2F(0.5f * (aX + bX), 0.5f * (aY + bY))
-        _orientation = ComplexF(vBAX, vBAY).normalizedOrElse(ComplexF(1f, 0f))
+        _orientation = ComplexF(vBAX, vBAY).normalizedOrElse(ComplexF.ONE)
         _length = sqrt(vBAX * vBAX + vBAY * vBAY)
         _pointA = pointA
         _pointB = pointB
@@ -79,25 +79,11 @@ class MutableLineSegment : LineSegment, MutableTransformable {
     override val position: Vector2F
         get() = _center
 
-    override fun movedBy(displacement: Vector2F) = MutableLineSegment(
-        center = _center + displacement,
-        _orientation,
-        _length,
-        pointA = _pointA + displacement,
-        pointB = _pointB + displacement
-    )
+    override fun movedBy(displacement: Vector2F): MutableLineSegment =
+        createInternal(center = _center + displacement, _orientation, _length)
 
-    override fun movedTo(position: Vector2F): MutableLineSegment {
-        val displacement: Vector2F = position - _center
-
-        return MutableLineSegment(
-            center = position,
-            _orientation,
-            _length,
-            pointA = _pointA + displacement,
-            pointB = _pointB + displacement
-        )
-    }
+    override fun movedTo(position: Vector2F): MutableLineSegment =
+        createInternal(center = position, _orientation, _length)
 
     override fun moveBy(displacement: Vector2F) {
         _center += displacement
@@ -112,49 +98,22 @@ class MutableLineSegment : LineSegment, MutableTransformable {
         _pointB += displacement
     }
 
-    private inline fun rotatedByImpl(rotation: ComplexF): MutableLineSegment {
-        val center: Vector2F = _center
-        val (cX: Float, cY: Float) = center
-        val (oR: Float, oI: Float) = _orientation
-        val length: Float = _length
-        val halfLength: Float = length * 0.5f
-        val (rotR: Float, rotI: Float) = rotation
-        val orientationR: Float = (oR * rotR - oI * rotI)
-        val orientationI: Float = (oI * rotR + oR * rotI)
-        val originPointAX: Float = halfLength * orientationR
-        val originPointAY: Float = halfLength * orientationI
-
-        return MutableLineSegment(
-            center,
-            orientation = ComplexF(orientationR, orientationI),
-            length,
-            pointA = Vector2F(cX + originPointAX, cY + originPointAY),
-            pointB = Vector2F(cX - originPointAX, cY - originPointAY)
-        )
-    }
+    private inline fun rotatedByImpl(rotation: ComplexF): MutableLineSegment = createInternal(
+        _center,
+        orientation = (_orientation * rotation).normalizedOrElse(ComplexF.ONE),
+        _length
+    )
 
     override fun rotatedBy(rotation: AngleF): MutableLineSegment =
         rotatedByImpl(ComplexF.fromAngle(rotation))
 
     override fun rotatedBy(rotation: ComplexF): MutableLineSegment = rotatedByImpl(rotation)
 
-    private inline fun rotatedToImpl(orientation: ComplexF): MutableLineSegment {
-        val center: Vector2F = _center
-        val (cX: Float, cY: Float) = center
-        val length: Float = _length
-        val halfLength: Float = length * 0.5f
-        val (oR: Float, oI: Float) = orientation
-        val originPointAX: Float = halfLength * oR
-        val originPointAY: Float = halfLength * oI
-
-        return MutableLineSegment(
-            center,
-            orientation,
-            length,
-            pointA = Vector2F(cX + originPointAX, cY + originPointAY),
-            pointB = Vector2F(cX - originPointAX, cY - originPointAY)
-        )
-    }
+    private inline fun rotatedToImpl(orientation: ComplexF): MutableLineSegment = createInternal(
+        _center,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE),
+        _length
+    )
 
     override fun rotatedTo(orientation: AngleF): MutableLineSegment =
         rotatedToImpl(ComplexF.fromAngle(orientation))
@@ -166,8 +125,6 @@ class MutableLineSegment : LineSegment, MutableTransformable {
     ): MutableLineSegment {
         val (cX: Float, cY: Float) = _center
         val (oR: Float, oI: Float) = _orientation
-        val length: Float = _length
-        val halfLength: Float = length * 0.5f
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val cpDiffX: Float = cX - pX
@@ -176,15 +133,11 @@ class MutableLineSegment : LineSegment, MutableTransformable {
         val centerY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
         val orientationR: Float = oR * rotR - oI * rotI
         val orientationI: Float = oI * rotR + oR * rotI
-        val originPointAX: Float = halfLength * orientationR
-        val originPointAY: Float = halfLength * orientationI
 
-        return MutableLineSegment(
+        return createInternal(
             center = Vector2F(centerX, centerY),
-            orientation = ComplexF(orientationR, orientationI),
-            length,
-            pointA = Vector2F(centerX + originPointAX, centerY + originPointAY),
-            pointB = Vector2F(centerX - originPointAX, centerY - originPointAY)
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE),
+            _length,
         )
     }
 
@@ -200,7 +153,6 @@ class MutableLineSegment : LineSegment, MutableTransformable {
         val center: Vector2F = _center
         val (cX: Float, cY: Float) = center
         val length: Float = _length
-        val halfLength: Float = length * 0.5f
         val (pX: Float, pY: Float) = point
         val (oR: Float, oI: Float) = orientation
         val cpDiffX: Float = cX - pX
@@ -218,26 +170,18 @@ class MutableLineSegment : LineSegment, MutableTransformable {
             val pRotTimesStartOI: Float = pointRotR * startOI - pointRotI * startOR
             val orientationR: Float = pRotTimesStartOR * oR - pRotTimesStartOI * oI
             val orientationI: Float = pRotTimesStartOI * oR + pRotTimesStartOR * oI
-            val originPointAX: Float = halfLength * orientationR
-            val originPointAY: Float = halfLength * orientationI
 
-            return MutableLineSegment(
+            return createInternal(
                 center = Vector2F(centerX, centerY),
-                orientation = ComplexF(orientationR, orientationI),
+                orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE),
                 length,
-                pointA = Vector2F(centerX + originPointAX, centerY + originPointAY),
-                pointB = Vector2F(centerX - originPointAX, centerY - originPointAY)
             )
         }
-        val originPointAX: Float = halfLength * oR
-        val originPointAY: Float = halfLength * oI
 
-        return MutableLineSegment(
+        return createInternal(
             center,
-            orientation,
+            orientation.normalizedOrElse(ComplexF.ONE),
             length,
-            pointA = Vector2F(cX + originPointAX, cY + originPointAY),
-            pointB = Vector2F(cX - originPointAX, cY - originPointAY)
         )
     }
 
@@ -442,23 +386,17 @@ class MutableLineSegment : LineSegment, MutableTransformable {
     ): MutableLineSegment {
         val (cX: Float, cY: Float) = _center
         val (oR: Float, oI: Float) = _orientation
-        val length: Float = _length
-        val halfLength: Float = length * 0.5f
         val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
         val orientationR: Float = (oR * rotR - oI * rotI)
         val orientationI: Float = (oI * rotR + oR * rotI)
-        val originPointAX: Float = halfLength * orientationR
-        val originPointAY: Float = halfLength * orientationI
         val centerX: Float = cX + dX
         val centerY: Float = cY + dY
 
-        return MutableLineSegment(
+        return createInternal(
             center = Vector2F(centerX, centerY),
-            orientation = ComplexF(orientationR, orientationI),
-            length,
-            pointA = Vector2F(centerX + originPointAX, centerY + originPointAY),
-            pointB = Vector2F(centerX - originPointAX, centerY - originPointAY)
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE),
+            _length,
         )
     }
 
@@ -474,23 +412,18 @@ class MutableLineSegment : LineSegment, MutableTransformable {
         val (cX: Float, cY: Float) = _center
         val (oR: Float, oI: Float) = _orientation
         val length: Float = _length * scaleFactor.absoluteValue
-        val halfLength: Float = length * 0.5f
         val factorSign: Float = 1f.withSign(scaleFactor)
         val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
         val orientationR: Float = (oR * rotR - oI * rotI) * factorSign
         val orientationI: Float = (oI * rotR + oR * rotI) * factorSign
-        val originPointAX: Float = halfLength * orientationR
-        val originPointAY: Float = halfLength * orientationI
         val centerX: Float = cX + dX
         val centerY: Float = cY + dY
 
-        return MutableLineSegment(
+        return createInternal(
             center = Vector2F(centerX, centerY),
-            orientation = ComplexF(orientationR, orientationI),
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE),
             length,
-            pointA = Vector2F(centerX + originPointAX, centerY + originPointAY),
-            pointB = Vector2F(centerX - originPointAX, centerY - originPointAY)
         )
     }
 
@@ -506,22 +439,11 @@ class MutableLineSegment : LineSegment, MutableTransformable {
 
     private inline fun transformedToImpl(
         position: Vector2F, orientation: ComplexF
-    ): MutableLineSegment {
-        val length: Float = _length
-        val halfLength: Float = length * 0.5f
-        val (pX: Float, pY: Float) = position
-        val (oR: Float, oI: Float) = orientation
-        val originPointAX: Float = halfLength * oR
-        val originPointAY: Float = halfLength * oI
-
-        return MutableLineSegment(
-            center = position,
-            orientation,
-            length,
-            pointA = Vector2F(pX + originPointAX, pY + originPointAY),
-            pointB = Vector2F(pX - originPointAX, pY - originPointAY)
-        )
-    }
+    ): MutableLineSegment = createInternal(
+        center = position,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE),
+        _length
+    )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): MutableLineSegment =
         transformedToImpl(position, ComplexF.fromAngle(orientation))
@@ -616,7 +538,7 @@ class MutableLineSegment : LineSegment, MutableTransformable {
      * inaccuracies that can be countered by this method.
      */
     fun calibrate() {
-        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF.ONE)
         val (cX: Float, cY: Float) = _center
         val (oR: Float, oI: Float) = newOrientation
         val halfLength: Float = _length * 0.5f
@@ -657,7 +579,8 @@ class MutableLineSegment : LineSegment, MutableTransformable {
 
     override fun interpolated(to: LineSegment, by: Float) = createInternal(
         center = Vector2F.lerp(_center, to.center, by),
-        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         length = Float.lerp(_length, to.length, by)
     )
 
