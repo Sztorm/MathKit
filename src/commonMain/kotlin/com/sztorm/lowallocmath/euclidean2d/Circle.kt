@@ -50,17 +50,22 @@ interface Circle : CircleShape, Transformable {
 
     override fun movedTo(position: Vector2F): Circle = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): Circle =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF): Circle =
+        copy(orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE))
 
-    override fun rotatedBy(rotation: ComplexF): Circle = copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): Circle = rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): Circle = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): Circle =
+        copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): Circle =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): Circle = copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): Circle = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Circle {
+    private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Circle {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = center
@@ -76,7 +81,7 @@ interface Circle : CircleShape, Transformable {
             orientation = ComplexF(
                 startRotR * rotR - startRotI * rotI,
                 startRotI * rotR + startRotR * rotI
-            )
+            ).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -86,7 +91,7 @@ interface Circle : CircleShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Circle =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Circle {
+    private inline fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Circle {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = center
@@ -102,10 +107,11 @@ interface Circle : CircleShape, Transformable {
                 center = Vector2F(
                     rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
                 ),
-                orientation = ComplexF(startRotR, -startRotI) * this.orientation * orientation
+                orientation = (ComplexF(startRotR, -startRotI) * this.orientation * orientation)
+                    .normalizedOrElse(ComplexF.ONE)
             )
         } else {
-            copy(orientation = orientation)
+            copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
         }
     }
 
@@ -131,41 +137,46 @@ interface Circle : CircleShape, Transformable {
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Circle = copy(
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): Circle = copy(
         center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Circle = copy(
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Circle =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
+
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Circle =
+        transformedByImpl(displacement, rotation)
+
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Circle = copy(
         center = center + displacement,
-        orientation = orientation * rotation
+        orientation = (orientation * rotation)
+            .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
+        radius = radius * scaleFactor.absoluteValue
     )
 
     override fun transformedBy(
         displacement: Vector2F, rotation: AngleF, scaleFactor: Float
-    ): Circle = copy(
-        center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
-        radius = radius * scaleFactor.absoluteValue
-    )
+    ): Circle = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
     override fun transformedBy(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
-    ): Circle = copy(
-        center = center + displacement,
-        orientation = orientation * rotation * 1f.withSign(scaleFactor),
-        radius = radius * scaleFactor.absoluteValue
+    ): Circle = transformedByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformedToImpl(position: Vector2F, orientation: ComplexF): Circle = copy(
+        center = position,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): Circle = copy(
-        center = position,
-        orientation = ComplexF.fromAngle(orientation)
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Circle =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): Circle = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Circle =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this circle interpolated [to] other circle [by] a factor.
@@ -175,7 +186,8 @@ interface Circle : CircleShape, Transformable {
      */
     fun interpolated(to: Circle, by: Float): Circle = copy(
         center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         radius = Float.lerp(radius, to.radius, by)
     )
 
