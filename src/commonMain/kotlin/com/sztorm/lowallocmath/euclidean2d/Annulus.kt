@@ -61,18 +61,22 @@ interface Annulus : AnnulusShape, Transformable {
 
     override fun movedTo(position: Vector2F): Annulus = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): Annulus =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF) =
+        copy(orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE))
 
-    override fun rotatedBy(rotation: ComplexF): Annulus =
-        copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): Annulus = rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): Annulus = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF) =
+        copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): Annulus =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): Annulus = copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): Annulus = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Annulus {
+    private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Annulus {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = center
@@ -88,7 +92,7 @@ interface Annulus : AnnulusShape, Transformable {
             orientation = ComplexF(
                 startRotR * rotR - startRotI * rotI,
                 startRotI * rotR + startRotR * rotI
-            )
+            ).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -98,7 +102,7 @@ interface Annulus : AnnulusShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Annulus =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Annulus {
+    private inline fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Annulus {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = center
@@ -114,10 +118,11 @@ interface Annulus : AnnulusShape, Transformable {
                 center = Vector2F(
                     rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
                 ),
-                orientation = ComplexF(startRotR, -startRotI) * this.orientation * orientation,
+                orientation = (ComplexF(startRotR, -startRotI) * this.orientation * orientation)
+                    .normalizedOrElse(ComplexF.ONE)
             )
         } else {
-            copy(orientation = orientation)
+            copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
         }
     }
 
@@ -150,51 +155,53 @@ interface Annulus : AnnulusShape, Transformable {
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Annulus = copy(
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): Annulus = copy(
         center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Annulus = copy(
-        center = center + displacement,
-        orientation = orientation * rotation
-    )
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Annulus =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(
-        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
-    ): Annulus {
-        val absScaleFactor: Float = scaleFactor.absoluteValue
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Annulus =
+        transformedByImpl(displacement, rotation)
 
-        return copy(
-            center = center + displacement,
-            orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
-            outerRadius = outerRadius * absScaleFactor,
-            innerRadius = innerRadius * absScaleFactor
-        )
-    }
-
-    override fun transformedBy(
+    private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Annulus {
         val absScaleFactor: Float = scaleFactor.absoluteValue
 
         return copy(
             center = center + displacement,
-            orientation = orientation * rotation * 1f.withSign(scaleFactor),
+            orientation = (orientation * rotation)
+                .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
             outerRadius = outerRadius * absScaleFactor,
             innerRadius = innerRadius * absScaleFactor
         )
     }
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): Annulus = copy(
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): Annulus = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Annulus = transformedByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
+    ): Annulus = copy(
         center = position,
-        orientation = ComplexF.fromAngle(orientation)
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): Annulus = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Annulus =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Annulus =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this annulus interpolated [to] other annulus [by] a factor.
@@ -204,7 +211,8 @@ interface Annulus : AnnulusShape, Transformable {
      */
     fun interpolated(to: Annulus, by: Float): Annulus = copy(
         center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         outerRadius = Float.lerp(outerRadius, to.outerRadius, by),
         innerRadius = Float.lerp(innerRadius, to.innerRadius, by)
     )
