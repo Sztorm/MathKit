@@ -40,29 +40,31 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _origin = position
     }
 
-    override fun rotatedBy(rotation: AngleF): MutableRay =
-        rotatedBy(ComplexF.fromAngle(rotation))
-
-    override fun rotatedBy(rotation: ComplexF): MutableRay {
+    private inline fun rotatedByImpl(rotation: ComplexF): MutableRay {
         val (dirX: Float, dirY: Float) = _direction
         val (rotR: Float, rotI: Float) = rotation
 
         return MutableRay(
             _origin,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+                .normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
+    override fun rotatedBy(rotation: AngleF): MutableRay =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): MutableRay = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): MutableRay =
+        MutableRay(_origin, direction = orientation.normalizedOrElse(ComplexF.ONE).toVector2F())
+
     override fun rotatedTo(orientation: AngleF): MutableRay =
-        MutableRay(_origin, direction = ComplexF.fromAngle(orientation).toVector2F())
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): MutableRay =
-        MutableRay(_origin, direction = orientation.toVector2F())
+    override fun rotatedTo(orientation: ComplexF): MutableRay = rotatedToImpl(orientation)
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRay =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
-
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableRay {
+    private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): MutableRay {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _origin
@@ -76,14 +78,19 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
             ),
             direction = Vector2F(
                 startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
-            )
+            ).normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
-    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): MutableRay =
-        rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRay =
+        rotatedAroundPointByImpl(point, ComplexF.fromAngle(rotation))
 
-    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): MutableRay {
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): MutableRay =
+        rotatedAroundPointByImpl(point, rotation)
+
+    private inline fun rotatedAroundPointToImpl(
+        point: Vector2F, orientation: ComplexF
+    ): MutableRay {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = _origin
@@ -103,33 +110,42 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
                     rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
                 ),
                 direction = Vector2F(r0 * rotR - i0 * rotI, i0 * rotR + r0 * rotI)
+                    .normalizedOrElse(Vector2F(1f, 0f))
             )
         } else {
-            return MutableRay(_origin, direction = orientation.toVector2F())
+            return MutableRay(
+                _origin,
+                direction = orientation.normalizedOrElse(ComplexF.ONE).toVector2F()
+            )
         }
     }
 
-    override fun rotateBy(rotation: AngleF) = rotateBy(ComplexF.fromAngle(rotation))
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): MutableRay =
+        rotatedAroundPointToImpl(point, ComplexF.fromAngle(orientation))
 
-    override fun rotateBy(rotation: ComplexF) {
+    override fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): MutableRay =
+        rotatedAroundPointToImpl(point, orientation)
+
+    private inline fun rotateByImpl(rotation: ComplexF) {
         val (dirX: Float, dirY: Float) = _direction
         val (rotR: Float, rotI: Float) = rotation
 
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
     }
 
-    override fun rotateTo(orientation: AngleF) {
-        _direction = ComplexF.fromAngle(orientation).toVector2F()
-    }
+    override fun rotateBy(rotation: AngleF) = rotateByImpl(ComplexF.fromAngle(rotation))
 
-    override fun rotateTo(orientation: ComplexF) {
+    override fun rotateBy(rotation: ComplexF) = rotateByImpl(rotation)
+
+    private inline fun rotateToImpl(orientation: ComplexF) {
         _direction = orientation.toVector2F()
     }
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
+    override fun rotateTo(orientation: AngleF) = rotateToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
+    override fun rotateTo(orientation: ComplexF) = rotateToImpl(orientation)
+
+    private inline fun rotateAroundPointByImpl(point: Vector2F, rotation: ComplexF) {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _origin
@@ -145,10 +161,13 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         )
     }
 
-    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
+    override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
+        rotateAroundPointByImpl(point, ComplexF.fromAngle(rotation))
 
-    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) {
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        rotateAroundPointByImpl(point, rotation)
+
+    private inline fun rotateAroundPointToImpl(point: Vector2F, orientation: ComplexF) {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = _origin
@@ -171,6 +190,12 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
             _direction = orientation.toVector2F()
         }
     }
+
+    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
+        rotateAroundPointToImpl(point, ComplexF.fromAngle(orientation))
+
+    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) =
+        rotateAroundPointToImpl(point, orientation)
 
     override fun scaledBy(factor: Float) =
         MutableRay(_origin, _direction * 1f.withSign(factor))
@@ -196,24 +221,24 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction *= 1f.withSign(factor)
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): MutableRay =
-        transformedBy(displacement, ComplexF.fromAngle(rotation))
-
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): MutableRay {
+    private inline fun transformedByImpl(displacement: Vector2F, rotation: ComplexF): MutableRay {
         val (dirX: Float, dirY: Float) = _direction
         val (rotR: Float, rotI: Float) = rotation
 
         return MutableRay(
             origin = _origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+                .normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
-    override fun transformedBy(
-        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
-    ): MutableRay = transformedBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): MutableRay =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): MutableRay =
+        transformedByImpl(displacement, rotation)
+
+    private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): MutableRay {
         val (dirX: Float, dirY: Float) = _direction
@@ -224,19 +249,28 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         return MutableRay(
             origin = _origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+                .normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): MutableRay = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): MutableRay = transformedByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformedToImpl(position: Vector2F, orientation: ComplexF) =
+        MutableRay(position, direction = orientation.normalizedOrElse(ComplexF.ONE).toVector2F())
+
     override fun transformedTo(position: Vector2F, orientation: AngleF): MutableRay =
-        MutableRay(position, direction = ComplexF.fromAngle(orientation).toVector2F())
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
 
     override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        MutableRay(position, direction = orientation.toVector2F())
+        transformedToImpl(position, orientation)
 
-    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
-        transformBy(displacement, ComplexF.fromAngle(rotation))
-
-    override fun transformBy(displacement: Vector2F, rotation: ComplexF) {
+    private inline fun transformByImpl(displacement: Vector2F, rotation: ComplexF) {
         val (dirX: Float, dirY: Float) = _direction
         val (rotR: Float, rotI: Float) = rotation
 
@@ -244,10 +278,15 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
     }
 
-    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
-        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) =
+        transformByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) =
+        transformByImpl(displacement, rotation)
+
+    private inline fun transformByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ) {
         val (dirX: Float, dirY: Float) = _direction
         val scaleFactorSign: Float = 1f.withSign(scaleFactor)
         val rotR: Float = rotation.real * scaleFactorSign
@@ -257,15 +296,22 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         _direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
     }
 
-    override fun transformTo(position: Vector2F, orientation: AngleF) {
-        _origin = position
-        _direction = ComplexF.fromAngle(orientation).toVector2F()
-    }
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
-    override fun transformTo(position: Vector2F, orientation: ComplexF) {
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) =
+        transformByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformToImpl(position: Vector2F, orientation: ComplexF) {
         _origin = position
         _direction = orientation.toVector2F()
     }
+
+    override fun transformTo(position: Vector2F, orientation: AngleF) =
+        transformToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformTo(position: Vector2F, orientation: ComplexF) =
+        transformToImpl(position, orientation)
 
     private inline fun setInternal(origin: Vector2F, direction: Vector2F) {
         _origin = origin
@@ -295,6 +341,7 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
         origin = Vector2F.lerp(_origin, to.origin, by),
         direction = ComplexF
             .slerp(_direction.toComplexF(), to.direction.toComplexF(), by)
+            .normalizedOrElse(ComplexF.ONE)
             .toVector2F()
     )
 

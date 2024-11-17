@@ -52,6 +52,7 @@ interface Ray : Transformable {
 
         return copy(
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+                .normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
@@ -59,12 +60,15 @@ interface Ray : Transformable {
 
     override fun rotatedBy(rotation: ComplexF): Ray = rotatedByImpl(rotation)
 
+    private inline fun rotatedToImpl(orientation: ComplexF): Ray =
+        copy(direction = orientation.normalizedOrElse(ComplexF.ONE).toVector2F())
+
     override fun rotatedTo(orientation: AngleF): Ray =
-        copy(direction = ComplexF.fromAngle(orientation).toVector2F())
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): Ray = copy(direction = orientation.toVector2F())
+    override fun rotatedTo(orientation: ComplexF): Ray = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Ray {
+    private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Ray {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = origin
@@ -78,7 +82,7 @@ interface Ray : Transformable {
             ),
             direction = Vector2F(
                 startRotR * rotR - startRotI * rotI, startRotI * rotR + startRotR * rotI
-            )
+            ).normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
@@ -88,7 +92,7 @@ interface Ray : Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Ray =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Ray {
+    private inline fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Ray {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = origin
@@ -108,9 +112,10 @@ interface Ray : Transformable {
                     rotR * centerToPointDist + pX, rotI * centerToPointDist + pY
                 ),
                 direction = Vector2F(r0 * rotR - i0 * rotI, i0 * rotR + r0 * rotI)
+                    .normalizedOrElse(Vector2F(1f, 0f))
             )
         } else {
-            return copy(direction = orientation.toVector2F())
+            return copy(direction = orientation.normalizedOrElse(ComplexF.ONE).toVector2F())
         }
     }
 
@@ -139,6 +144,7 @@ interface Ray : Transformable {
         return copy(
             origin = origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+                .normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
@@ -159,6 +165,7 @@ interface Ray : Transformable {
         return copy(
             origin = origin + displacement,
             direction = Vector2F(dirX * rotR - dirY * rotI, dirY * rotR + dirX * rotI)
+                .normalizedOrElse(Vector2F(1f, 0f))
         )
     }
 
@@ -169,15 +176,16 @@ interface Ray : Transformable {
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Ray = transformedByImpl(displacement, rotation, scaleFactor)
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): Ray = copy(
+    private inline fun transformedToImpl(position: Vector2F, orientation: ComplexF): Ray = copy(
         origin = position,
-        direction = ComplexF.fromAngle(orientation).toVector2F()
+        direction = orientation.normalizedOrElse(ComplexF.ONE).toVector2F()
     )
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): Ray = copy(
-        origin = position,
-        direction = orientation.toVector2F()
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Ray =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Ray =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this ray interpolated [to] other ray [by] a factor.
@@ -189,6 +197,7 @@ interface Ray : Transformable {
         origin = Vector2F.lerp(origin, to.origin, by),
         direction = ComplexF
             .slerp(direction.toComplexF(), to.direction.toComplexF(), by)
+            .normalizedOrElse(ComplexF.ONE)
             .toVector2F()
     )
 
