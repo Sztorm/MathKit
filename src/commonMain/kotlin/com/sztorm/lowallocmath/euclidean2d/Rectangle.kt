@@ -110,19 +110,24 @@ interface Rectangle : RectangleShape, Transformable {
 
     override fun movedTo(position: Vector2F): Rectangle = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): Rectangle =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF): Rectangle = copy(
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
+    )
 
-    override fun rotatedBy(rotation: ComplexF): Rectangle =
-        copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): Rectangle =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): Rectangle = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): Rectangle =
+        copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): Rectangle =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): Rectangle =
-        copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): Rectangle = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Rectangle {
+    private inline fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): Rectangle {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = center
@@ -136,7 +141,7 @@ interface Rectangle : RectangleShape, Transformable {
 
         return copy(
             center = Vector2F(targetCenterX, targetCenterY),
-            orientation = ComplexF(targetRotR, targetRotI)
+            orientation = ComplexF(targetRotR, targetRotI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -146,7 +151,7 @@ interface Rectangle : RectangleShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Rectangle =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Rectangle {
+    private inline fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): Rectangle {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = center
@@ -163,9 +168,9 @@ interface Rectangle : RectangleShape, Transformable {
 
             copy(
                 center = Vector2F(targetCenterX, targetCenterY),
-                orientation = targetRot
+                orientation = targetRot.normalizedOrElse(ComplexF.ONE)
             )
-        } else copy(orientation = orientation)
+        } else copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
     }
 
     override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Rectangle =
@@ -186,28 +191,32 @@ interface Rectangle : RectangleShape, Transformable {
 
     override fun dilatedBy(point: Vector2F, factor: Float): Rectangle {
         val f: Float = 1f - factor
-        val cX: Float = center.x * factor + point.x * f
-        val cY: Float = center.y * factor + point.y * f
-        val (rotR: Float, rotI: Float) = orientation * 1f.withSign(factor)
+        val (cX: Float, cY: Float) = center
+        val (pX: Float, pY: Float) = point
+        val centerX: Float = cX * factor + pX * f
+        val centerY: Float = cY * factor + pY * f
         val absFactor: Float = factor.absoluteValue
 
         return copy(
-            center = Vector2F(cX, cY),
-            orientation = ComplexF(rotR, rotI),
+            center = Vector2F(centerX, centerY),
+            orientation = orientation * 1f.withSign(factor),
             width = width * absFactor,
             height = height * absFactor
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Rectangle = copy(
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): Rectangle = copy(
         center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Rectangle = copy(
-        center = center + displacement,
-        orientation = orientation * rotation
-    )
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): Rectangle =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
+
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): Rectangle =
+        transformedByImpl(displacement, rotation)
 
     private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
@@ -216,7 +225,8 @@ interface Rectangle : RectangleShape, Transformable {
 
         return copy(
             center = center + displacement,
-            orientation = orientation * rotation * 1f.withSign(scaleFactor),
+            orientation = (orientation * rotation)
+                .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
             width = width * absScaleFactor,
             height = height * absScaleFactor
         )
@@ -230,15 +240,18 @@ interface Rectangle : RectangleShape, Transformable {
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): Rectangle = transformedByImpl(displacement, rotation, scaleFactor)
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): Rectangle = copy(
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
+    ): Rectangle = copy(
         center = position,
-        orientation = ComplexF.fromAngle(orientation)
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): Rectangle = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): Rectangle =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): Rectangle =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this rectangle interpolated [to] other rectangle [by] a factor.
@@ -248,7 +261,8 @@ interface Rectangle : RectangleShape, Transformable {
      */
     fun interpolated(to: Rectangle, by: Float): Rectangle = copy(
         center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         width = Float.lerp(width, to.width, by),
         height = Float.lerp(height, to.height, by)
     )
