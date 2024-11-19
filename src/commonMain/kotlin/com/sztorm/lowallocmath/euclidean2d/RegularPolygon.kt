@@ -136,18 +136,25 @@ interface RegularPolygon : RegularShape, Transformable {
 
     override fun movedTo(position: Vector2F): RegularPolygon = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): RegularPolygon =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF): RegularPolygon =
+        copy(orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE))
 
-    override fun rotatedBy(rotation: ComplexF): RegularPolygon =
-        copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): RegularPolygon =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): RegularPolygon = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): RegularPolygon =
+        copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): RegularPolygon =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): RegularPolygon = copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): RegularPolygon = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): RegularPolygon {
+    private inline fun rotatedAroundPointByImpl(
+        point: Vector2F, rotation: ComplexF
+    ): RegularPolygon {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = center
@@ -161,7 +168,7 @@ interface RegularPolygon : RegularShape, Transformable {
 
         return copy(
             center = Vector2F(targetCenterX, targetCenterY),
-            orientation = ComplexF(targetRotR, targetRotI)
+            orientation = ComplexF(targetRotR, targetRotI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -171,7 +178,9 @@ interface RegularPolygon : RegularShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RegularPolygon =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): RegularPolygon {
+    private inline fun rotatedAroundPointToImpl(
+        point: Vector2F, orientation: ComplexF
+    ): RegularPolygon {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (startRotR: Float, startRotI: Float) = this.orientation
@@ -193,9 +202,9 @@ interface RegularPolygon : RegularShape, Transformable {
                 orientation = ComplexF(
                     pRotR * startRotR - pRotI * startRotI,
                     pRotI * startRotR + pRotR * startRotI
-                )
+                ).normalizedOrElse(ComplexF.ONE)
             )
-        } else copy(orientation = orientation)
+        } else copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
     }
 
     override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): RegularPolygon =
@@ -211,9 +220,10 @@ interface RegularPolygon : RegularShape, Transformable {
 
     override fun dilatedBy(point: Vector2F, factor: Float): RegularPolygon {
         val (startCX: Float, startCY: Float) = center
+        val (pointX: Float, pointY: Float) = point
         val f: Float = 1f - factor
-        val addendX: Float = point.x * f
-        val addendY: Float = point.y * f
+        val addendX: Float = pointX * f
+        val addendY: Float = pointY * f
 
         return copy(
             center = Vector2F(startCX * factor + addendX, startCY * factor + addendY),
@@ -222,41 +232,48 @@ interface RegularPolygon : RegularShape, Transformable {
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RegularPolygon = copy(
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): RegularPolygon = copy(
         center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RegularPolygon = copy(
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RegularPolygon =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
+
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RegularPolygon =
+        transformedByImpl(displacement, rotation)
+
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): RegularPolygon = copy(
         center = center + displacement,
-        orientation = orientation * rotation
+        orientation = (orientation * rotation)
+            .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
+        sideLength = sideLength * scaleFactor.absoluteValue
     )
 
     override fun transformedBy(
         displacement: Vector2F, rotation: AngleF, scaleFactor: Float
-    ): RegularPolygon = copy(
-        center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
-        sideLength = sideLength * scaleFactor.absoluteValue
-    )
+    ): RegularPolygon = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
     override fun transformedBy(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): RegularPolygon = transformedByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
     ): RegularPolygon = copy(
-        center = center + displacement,
-        orientation = orientation * rotation * 1f.withSign(scaleFactor),
-        sideLength = sideLength * scaleFactor.absoluteValue
+        center = position,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): RegularPolygon = copy(
-        center = position,
-        orientation = ComplexF.fromAngle(orientation)
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): RegularPolygon =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularPolygon = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularPolygon =
+        transformedToImpl(position, orientation)
 
     /** Returns the closest point on this regular polygon to the given [point]. **/
     fun closestPointTo(point: Vector2F): Vector2F {
