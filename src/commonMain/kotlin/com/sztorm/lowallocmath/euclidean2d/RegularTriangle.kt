@@ -146,19 +146,25 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     override fun movedTo(position: Vector2F): RegularTriangle = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): RegularTriangle =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF): RegularTriangle =
+        copy(orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE))
 
-    override fun rotatedBy(rotation: ComplexF): RegularTriangle =
-        copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): RegularTriangle =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): RegularTriangle = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): RegularTriangle =
+        copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): RegularTriangle =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): RegularTriangle =
-        copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): RegularTriangle = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): RegularTriangle {
+    private inline fun rotatedAroundPointByImpl(
+        point: Vector2F, rotation: ComplexF
+    ): RegularTriangle {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = center
@@ -172,7 +178,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
         return copy(
             center = Vector2F(targetCenterX, targetCenterY),
-            orientation = ComplexF(targetRotR, targetRotI)
+            orientation = ComplexF(targetRotR, targetRotI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -182,7 +188,9 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RegularTriangle =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(point: Vector2F, orientation: ComplexF): RegularTriangle {
+    private inline fun rotatedAroundPointToImpl(
+        point: Vector2F, orientation: ComplexF
+    ): RegularTriangle {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = center
@@ -193,15 +201,16 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         return if (centerToPointDist > 0.00001f) {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
-            val targetRot = ComplexF(pointRotR, -pointRotI) * this.orientation * orientation
+            val targetOrientation = (ComplexF(pointRotR, -pointRotI) * this.orientation *
+                    orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = rotR * centerToPointDist + pX
             val targetCenterY: Float = rotI * centerToPointDist + pY
 
             copy(
                 center = Vector2F(targetCenterX, targetCenterY),
-                orientation = targetRot
+                orientation = targetOrientation
             )
-        } else copy(orientation = orientation)
+        } else copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     }
 
@@ -217,54 +226,63 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
     )
 
     override fun dilatedBy(point: Vector2F, factor: Float): RegularTriangle {
+        val (cX: Float, cY: Float) = center
+        val (pX: Float, pY: Float) = point
         val f: Float = 1f - factor
-        val cX: Float = center.x * factor + point.x * f
-        val cY: Float = center.y * factor + point.y * f
+        val centerX: Float = cX * factor + pX * f
+        val centerY: Float = cY * factor + pY * f
         val (rotR: Float, rotI: Float) = orientation * 1f.withSign(factor)
         val sideLength: Float = sideLength * factor.absoluteValue
 
         return copy(
-            center = Vector2F(cX, cY),
+            center = Vector2F(centerX, centerY),
             orientation = ComplexF(rotR, rotI),
             sideLength = sideLength,
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RegularTriangle = copy(
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): RegularTriangle = copy(
         center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RegularTriangle = copy(
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RegularTriangle =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
+
+    override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RegularTriangle =
+        transformedByImpl(displacement, rotation)
+
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): RegularTriangle = copy(
         center = center + displacement,
-        orientation = orientation * rotation
+        orientation = (orientation * rotation)
+            .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
+        sideLength = sideLength * scaleFactor.absoluteValue
     )
 
     override fun transformedBy(
         displacement: Vector2F, rotation: AngleF, scaleFactor: Float
-    ): RegularTriangle = copy(
-        center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
-        sideLength = sideLength * scaleFactor.absoluteValue
-    )
+    ): RegularTriangle = transformedByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
 
     override fun transformedBy(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): RegularTriangle = transformedByImpl(displacement, rotation, scaleFactor)
+
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
     ): RegularTriangle = copy(
-        center = center + displacement,
-        orientation = orientation * rotation * 1f.withSign(scaleFactor),
-        sideLength = sideLength * scaleFactor.absoluteValue
+        center = position,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): RegularTriangle = copy(
-        center = position,
-        orientation = ComplexF.fromAngle(orientation)
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): RegularTriangle =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularTriangle = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): RegularTriangle =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this regular triangle interpolated [to] other regular triangle [by] a
@@ -275,7 +293,8 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
      */
     fun interpolated(to: RegularTriangle, by: Float): RegularTriangle = copy(
         center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         sideLength = Float.lerp(sideLength, to.sideLength, by)
     )
 

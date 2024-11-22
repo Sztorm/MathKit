@@ -131,27 +131,17 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     override val orthocenter: Vector2F
         get() = _center
 
-    override fun movedBy(displacement: Vector2F) = MutableRegularTriangle(
-        _center + displacement,
+    override fun movedBy(displacement: Vector2F): MutableRegularTriangle = createInternal(
+        center = _center + displacement,
         _orientation,
         _sideLength,
-        _pointA + displacement,
-        _pointB + displacement,
-        _pointC + displacement
     )
 
-    override fun movedTo(position: Vector2F): MutableRegularTriangle {
-        val displacement: Vector2F = position - _center
-
-        return MutableRegularTriangle(
-            position,
-            _orientation,
-            _sideLength,
-            _pointA + displacement,
-            _pointB + displacement,
-            _pointC + displacement
-        )
-    }
+    override fun movedTo(position: Vector2F): MutableRegularTriangle = createInternal(
+        center = position,
+        _orientation,
+        _sideLength
+    )
 
     override fun moveBy(displacement: Vector2F) {
         _center += displacement
@@ -168,22 +158,32 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC += displacement
     }
 
-    override fun rotatedBy(rotation: AngleF) =
-        createInternal(_center, _orientation * ComplexF.fromAngle(rotation), _sideLength)
+    private inline fun rotatedByImpl(rotation: ComplexF): MutableRegularTriangle = createInternal(
+        _center,
+        orientation = (_orientation * rotation).normalizedOrElse(ComplexF.ONE),
+        _sideLength
+    )
 
-    override fun rotatedBy(rotation: ComplexF) =
-        createInternal(_center, _orientation * rotation, _sideLength)
+    override fun rotatedBy(rotation: AngleF): MutableRegularTriangle =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
 
-    override fun rotatedTo(orientation: AngleF) =
-        createInternal(_center, ComplexF.fromAngle(orientation), _sideLength)
+    override fun rotatedBy(rotation: ComplexF): MutableRegularTriangle = rotatedByImpl(rotation)
 
-    override fun rotatedTo(orientation: ComplexF) =
-        createInternal(_center, orientation, _sideLength)
+    private inline fun rotatedToImpl(
+        orientation: ComplexF
+    ): MutableRegularTriangle = createInternal(
+        _center,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE),
+        _sideLength
+    )
 
-    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRegularTriangle =
-        rotatedAroundPointBy(point, ComplexF.fromAngle(rotation))
+    override fun rotatedTo(orientation: AngleF): MutableRegularTriangle =
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedAroundPointBy(
+    override fun rotatedTo(orientation: ComplexF): MutableRegularTriangle =
+        rotatedToImpl(orientation)
+
+    private inline fun rotatedAroundPointByImpl(
         point: Vector2F, rotation: ComplexF
     ): MutableRegularTriangle {
         val (pX: Float, pY: Float) = point
@@ -196,94 +196,61 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
         val targetRotR: Float = startRotR * rotR - startRotI * rotI
         val targetRotI: Float = startRotI * rotR + startRotR * rotI
-        val sideLength: Float = _sideLength
-        val halfSideLength: Float = sideLength * 0.5f
-        val inradius: Float = 0.28867513f * sideLength
-        val circumradius: Float = inradius + inradius
-        val addendX1: Float = targetRotI * inradius + targetCenterX
-        val addendX2: Float = targetRotR * halfSideLength
-        val addendY1: Float = targetRotI * halfSideLength
-        val addendY2: Float = targetRotR * inradius - targetCenterY
 
-        return MutableRegularTriangle(
+        return createInternal(
             center = Vector2F(targetCenterX, targetCenterY),
-            orientation = ComplexF(targetRotR, targetRotI),
+            orientation = ComplexF(targetRotR, targetRotI).normalizedOrElse(ComplexF.ONE),
             _sideLength,
-            pointA = Vector2F(
-                targetCenterX - targetRotI * circumradius,
-                targetCenterY + targetRotR * circumradius
-            ),
-            pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2),
-            pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+        )
+    }
+
+    override fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): MutableRegularTriangle =
+        rotatedAroundPointByImpl(point, ComplexF.fromAngle(rotation))
+
+    override fun rotatedAroundPointBy(
+        point: Vector2F, rotation: ComplexF
+    ): MutableRegularTriangle = rotatedAroundPointByImpl(point, rotation)
+
+    private inline fun rotatedAroundPointToImpl(
+        point: Vector2F, orientation: ComplexF
+    ): MutableRegularTriangle {
+        val (pX: Float, pY: Float) = point
+        val (rotR: Float, rotI: Float) = orientation
+        val center: Vector2F = _center
+        val (cX: Float, cY: Float) = center
+        val cpDiffX: Float = cX - pX
+        val cpDiffY: Float = cY - pY
+        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+
+        return if (centerToPointDist > 0.00001f) {
+            val pointRotR: Float = cpDiffX / centerToPointDist
+            val pointRotI: Float = cpDiffY / centerToPointDist
+            val targetOrientation = (ComplexF(pointRotR, -pointRotI) * _orientation *
+                    orientation).normalizedOrElse(ComplexF.ONE)
+            val targetCenterX: Float = rotR * centerToPointDist + pX
+            val targetCenterY: Float = rotI * centerToPointDist + pY
+
+            createInternal(
+                center = Vector2F(targetCenterX, targetCenterY),
+                orientation = targetOrientation,
+                _sideLength,
+            )
+        } else createInternal(
+            center,
+            orientation = orientation.normalizedOrElse(ComplexF.ONE),
+            _sideLength
         )
     }
 
     override fun rotatedAroundPointTo(
         point: Vector2F, orientation: AngleF
-    ): MutableRegularTriangle = rotatedAroundPointTo(point, ComplexF.fromAngle(orientation))
+    ): MutableRegularTriangle = rotatedAroundPointToImpl(point, ComplexF.fromAngle(orientation))
 
     override fun rotatedAroundPointTo(
         point: Vector2F, orientation: ComplexF
-    ): MutableRegularTriangle {
-        val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = orientation
-        val (cX: Float, cY: Float) = _center
-        val sideLength: Float = _sideLength
-        val halfSideLength: Float = sideLength * 0.5f
-        val inradius: Float = 0.28867513f * sideLength
-        val circumradius: Float = inradius + inradius
-        val cpDiffX: Float = cX - pX
-        val cpDiffY: Float = cY - pY
-        val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
+    ): MutableRegularTriangle = rotatedAroundPointToImpl(point, orientation)
 
-        if (centerToPointDist > 0.00001f) {
-            val pointRotR: Float = cpDiffX / centerToPointDist
-            val pointRotI: Float = cpDiffY / centerToPointDist
-            val targetRot = ComplexF(pointRotR, -pointRotI) * _orientation * orientation
-            val (targetRotR: Float, targetRotI: Float) = targetRot
-            val targetCenterX: Float = rotR * centerToPointDist + pX
-            val targetCenterY: Float = rotI * centerToPointDist + pY
-            val addendX1: Float = targetRotI * inradius + targetCenterX
-            val addendX2: Float = targetRotR * halfSideLength
-            val addendY1: Float = targetRotI * halfSideLength
-            val addendY2: Float = targetRotR * inradius - targetCenterY
-
-            return MutableRegularTriangle(
-                center = Vector2F(targetCenterX, targetCenterY),
-                targetRot,
-                _sideLength,
-                pointA = Vector2F(
-                    targetCenterX - targetRotI * circumradius,
-                    targetCenterY + targetRotR * circumradius
-                ),
-                pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2),
-                pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
-            )
-        } else {
-            val addendX1: Float = rotI * inradius + cX
-            val addendX2: Float = rotR * halfSideLength
-            val addendY1: Float = rotI * halfSideLength
-            val addendY2: Float = rotR * inradius - cY
-
-            return MutableRegularTriangle(
-                _center,
-                orientation,
-                _sideLength,
-                pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius),
-                pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2),
-                pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
-            )
-        }
-    }
-
-    override fun rotateBy(rotation: AngleF) =
-        rotateTo(_orientation * ComplexF.fromAngle(rotation))
-
-    override fun rotateBy(rotation: ComplexF) = rotateTo(_orientation * rotation)
-
-    override fun rotateTo(orientation: AngleF) = rotateTo(ComplexF.fromAngle(orientation))
-
-    override fun rotateTo(orientation: ComplexF) {
+    private inline fun rotateToImpl(orientation: ComplexF) {
         val (cX: Float, cY: Float) = _center
         val (rotR: Float, rotI: Float) = orientation
         val sideLength: Float = _sideLength
@@ -300,10 +267,16 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
-        rotateAroundPointBy(point, ComplexF.fromAngle(rotation))
+    override fun rotateBy(rotation: AngleF) =
+        rotateToImpl(_orientation * ComplexF.fromAngle(rotation))
 
-    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) {
+    override fun rotateBy(rotation: ComplexF) = rotateToImpl(_orientation * rotation)
+
+    override fun rotateTo(orientation: AngleF) = rotateToImpl(ComplexF.fromAngle(orientation))
+
+    override fun rotateTo(orientation: ComplexF) = rotateToImpl(orientation)
+
+    private inline fun rotateAroundPointByImpl(point: Vector2F, rotation: ComplexF) {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val (cX: Float, cY: Float) = _center
@@ -332,10 +305,13 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
-    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
-        rotateAroundPointTo(point, ComplexF.fromAngle(orientation))
+    override fun rotateAroundPointBy(point: Vector2F, rotation: AngleF) =
+        rotateAroundPointByImpl(point, ComplexF.fromAngle(rotation))
 
-    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) {
+    override fun rotateAroundPointBy(point: Vector2F, rotation: ComplexF) =
+        rotateAroundPointByImpl(point, rotation)
+
+    private inline fun rotateAroundPointToImpl(point: Vector2F, orientation: ComplexF) {
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = _center
@@ -378,31 +354,39 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         }
     }
 
-    override fun scaledBy(factor: Float) = createInternal(
+    override fun rotateAroundPointTo(point: Vector2F, orientation: AngleF) =
+        rotateAroundPointToImpl(point, ComplexF.fromAngle(orientation))
+
+    override fun rotateAroundPointTo(point: Vector2F, orientation: ComplexF) =
+        rotateAroundPointToImpl(point, orientation)
+
+    override fun scaledBy(factor: Float): MutableRegularTriangle = createInternal(
         _center,
         orientation = _orientation * 1f.withSign(factor),
         sideLength = _sideLength * factor.absoluteValue
     )
 
     override fun dilatedBy(point: Vector2F, factor: Float): MutableRegularTriangle {
+        val (cX: Float, cY: Float) = _center
+        val (pX: Float, pY: Float) = point
         val f: Float = 1f - factor
-        val cX: Float = _center.x * factor + point.x * f
-        val cY: Float = _center.y * factor + point.y * f
+        val centerX: Float = cX * factor + pX * f
+        val centerY: Float = cY * factor + pY * f
         val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
         val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val inradius: Float = 0.28867513f * sideLength
         val circumradius: Float = inradius + inradius
-        val addendX1: Float = rotI * inradius + cX
+        val addendX1: Float = rotI * inradius + centerX
         val addendX2: Float = rotR * halfSideLength
         val addendY1: Float = rotI * halfSideLength
-        val addendY2: Float = rotR * inradius - cY
+        val addendY2: Float = rotR * inradius - centerY
 
         return MutableRegularTriangle(
-            center = Vector2F(cX, cY),
+            center = Vector2F(centerX, centerY),
             orientation = ComplexF(rotR, rotI),
             sideLength,
-            pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius),
+            pointA = Vector2F(centerX - rotI * circumradius, centerY + rotR * circumradius),
             pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2),
             pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
         )
@@ -427,111 +411,143 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
     }
 
     override fun dilateBy(point: Vector2F, factor: Float) {
+        val (cX: Float, cY: Float) = _center
+        val (pX: Float, pY: Float) = point
         val f: Float = 1f - factor
-        val cX: Float = _center.x * factor + point.x * f
-        val cY: Float = _center.y * factor + point.y * f
+        val centerX: Float = cX * factor + pX * f
+        val centerY: Float = cY * factor + pY * f
         val (rotR: Float, rotI: Float) = _orientation * 1f.withSign(factor)
         val sideLength: Float = _sideLength * factor.absoluteValue
         val halfSideLength: Float = sideLength * 0.5f
         val inradius: Float = 0.28867513f * sideLength
         val circumradius: Float = inradius + inradius
-        val addendX1: Float = rotI * inradius + cX
+        val addendX1: Float = rotI * inradius + centerX
         val addendX2: Float = rotR * halfSideLength
         val addendY1: Float = rotI * halfSideLength
-        val addendY2: Float = rotR * inradius - cY
-        _center = Vector2F(cX, cY)
+        val addendY2: Float = rotR * inradius - centerY
+        _center = Vector2F(centerX, centerY)
         _orientation = ComplexF(rotR, rotI)
         _sideLength = sideLength
-        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointA = Vector2F(centerX - rotI * circumradius, centerY + rotR * circumradius)
         _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF) = createInternal(
-        _center + displacement,
-        _orientation * ComplexF.fromAngle(rotation),
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): MutableRegularTriangle = createInternal(
+        center = _center + displacement,
+        orientation = (_orientation * rotation).normalizedOrElse(ComplexF.ONE),
         _sideLength
     )
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF) =
-        createInternal(_center + displacement, _orientation * rotation, _sideLength)
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): MutableRegularTriangle =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
-        createInternal(
-            _center + displacement,
-            _orientation * ComplexF.fromAngle(rotation) * 1f.withSign(scaleFactor),
-            _sideLength * scaleFactor.absoluteValue
-        )
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF
+    ): MutableRegularTriangle = transformedByImpl(displacement, rotation)
 
-    override fun transformedBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) =
-        createInternal(
-            _center + displacement,
-            _orientation * rotation * 1f.withSign(scaleFactor),
-            _sideLength * scaleFactor.absoluteValue
-        )
-
-    override fun transformedTo(position: Vector2F, orientation: AngleF) =
-        createInternal(position, ComplexF.fromAngle(orientation), _sideLength)
-
-    override fun transformedTo(position: Vector2F, orientation: ComplexF) =
-        createInternal(position, orientation, _sideLength)
-
-    override fun transformBy(displacement: Vector2F, rotation: AngleF) = transformTo(
-        _center + displacement, _orientation * ComplexF.fromAngle(rotation)
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): MutableRegularTriangle = createInternal(
+        center = _center + displacement,
+        orientation = (_orientation * rotation)
+            .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
+        sideLength = _sideLength * scaleFactor.absoluteValue
     )
 
-    override fun transformBy(displacement: Vector2F, rotation: ComplexF) =
-        transformTo(_center + displacement, _orientation * rotation)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: AngleF, scaleFactor: Float
+    ): MutableRegularTriangle = transformedByImpl(
+        displacement, ComplexF.fromAngle(rotation), scaleFactor
+    )
 
-    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
-        transformBy(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+    override fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): MutableRegularTriangle = transformedByImpl(displacement, rotation, scaleFactor)
 
-    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) {
-        val cX: Float = _center.x + displacement.x
-        val cY: Float = _center.y + displacement.y
-        val r0 = _orientation.real
-        val i0 = _orientation.imaginary
-        val r1 = rotation.real
-        val i1 = rotation.imaginary
-        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
-        val rotR: Float = (r0 * r1 - i0 * i1) * scaleFactorSign
-        val rotI: Float = (i0 * r1 + r0 * i1) * scaleFactorSign
-        val sideLength: Float = _sideLength * scaleFactor.absoluteValue
-        val halfSideLength: Float = sideLength * 0.5f
-        val inradius: Float = 0.28867513f * sideLength
-        val circumradius: Float = inradius + inradius
-        val addendX1: Float = rotI * inradius + cX
-        val addendX2: Float = rotR * halfSideLength
-        val addendY1: Float = rotI * halfSideLength
-        val addendY2: Float = rotR * inradius - cY
-        _center = Vector2F(cX, cY)
-        _orientation = ComplexF(rotR, rotI)
-        _sideLength = sideLength
-        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
-        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
-        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
-    }
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
+    ): MutableRegularTriangle = createInternal(
+        center = position,
+        orientation = orientation.normalizedOrElse(ComplexF.ONE),
+        _sideLength
+    )
 
-    override fun transformTo(position: Vector2F, orientation: AngleF) =
-        transformTo(position, ComplexF.fromAngle(orientation))
+    override fun transformedTo(position: Vector2F, orientation: AngleF): MutableRegularTriangle =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
 
-    override fun transformTo(position: Vector2F, orientation: ComplexF) {
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): MutableRegularTriangle =
+        transformedToImpl(position, orientation)
+
+    private inline fun transformToImpl(position: Vector2F, orientation: ComplexF) {
         val (cX: Float, cY: Float) = position
-        val (rotR: Float, rotI: Float) = orientation
+        val (oR: Float, oI: Float) = orientation
         val sideLength: Float = _sideLength
         val halfSideLength: Float = sideLength * 0.5f
         val inradius: Float = 0.28867513f * sideLength
         val circumradius: Float = inradius + inradius
-        val addendX1: Float = rotI * inradius + cX
-        val addendX2: Float = rotR * halfSideLength
-        val addendY1: Float = rotI * halfSideLength
-        val addendY2: Float = rotR * inradius - cY
+        val addendX1: Float = oI * inradius + cX
+        val addendX2: Float = oR * halfSideLength
+        val addendY1: Float = oI * halfSideLength
+        val addendY2: Float = oR * inradius - cY
         _center = position
         _orientation = orientation
-        _pointA = Vector2F(cX - rotI * circumradius, cY + rotR * circumradius)
+        _pointA = Vector2F(cX - oI * circumradius, cY + oR * circumradius)
         _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
         _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
     }
+
+    override fun transformBy(displacement: Vector2F, rotation: AngleF) = transformToImpl(
+        _center + displacement, _orientation * ComplexF.fromAngle(rotation)
+    )
+
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF) =
+        transformToImpl(_center + displacement, _orientation * rotation)
+
+    private inline fun transformByImpl(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ) {
+        val (cX: Float, cY: Float) = _center
+        val (oR: Float, oI: Float) = _orientation
+        val sideLength: Float = _sideLength * scaleFactor.absoluteValue
+        val (dX: Float, dY: Float) = displacement
+        val centerX: Float = cX + dX
+        val centerY: Float = cY + dY
+        val (rotR: Float, rotI: Float) = rotation
+        val scaleFactorSign: Float = 1f.withSign(scaleFactor)
+        val orientationR: Float = (oR * rotR - oI * rotI) * scaleFactorSign
+        val orientationI: Float = (oI * rotR + oR * rotI) * scaleFactorSign
+        val halfSideLength: Float = sideLength * 0.5f
+        val inradius: Float = 0.28867513f * sideLength
+        val circumradius: Float = inradius + inradius
+        val addendX1: Float = orientationI * inradius + centerX
+        val addendX2: Float = orientationR * halfSideLength
+        val addendY1: Float = orientationI * halfSideLength
+        val addendY2: Float = orientationR * inradius - centerY
+        _center = Vector2F(centerX, centerY)
+        _orientation = ComplexF(orientationR, orientationI)
+        _sideLength = sideLength
+        _pointA = Vector2F(
+            centerX - orientationI * circumradius,
+            centerY + orientationR * circumradius
+        )
+        _pointB = Vector2F(addendX1 - addendX2, -addendY1 - addendY2)
+        _pointC = Vector2F(addendX1 + addendX2, addendY1 - addendY2)
+    }
+
+    override fun transformBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float) =
+        transformByImpl(displacement, ComplexF.fromAngle(rotation), scaleFactor)
+
+    override fun transformBy(displacement: Vector2F, rotation: ComplexF, scaleFactor: Float) =
+        transformByImpl(displacement, rotation, scaleFactor)
+
+    override fun transformTo(position: Vector2F, orientation: AngleF) =
+        transformToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformTo(position: Vector2F, orientation: ComplexF) =
+        transformToImpl(position, orientation)
 
     /**
      * Calibrates the properties of this instance. If the [orientation] cannot be normalized, it
@@ -541,7 +557,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
      * inaccuracies that can be countered by this method.
      */
     fun calibrate() {
-        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF(1f, 0f))
+        val newOrientation: ComplexF = _orientation.normalizedOrElse(ComplexF.ONE)
         val (cX: Float, cY: Float) = _center
         val (oR: Float, oI: Float) = newOrientation
         val sideLength: Float = _sideLength
@@ -591,9 +607,12 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         setInternal(center, orientation, sideLength)
     }
 
-    override fun interpolated(to: RegularTriangle, by: Float) = createInternal(
+    override fun interpolated(
+        to: RegularTriangle, by: Float
+    ): MutableRegularTriangle = createInternal(
         center = Vector2F.lerp(_center, to.center, by),
-        orientation = ComplexF.slerp(_orientation, to.orientation, by),
+        orientation = ComplexF.slerp(_orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         sideLength = Float.lerp(_sideLength, to.sideLength, by)
     )
 
