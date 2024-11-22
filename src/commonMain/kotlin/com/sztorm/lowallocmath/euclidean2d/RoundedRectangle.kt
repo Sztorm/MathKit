@@ -280,33 +280,39 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
 
     override fun movedTo(position: Vector2F): RoundedRectangle = copy(center = position)
 
-    override fun rotatedBy(rotation: AngleF): RoundedRectangle =
-        copy(orientation = orientation * ComplexF.fromAngle(rotation))
+    private inline fun rotatedByImpl(rotation: ComplexF): RoundedRectangle =
+        copy(orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE))
 
-    override fun rotatedBy(rotation: ComplexF): RoundedRectangle =
-        copy(orientation = orientation * rotation)
+    override fun rotatedBy(rotation: AngleF): RoundedRectangle =
+        rotatedByImpl(ComplexF.fromAngle(rotation))
+
+    override fun rotatedBy(rotation: ComplexF): RoundedRectangle = rotatedByImpl(rotation)
+
+    private inline fun rotatedToImpl(orientation: ComplexF): RoundedRectangle =
+        copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): RoundedRectangle =
-        copy(orientation = ComplexF.fromAngle(orientation))
+        rotatedToImpl(ComplexF.fromAngle(orientation))
 
-    override fun rotatedTo(orientation: ComplexF): RoundedRectangle =
-        copy(orientation = orientation)
+    override fun rotatedTo(orientation: ComplexF): RoundedRectangle = rotatedToImpl(orientation)
 
-    private fun rotatedAroundPointByImpl(point: Vector2F, rotation: ComplexF): RoundedRectangle {
+    private inline fun rotatedAroundPointByImpl(
+        point: Vector2F, rotation: ComplexF
+    ): RoundedRectangle {
+        val (cX: Float, cY: Float) = center
+        val (oR: Float, oI: Float) = orientation
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
-        val (cX: Float, cY: Float) = center
-        val (startRotR: Float, startRotI: Float) = orientation
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
-        val targetCenterX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
-        val targetCenterY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
-        val targetRotR: Float = startRotR * rotR - startRotI * rotI
-        val targetRotI: Float = startRotI * rotR + startRotR * rotI
+        val centerX: Float = cpDiffX * rotR - cpDiffY * rotI + pX
+        val centerY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
+        val orientationR: Float = oR * rotR - oI * rotI
+        val orientationI: Float = oI * rotR + oR * rotI
 
         return copy(
-            center = Vector2F(targetCenterX, targetCenterY),
-            orientation = ComplexF(targetRotR, targetRotI)
+            center = Vector2F(centerX, centerY),
+            orientation = ComplexF(orientationR, orientationI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -316,12 +322,12 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     override fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): RoundedRectangle =
         rotatedAroundPointByImpl(point, rotation)
 
-    private fun rotatedAroundPointToImpl(
+    private inline fun rotatedAroundPointToImpl(
         point: Vector2F, orientation: ComplexF
     ): RoundedRectangle {
-        val (pX: Float, pY: Float) = point
-        val (rotR: Float, rotI: Float) = orientation
         val (cX: Float, cY: Float) = center
+        val (pX: Float, pY: Float) = point
+        val (oR: Float, oI: Float) = orientation
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
         val centerToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
@@ -329,17 +335,16 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         return if (centerToPointDist > 0.00001f) {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
-            val targetRot = ComplexF(pointRotR, -pointRotI) * this.orientation * orientation
-            val targetCenterX: Float = rotR * centerToPointDist + pX
-            val targetCenterY: Float = rotI * centerToPointDist + pY
+            val targetOrientation = (ComplexF(pointRotR, -pointRotI) * this.orientation *
+                    orientation).normalizedOrElse(ComplexF.ONE)
+            val targetCenterX: Float = oR * centerToPointDist + pX
+            val targetCenterY: Float = oI * centerToPointDist + pY
 
             copy(
                 center = Vector2F(targetCenterX, targetCenterY),
-                orientation = targetRot
+                orientation = targetOrientation
             )
-        } else {
-            copy(orientation = orientation)
-        }
+        } else copy(orientation = orientation.normalizedOrElse(ComplexF.ONE))
     }
 
     override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): RoundedRectangle =
@@ -360,34 +365,38 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
     }
 
     override fun dilatedBy(point: Vector2F, factor: Float): RoundedRectangle {
+        val (cX: Float, cY: Float) = center
+        val (pX: Float, pY: Float) = point
         val f: Float = 1f - factor
-        val cX: Float = center.x * factor + point.x * f
-        val cY: Float = center.y * factor + point.y * f
-        val (rotR: Float, rotI: Float) = orientation * 1f.withSign(factor)
+        val centerX: Float = cX * factor + pX * f
+        val centerY: Float = cY * factor + pY * f
+        val (orientationR: Float, orientationI: Float) = orientation * 1f.withSign(factor)
         val absFactor: Float = factor.absoluteValue
         val width: Float = width * absFactor
         val height: Float = height * absFactor
         val cornerRadius: Float = cornerRadius * absFactor
 
         return copy(
-            center = Vector2F(cX, cY),
-            orientation = ComplexF(rotR, rotI),
+            center = Vector2F(centerX, centerY),
+            orientation = ComplexF(orientationR, orientationI),
             width = width,
             height = height,
             cornerRadius = cornerRadius,
         )
     }
 
-    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RoundedRectangle = copy(
+    private inline fun transformedByImpl(
+        displacement: Vector2F, rotation: ComplexF
+    ): RoundedRectangle = copy(
         center = center + displacement,
-        orientation = orientation * ComplexF.fromAngle(rotation)
+        orientation = (orientation * rotation).normalizedOrElse(ComplexF.ONE)
     )
 
+    override fun transformedBy(displacement: Vector2F, rotation: AngleF): RoundedRectangle =
+        transformedByImpl(displacement, ComplexF.fromAngle(rotation))
+
     override fun transformedBy(displacement: Vector2F, rotation: ComplexF): RoundedRectangle =
-        copy(
-            center = center + displacement,
-            orientation = orientation * rotation
-        )
+        transformedByImpl(displacement, rotation)
 
     private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
@@ -396,7 +405,8 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
 
         return copy(
             center = center + displacement,
-            orientation = orientation * rotation * 1f.withSign(scaleFactor),
+            orientation = (orientation * rotation)
+                .normalizedOrElse(ComplexF.ONE) * 1f.withSign(scaleFactor),
             width = width * absScaleFactor,
             height = height * absScaleFactor,
             cornerRadius = cornerRadius * absScaleFactor
@@ -413,15 +423,18 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): RoundedRectangle = transformedByImpl(displacement, rotation, scaleFactor)
 
-    override fun transformedTo(position: Vector2F, orientation: AngleF): RoundedRectangle = copy(
+    private inline fun transformedToImpl(
+        position: Vector2F, orientation: ComplexF
+    ): RoundedRectangle = copy(
         center = position,
-        orientation = ComplexF.fromAngle(orientation)
+        orientation = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
-    override fun transformedTo(position: Vector2F, orientation: ComplexF): RoundedRectangle = copy(
-        center = position,
-        orientation = orientation
-    )
+    override fun transformedTo(position: Vector2F, orientation: AngleF): RoundedRectangle =
+        transformedToImpl(position, ComplexF.fromAngle(orientation))
+
+    override fun transformedTo(position: Vector2F, orientation: ComplexF): RoundedRectangle =
+        transformedToImpl(position, orientation)
 
     /**
      * Returns a copy of this rounded rectangle interpolated [to] other rounded rectangle [by] a
@@ -432,7 +445,8 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
      */
     fun interpolated(to: RoundedRectangle, by: Float): RoundedRectangle = copy(
         center = Vector2F.lerp(center, to.center, by),
-        orientation = ComplexF.slerp(orientation, to.orientation, by),
+        orientation = ComplexF.slerp(orientation, to.orientation, by)
+            .normalizedOrElse(ComplexF.ONE),
         width = Float.lerp(width, to.width, by),
         height = Float.lerp(height, to.height, by),
         cornerRadius = Float.lerp(cornerRadius, to.cornerRadius, by)
