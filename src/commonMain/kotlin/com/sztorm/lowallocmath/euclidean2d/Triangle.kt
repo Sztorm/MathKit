@@ -288,8 +288,7 @@ interface Triangle : TriangleShape, Transformable {
     override fun movedBy(displacement: Vector2F): Triangle =
         copy(centroid = centroid + displacement)
 
-    override fun movedTo(position: Vector2F): Triangle =
-        copy(centroid = position)
+    override fun movedTo(position: Vector2F): Triangle = copy(centroid = position)
 
     private inline fun rotatedByImpl(rotation: ComplexF): Triangle {
         val (prAR: Float, prAI: Float) = pathRotorA
@@ -297,7 +296,7 @@ interface Triangle : TriangleShape, Transformable {
         val pathRotorAR: Float = prAR * rotR - prAI * rotI
         val pathRotorAI: Float = prAI * rotR + prAR * rotI
 
-        return copy(pathRotorA = ComplexF(pathRotorAR, pathRotorAI))
+        return copy(pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE))
     }
 
     override fun rotatedBy(rotation: AngleF): Triangle =
@@ -306,7 +305,7 @@ interface Triangle : TriangleShape, Transformable {
     override fun rotatedBy(rotation: ComplexF): Triangle = rotatedByImpl(rotation)
 
     private inline fun rotatedToImpl(orientation: ComplexF): Triangle =
-        copy(pathRotorA = orientation)
+        copy(pathRotorA = orientation.normalizedOrElse(ComplexF.ONE))
 
     override fun rotatedTo(orientation: AngleF): Triangle =
         rotatedToImpl(ComplexF.fromAngle(orientation))
@@ -327,7 +326,7 @@ interface Triangle : TriangleShape, Transformable {
 
         return copy(
             centroid = Vector2F(centroidX, centroidY),
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI)
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -359,10 +358,10 @@ interface Triangle : TriangleShape, Transformable {
 
             return copy(
                 centroid = Vector2F(centroidX, centroidY),
-                pathRotorA = ComplexF(pathRotorAR, pathRotorAI)
+                pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE)
             )
         } else {
-            return copy(pathRotorA = orientation)
+            return copy(pathRotorA = orientation.normalizedOrElse(ComplexF.ONE))
         }
     }
 
@@ -426,7 +425,7 @@ interface Triangle : TriangleShape, Transformable {
 
         return copy(
             centroid = Vector2F(centroidX, centroidY),
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI)
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE)
         )
     }
 
@@ -455,7 +454,7 @@ interface Triangle : TriangleShape, Transformable {
 
         return copy(
             centroid = Vector2F(centroidX, centroidY),
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE),
             pointDistanceA = pointDistanceA,
             pointDistanceB = pointDistanceB,
             pointDistanceC = pointDistanceC,
@@ -474,7 +473,7 @@ interface Triangle : TriangleShape, Transformable {
         position: Vector2F, orientation: ComplexF
     ): Triangle = copy(
         centroid = position,
-        pathRotorA = orientation
+        pathRotorA = orientation.normalizedOrElse(ComplexF.ONE)
     )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): Triangle =
@@ -492,6 +491,7 @@ interface Triangle : TriangleShape, Transformable {
     fun interpolated(to: Triangle, by: Float): Triangle {
         val centroid = Vector2F.lerp(this.centroid, to.centroid, by)
         val pathRotorA = ComplexF.slerp(this.pathRotorA, to.pathRotorA, by)
+            .normalizedOrElse(ComplexF.ONE)
         val pointDistanceA = Float.lerp(this.pointDistanceA, to.pointDistanceA, by)
         val (fPrABR: Float, fPrABI: Float) = this.pathRotorAB
         val (fPrACR: Float, fPrACI: Float) = this.pathRotorAC
@@ -515,13 +515,13 @@ interface Triangle : TriangleShape, Transformable {
         val pathRotorAB: ComplexF =
             if (pointDistanceB > 0.00001f) ComplexF(
                 pointSpinorBR / pointDistanceB, pointSpinorBI / pointDistanceB
-            ) else ComplexF(1f, 0f)
+            ) else ComplexF.ONE
         val pointDistanceC: Float =
             sqrt(pointSpinorCR * pointSpinorCR + pointSpinorCI * pointSpinorCI)
         val pathRotorAC: ComplexF =
             if (pointDistanceC > 0.00001f) ComplexF(
                 pointSpinorCR / pointDistanceC, pointSpinorCI / pointDistanceC
-            ) else ComplexF(1f, 0f)
+            ) else ComplexF.ONE
 
         return copy(
             centroid,
@@ -678,7 +678,13 @@ interface Triangle : TriangleShape, Transformable {
     /** Creates an iterator over the points of this triangle. **/
     fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
 
-    /** Returns a copy of this instance with specified properties changed. **/
+    /**
+     * Returns a copy of this instance with specified properties changed.
+     *
+     * @param pathRotorA the value is expected to be [normalized][ComplexF.normalized].
+     * @param pathRotorAB the value is expected to be [normalized][ComplexF.normalized].
+     * @param pathRotorAC the value is expected to be [normalized][ComplexF.normalized].
+     */
     fun copy(
         centroid: Vector2F = this.centroid,
         pathRotorA: ComplexF = this.pathRotorA,

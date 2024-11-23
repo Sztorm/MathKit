@@ -106,19 +106,19 @@ class MutableTriangle : Triangle, MutableTransformable {
                 )
             } else ComplexF(pathRotorAR, -pathRotorAI)
         } else {
-            pathRotorA = ComplexF(1f, 0f)
+            pathRotorA = ComplexF.ONE
             pathRotorAB = if (pointDistanceB > 0.00001f) {
                 val pointRotorBR: Float = pathSpinorBR / pointDistanceB
                 val pointRotorBI: Float = pathSpinorBI / pointDistanceB
 
                 ComplexF(pointRotorBR, pointRotorBI)
-            } else ComplexF(1f, 0f)
+            } else ComplexF.ONE
             pathRotorAC = if (pointDistanceB > 0.00001f) {
                 val pointRotorCR: Float = pathSpinorCR / pointDistanceC
                 val pointRotorCI: Float = pathSpinorCI / pointDistanceC
 
                 ComplexF(pointRotorCR, pointRotorCI)
-            } else ComplexF(1f, 0f)
+            } else ComplexF.ONE
         }
         _centroid = Vector2F(centroidX, centroidY)
         _pathRotorA = pathRotorA
@@ -323,7 +323,7 @@ class MutableTriangle : Triangle, MutableTransformable {
             )
         }
 
-    override fun movedBy(displacement: Vector2F) = MutableTriangle(
+    override fun movedBy(displacement: Vector2F): MutableTriangle = createInternal(
         centroid = _centroid + displacement,
         _pathRotorA,
         _pointDistanceA,
@@ -331,27 +331,17 @@ class MutableTriangle : Triangle, MutableTransformable {
         _pointDistanceB,
         _pathRotorAC,
         _pointDistanceC,
-        pointA = _pointA + displacement,
-        pointB = _pointB + displacement,
-        pointC = _pointC + displacement
     )
 
-    override fun movedTo(position: Vector2F): MutableTriangle {
-        val displacement: Vector2F = position - _centroid
-
-        return MutableTriangle(
-            centroid = position,
-            _pathRotorA,
-            _pointDistanceA,
-            _pathRotorAB,
-            _pointDistanceB,
-            _pathRotorAC,
-            _pointDistanceC,
-            pointA = _pointA + displacement,
-            pointB = _pointB + displacement,
-            pointC = _pointC + displacement
-        )
-    }
+    override fun movedTo(position: Vector2F): MutableTriangle = createInternal(
+        centroid = position,
+        _pathRotorA,
+        _pointDistanceA,
+        _pathRotorAB,
+        _pointDistanceB,
+        _pathRotorAC,
+        _pointDistanceC
+    )
 
     override fun moveBy(displacement: Vector2F) {
         _centroid += displacement
@@ -369,35 +359,19 @@ class MutableTriangle : Triangle, MutableTransformable {
     }
 
     private inline fun rotatedByImpl(rotation: ComplexF): MutableTriangle {
-        val centroid: Vector2F = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (rotR: Float, rotI: Float) = rotation
         val pathRotorAR: Float = prAR * rotR - prAI * rotI
         val pathRotorAI: Float = prAI * rotR + prAR * rotI
-        val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
-        val pointRotorBI: Float = pathRotorAI * prABR + pathRotorAR * prABI
-        val pointRotorCR: Float = pathRotorAR * prACR - pathRotorAI * prACI
-        val pointRotorCI: Float = pathRotorAI * prACR + pathRotorAR * prACI
 
-        return MutableTriangle(
-            centroid,
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
-            pdA,
-            pathRotorAB,
-            pdB,
-            pathRotorAC,
-            pdC,
-            pointA = Vector2F(pathRotorAR * pdA + cX, pathRotorAI * pdA + cY),
-            pointB = Vector2F(pointRotorBR * pdB + cX, pointRotorBI * pdB + cY),
-            pointC = Vector2F(pointRotorCR * pdC + cX, pointRotorCI * pdC + cY)
+        return createInternal(
+            _centroid,
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE),
+            _pointDistanceA,
+            _pathRotorAB,
+            _pointDistanceB,
+            _pathRotorAC,
+            _pointDistanceC
         )
     }
 
@@ -406,35 +380,15 @@ class MutableTriangle : Triangle, MutableTransformable {
 
     override fun rotatedBy(rotation: ComplexF): MutableTriangle = rotatedByImpl(rotation)
 
-    private inline fun rotatedToImpl(orientation: ComplexF): MutableTriangle {
-        val centroid: Vector2F = _centroid
-        val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
-        val (oR: Float, oI: Float) = orientation
-        val pointRotorBR: Float = oR * prABR - oI * prABI
-        val pointRotorBI: Float = oI * prABR + oR * prABI
-        val pointRotorCR: Float = oR * prACR - oI * prACI
-        val pointRotorCI: Float = oI * prACR + oR * prACI
-
-        return MutableTriangle(
-            centroid,
-            pathRotorA = orientation,
-            pdA,
-            pathRotorAB,
-            pdB,
-            pathRotorAC,
-            pdC,
-            pointA = Vector2F(oR * pdA + cX, oI * pdA + cY),
-            pointB = Vector2F(pointRotorBR * pdB + cX, pointRotorBI * pdB + cY),
-            pointC = Vector2F(pointRotorCR * pdC + cX, pointRotorCI * pdC + cY)
-        )
-    }
+    private inline fun rotatedToImpl(orientation: ComplexF): MutableTriangle = createInternal(
+        _centroid,
+        pathRotorA = orientation.normalizedOrElse(ComplexF.ONE),
+        _pointDistanceA,
+        _pathRotorAB,
+        _pointDistanceB,
+        _pathRotorAC,
+        _pointDistanceC,
+    )
 
     override fun rotatedTo(orientation: AngleF): MutableTriangle =
         rotatedToImpl(ComplexF.fromAngle(orientation))
@@ -444,16 +398,8 @@ class MutableTriangle : Triangle, MutableTransformable {
     private inline fun rotatedAroundPointByImpl(
         point: Vector2F, rotation: ComplexF
     ): MutableTriangle {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val cpDiffX: Float = cX - pX
@@ -462,22 +408,15 @@ class MutableTriangle : Triangle, MutableTransformable {
         val centroidY: Float = cpDiffY * rotR + cpDiffX * rotI + pY
         val pathRotorAR: Float = prAR * rotR - prAI * rotI
         val pathRotorAI: Float = prAI * rotR + prAR * rotI
-        val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
-        val pointRotorBI: Float = pathRotorAI * prABR + pathRotorAR * prABI
-        val pointRotorCR: Float = pathRotorAR * prACR - pathRotorAI * prACI
-        val pointRotorCI: Float = pathRotorAI * prACR + pathRotorAR * prACI
 
-        return MutableTriangle(
+        return createInternal(
             centroid = Vector2F(centroidX, centroidY),
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
-            pdA,
-            pathRotorAB,
-            pdB,
-            pathRotorAC,
-            pdC,
-            pointA = Vector2F(pathRotorAR * pdA + centroidX, pathRotorAI * pdA + centroidY),
-            pointB = Vector2F(pointRotorBR * pdB + centroidX, pointRotorBI * pdB + centroidY),
-            pointC = Vector2F(pointRotorCR * pdC + centroidX, pointRotorCI * pdC + centroidY)
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE),
+            _pointDistanceA,
+            _pathRotorAB,
+            _pointDistanceB,
+            _pathRotorAC,
+            _pointDistanceC
         )
     }
 
@@ -492,21 +431,14 @@ class MutableTriangle : Triangle, MutableTransformable {
     ): MutableTriangle {
         val centroid: Vector2F = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val pdC: Float = _pointDistanceC
         val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (pX: Float, pY: Float) = point
         val (oR: Float, oI: Float) = orientation
         val cpDiffX: Float = cX - pX
         val cpDiffY: Float = cY - pY
         val centroidToPointDist: Float = sqrt(cpDiffX * cpDiffX + cpDiffY * cpDiffY)
 
-        if (centroidToPointDist > 0.00001f) {
+        return if (centroidToPointDist > 0.00001f) {
             val centroidToPointDistReciprocal: Float = 1f / centroidToPointDist
             val pointRotR: Float = cpDiffX * centroidToPointDistReciprocal
             val pointRotI: Float = cpDiffY * centroidToPointDistReciprocal
@@ -516,48 +448,25 @@ class MutableTriangle : Triangle, MutableTransformable {
             val centroidY: Float = oI * centroidToPointDist + pY
             val pathRotorAR: Float = pRotTimesStartOR * oR - pRotTimesStartOI * oI
             val pathRotorAI: Float = pRotTimesStartOI * oR + pRotTimesStartOR * oI
-            val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
-            val pointRotorBI: Float = pathRotorAI * prABR + pathRotorAR * prABI
-            val pointRotorCR: Float = pathRotorAR * prACR - pathRotorAI * prACI
-            val pointRotorCI: Float = pathRotorAI * prACR + pathRotorAR * prACI
 
-            return MutableTriangle(
+            createInternal(
                 centroid = Vector2F(centroidX, centroidY),
-                pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
-                pdA,
-                pathRotorAB,
-                pdB,
-                pathRotorAC,
-                pdC,
-                pointA = Vector2F(
-                    pathRotorAR * pdA + centroidX, pathRotorAI * pdA + centroidY
-                ),
-                pointB = Vector2F(
-                    pointRotorBR * pdB + centroidX, pointRotorBI * pdB + centroidY
-                ),
-                pointC = Vector2F(
-                    pointRotorCR * pdC + centroidX, pointRotorCI * pdC + centroidY
-                )
+                pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE),
+                _pointDistanceA,
+                _pathRotorAB,
+                _pointDistanceB,
+                _pathRotorAC,
+                _pointDistanceC
             )
-        } else {
-            val pointRotorBR: Float = oR * prABR - oI * prABI
-            val pointRotorBI: Float = oI * prABR + oR * prABI
-            val pointRotorCR: Float = oR * prACR - oI * prACI
-            val pointRotorCI: Float = oI * prACR + oR * prACI
-
-            return MutableTriangle(
-                centroid,
-                pathRotorA = orientation,
-                pdA,
-                pathRotorAB,
-                pdB,
-                pathRotorAC,
-                pdC,
-                pointA = Vector2F(oR * pdA + cX, oI * pdA + cY),
-                pointB = Vector2F(pointRotorBR * pdB + cX, pointRotorBI * pdB + cY),
-                pointC = Vector2F(pointRotorCR * pdC + cX, pointRotorCI * pdC + cY)
-            )
-        }
+        } else createInternal(
+            centroid,
+            pathRotorA = orientation.normalizedOrElse(ComplexF.ONE),
+            _pointDistanceA,
+            _pathRotorAB,
+            _pointDistanceB,
+            _pathRotorAC,
+            _pointDistanceC
+        )
     }
 
     override fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): MutableTriangle =
@@ -567,16 +476,13 @@ class MutableTriangle : Triangle, MutableTransformable {
         rotatedAroundPointToImpl(point, orientation)
 
     private inline fun rotateByImpl(rotation: ComplexF) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
         val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
+        val (prABR: Float, prABI: Float) = _pathRotorAB
         val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (rotR: Float, rotI: Float) = rotation
         val pathRotorAR: Float = prAR * rotR - prAI * rotI
         val pathRotorAI: Float = prAI * rotR + prAR * rotI
@@ -595,15 +501,12 @@ class MutableTriangle : Triangle, MutableTransformable {
     override fun rotateBy(rotation: ComplexF) = rotateByImpl(rotation)
 
     private inline fun rotateToImpl(orientation: ComplexF) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
+        val (prABR: Float, prABI: Float) = _pathRotorAB
         val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (oR: Float, oI: Float) = orientation
         val pointRotorBR: Float = oR * prABR - oI * prABI
         val pointRotorBI: Float = oI * prABR + oR * prABI
@@ -620,16 +523,13 @@ class MutableTriangle : Triangle, MutableTransformable {
     override fun rotateTo(orientation: ComplexF) = rotateToImpl(orientation)
 
     private inline fun rotateAroundPointByImpl(point: Vector2F, rotation: ComplexF) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
         val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
+        val (prABR: Float, prABI: Float) = _pathRotorAB
         val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (pX: Float, pY: Float) = point
         val (rotR: Float, rotI: Float) = rotation
         val cpDiffX: Float = cX - pX
@@ -657,16 +557,13 @@ class MutableTriangle : Triangle, MutableTransformable {
         rotateAroundPointByImpl(point, rotation)
 
     private inline fun rotateAroundPointToImpl(point: Vector2F, orientation: ComplexF) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
         val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
+        val (prABR: Float, prABI: Float) = _pathRotorAB
         val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (pX: Float, pY: Float) = point
         val (oR: Float, oI: Float) = orientation
         val cpDiffX: Float = cX - pX
@@ -804,14 +701,11 @@ class MutableTriangle : Triangle, MutableTransformable {
     }
 
     override fun scaleBy(factor: Float) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prABR: Float, prABI: Float) = _pathRotorAB
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val factorSign: Float = 1f.withSign(factor)
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val pathRotorAR: Float = prAR * factorSign
         val pathRotorAI: Float = prAI * factorSign
         val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
@@ -838,17 +732,14 @@ class MutableTriangle : Triangle, MutableTransformable {
     }
 
     override fun dilateBy(point: Vector2F, factor: Float) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prABR: Float, prABI: Float) = _pathRotorAB
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val (pX: Float, pY: Float) = point
-        val (cX: Float, cY: Float) = centroid
         val f: Float = 1f - factor
         val centroidX: Float = cX * factor + pX * f
         val centroidY: Float = cY * factor + pY * f
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val factorSign: Float = 1f.withSign(factor)
         val pathRotorAR: Float = prAR * factorSign
         val pathRotorAI: Float = prAI * factorSign
@@ -882,38 +773,23 @@ class MutableTriangle : Triangle, MutableTransformable {
     private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF
     ): MutableTriangle {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
-        val (displacementX: Float, displacementY: Float) = displacement
+        val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
-        val centroidX: Float = cX + displacementX
-        val centroidY: Float = cY + displacementY
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
         val pathRotorAR: Float = prAR * rotR - prAI * rotI
         val pathRotorAI: Float = prAI * rotR + prAR * rotI
-        val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
-        val pointRotorBI: Float = pathRotorAI * prABR + pathRotorAR * prABI
-        val pointRotorCR: Float = pathRotorAR * prACR - pathRotorAI * prACI
-        val pointRotorCI: Float = pathRotorAI * prACR + pathRotorAR * prACI
 
-        return MutableTriangle(
+        return createInternal(
             centroid = Vector2F(centroidX, centroidY),
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
-            pdA,
-            pathRotorAB,
-            pdB,
-            pathRotorAC,
-            pdC,
-            pointA = Vector2F(pathRotorAR * pdA + centroidX, pathRotorAI * pdA + centroidY),
-            pointB = Vector2F(pointRotorBR * pdB + centroidX, pointRotorBI * pdB + centroidY),
-            pointC = Vector2F(pointRotorCR * pdC + centroidX, pointRotorCI * pdC + centroidY)
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE),
+            _pointDistanceA,
+            _pathRotorAB,
+            _pointDistanceB,
+            _pathRotorAC,
+            _pointDistanceC
         )
     }
 
@@ -926,49 +802,28 @@ class MutableTriangle : Triangle, MutableTransformable {
     private inline fun transformedByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ): MutableTriangle {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
-        val (displacementX: Float, displacementY: Float) = displacement
+        val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
-        val centroidX: Float = cX + displacementX
-        val centroidY: Float = cY + displacementY
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
         val factorSign: Float = 1f.withSign(scaleFactor)
         val pathRotorAR: Float = (prAR * rotR - prAI * rotI) * factorSign
         val pathRotorAI: Float = (prAI * rotR + prAR * rotI) * factorSign
-        val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
-        val pointRotorBI: Float = pathRotorAI * prABR + pathRotorAR * prABI
-        val pointRotorCR: Float = pathRotorAR * prACR - pathRotorAI * prACI
-        val pointRotorCI: Float = pathRotorAI * prACR + pathRotorAR * prACI
         val absFactor: Float = scaleFactor.absoluteValue
         val pointDistanceA: Float = _pointDistanceA * absFactor
         val pointDistanceB: Float = _pointDistanceB * absFactor
         val pointDistanceC: Float = _pointDistanceC * absFactor
 
-        return MutableTriangle(
+        return createInternal(
             centroid = Vector2F(centroidX, centroidY),
-            pathRotorA = ComplexF(pathRotorAR, pathRotorAI),
+            pathRotorA = ComplexF(pathRotorAR, pathRotorAI).normalizedOrElse(ComplexF.ONE),
             pointDistanceA,
-            pathRotorAB,
+            _pathRotorAB,
             pointDistanceB,
-            pathRotorAC,
-            pointDistanceC,
-            pointA = Vector2F(
-                pathRotorAR * pointDistanceA + centroidX,
-                pathRotorAI * pointDistanceA + centroidY
-            ),
-            pointB = Vector2F(
-                pointRotorBR * pointDistanceB + centroidX,
-                pointRotorBI * pointDistanceB + centroidY
-            ),
-            pointC = Vector2F(
-                pointRotorCR * pointDistanceC + centroidX,
-                pointRotorCI * pointDistanceC + centroidY
-            )
+            _pathRotorAC,
+            pointDistanceC
         )
     }
 
@@ -982,34 +837,15 @@ class MutableTriangle : Triangle, MutableTransformable {
 
     private inline fun transformedToImpl(
         position: Vector2F, orientation: ComplexF
-    ): MutableTriangle {
-        val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val pdC: Float = _pointDistanceC
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
-        val (pX: Float, pY: Float) = position
-        val (oR: Float, oI: Float) = orientation
-        val pointRotorBR: Float = oR * prABR - oI * prABI
-        val pointRotorBI: Float = oI * prABR + oR * prABI
-        val pointRotorCR: Float = oR * prACR - oI * prACI
-        val pointRotorCI: Float = oI * prACR + oR * prACI
-
-        return MutableTriangle(
-            centroid = position,
-            pathRotorA = orientation,
-            pdA,
-            pathRotorAB,
-            pdB,
-            pathRotorAC,
-            pdC,
-            pointA = Vector2F(oR * pdA + pX, oI * pdA + pY),
-            pointB = Vector2F(pointRotorBR * pdB + pX, pointRotorBI * pdB + pY),
-            pointC = Vector2F(pointRotorCR * pdC + pX, pointRotorCI * pdC + pY)
-        )
-    }
+    ): MutableTriangle = createInternal(
+        centroid = position,
+        pathRotorA = orientation.normalizedOrElse(ComplexF.ONE),
+        _pointDistanceA,
+        _pathRotorAB,
+        _pointDistanceB,
+        _pathRotorAC,
+        _pointDistanceC
+    )
 
     override fun transformedTo(position: Vector2F, orientation: AngleF): MutableTriangle =
         transformedToImpl(position, ComplexF.fromAngle(orientation))
@@ -1018,20 +854,17 @@ class MutableTriangle : Triangle, MutableTransformable {
         transformedToImpl(position, orientation)
 
     private inline fun transformByImpl(displacement: Vector2F, rotation: ComplexF) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
         val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
+        val (prABR: Float, prABI: Float) = _pathRotorAB
         val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val pdC: Float = _pointDistanceC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
-        val (displacementX: Float, displacementY: Float) = displacement
+        val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
-        val centroidX: Float = cX + displacementX
-        val centroidY: Float = cY + displacementY
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
         val pathRotorAR: Float = prAR * rotR - prAI * rotI
         val pathRotorAI: Float = prAI * rotR + prAR * rotI
         val pointRotorBR: Float = pathRotorAR * prABR - pathRotorAI * prABI
@@ -1054,17 +887,14 @@ class MutableTriangle : Triangle, MutableTransformable {
     private inline fun transformByImpl(
         displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
     ) {
-        val centroid: Vector2F = _centroid
+        val (cX: Float, cY: Float) = _centroid
         val (prAR: Float, prAI: Float) = _pathRotorA
-        val pathRotorAB: ComplexF = _pathRotorAB
-        val pathRotorAC: ComplexF = _pathRotorAC
-        val (cX: Float, cY: Float) = centroid
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
-        val (displacementX: Float, displacementY: Float) = displacement
+        val (prABR: Float, prABI: Float) = _pathRotorAB
+        val (prACR: Float, prACI: Float) = _pathRotorAC
+        val (dX: Float, dY: Float) = displacement
         val (rotR: Float, rotI: Float) = rotation
-        val centroidX: Float = cX + displacementX
-        val centroidY: Float = cY + displacementY
+        val centroidX: Float = cX + dX
+        val centroidY: Float = cY + dY
         val factorSign: Float = 1f.withSign(scaleFactor)
         val pathRotorAR: Float = (prAR * rotR - prAI * rotI) * factorSign
         val pathRotorAI: Float = (prAI * rotR + prAR * rotI) * factorSign
@@ -1103,12 +933,10 @@ class MutableTriangle : Triangle, MutableTransformable {
 
     private inline fun transformToImpl(position: Vector2F, orientation: ComplexF) {
         val pdA: Float = _pointDistanceA
-        val pathRotorAB: ComplexF = _pathRotorAB
+        val (prABR: Float, prABI: Float) = _pathRotorAB
         val pdB: Float = _pointDistanceB
-        val pathRotorAC: ComplexF = _pathRotorAC
+        val (prACR: Float, prACI: Float) = _pathRotorAC
         val pdC: Float = _pointDistanceC
-        val (prABR: Float, prABI: Float) = pathRotorAB
-        val (prACR: Float, prACI: Float) = pathRotorAC
         val (pX: Float, pY: Float) = position
         val (oR: Float, oI: Float) = orientation
         val pointRotorBR: Float = oR * prABR - oI * prABI
@@ -1136,9 +964,9 @@ class MutableTriangle : Triangle, MutableTransformable {
      * inaccuracies that can be countered by this method.
      */
     fun calibrate() {
-        val pathRotorA: ComplexF = _pathRotorA.normalizedOrElse(ComplexF(1f, 0f))
-        val pathRotorAB: ComplexF = _pathRotorAB.normalizedOrElse(ComplexF(1f, 0f))
-        val pathRotorAC: ComplexF = _pathRotorAC.normalizedOrElse(ComplexF(1f, 0f))
+        val pathRotorA: ComplexF = _pathRotorA.normalizedOrElse(ComplexF.ONE)
+        val pathRotorAB: ComplexF = _pathRotorAB.normalizedOrElse(ComplexF.ONE)
+        val pathRotorAC: ComplexF = _pathRotorAC.normalizedOrElse(ComplexF.ONE)
         val (cX: Float, cY: Float) = _centroid
         val pdA: Float = _pointDistanceA
         val pdB: Float = _pointDistanceB
@@ -1225,6 +1053,7 @@ class MutableTriangle : Triangle, MutableTransformable {
     override fun interpolated(to: Triangle, by: Float): MutableTriangle {
         val centroid = Vector2F.lerp(_centroid, to.centroid, by)
         val pathRotorA = ComplexF.slerp(_pathRotorA, to.pathRotorA, by)
+            .normalizedOrElse(ComplexF.ONE)
         val pointDistanceA = Float.lerp(_pointDistanceA, to.pointDistanceA, by)
         val (fPrABR: Float, fPrABI: Float) = _pathRotorAB
         val (fPrACR: Float, fPrACI: Float) = _pathRotorAC
@@ -1248,13 +1077,13 @@ class MutableTriangle : Triangle, MutableTransformable {
         val pathRotorAB: ComplexF =
             if (pointDistanceB > 0.00001f) ComplexF(
                 pointSpinorBR / pointDistanceB, pointSpinorBI / pointDistanceB
-            ) else ComplexF(1f, 0f)
+            ) else ComplexF.ONE
         val pointDistanceC: Float =
             sqrt(pointSpinorCR * pointSpinorCR + pointSpinorCI * pointSpinorCI)
         val pathRotorAC: ComplexF =
             if (pointDistanceC > 0.00001f) ComplexF(
                 pointSpinorCR / pointDistanceC, pointSpinorCI / pointDistanceC
-            ) else ComplexF(1f, 0f)
+            ) else ComplexF.ONE
         val (cX: Float, cY: Float) = centroid
         val (prAR: Float, prAI: Float) = pathRotorA
         val (prABR: Float, prABI: Float) = pathRotorAB
@@ -1317,13 +1146,13 @@ class MutableTriangle : Triangle, MutableTransformable {
         val pathRotorAB: ComplexF =
             if (pointDistanceB > 0.00001f) ComplexF(
                 pointSpinorBR / pointDistanceB, pointSpinorBI / pointDistanceB
-            ) else ComplexF(1f, 0f)
+            ) else ComplexF.ONE
         val pointDistanceC: Float =
             sqrt(pointSpinorCR * pointSpinorCR + pointSpinorCI * pointSpinorCI)
         val pathRotorAC: ComplexF =
             if (pointDistanceC > 0.00001f) ComplexF(
                 pointSpinorCR / pointDistanceC, pointSpinorCI / pointDistanceC
-            ) else ComplexF(1f, 0f)
+            ) else ComplexF.ONE
         val (cX: Float, cY: Float) = centroid
         val (prAR: Float, prAI: Float) = pathRotorA
         val (prABR: Float, prABI: Float) = pathRotorAB
@@ -1570,6 +1399,40 @@ class MutableTriangle : Triangle, MutableTransformable {
                     "pointDistanceC must be greater than or equal to zero."
                 )
             }
+        }
+
+        private inline fun createInternal(
+            centroid: Vector2F,
+            pathRotorA: ComplexF,
+            pointDistanceA: Float,
+            pathRotorAB: ComplexF,
+            pointDistanceB: Float,
+            pathRotorAC: ComplexF,
+            pointDistanceC: Float
+        ): MutableTriangle {
+            val (cX: Float, cY: Float) = centroid
+            val (prAR: Float, prAI: Float) = pathRotorA
+            val (prABR: Float, prABI: Float) = pathRotorAB
+            val (prACR: Float, prACI: Float) = pathRotorAC
+
+            return MutableTriangle(
+                centroid = centroid,
+                pathRotorA = pathRotorA,
+                pointDistanceA = pointDistanceA,
+                pathRotorAB = pathRotorAB,
+                pointDistanceB = pointDistanceB,
+                pathRotorAC = pathRotorAC,
+                pointDistanceC = pointDistanceC,
+                pointA = Vector2F(prAR * pointDistanceA + cX, prAI * pointDistanceA + cY),
+                pointB = Vector2F(
+                    (prAR * prABR - prAI * prABI) * pointDistanceB + cX,
+                    (prAI * prABR + prAR * prABI) * pointDistanceB + cY
+                ),
+                pointC = Vector2F(
+                    (prAR * prACR - prAI * prACI) * pointDistanceC + cX,
+                    (prAI * prACR + prAR * prACI) * pointDistanceC + cY
+                )
+            )
         }
     }
 
