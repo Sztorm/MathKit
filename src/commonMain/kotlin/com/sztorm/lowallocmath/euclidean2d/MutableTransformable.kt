@@ -4,7 +4,13 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
-/** Represents a mutable transformable object in a two-dimensional Euclidean space. **/
+/**
+ * Represents a mutable transformable object in a two-dimensional Euclidean space.
+ *
+ * Direct implementations of this interface must consider that new interface members may be added
+ * in the next versions of the library. Implementations that are safe to use from a compatibility
+ * perspective are those that are defined in the library, like [MutableSquare].
+ */
 interface MutableTransformable : Transformable {
     /** Moves this object by a [displacement]. **/
     fun moveBy(displacement: Vector2F)

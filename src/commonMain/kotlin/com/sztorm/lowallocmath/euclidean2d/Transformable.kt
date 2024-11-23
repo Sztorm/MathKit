@@ -4,7 +4,13 @@ import com.sztorm.lowallocmath.AngleF
 import com.sztorm.lowallocmath.ComplexF
 import com.sztorm.lowallocmath.Vector2F
 
-/** Represents a transformable object in a two-dimensional Euclidean space. **/
+/**
+ * Represents a transformable object in a two-dimensional Euclidean space.
+ *
+ * Direct implementations of this interface must consider that new interface members may be added
+ * in the next versions of the library. Implementations that are safe to use from a compatibility
+ * perspective are those that are defined in the library, like [Square].
+ */
 interface Transformable {
     /** Returns the position of this object in reference to the origin of [Vector2F.ZERO]. **/
     val position: Vector2F
