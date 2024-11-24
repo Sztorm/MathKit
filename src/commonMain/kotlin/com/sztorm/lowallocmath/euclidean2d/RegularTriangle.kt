@@ -68,8 +68,8 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         }
 
     /**
-     * Returns the incenter of this regular triangle. Incenter is the center of the triangle's
-     * inscribed circle.
+     * Returns the incenter of this regular triangle. Incenter is the intersection point of the
+     * triangle's angle bisectors. Incenter is the center of the triangle's inscribed circle.
      *
      * This property is equal to [center].
      */
@@ -78,7 +78,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
 
     /**
      * Returns the centroid of this regular triangle. Centroid is the intersection point of the
-     * triangle's medians. Centroid is also known as the center of mass.
+     * triangle's medians. Centroid is the triangle's center of mass.
      *
      * This property is equal to [center].
      */
@@ -86,7 +86,8 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         get() = center
 
     /**
-     * Returns the circumcenter of this regular triangle. Circumcenter is the center of the
+     * Returns the circumcenter of this regular triangle. Circumcenter is the intersection point of
+     * the perpendicular bisectors of the triangle's sides. Circumcenter is the center of the
      * triangle's circumscribed circle.
      *
      * This property is equal to [center].

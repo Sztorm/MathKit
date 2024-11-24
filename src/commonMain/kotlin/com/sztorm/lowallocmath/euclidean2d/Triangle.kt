@@ -48,7 +48,7 @@ fun Triangle(pointA: Vector2F, pointB: Vector2F, pointC: Vector2F): Triangle =
 interface Triangle : TriangleShape, Transformable {
     /**
      * Returns the centroid of this triangle. Centroid is the intersection point of the triangle's
-     * medians. Centroid is also known as the center of mass.
+     * medians. Centroid is the triangle's center of mass.
      */
     val centroid: Vector2F
 
@@ -127,8 +127,8 @@ interface Triangle : TriangleShape, Transformable {
         }
 
     /**
-     * Returns the incenter of this triangle. Incenter is the center of the triangle's inscribed
-     * circle.
+     * Returns the incenter of this triangle. Incenter is the intersection point of the triangle's
+     * angle bisectors. Incenter is the center of the triangle's inscribed circle.
      */
     val incenter: Vector2F
         get() {
@@ -158,8 +158,9 @@ interface Triangle : TriangleShape, Transformable {
         }
 
     /**
-     * Returns the circumcenter of this triangle. Circumcenter is the center of the triangle's
-     * circumscribed circle.
+     * Returns the circumcenter of this triangle. Circumcenter is the intersection point of the
+     * perpendicular bisectors of the triangle's sides. Circumcenter is the center of the
+     * triangle's circumscribed circle.
      */
     val circumcenter: Vector2F
         get() {
