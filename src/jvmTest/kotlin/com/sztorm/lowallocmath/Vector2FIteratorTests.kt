@@ -98,11 +98,18 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ lineSegment.pointIterator() }, 0..1)
             }
-            val triangleArgs = TriangleTests.pointsArgs().map {
-                val triangle = it.get()[0] as Triangle
+            val triangleArgs = listOf(
+                TriangleTests.pointsArgs().map {
+                    val triangle = it.get()[0] as Triangle
 
-                Arguments.of({ triangle.pointIterator() }, 0..2)
-            }
+                    Arguments.of({ triangle.pointIterator() }, 0..2)
+                },
+                TriangleTests.originPointsArgs().map {
+                    val triangle = it.get()[0] as Triangle
+
+                    Arguments.of({ triangle.originPointIterator() }, 0..2)
+                }
+            ).flatten()
             val regularTriangleArgs = RegularTriangleTests.pointsArgs().map {
                 val triangle = it.get()[0] as RegularTriangle
 
@@ -118,15 +125,18 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ square.pointIterator() }, 0..3)
             }
-            val roundedRectangleArgs = RoundedRectangleTests.pointsArgs().map {
-                val rectangle = it.get()[0] as RoundedRectangle
+            val roundedRectangleArgs = listOf(
+                RoundedRectangleTests.pointsArgs().map {
+                    val rectangle = it.get()[0] as RoundedRectangle
 
-                Arguments.of({ rectangle.pointIterator() }, 0..7)
-            } + RoundedRectangleTests.cornerCentersArgs().map {
-                val rectangle = it.get()[0] as RoundedRectangle
+                    Arguments.of({ rectangle.pointIterator() }, 0..7)
+                },
+                RoundedRectangleTests.cornerCentersArgs().map {
+                    val rectangle = it.get()[0] as RoundedRectangle
 
-                Arguments.of({ rectangle.cornerCenterIterator() }, 0..3)
-            }
+                    Arguments.of({ rectangle.cornerCenterIterator() }, 0..3)
+                }
+            ).flatten()
             val regularPolygonArgs = RegularPolygonTests.pointsArgs().map {
                 val polygon = it.get()[0] as RegularPolygon
 
@@ -204,12 +214,21 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ lineSegment.pointIterator() }, points)
             }
-            val triangleArgs = TriangleTests.pointsArgs().map {
-                val triangle = it.get()[0] as Triangle
-                val points = listOf(triangle.pointA, triangle.pointB, triangle.pointC)
+            val triangleArgs = listOf(
+                TriangleTests.pointsArgs().map {
+                    val triangle = it.get()[0] as Triangle
+                    val points = listOf(triangle.pointA, triangle.pointB, triangle.pointC)
 
-                Arguments.of({ triangle.pointIterator() }, points)
-            }
+                    Arguments.of({ triangle.pointIterator() }, points)
+                },
+                TriangleTests.originPointsArgs().map {
+                    val triangle = it.get()[0] as Triangle
+                    val points = listOf(
+                        triangle.originPointA, triangle.originPointB, triangle.originPointC
+                    )
+                    Arguments.of({ triangle.originPointIterator() }, points)
+                },
+            ).flatten()
             val regularTriangleArgs = RegularTriangleTests.pointsArgs().map {
                 val triangle = it.get()[0] as RegularTriangle
                 val points = listOf(triangle.pointA, triangle.pointB, triangle.pointC)
@@ -229,29 +248,32 @@ class Vector2FIteratorTests {
 
                 Arguments.of({ square.pointIterator() }, points)
             }
-            val roundedRectangleArgs = RoundedRectangleTests.pointsArgs().map {
-                val rectangle = it.get()[0] as RoundedRectangle
-                val points = listOf(
-                    rectangle.pointA,
-                    rectangle.pointB,
-                    rectangle.pointC,
-                    rectangle.pointD,
-                    rectangle.pointE,
-                    rectangle.pointF,
-                    rectangle.pointG,
-                    rectangle.pointH,
-                )
-                Arguments.of({ rectangle.pointIterator() }, points)
-            } + RoundedRectangleTests.cornerCentersArgs().map {
-                val rectangle = it.get()[0] as RoundedRectangle
-                val cornerCenters = listOf(
-                    rectangle.cornerCenterA,
-                    rectangle.cornerCenterB,
-                    rectangle.cornerCenterC,
-                    rectangle.cornerCenterD
-                )
-                Arguments.of({ rectangle.cornerCenterIterator() }, cornerCenters)
-            }
+            val roundedRectangleArgs = listOf(
+                RoundedRectangleTests.pointsArgs().map {
+                    val rectangle = it.get()[0] as RoundedRectangle
+                    val points = listOf(
+                        rectangle.pointA,
+                        rectangle.pointB,
+                        rectangle.pointC,
+                        rectangle.pointD,
+                        rectangle.pointE,
+                        rectangle.pointF,
+                        rectangle.pointG,
+                        rectangle.pointH,
+                    )
+                    Arguments.of({ rectangle.pointIterator() }, points)
+                },
+                RoundedRectangleTests.cornerCentersArgs().map {
+                    val rectangle = it.get()[0] as RoundedRectangle
+                    val cornerCenters = listOf(
+                        rectangle.cornerCenterA,
+                        rectangle.cornerCenterB,
+                        rectangle.cornerCenterC,
+                        rectangle.cornerCenterD
+                    )
+                    Arguments.of({ rectangle.cornerCenterIterator() }, cornerCenters)
+                }
+            ).flatten()
             val regularPolygonArgs = RegularPolygonTests.pointsArgs().map {
                 val polygon = it.get()[0] as RegularPolygon
 

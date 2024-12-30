@@ -4006,12 +4006,10 @@ class RayTests {
         fun intersectsTriangleArgs(): List<Arguments> {
             val triangle = MutableTriangle(
                 centroid = Vector2F(-0.3333333f, 3f),
-                pathRotorA = ComplexF.fromAngle(AngleF.fromDegrees(-164.74489f)),
-                pointDistanceA = 3.8005848f,
-                pathRotorAB = ComplexF.fromAngle(AngleF.fromDegrees(141.54628f)),
-                pointDistanceB = 2.538591f,
-                pathRotorAC = ComplexF.fromAngle(AngleF.fromDegrees(-138.94519f)),
-                pointDistanceC = 2.4037008f
+                orientation = ComplexF.fromAngle(AngleF.fromDegrees(30f)),
+                originPointA = Vector2F(-3.6754265f, 0.9673083f),
+                originPointB = Vector2F(1.520726f, -2.0326917f),
+                originPointC = Vector2F(2.1547005f, 1.0653841f)
             )
             val mutableRayMutableTriangleArgs = listOf(
                 Arguments.of(

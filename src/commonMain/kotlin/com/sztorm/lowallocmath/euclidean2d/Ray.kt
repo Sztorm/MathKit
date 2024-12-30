@@ -675,20 +675,18 @@ interface Ray : Transformable {
 
     /** Returns `true` if this ray intersects the given [triangle]. **/
     fun intersects(triangle: Triangle): Boolean {
-        val (prAR: Float, prAI: Float) = triangle.pathRotorA
-        val pdA: Float = triangle.pointDistanceA
-        val (prBR: Float, prBI: Float) = triangle.pathRotorAB
-        val pdB: Float = triangle.pointDistanceB
-        val (prCR: Float, prCI: Float) = triangle.pathRotorAC
-        val pdC: Float = triangle.pointDistanceC
+        val (oR: Float, oI: Float) = triangle.orientation
+        val (opAX: Float, opAY: Float) = triangle.originPointA
+        val (opBX: Float, opBY: Float) = triangle.originPointB
+        val (opCX: Float, opCY: Float) = triangle.originPointC
         val (oX: Float, oY: Float) = origin - triangle.centroid
         val (dirX: Float, dirY: Float) = direction
-        val aX: Float = prAR * pdA
-        val aY: Float = prAI * pdA
-        val bX: Float = (prAR * prBR - prAI * prBI) * pdB
-        val bY: Float = (prAI * prBR + prAR * prBI) * pdB
-        val cX: Float = (prAR * prCR - prAI * prCI) * pdC
-        val cY: Float = (prAI * prCR + prAR * prCI) * pdC
+        val aX: Float = (opAX * oR - opAY * oI)
+        val aY: Float = (opAY * oR + opAX * oI)
+        val bX: Float = (opBX * oR - opBY * oI)
+        val bY: Float = (opBY * oR + opBX * oI)
+        val cX: Float = (opCX * oR - opCY * oI)
+        val cY: Float = (opCY * oR + opCX * oI)
         val aoX: Float = oX - aX
         val aoY: Float = oY - aY
         val abX: Float = bX - aX

@@ -6,48 +6,32 @@ import com.sztorm.lowallocmath.euclidean2d.Triangle
 
 class DefaultTriangle(
     override val centroid: Vector2F,
-    override val pathRotorA: ComplexF,
-    override val pointDistanceA: Float,
-    override val pathRotorAB: ComplexF,
-    override val pointDistanceB: Float,
-    override val pathRotorAC: ComplexF,
-    override val pointDistanceC: Float
+    override val orientation: ComplexF,
+    override val originPointA: Vector2F,
+    override val originPointB: Vector2F,
+    override val originPointC: Vector2F
 ) : Triangle {
     override fun copy(
         centroid: Vector2F,
-        pathRotorA: ComplexF,
-        pointDistanceA: Float,
-        pathRotorAB: ComplexF,
-        pointDistanceB: Float,
-        pathRotorAC: ComplexF,
-        pointDistanceC: Float
-    ) = DefaultTriangle(
-        centroid,
-        pathRotorA,
-        pointDistanceA,
-        pathRotorAB,
-        pointDistanceB,
-        pathRotorAC,
-        pointDistanceC
-    )
+        orientation: ComplexF,
+        originPointA: Vector2F,
+        originPointB: Vector2F,
+        originPointC: Vector2F
+    ) = DefaultTriangle(centroid, orientation, originPointA, originPointB, originPointC)
 
     override fun equals(other: Any?): Boolean = other is Triangle &&
             centroid == other.centroid &&
-            pathRotorA == other.pathRotorA &&
-            pointDistanceA == other.pointDistanceA &&
-            pathRotorAB == other.pathRotorAB &&
-            pointDistanceB == other.pointDistanceB &&
-            pathRotorAC == other.pathRotorAC &&
-            pointDistanceC == other.pointDistanceC
+            orientation == other.orientation &&
+            originPointA == other.originPointA &&
+            originPointB == other.originPointB &&
+            originPointC == other.originPointC
 
     override fun hashCode(): Int {
         var result: Int = centroid.hashCode()
-        result = 31 * result + pathRotorA.hashCode()
-        result = 31 * result + pointDistanceA.hashCode()
-        result = 31 * result + pathRotorAB.hashCode()
-        result = 31 * result + pointDistanceB.hashCode()
-        result = 31 * result + pathRotorAC.hashCode()
-        result = 31 * result + pointDistanceC.hashCode()
+        result = 31 * result + orientation.hashCode()
+        result = 31 * result + originPointA.hashCode()
+        result = 31 * result + originPointB.hashCode()
+        result = 31 * result + originPointC.hashCode()
 
         return result
     }
