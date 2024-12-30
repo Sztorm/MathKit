@@ -1,0 +1,114 @@
+package com.sztorm.mathkit.euclidean2d
+
+import com.sztorm.mathkit.AngleF
+import com.sztorm.mathkit.ComplexF
+import com.sztorm.mathkit.Vector2F
+
+/**
+ * Represents a transformable object in a two-dimensional Euclidean space.
+ *
+ * Direct implementations of this interface must consider that new interface members may be added
+ * in the next versions of the library. Implementations that are safe to use from a compatibility
+ * perspective are those that are defined in the library, like [Square].
+ */
+interface Transformable {
+    /** Returns the position of this object in reference to the origin of [Vector2F.ZERO]. **/
+    val position: Vector2F
+
+    /** Returns the orientation of this object in reference to the origin of [ComplexF.ONE]. **/
+    val orientation: ComplexF
+
+    /** Returns a copy of this object that is moved by a [displacement]. **/
+    fun movedBy(displacement: Vector2F): Transformable
+
+    /** Returns a copy of this object that is moved to the [position]. **/
+    fun movedTo(position: Vector2F): Transformable
+
+    /** Returns a copy of this object that is rotated by a [rotation]. **/
+    fun rotatedBy(rotation: AngleF): Transformable
+
+    /**
+     * Returns a copy of this object that is rotated by a [rotation].
+     *
+     * @param rotation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun rotatedBy(rotation: ComplexF): Transformable
+
+    /** Returns a copy of this object that is rotated to the [orientation]. **/
+    fun rotatedTo(orientation: AngleF): Transformable
+
+    /**
+     * Returns a copy of this object that is rotated to the [orientation].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun rotatedTo(orientation: ComplexF): Transformable
+
+    /** Returns a copy of this object that is rotated around the [point] by a [rotation]. **/
+    fun rotatedAroundPointBy(point: Vector2F, rotation: AngleF): Transformable
+
+    /**
+     * Returns a copy of this object that is rotated around the [point] by a [rotation].
+     *
+     * @param rotation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun rotatedAroundPointBy(point: Vector2F, rotation: ComplexF): Transformable
+
+    /** Returns a copy of this object that is rotated around the [point] to the [orientation]. **/
+    fun rotatedAroundPointTo(point: Vector2F, orientation: AngleF): Transformable
+
+    /**
+     * Returns a copy of this object that is rotated around the [point] to the [orientation].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun rotatedAroundPointTo(point: Vector2F, orientation: ComplexF): Transformable
+
+    /** Returns a copy of this object that is scaled by a [factor]. **/
+    fun scaledBy(factor: Float): Transformable
+
+    /** Returns a copy of this object that is dilated around the [point] by a [factor]. **/
+    fun dilatedBy(point: Vector2F, factor: Float): Transformable
+
+    /**
+     * Returns a copy of this object that is moved by a [displacement] and rotated by a [rotation].
+     */
+    fun transformedBy(displacement: Vector2F, rotation: AngleF): Transformable
+
+    /**
+     * Returns a copy of this object that is moved by a [displacement] and rotated by a [rotation].
+     *
+     * @param rotation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun transformedBy(displacement: Vector2F, rotation: ComplexF): Transformable
+
+    /**
+     * Returns a copy of this object that is moved by a [displacement], rotated by a [rotation],
+     * and scaled by a [scaleFactor].
+     */
+    fun transformedBy(displacement: Vector2F, rotation: AngleF, scaleFactor: Float): Transformable
+
+    /**
+     * Returns a copy of this object that is moved by a [displacement], rotated by a [rotation],
+     * and scaled by a [scaleFactor].
+     *
+     * @param rotation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun transformedBy(
+        displacement: Vector2F, rotation: ComplexF, scaleFactor: Float
+    ): Transformable
+
+    /**
+     * Returns a copy of this object that is moved to the [position] and rotated to the
+     * [orientation].
+     */
+    fun transformedTo(position: Vector2F, orientation: AngleF): Transformable
+
+    /**
+     * Returns a copy of this object that is moved to the [position] and rotated to the
+     * [orientation].
+     *
+     * @param orientation the value is expected to be [normalized][ComplexF.normalized].
+     */
+    fun transformedTo(position: Vector2F, orientation: ComplexF): Transformable
+}

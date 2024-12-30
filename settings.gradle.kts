@@ -1,3 +1,1 @@
-
-rootProject.name = "low-alloc-math"
-
+rootProject.name = "MathKit"

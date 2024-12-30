@@ -1,6 +1,6 @@
-# low-alloc-math
+# MathKit
 
-[![](https://jitpack.io/v/Sztorm/KotlinLowAllocMath.svg)](https://jitpack.io/#Sztorm/KotlinLowAllocMath)
+[![](https://jitpack.io/v/Sztorm/MathKit.svg)](https://jitpack.io/#Sztorm/MathKit)
 
 A collection of various math related types that have little to no GC memory allocation
 pressure. This library makes extensive use of Kotlin's
@@ -28,7 +28,7 @@ Step 2. Add the dependency
 
 ```kotlin
 dependencies {
-    implementation("com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.1.0")
+    implementation("com.github.Sztorm.MathKit:MathKit:1.1.0")
 }
 ```
 
@@ -51,7 +51,7 @@ Step 2. Add the dependency
 
 ```groovy
 dependencies {
-    implementation 'com.github.Sztorm.KotlinLowAllocMath:low-alloc-math:1.1.0'
+    implementation 'com.github.Sztorm.MathKit:MathKit:1.1.0'
 }
 ```
 
@@ -76,7 +76,7 @@ Step 2. Add the dependency
 ```maven
 <dependency>
     <groupId>com.github.Sztorm</groupId>
-    <artifactId>KotlinLowAllocMath</artifactId>
+    <artifactId>MathKit</artifactId>
     <version>1.1.0</version>
 </dependency>
 ```
@@ -86,7 +86,7 @@ Step 2. Add the dependency
 ## Samples
 
 ```kotlin
-import com.sztorm.lowallocmath.*
+import com.sztorm.mathkit.*
 
 // No GC allocation when declared locally (inside the body of a method).
 // Under the hood, a long value will be created for each Vector2F.
@@ -103,7 +103,7 @@ println(a.normalized) // 1.0
 ```
 
 ```kotlin
-import com.sztorm.lowallocmath.*
+import com.sztorm.mathkit.*
 
 val a = ComplexF(3f, 2f)
 val b = 3f + 2f.i
@@ -119,7 +119,7 @@ println(a * b)       // 5.0 + 12.0i
 ```
 
 ```kotlin
-import com.sztorm.lowallocmath.*
+import com.sztorm.mathkit.*
 
 // This is an array of values, on the JVM side it is represented as long array.
 val arrayA = Vector2FArray(3)
@@ -140,6 +140,6 @@ println(arrayC.sum()) // Vector2F(x=7.0, y=8.0)
 
 ## License
 
-*low-alloc-math* is licensed under the MIT license.
+*MathKit* is licensed under the MIT license.
 
 [More about license](LICENSE)
