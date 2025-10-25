@@ -36,6 +36,7 @@ build/
 .idea/libraries-with-intellij-classes.xml
 .idea/misc.xml
 .idea/protoeditor.xml
+.idea/AndroidProjectSystem.xml
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -70,6 +71,7 @@ build/
 .idea/artifacts
 .idea/compiler.xml
 .idea/scala_compiler.xml
+.idea/kotlinc.xml
 .idea/jarRepositories.xml
 .idea/modules.xml
 .idea/*.iml

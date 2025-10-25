@@ -1,6 +1,8 @@
 # MathKit
 
 [![](https://jitpack.io/v/Sztorm/MathKit.svg)](https://jitpack.io/#Sztorm/MathKit)
+![tests status badge](misc/testsStatus.svg)
+![test coverage badge](misc/testCoverage.svg)
 
 A collection of various math related types that have little to no GC memory allocation
 pressure. This library makes extensive use of Kotlin's

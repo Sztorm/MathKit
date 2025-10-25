@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform") version "1.8.0"
     id("org.jetbrains.dokka") version "1.8.10"
+    id("org.jetbrains.kotlinx.kover") version "0.9.0"
     id("maven-publish")
 }
 
@@ -29,11 +30,10 @@ kotlin {
         }
     }
     val hostOs = System.getProperty("os.name")
-    val isMingwX64 = hostOs.startsWith("Windows")
     val nativeTarget = when {
         hostOs == "Mac OS X" -> macosX64("native")
         hostOs == "Linux" -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
+        hostOs.startsWith("Windows") -> mingwX64("native")
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
@@ -57,3 +57,27 @@ kotlin {
         val nativeTest by getting
     }
 }
+
+//./gradlew --continue jvmTest generateTestStatusBadge
+tasks.register<GenerateTestsStatusBadge>("generateTestStatusBadge") {
+    testsStatusReportInput.set(project.layout.buildDirectory.file("reports/tests/jvmTest/index.html"))
+    badgeOutput.set(project.layout.projectDirectory.file("misc/testsStatus.svg"))
+    mustRunAfter("jvmTest")
+}
+
+//./gradlew --continue koverXmlReport generateCoverageBadge
+tasks.register<GenerateCoverageBadge>("generateCoverageBadge") {
+    testsStatusReportInput.set(project.layout.buildDirectory.file("reports/tests/jvmTest/index.html"))
+    coverageReportInput.set(project.layout.buildDirectory.file("reports/kover/report.xml"))
+    badgeOutput.set(project.layout.projectDirectory.file("misc/testCoverage.svg"))
+    mustRunAfter("koverXmlReport")
+}
+
+//./gradlew --continue generateBadges
+tasks.register("generateBadges") {
+    dependsOn("jvmTest", "generateTestStatusBadge", "koverXmlReport", "generateCoverageBadge")
+    tasks.findByPath("koverXmlReport")!!.mustRunAfter("generateTestStatusBadge")
+}
+
+// Build docs
+//./gradlew dokkaHtml
