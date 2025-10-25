@@ -1,7 +1,7 @@
 plugins {
-    kotlin("multiplatform") version "1.8.0"
-    id("org.jetbrains.dokka") version "1.8.10"
-    id("org.jetbrains.kotlinx.kover") version "0.9.0"
+    kotlin("multiplatform") version "2.2.21"
+    id("org.jetbrains.dokka") version "2.1.0"
+    id("org.jetbrains.kotlinx.kover") version "0.9.3"
     id("maven-publish")
 }
 
