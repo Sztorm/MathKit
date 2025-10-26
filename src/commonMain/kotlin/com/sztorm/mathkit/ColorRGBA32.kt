@@ -12,11 +12,10 @@ import kotlin.jvm.JvmStatic
  * `int`.
  */
 @JvmInline
-value class Color32 private constructor(private val data: Int) {
-    /** Constructs a new [Color32] instance with given [r], [g], [b], [a] components. **/
+value class ColorRGBA32 private constructor(private val data: Int) {
+    /** Constructs a new [ColorRGBA32] instance with given [r], [g], [b], [a] components. **/
     constructor(r: UByte, g: UByte, b: UByte, a: UByte) : this(
-        data =
-            r.toInt() + (g.toInt() shl 8) + (b.toInt() shl 16) + (a.toInt() shl 24)
+        data = r.toInt() + (g.toInt() shl 8) + (b.toInt() shl 16) + (a.toInt() shl 24)
     )
 
     /** Red component of the color. **/
@@ -49,7 +48,7 @@ value class Color32 private constructor(private val data: Int) {
 
     /** Returns a copy of this instance with specified properties altered. **/
     inline fun copy(r: UByte = this.r, g: UByte = this.g, b: UByte = this.b, a: UByte = this.a) =
-        Color32(r, g, b, a)
+        ColorRGBA32(r, g, b, a)
 
     /** Red component of the color. **/
     inline operator fun component1(): UByte = r
@@ -73,43 +72,43 @@ value class Color32 private constructor(private val data: Int) {
         else throw IndexOutOfBoundsException("Index of $index is out of range of [0, 3].")
 
     companion object {
-        /** The number of bits used to represent an instance of [Color32] in a binary form. **/
+        /** The number of bits used to represent an instance of [ColorRGBA32] in a binary form. **/
         const val SIZE_BITS: Int = 32
 
-        /** The number of bytes used to represent an instance of [Color32] in a binary form. **/
+        /** The number of bytes used to represent an instance of [ColorRGBA32] in a binary form. **/
         const val SIZE_BYTES: Int = 4
 
         /** Value of (0, 0, 0, 255) that represents the black color. **/
         inline val BLACK
-            @JvmStatic get() = Color32(0u, 0u, 0u, 255u)
+            @JvmStatic get() = ColorRGBA32(0u, 0u, 0u, 255u)
 
         /** Value of (255, 255, 255, 255) that represents the white color. **/
         inline val WHITE
-            @JvmStatic get() = Color32(255u, 255u, 255u, 255u)
+            @JvmStatic get() = ColorRGBA32(255u, 255u, 255u, 255u)
 
         /** Value of (255, 0, 0, 255) that represents the red color. **/
         inline val RED
-            @JvmStatic get() = Color32(255u, 0u, 0u, 255u)
+            @JvmStatic get() = ColorRGBA32(255u, 0u, 0u, 255u)
 
         /** Value of (0, 255, 0, 255) that represents the green color. **/
         inline val GREEN
-            @JvmStatic get() = Color32(0u, 255u, 0u, 255u)
+            @JvmStatic get() = ColorRGBA32(0u, 255u, 0u, 255u)
 
         /** Value of (0, 0, 255, 255) that represents the blue color. **/
         inline val BLUE
-            @JvmStatic get() = Color32(0u, 0u, 255u, 255u)
+            @JvmStatic get() = ColorRGBA32(0u, 0u, 255u, 255u)
 
         /** Value of (255, 255, 0, 255) that represents the yellow color. **/
         inline val YELLOW
-            @JvmStatic get() = Color32(255u, 255u, 0u, 255u)
+            @JvmStatic get() = ColorRGBA32(255u, 255u, 0u, 255u)
 
         /** Value of (255, 0, 255, 255) that represents the magenta color. **/
         inline val MAGENTA
-            @JvmStatic get() = Color32(255u, 0u, 255u, 255u)
+            @JvmStatic get() = ColorRGBA32(255u, 0u, 255u, 255u)
 
         /** Value of (0, 255, 255, 255) that represents the cyan color. **/
         inline val CYAN
-            @JvmStatic get() = Color32(0u, 255u, 255u, 255u)
+            @JvmStatic get() = ColorRGBA32(0u, 255u, 255u, 255u)
 
         /**
          * Returns a linearly interpolated color between [a] and [b] colors.
@@ -120,13 +119,13 @@ value class Color32 private constructor(private val data: Int) {
          */
         @JvmStatic
         @Suppress("SpellCheckingInspection", "RedundantSuppression")
-        fun lerp(a: Color32, b: Color32, t: Float): Color32 {
+        fun lerp(a: ColorRGBA32, b: ColorRGBA32, t: Float): ColorRGBA32 {
             val ar: UByte = a.r
             val ag: UByte = a.g
             val ab: UByte = a.b
             val aa: UByte = a.a
 
-            return Color32(
+            return ColorRGBA32(
                 (ar.toFloat() + (b.r.toInt() - ar.toInt()).toFloat() * t).toUInt().toUByte(),
                 (ag.toFloat() + (b.g.toInt() - ag.toInt()).toFloat() * t).toUInt().toUByte(),
                 (ab.toFloat() + (b.b.toInt() - ab.toInt()).toFloat() * t).toUInt().toUByte(),
