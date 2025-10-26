@@ -8,9 +8,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
-/** Multiplies this vector by the [other] scalar. **/
-inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
-
 /**
  * Represents a vector of two 32-bit signed integers.
  *
@@ -193,10 +190,21 @@ value class Vector2I internal constructor(internal val data: Long) {
 
         /** Returns a vector that is made from the largest components of two vectors. **/
         @JvmStatic
-        inline fun max(a: Vector2I, b: Vector2I) = Vector2I(max(a.x, b.x), max(a.y, b.y))
+        inline fun max(a: Vector2I, b: Vector2I) =
+            Vector2I(max(a.x, b.x), max(a.y, b.y))
 
         /** Returns a vector that is made from the smallest components of two vectors. **/
         @JvmStatic
-        inline fun min(a: Vector2I, b: Vector2I) = Vector2I(min(a.x, b.x), min(a.y, b.y))
+        inline fun min(a: Vector2I, b: Vector2I) =
+            Vector2I(min(a.x, b.x), min(a.y, b.y))
     }
 }
+
+/** Multiplies this vector by the [other] scalar. **/
+inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
+
+/** Returns a vector that is made from the largest components of two vectors. **/
+inline fun max(a: Vector2I, b: Vector2I) = Vector2I.max(a, b)
+
+/** Returns a vector that is made from the smallest components of two vectors. **/
+inline fun min(a: Vector2I, b: Vector2I) = Vector2I.min(a, b)

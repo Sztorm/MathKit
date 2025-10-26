@@ -192,13 +192,19 @@ class Vector2ITests {
     @MethodSource("maxArgs")
     fun maxReturnsCorrectValue(
         a: Wrapper<Vector2I>, b: Wrapper<Vector2I>, expected: Wrapper<Vector2I>
-    ) = assertEquals(expected.value, Vector2I.max(a.value, b.value))
+    ) {
+        assertEquals(expected.value, max(a.value, b.value))
+        assertEquals(expected.value, Vector2I.max(a.value, b.value))
+    }
 
     @ParameterizedTest
     @MethodSource("minArgs")
     fun minReturnsCorrectValue(
         a: Wrapper<Vector2I>, b: Wrapper<Vector2I>, expected: Wrapper<Vector2I>
-    ) = assertEquals(expected.value, Vector2I.min(a.value, b.value))
+    ) {
+        assertEquals(expected.value, min(a.value, b.value))
+        assertEquals(expected.value, Vector2I.min(a.value, b.value))
+    }
 
     companion object {
         @JvmStatic
