@@ -65,6 +65,24 @@ inline fun <T> Iterable<T>.sumOf(selector: (T) -> Vector2F): Vector2F {
     return sum
 }
 
+/** Returns an empty [Vector2FArray]. **/
+inline fun vector2FArrayOf() = Vector2FArray(0)
+
+/** Returns a new [Vector2FArray] containing only the specified [element]. **/
+inline fun vector2FArrayOf(element: Vector2F) = Vector2FArray(1).apply { this[0] = element }
+
+/** Returns a new [Vector2FArray] of given elements. **/
+@Suppress("FINAL_UPPER_BOUND")
+inline fun <reified T : Vector2F> vector2FArrayOf(vararg elements: T): Vector2FArray {
+    val size = elements.size
+    val result = Vector2FArray(size)
+
+    for (i in 0..<size) {
+        result[i] = elements[i]
+    }
+    return result
+}
+
 /**
  * An array of [Vector2F] values.
  *
