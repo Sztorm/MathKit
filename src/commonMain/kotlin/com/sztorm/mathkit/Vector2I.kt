@@ -204,7 +204,7 @@ value class Vector2I internal constructor(internal val data: Long) {
 inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this * other.y)
 
 /** Returns a vector that is made from the largest components of two vectors. **/
-inline fun max(a: Vector2I, b: Vector2I) = Vector2I.max(a, b)
+inline fun max(a: Vector2I, b: Vector2I): Vector2I = Vector2I.max(a, b)
 
 /** Returns a vector that is made from the smallest components of two vectors. **/
-inline fun min(a: Vector2I, b: Vector2I) = Vector2I.min(a, b)
+inline fun min(a: Vector2I, b: Vector2I): Vector2I = Vector2I.min(a, b)

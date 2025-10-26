@@ -4,6 +4,7 @@ package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
 import kotlin.math.*
+import kotlin.math.atan2 as atan2
 
 /**
  * Creates a new instance of [RegularPolygon].

@@ -5,6 +5,7 @@ package com.sztorm.mathkit
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
+import kotlin.math.atan2 as atan2
 
 /**
  * Represents a complex number composed of two single-precision 32-bit IEEE 754 floating point

@@ -175,48 +175,66 @@ class AngleFTests {
 
     @ParameterizedTest
     @MethodSource("sinArgs")
-    fun sinReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
+    fun sinReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) {
+        assertApproximation(expected, sin(angle.value))
         assertApproximation(expected, AngleF.sin(angle.value))
+    }
 
     @ParameterizedTest
     @MethodSource("cosArgs")
-    fun cosReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
+    fun cosReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) {
+        assertApproximation(expected, cos(angle.value))
         assertApproximation(expected, AngleF.cos(angle.value))
+    }
 
     @ParameterizedTest
     @MethodSource("tanArgs")
-    fun tanReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) =
+    fun tanReturnsCorrectValue(angle: Wrapper<AngleF>, expected: Float) {
+        assertApproximation(expected, tan(angle.value))
         assertApproximation(expected, AngleF.tan(angle.value))
+    }
 
     @ParameterizedTest
     @MethodSource("asinArgs")
-    fun asinReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) =
+    fun asinReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) {
+        assertApproximation(expected.value, asin(x))
         assertApproximation(expected.value, AngleF.asin(x))
+    }
 
     @ParameterizedTest
     @MethodSource("acosArgs")
-    fun acosReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) =
+    fun acosReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) {
+        assertApproximation(expected.value, acos(x))
         assertApproximation(expected.value, AngleF.acos(x))
+    }
 
     @ParameterizedTest
     @MethodSource("atanArgs")
-    fun atanReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) =
+    fun atanReturnsCorrectValue(x: Float, expected: Wrapper<AngleF>) {
+        assertApproximation(expected.value, atan(x))
         assertApproximation(expected.value, AngleF.atan(x))
+    }
 
     @ParameterizedTest
     @MethodSource("atan2Args")
-    fun atan2ReturnsCorrectValue(y: Float, x: Float, expected: Wrapper<AngleF>) =
+    fun atan2ReturnsCorrectValue(y: Float, x: Float, expected: Wrapper<AngleF>) {
+        assertApproximation(expected.value, atan2(y, x))
         assertApproximation(expected.value, AngleF.atan2(y, x))
+    }
 
     @ParameterizedTest
     @MethodSource("minArgs")
-    fun minReturnsCorrectValue(a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>) =
+    fun minReturnsCorrectValue(a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>) {
+        assertApproximation(expected.value, min(a.value, b.value))
         assertApproximation(expected.value, AngleF.min(a.value, b.value))
+    }
 
     @ParameterizedTest
     @MethodSource("maxArgs")
-    fun maxReturnsCorrectValue(a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>) =
+    fun maxReturnsCorrectValue(a: Wrapper<AngleF>, b: Wrapper<AngleF>, expected: Wrapper<AngleF>) {
+        assertApproximation(expected.value, max(a.value, b.value))
         assertApproximation(expected.value, AngleF.max(a.value, b.value))
+    }
 
     companion object {
         @JvmStatic

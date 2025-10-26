@@ -6,9 +6,6 @@ import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
 
-/** Multiplies this value by the [other] value. **/
-inline operator fun Float.times(other: AngleF) = AngleF(this * other.radians)
-
 /**
  * Represents an angle stored in single-precision 32-bit IEEE 754 floating point number.
  *
@@ -256,3 +253,86 @@ value class AngleF(val radians: Float) : Comparable<AngleF> {
         inline fun max(a: AngleF, b: AngleF) = AngleF(max(a.radians, b.radians))
     }
 }
+
+/** Multiplies this value by the [other] value. **/
+inline operator fun Float.times(other: AngleF) = AngleF(this * other.radians)
+
+/** Computes the sine of the given [angle].
+ *
+ *  Special cases:
+ *   - `sin(NaN|+Inf|-Inf)` is `NaN`
+ */
+inline fun sin(angle: AngleF): Float = AngleF.sin(angle)
+
+/** Computes the cosine of the given [angle].
+ *
+ *  Special cases:
+ *   - `cos(NaN|+Inf|-Inf)` is `NaN`
+ */
+inline fun cos(angle: AngleF): Float = AngleF.cos(angle)
+
+/** Computes the tangent of the given [angle].
+ *
+ *  Special cases:
+ *   - `tan(NaN|+Inf|-Inf)` is `NaN`
+ */
+inline fun tan(angle: AngleF): Float = AngleF.tan(angle)
+
+/**
+ * Computes the arc sine of the value [x];
+ * the returned value is an angle in the range from `-PI/2` to `PI/2` radians.
+ *
+ * Special cases:
+ *    - `asin(x)` is `NaN`, when `abs(x) > 1` or x is `NaN`
+ */
+inline fun asin(x: Float): AngleF = AngleF.asin(x)
+
+/**
+ * Computes the arc cosine of the value [x];
+ * the returned value is an angle in the range from `0.0` to `PI` radians.
+ *
+ * Special cases:
+ *    - `acos(x)` is `NaN`, when `abs(x) > 1` or x is `NaN`
+ */
+inline fun acos(x: Float): AngleF = AngleF.acos(x)
+
+/**
+ * Computes the arc tangent of the value [x];
+ * the returned value is an angle in the range from `-PI/2` to `PI/2` radians.
+ *
+ * Special cases:
+ *   - `atan(NaN)` is `NaN`
+ */
+inline fun atan(x: Float): AngleF = AngleF.atan(x)
+
+/**
+ * Returns the angle `theta` of the polar coordinates `(r, theta)` that correspond
+ * to the rectangular coordinates `(x, y)` by computing the arc tangent of the value
+ * [y] / [x]; the returned value is an angle in the range from `-PI` to `PI` radians.
+ *
+ * Special cases:
+ *   - `atan2(0.0, 0.0)` is `0.0`
+ *   - `atan2(0.0, x)` is  `0.0` for `x > 0` and `PI` for `x < 0`
+ *   - `atan2(-0.0, x)` is `-0.0` for `x > 0` and `-PI` for `x < 0`
+ *   - `atan2(y, +Inf)` is `0.0` for `0 < y < +Inf` and `-0.0` for `-Inf < y < 0`
+ *   - `atan2(y, -Inf)` is `PI` for `0 < y < +Inf` and `-PI` for `-Inf < y < 0`
+ *   - `atan2(y, 0.0)` is `PI/2` for `y > 0` and `-PI/2` for `y < 0`
+ *   - `atan2(+Inf, x)` is `PI/2` for finite `x`y
+ *   - `atan2(-Inf, x)` is `-PI/2` for finite `x`
+ *   - `atan2(NaN, x)` and `atan2(y, NaN)` is `NaN`
+ */
+inline fun atan2(y: Float, x: Float): AngleF = AngleF.atan2(y, x)
+
+/**
+ * Returns the smaller of two values.
+ *
+ * If either value is `NaN`, then the result is `NaN`.
+ */
+inline fun min(a: AngleF, b: AngleF): AngleF = AngleF.min(a, b)
+
+/**
+ * Returns the greater of two values.
+ *
+ * If either value is `NaN`, then the result is `NaN`.
+ */
+inline fun max(a: AngleF, b: AngleF): AngleF = AngleF.max(a, b)

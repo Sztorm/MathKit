@@ -4,6 +4,7 @@ package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
 import kotlin.math.*
+import kotlin.math.atan2 as atan2
 
 /** Represents a mutable transformable regular polygon in a two-dimensional Euclidean space. **/
 class MutableRegularPolygon : RegularPolygon, MutableTransformable {
