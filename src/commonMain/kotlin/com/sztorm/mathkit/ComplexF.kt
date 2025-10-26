@@ -2,48 +2,9 @@
 
 package com.sztorm.mathkit
 
-import com.sztorm.mathkit.ComplexF.Companion.ZERO
-import com.sztorm.mathkit.ComplexF.Companion.slerp
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
-
-/** Returns a complex number with the specified imaginary value. **/
-inline val Float.i
-    get() = ComplexF(0f, this)
-
-/** Converts this [Float] value to [ComplexF]. **/
-inline fun Float.toComplexF() = ComplexF(this, 0f)
-
-/** Adds the [other] complex number to this real number. **/
-inline operator fun Float.plus(other: ComplexF) =
-    ComplexF(this + other.real, other.imaginary)
-
-/** Subtracts the [other] complex number from this real number. **/
-inline operator fun Float.minus(other: ComplexF) =
-    ComplexF(this - other.real, -other.imaginary)
-
-/**
- * Multiplies this real number by the [other] complex number.
- *
- * The result [magnitude][ComplexF.magnitude] is this * [other].[magnitude][ComplexF.magnitude].
- */
-inline operator fun Float.times(other: ComplexF) =
-    ComplexF(this * other.real, this * other.imaginary)
-
-/**
- * Divides this real number by the [other] complex number.
- *
- * The result [magnitude][ComplexF.magnitude] is this / [other].[magnitude][ComplexF.magnitude].
- *
- * The result [phase][ComplexF.phase] is -[other].[phase][ComplexF.phase].
- */
-operator fun Float.div(other: ComplexF): ComplexF {
-    val (r: Float, i: Float) = other
-    val factor: Float = this / (r * r + i * i)
-
-    return ComplexF(r * factor, -i * factor)
-}
 
 /**
  * Represents a complex number composed of two single-precision 32-bit IEEE 754 floating point
@@ -335,9 +296,6 @@ value class ComplexF internal constructor(
     }
 
     companion object {
-        private const val LN10_INVERTED = 0.4342945f
-        private const val LN2_INVERTED = 1.442695f
-
         /** The number of bits used to represent an instance of [ComplexF] in a binary form. **/
         const val SIZE_BITS: Int = 64
 
@@ -377,7 +335,7 @@ value class ComplexF internal constructor(
 
         /** Returns the absolute value of the specified complex number. **/
         @JvmStatic
-        inline fun abs(value: ComplexF) = value.absoluteValue
+        inline fun abs(value: ComplexF): Float = value.absoluteValue
 
         /** Returns the conjugate of the specified complex number. **/
         @JvmStatic
@@ -582,3 +540,125 @@ value class ComplexF internal constructor(
         }
     }
 }
+
+private const val LN10_INVERTED = 0.4342945f
+private const val LN2_INVERTED = 1.442695f
+
+/** Returns a complex number with the specified imaginary value. **/
+inline val Float.i
+    get() = ComplexF(0f, this)
+
+/** Converts this [Float] value to [ComplexF]. **/
+inline fun Float.toComplexF() = ComplexF(this, 0f)
+
+/** Adds the [other] complex number to this real number. **/
+inline operator fun Float.plus(other: ComplexF) =
+    ComplexF(this + other.real, other.imaginary)
+
+/** Subtracts the [other] complex number from this real number. **/
+inline operator fun Float.minus(other: ComplexF) =
+    ComplexF(this - other.real, -other.imaginary)
+
+/**
+ * Multiplies this real number by the [other] complex number.
+ *
+ * The result [magnitude][ComplexF.magnitude] is this * [other].[magnitude][ComplexF.magnitude].
+ */
+inline operator fun Float.times(other: ComplexF) =
+    ComplexF(this * other.real, this * other.imaginary)
+
+/**
+ * Divides this real number by the [other] complex number.
+ *
+ * The result [magnitude][ComplexF.magnitude] is this / [other].[magnitude][ComplexF.magnitude].
+ *
+ * The result [phase][ComplexF.phase] is -[other].[phase][ComplexF.phase].
+ */
+operator fun Float.div(other: ComplexF): ComplexF {
+    val (r: Float, i: Float) = other
+    val factor: Float = this / (r * r + i * i)
+
+    return ComplexF(r * factor, -i * factor)
+}
+
+/** Returns the absolute value of the specified complex number. **/
+inline fun abs(value: ComplexF) = ComplexF.abs(value)
+
+/** Returns the conjugate of the specified complex number. **/
+inline fun conjugate(value: ComplexF): ComplexF = ComplexF.conjugate(value)
+
+/** Returns the [E] constant to the power of specified complex number. **/
+inline fun exp(value: ComplexF): ComplexF = ComplexF.exp(value)
+
+/** Returns the natural logarithm (base `E`) of the specified complex number. **/
+inline fun ln(value: ComplexF): ComplexF = ComplexF.ln(value)
+
+/** Returns the logarithm of the specified complex number to the given [base]. **/
+inline fun log(value: ComplexF, base: Float): ComplexF = ComplexF.log(value, base)
+
+/** Returns the common logarithm (base 10) of the specified complex number. **/
+inline fun log10(value: ComplexF): ComplexF = ComplexF.log10(value)
+
+/** Returns the binary logarithm (base 2) of the specified complex number. **/
+inline fun log2(value: ComplexF): ComplexF = ComplexF.log2(value)
+
+/** Returns the cosine of the specified complex number. **/
+inline fun cos(value: ComplexF): ComplexF = ComplexF.cos(value)
+
+/** Returns the sine of the specified complex number. **/
+inline fun sin(value: ComplexF): ComplexF = ComplexF.sin(value)
+
+/** Returns the tangent of the specified complex number. **/
+inline fun tan(value: ComplexF): ComplexF = ComplexF.tan(value)
+
+/** Returns the hyperbolic cosine of the specified complex number. **/
+inline fun cosh(value: ComplexF): ComplexF = ComplexF.cosh(value)
+
+/** Returns the hyperbolic sine of the specified complex number. **/
+inline fun sinh(value: ComplexF): ComplexF = ComplexF.sinh(value)
+
+/** Returns the hyperbolic tangent of the specified complex number. **/
+inline fun tanh(value: ComplexF): ComplexF = ComplexF.tanh(value)
+
+/** Returns the arc cosine of the specified complex number. **/
+inline fun acos(value: ComplexF): ComplexF = ComplexF.acos(value)
+
+/** Returns the arc sine of the specified complex number. **/
+inline fun asin(value: ComplexF): ComplexF = ComplexF.asin(value)
+
+/** Returns the arc tangent of the specified complex number. **/
+inline fun atan(value: ComplexF): ComplexF = ComplexF.atan(value)
+
+/** Returns the square root of the specified complex number. **/
+inline fun sqrt(value: ComplexF): ComplexF = ComplexF.sqrt(value)
+
+/**
+ * Returns a normalized linear interpolation of two rotations [a] and [b] with interpolator
+ * value of [t].
+ *
+ * The [a] and [b] arguments are expected to be normalized.
+ * The [t] argument is expected to be in range of `[0, 1]`.
+ *
+ * Given the constant velocity of [t], the linear velocity of interpolation is
+ * constant, but the angular velocity is not.
+ *
+ * This function can be used as an approximation of [slerp] when angle between [a] and [b]
+ * is small.
+ */
+@Suppress("RedundantSuppression", "SpellCheckingInspection")
+inline fun nlerp(a: ComplexF, b: ComplexF, t: Float): ComplexF = ComplexF.nlerp(a, b, t)
+
+/**
+ * Returns a spherical linear interpolation of two rotations [a] and [b] with interpolator
+ * value of [t].
+ *
+ * The [a] and [b] arguments are expected to be normalized.
+ * The function does not clamp the [t] parameter, however the most accurate results are
+ * returned when [t] is in range of `[0, 1]`.
+ *
+ * The function always returns the shortest interpolation path between [a] and [b].
+ *
+ * The angular velocity of interpolation is constant, given constant velocity of [t].
+ */
+@Suppress("RedundantSuppression", "SpellCheckingInspection")
+inline fun slerp(a: ComplexF, b: ComplexF, t: Float): ComplexF = ComplexF.slerp(a, b, t)

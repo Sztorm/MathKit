@@ -250,104 +250,146 @@ class ComplexFTests {
 
     @ParameterizedTest
     @MethodSource("magnitudeArgs")
-    fun absReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) =
+    fun absReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Float) {
+        assertApproximation(expected, abs(complex.value))
         assertApproximation(expected, ComplexF.abs(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("companionConjugateArgs")
     fun companionConjugateReturnsCorrectValue(
         complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, ComplexF.conjugate(complex.value))
+    ) {
+        assertApproximation(expected.value, conjugate(complex.value))
+        assertApproximation(expected.value, ComplexF.conjugate(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("expArgs")
-    fun expReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun expReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, exp(complex.value))
         assertApproximation(expected.value, ComplexF.exp(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("lnArgs")
-    fun lnReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun lnReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, ln(complex.value))
         assertApproximation(expected.value, ComplexF.ln(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("logArgs")
     fun logReturnsCorrectValue(
         complex: Wrapper<ComplexF>, base: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, ComplexF.log(complex.value, base))
+    ) {
+        assertApproximation(expected.value, log(complex.value, base))
+        assertApproximation(expected.value, ComplexF.log(complex.value, base))
+    }
 
     @ParameterizedTest
     @MethodSource("log10Args")
-    fun log10ReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun log10ReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, log10(complex.value))
         assertApproximation(expected.value, ComplexF.log10(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("log2Args")
-    fun log2ReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun log2ReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, log2(complex.value))
         assertApproximation(expected.value, ComplexF.log2(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("cosArgs")
-    fun cosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun cosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, cos(complex.value))
         assertApproximation(expected.value, ComplexF.cos(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("sinArgs")
-    fun sinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun sinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, sin(complex.value))
         assertApproximation(expected.value, ComplexF.sin(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("tanArgs")
-    fun tanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun tanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, tan(complex.value))
         assertApproximation(expected.value, ComplexF.tan(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("coshArgs")
-    fun coshReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun coshReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, cosh(complex.value))
         assertApproximation(expected.value, ComplexF.cosh(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("sinhArgs")
-    fun sinhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun sinhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, sinh(complex.value))
         assertApproximation(expected.value, ComplexF.sinh(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("tanhArgs")
-    fun tanhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun tanhReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, tanh(complex.value))
         assertApproximation(expected.value, ComplexF.tanh(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("acosArgs")
-    fun acosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun acosReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, acos(complex.value))
         assertApproximation(expected.value, ComplexF.acos(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("asinArgs")
-    fun asinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun asinReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, asin(complex.value))
         assertApproximation(expected.value, ComplexF.asin(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("atanArgs")
-    fun atanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun atanReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, atan(complex.value))
         assertApproximation(expected.value, ComplexF.atan(complex.value))
+    }
 
     @ParameterizedTest
     @MethodSource("sqrtArgs")
-    fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) =
+    fun sqrtReturnsCorrectValue(complex: Wrapper<ComplexF>, expected: Wrapper<ComplexF>) {
+        assertApproximation(expected.value, sqrt(complex.value))
         assertApproximation(expected.value, ComplexF.sqrt(complex.value))
+    }
 
-    @Suppress("SpellCheckingInspection")
+    @Suppress("RedundantSuppression", "SpellCheckingInspection")
     @ParameterizedTest
     @MethodSource("nlerpArgs")
     fun nlerpReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, t: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, ComplexF.nlerp(a.value, b.value, t))
+    ) {
+        assertApproximation(expected.value, nlerp(a.value, b.value, t))
+        assertApproximation(expected.value, ComplexF.nlerp(a.value, b.value, t))
+    }
 
-    @Suppress("SpellCheckingInspection")
+    @Suppress("RedundantSuppression", "SpellCheckingInspection")
     @ParameterizedTest
     @MethodSource("slerpArgs")
     fun slerpReturnsCorrectValue(
         a: Wrapper<ComplexF>, b: Wrapper<ComplexF>, t: Float, expected: Wrapper<ComplexF>
-    ) = assertApproximation(expected.value, ComplexF.slerp(a.value, b.value, t))
+    ) {
+        assertApproximation(expected.value, slerp(a.value, b.value, t))
+        assertApproximation(expected.value, ComplexF.slerp(a.value, b.value, t))
+    }
 
     companion object {
         @JvmStatic
@@ -1124,7 +1166,7 @@ class ComplexFTests {
             ),
         )
 
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         @JvmStatic
         fun nlerpArgs(): List<Arguments> {
             fun createArgumentList(
@@ -1706,7 +1748,7 @@ class ComplexFTests {
             ).flatten()
         }
 
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         @JvmStatic
         fun slerpArgs(): List<Arguments> {
             fun createArgumentList(
