@@ -123,7 +123,10 @@ class ColorRGBA32Tests {
     @Suppress("RedundantSuppression", "SpellCheckingInspection")
     fun lerpReturnsCorrectValue(
         a: Wrapper<ColorRGBA32>, b: Wrapper<ColorRGBA32>, t: Float, expected: Wrapper<ColorRGBA32>
-    ) = assertEquals(expected.value, ColorRGBA32.lerp(a.value, b.value, t))
+    ) {
+        assertEquals(expected.value, lerp(a.value, b.value, t))
+        assertEquals(expected.value, ColorRGBA32.lerp(a.value, b.value, t))
+    }
 
     companion object {
         @JvmStatic

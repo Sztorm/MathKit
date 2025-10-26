@@ -134,3 +134,13 @@ value class ColorRGBA32 private constructor(private val data: Int) {
         }
     }
 }
+
+/**
+ * Returns a linearly interpolated color between [a] and [b] colors.
+ *
+ * @param [a] the source color.
+ * @param [b] the destination color.
+ * @param [t] the interpolator value with an expected range of `[0, 1]`.
+ */
+@Suppress("SpellCheckingInspection", "RedundantSuppression")
+inline fun lerp(a: ColorRGBA32, b: ColorRGBA32, t: Float): ColorRGBA32 = ColorRGBA32.lerp(a, b, t)
