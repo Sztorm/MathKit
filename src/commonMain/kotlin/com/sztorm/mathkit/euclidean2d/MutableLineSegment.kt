@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -689,7 +691,7 @@ class MutableLineSegment : LineSegment, MutableTransformable {
         MutableLineSegment(center, orientation, length)
 
     override fun equals(other: Any?): Boolean = other is LineSegment &&
-            _center == other.center && _orientation == other.orientation && _length == other.length
+        _center == other.center && _orientation == other.orientation && _length == other.length
 
     /** Indicates whether the other [MutableLineSegment] is equal to this one. **/
     fun equals(other: MutableLineSegment): Boolean =

@@ -1,5 +1,3 @@
-@file:Suppress("UnusedImport")
-
 package com.sztorm.mathkit
 
 import com.sztorm.mathkit.utils.Wrapper
@@ -17,6 +15,7 @@ import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.collections.forEach as forEachKt
 
 class Vector2FArrayTests {
     @Test
@@ -320,6 +319,14 @@ class Vector2FArrayTests {
         var expectedIndex = 0
 
         unwrappedArray.forEach { actualItem ->
+            val expectedItem: Vector2F = unwrappedArray[expectedIndex]
+
+            assertEquals(expectedItem, actualItem)
+            expectedIndex++
+        }
+        expectedIndex = 0
+
+        unwrappedArray.forEachKt { actualItem ->
             val expectedItem: Vector2F = unwrappedArray[expectedIndex]
 
             assertEquals(expectedItem, actualItem)

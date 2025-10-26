@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit
 
 import kotlin.jvm.JvmInline
@@ -19,9 +21,7 @@ inline operator fun Int.times(other: Vector2I) = Vector2I(this * other.x, this *
 value class Vector2I internal constructor(internal val data: Long) {
     /** Constructs a new vector with given [x] and [y] components. **/
     constructor(x: Int, y: Int) : this(
-        data =
-        (x.toLong() and 0xFFFFFFFFL) or
-                (y.toLong() shl Int.SIZE_BITS)
+        data = (x.toLong() and 0xFFFFFFFFL) or (y.toLong() shl Int.SIZE_BITS)
     )
 
     /** First component of the vector. **/

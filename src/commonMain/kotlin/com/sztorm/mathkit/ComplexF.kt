@@ -1,6 +1,9 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit
 
-import com.sztorm.mathkit.Vector2F.Companion.ZERO
+import com.sztorm.mathkit.ComplexF.Companion.ZERO
+import com.sztorm.mathkit.ComplexF.Companion.slerp
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
@@ -56,7 +59,7 @@ value class ComplexF internal constructor(
     /** Constructs a new complex number using the specified [real] and [imaginary] parts. **/
     constructor(real: Float, imaginary: Float) : this(
         (real.toRawBits().toLong() and 0xFFFFFFFFL) or
-                (imaginary.toRawBits().toLong() shl Float.SIZE_BITS)
+            (imaginary.toRawBits().toLong() shl Float.SIZE_BITS)
     )
 
     /** Real part of the complex number. **/
@@ -169,7 +172,7 @@ value class ComplexF internal constructor(
      */
     inline fun isApproximately(other: ComplexF, epsilon: Float = 0.00001f): Boolean =
         real.isApproximately(other.real, epsilon) and
-                imaginary.isApproximately(other.imaginary, epsilon)
+            imaginary.isApproximately(other.imaginary, epsilon)
 
     /** Returns this complex number to the power of [x]. **/
     fun pow(x: ComplexF): ComplexF {
@@ -537,7 +540,7 @@ value class ComplexF internal constructor(
          * is small.
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         fun nlerp(a: ComplexF, b: ComplexF, t: Float): ComplexF {
             val (aR: Float, aI: Float) = a
             val (bR: Float, bI: Float) = b
@@ -562,7 +565,7 @@ value class ComplexF internal constructor(
          * The angular velocity of interpolation is constant, given constant velocity of [t].
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         fun slerp(a: ComplexF, b: ComplexF, t: Float): ComplexF {
             val (aR: Float, aI: Float) = a
             val (bR: Float, bI: Float) = b

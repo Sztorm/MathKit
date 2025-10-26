@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -309,7 +311,7 @@ interface RegularPolygon : RegularShape, Transformable {
         val p1X: Float = oR * cpY - oI * cpX
         val p1Y: Float = -oR * cpX - oI * cpY
         val p1Angle: Float = atan2(p1Y, p1X) + 0.0001f +
-                ((sideCount + 1) and 1) * halfExteriorAngle
+            ((sideCount + 1) and 1) * halfExteriorAngle
         val p1AnglePositive: Float = p1Angle + fullAngle
         val index: Int = (p1AnglePositive / exteriorAngle).toInt()
         val angle: Float = (sideCount and 1) * -halfExteriorAngle - exteriorAngle * index
@@ -492,7 +494,7 @@ interface RegularPolygon : RegularShape, Transformable {
         val p1X: Float = oR * cpY - oI * cpX
         val p1Y: Float = -oR * cpX - oI * cpY
         val p1Angle: Float = atan2(p1Y, p1X) + 0.0001f +
-                ((sideCount + 1) and 1) * halfExteriorAngle
+            ((sideCount + 1) and 1) * halfExteriorAngle
         val p1AnglePositive: Float = p1Angle + fullAngle
         val index: Int = (p1AnglePositive / exteriorAngle).toInt()
         val angle: Float = (sideCount and 1) * -halfExteriorAngle - exteriorAngle * index

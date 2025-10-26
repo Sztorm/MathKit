@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit
 
 import kotlin.jvm.JvmInline
@@ -14,7 +16,7 @@ value class Color32 private constructor(private val data: Int) {
     /** Constructs a new [Color32] instance with given [r], [g], [b], [a] components. **/
     constructor(r: UByte, g: UByte, b: UByte, a: UByte) : this(
         data =
-        r.toInt() + (g.toInt() shl 8) + (b.toInt() shl 16) + (a.toInt() shl 24)
+            r.toInt() + (g.toInt() shl 8) + (b.toInt() shl 16) + (a.toInt() shl 24)
     )
 
     /** Red component of the color. **/
@@ -117,7 +119,7 @@ value class Color32 private constructor(private val data: Int) {
          * @param [t] the interpolator value with an expected range of `[0, 1]`.
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection")
+        @Suppress("SpellCheckingInspection", "RedundantSuppression")
         fun lerp(a: Color32, b: Color32, t: Float): Color32 {
             val ar: UByte = a.r
             val ag: UByte = a.g

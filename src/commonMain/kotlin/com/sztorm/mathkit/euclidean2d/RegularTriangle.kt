@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -203,7 +205,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
             val targetOrientation = (ComplexF(pointRotR, -pointRotI) * this.orientation *
-                    orientation).normalizedOrElse(ComplexF.ONE)
+                orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = rotR * centerToPointDist + pX
             val targetCenterY: Float = rotI * centerToPointDist + pY
 
@@ -307,7 +309,7 @@ interface RegularTriangle : TriangleShape, RegularShape, Transformable {
         val orientation: ComplexF = orientation
         val center: Vector2F = center
         val p1: ComplexF = orientation.conjugate *
-                ComplexF(point.x - center.x, point.y - center.y)
+            ComplexF(point.x - center.x, point.y - center.y)
         val p1X: Float = p1.real
         val p1Y: Float = p1.imaginary
         val yGB: Float = 0.5773503f * p1X // (sqrt(3) / 3) * x

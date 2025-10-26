@@ -1,4 +1,4 @@
-@file:Suppress("OVERRIDE_BY_INLINE", "PropertyName")
+@file:Suppress("NOTHING_TO_INLINE", "PropertyName")
 
 package com.sztorm.mathkit.euclidean2d
 
@@ -226,7 +226,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
             val targetOrientation = (ComplexF(pointRotR, -pointRotI) * _orientation *
-                    orientation).normalizedOrElse(ComplexF.ONE)
+                orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = rotR * centerToPointDist + pX
             val targetCenterY: Float = rotI * centerToPointDist + pY
 
@@ -637,7 +637,7 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         val orientation: ComplexF = _orientation
         val center: Vector2F = _center
         val p1: ComplexF = orientation.conjugate *
-                ComplexF(point.x - center.x, point.y - center.y)
+            ComplexF(point.x - center.x, point.y - center.y)
         val p1X: Float = p1.real
         val p1Y: Float = p1.imaginary
         val yGB: Float = 0.5773503f * p1X // (sqrt(3) / 3) * x
@@ -759,15 +759,15 @@ class MutableRegularTriangle : RegularTriangle, MutableTransformable {
         MutableRegularTriangle(center, orientation, sideLength)
 
     override fun equals(other: Any?): Boolean = other is RegularTriangle &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _sideLength == other.sideLength
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _sideLength == other.sideLength
 
     /** Indicates whether the other [MutableRegularTriangle] is equal to this one. **/
     fun equals(other: MutableRegularTriangle): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _sideLength == other._sideLength
+            _orientation == other._orientation &&
+            _sideLength == other._sideLength
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()

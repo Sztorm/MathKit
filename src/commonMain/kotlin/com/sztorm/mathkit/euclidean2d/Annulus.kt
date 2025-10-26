@@ -1,4 +1,4 @@
-@file:Suppress("ConvertTwoComparisonsToRangeCheck")
+@file:Suppress("ConvertTwoComparisonsToRangeCheck", "NOTHING_TO_INLINE")
 
 package com.sztorm.mathkit.euclidean2d
 
@@ -251,8 +251,8 @@ interface Annulus : AnnulusShape, Transformable {
         val innerRadius: Float = innerRadius
 
         return (innerRadius <= (otherAnnulusOuterRadius + distance)) &&
-                (outerRadius >= (distance - otherAnnulusOuterRadius)) &&
-                (otherAnnulusInnerRadius <= (outerRadius + distance))
+            (outerRadius >= (distance - otherAnnulusOuterRadius)) &&
+            (otherAnnulusInnerRadius <= (outerRadius + distance))
     }
 
     /** Returns `true` if this annulus intersects the given [circle]. **/
@@ -261,7 +261,7 @@ interface Annulus : AnnulusShape, Transformable {
         val circleRadius: Float = circle.radius
 
         return (distance >= (innerRadius - circleRadius)) &&
-                (distance <= (outerRadius + circleRadius))
+            (distance <= (outerRadius + circleRadius))
     }
 
     /** Returns `true` if this annulus intersects the given [ray]. **/
@@ -294,8 +294,8 @@ interface Annulus : AnnulusShape, Transformable {
         val innerRadius: Float = innerRadius
 
         return (outerRadius >= (distance + otherAnnulusOuterRadius)) &&
-                ((innerRadius <= (distance - otherAnnulusOuterRadius)) ||
-                        (innerRadius <= (distance + otherAnnulusInnerRadius)))
+            ((innerRadius <= (distance - otherAnnulusOuterRadius)) ||
+                (innerRadius <= (distance + otherAnnulusInnerRadius)))
     }
 
     /** Returns `true` if this annulus contains the whole given [circle]. **/
@@ -304,7 +304,7 @@ interface Annulus : AnnulusShape, Transformable {
         val circleRadius: Float = circle.radius
 
         return (outerRadius >= (distance + circleRadius)) &&
-                (innerRadius <= (distance - circleRadius))
+            (innerRadius <= (distance - circleRadius))
     }
 
     /**

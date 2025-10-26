@@ -1,4 +1,4 @@
-@file:Suppress("ConvertTwoComparisonsToRangeCheck")
+@file:Suppress("ConvertTwoComparisonsToRangeCheck", "NOTHING_TO_INLINE")
 
 package com.sztorm.mathkit.euclidean2d
 
@@ -34,13 +34,12 @@ class MutableAnnulus : Annulus, MutableTransformable {
         _innerRadius = innerRadius
     }
 
-    @Suppress("UNUSED_PARAMETER")
     private constructor(
         center: Vector2F,
         orientation: ComplexF,
         outerRadius: Float,
         innerRadius: Float,
-        tag: Any?
+        @Suppress("RedundantSuppression", "SameParameterValue", "unused") tag: Any?
     ) {
         _center = center
         _orientation = orientation
@@ -481,8 +480,8 @@ class MutableAnnulus : Annulus, MutableTransformable {
         val innerRadius: Float = _innerRadius
 
         return (innerRadius <= (otherAnnulusOuterRadius + distance)) &&
-                (_outerRadius >= (distance - otherAnnulusOuterRadius)) &&
-                (otherAnnulusInnerRadius <= (_outerRadius + distance))
+            (_outerRadius >= (distance - otherAnnulusOuterRadius)) &&
+            (otherAnnulusInnerRadius <= (_outerRadius + distance))
     }
 
     override fun intersects(circle: Circle): Boolean {
@@ -490,7 +489,7 @@ class MutableAnnulus : Annulus, MutableTransformable {
         val circleRadius: Float = circle.radius
 
         return (distance >= (_innerRadius - circleRadius)) &&
-                (distance <= (_outerRadius + circleRadius))
+            (distance <= (_outerRadius + circleRadius))
     }
 
     override fun intersects(ray: Ray): Boolean {
@@ -520,8 +519,8 @@ class MutableAnnulus : Annulus, MutableTransformable {
         val innerRadius: Float = _innerRadius
 
         return (_outerRadius >= (distance + otherAnnulusOuterRadius)) &&
-                ((innerRadius <= (distance - otherAnnulusOuterRadius)) ||
-                        (innerRadius <= (distance + otherAnnulusInnerRadius)))
+            ((innerRadius <= (distance - otherAnnulusOuterRadius)) ||
+                (innerRadius <= (distance + otherAnnulusInnerRadius)))
     }
 
     override operator fun contains(circle: Circle): Boolean {
@@ -529,7 +528,7 @@ class MutableAnnulus : Annulus, MutableTransformable {
         val circleRadius: Float = circle.radius
 
         return (_outerRadius >= (distance + circleRadius)) &&
-                (_innerRadius <= (distance - circleRadius))
+            (_innerRadius <= (distance - circleRadius))
     }
 
     /**
@@ -545,17 +544,17 @@ class MutableAnnulus : Annulus, MutableTransformable {
     ) = MutableAnnulus(center, orientation, outerRadius, innerRadius)
 
     override fun equals(other: Any?): Boolean = other is Annulus &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _outerRadius == other.outerRadius &&
-            _innerRadius == other.innerRadius
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _outerRadius == other.outerRadius &&
+        _innerRadius == other.innerRadius
 
     /** Indicates whether the other [MutableAnnulus] is equal to this one. **/
     fun equals(other: MutableAnnulus): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _outerRadius == other._outerRadius &&
-                _innerRadius == other._innerRadius
+            _orientation == other._orientation &&
+            _outerRadius == other._outerRadius &&
+            _innerRadius == other._innerRadius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()

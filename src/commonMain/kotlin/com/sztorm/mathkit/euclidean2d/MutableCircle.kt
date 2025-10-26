@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.AngleF
@@ -28,8 +30,12 @@ class MutableCircle : Circle, MutableTransformable {
         _radius = radius
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private constructor(center: Vector2F, orientation: ComplexF, radius: Float, tag: Any?) {
+    private constructor(
+        center: Vector2F,
+        orientation: ComplexF,
+        radius: Float,
+        @Suppress("RedundantSuppression", "SameParameterValue", "unused") tag: Any?
+    ) {
         _center = center
         _orientation = orientation
         _radius = radius
@@ -416,7 +422,7 @@ class MutableCircle : Circle, MutableTransformable {
         val radius: Float = _radius
 
         return (distance >= (annulus.innerRadius - radius)) and
-                (distance <= (annulus.outerRadius + radius))
+            (distance <= (annulus.outerRadius + radius))
     }
 
     override fun intersects(circle: Circle): Boolean =
@@ -454,15 +460,15 @@ class MutableCircle : Circle, MutableTransformable {
         MutableCircle(center, orientation, radius)
 
     override fun equals(other: Any?): Boolean = other is Circle &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _radius == other.radius
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _radius == other.radius
 
     /** Indicates whether the other [MutableCircle] is equal to this one. **/
     fun equals(other: MutableCircle): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _radius == other._radius
+            _orientation == other._orientation &&
+            _radius == other._radius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.AngleF
@@ -142,12 +144,12 @@ interface Triangle : TriangleShape, Transformable {
                 0.5f / (opAX * bYcYDiff + opAY * cXbXDiff + opBX * opCY - opBY * opCX)
             val xDet: Float =
                 opASquaredMagnitude * bYcYDiff +
-                        opBSquaredMagnitude * (opCY - opAY) +
-                        opCSquaredMagnitude * (opAY - opBY)
+                    opBSquaredMagnitude * (opCY - opAY) +
+                    opCSquaredMagnitude * (opAY - opBY)
             val yDet: Float =
                 opASquaredMagnitude * cXbXDiff +
-                        opBSquaredMagnitude * (opAX - opCX) +
-                        opCSquaredMagnitude * (opBX - opAX)
+                    opBSquaredMagnitude * (opAX - opCX) +
+                    opCSquaredMagnitude * (opBX - opAX)
             val ccX: Float = xDet * factor
             val ccY: Float = yDet * factor
 
@@ -174,12 +176,12 @@ interface Triangle : TriangleShape, Transformable {
                 1f / (opAX * bYcYDiff + opAY * cXbXDiff + opBX * opCY - opBY * opCX)
             val xDet: Float =
                 opASquaredMagnitude * bYcYDiff +
-                        opBSquaredMagnitude * (opCY - opAY) +
-                        opCSquaredMagnitude * (opAY - opBY)
+                    opBSquaredMagnitude * (opCY - opAY) +
+                    opCSquaredMagnitude * (opAY - opBY)
             val yDet: Float =
                 opASquaredMagnitude * cXbXDiff +
-                        opBSquaredMagnitude * (opAX - opCX) +
-                        opCSquaredMagnitude * (opBX - opAX)
+                    opBSquaredMagnitude * (opAX - opCX) +
+                    opCSquaredMagnitude * (opBX - opAX)
             val ccX: Float = xDet * factor
             val ccY: Float = yDet * factor
 

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.AngleF
@@ -897,8 +899,8 @@ class MutableRay(origin: Vector2F, direction: Vector2F) : Ray, MutableTransforma
     override fun copy(origin: Vector2F, direction: Vector2F) = MutableRay(origin, direction)
 
     override fun equals(other: Any?): Boolean = other is Ray &&
-            _origin == other.origin &&
-            _direction == other.direction
+        _origin == other.origin &&
+        _direction == other.direction
 
     /** Indicates whether the other [MutableRay] is equal to this one. **/
     fun equals(other: MutableRay): Boolean =

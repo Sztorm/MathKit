@@ -1,4 +1,4 @@
-@file:Suppress("PropertyName", "ReplaceManualRangeWithIndicesCalls")
+@file:Suppress("NOTHING_TO_INLINE", "PropertyName")
 
 package com.sztorm.mathkit.euclidean2d
 
@@ -804,7 +804,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val p1X: Float = oR * cpY - oI * cpX
         val p1Y: Float = -oR * cpX - oI * cpY
         val p1Angle: Float = atan2(p1Y, p1X) + 0.0001f +
-                ((sideCount + 1) and 1) * halfExteriorAngle
+            ((sideCount + 1) and 1) * halfExteriorAngle
         val p1AnglePositive: Float = p1Angle + fullAngle
         val index: Int = (p1AnglePositive / exteriorAngle).toInt()
         val angle: Float = (sideCount and 1) * -halfExteriorAngle - exteriorAngle * index
@@ -960,7 +960,7 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         val p1X: Float = oR * cpY - oI * cpX
         val p1Y: Float = -oR * cpX - oI * cpY
         val p1Angle: Float = atan2(p1Y, p1X) + 0.0001f +
-                ((sideCount + 1) and 1) * halfExteriorAngle
+            ((sideCount + 1) and 1) * halfExteriorAngle
         val p1AnglePositive: Float = p1Angle + fullAngle
         val index: Int = (p1AnglePositive / exteriorAngle).toInt()
         val angle: Float = (sideCount and 1) * -halfExteriorAngle - exteriorAngle * index
@@ -985,17 +985,17 @@ class MutableRegularPolygon : RegularPolygon, MutableTransformable {
         MutableRegularPolygon(center, orientation, sideLength, sideCount)
 
     override fun equals(other: Any?): Boolean = other is RegularPolygon &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _sideLength == other.sideLength &&
-            sideCount == other.sideCount
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _sideLength == other.sideLength &&
+        sideCount == other.sideCount
 
     /** Indicates whether the other [MutableRegularPolygon] is equal to this one. **/
     fun equals(other: MutableRegularPolygon): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _sideLength == other._sideLength &&
-                sideCount == other.sideCount
+            _orientation == other._orientation &&
+            _sideLength == other._sideLength &&
+            sideCount == other.sideCount
 
     override fun hashCode(): Int {
         val centerHash: Int = center.hashCode()

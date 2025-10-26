@@ -1,4 +1,4 @@
-@file:Suppress("OVERRIDE_BY_INLINE", "PropertyName")
+@file:Suppress("NOTHING_TO_INLINE", "PropertyName")
 
 package com.sztorm.mathkit.euclidean2d
 
@@ -210,7 +210,7 @@ class MutableSquare : Square, MutableTransformable {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
             val targetOrientation = (ComplexF(pointRotR, -pointRotI) * _orientation *
-                    orientation).normalizedOrElse(ComplexF.ONE)
+                orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = oR * centerToPointDist + pX
             val targetCenterY: Float = oI * centerToPointDist + pY
 
@@ -637,15 +637,15 @@ class MutableSquare : Square, MutableTransformable {
         MutableSquare(center, orientation, sideLength)
 
     override fun equals(other: Any?): Boolean = other is Square &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _sideLength == other.sideLength
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _sideLength == other.sideLength
 
     /** Indicates whether the other [MutableSquare] is equal to this one. **/
     fun equals(other: MutableSquare): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _sideLength == other._sideLength
+            _orientation == other._orientation &&
+            _sideLength == other._sideLength
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()

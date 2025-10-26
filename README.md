@@ -88,8 +88,6 @@ Step 2. Add the dependency
 ## Samples
 
 ```kotlin
-import com.sztorm.mathkit.*
-
 // No GC allocation when declared locally (inside the body of a method).
 // Under the hood, a long value will be created for each Vector2F.
 val a = Vector2F(0.5f, 3f)
@@ -105,8 +103,6 @@ println(a.normalized) // 1.0
 ```
 
 ```kotlin
-import com.sztorm.mathkit.*
-
 val a = ComplexF(3f, 2f)
 val b = 3f + 2f.i
 val c = ComplexF.fromPolar(3.6055512f, 0.5880026f)
@@ -121,8 +117,6 @@ println(a * b)       // 5.0 + 12.0i
 ```
 
 ```kotlin
-import com.sztorm.mathkit.*
-
 // This is an array of values, on the JVM side it is represented as long array.
 val arrayA = Vector2FArray(3)
 val arrayB = Vector2FArray(3) { Vector2F(it.toFloat(), it.toFloat()) }

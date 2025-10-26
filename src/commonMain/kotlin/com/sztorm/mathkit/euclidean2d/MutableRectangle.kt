@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -730,17 +732,17 @@ class MutableRectangle : Rectangle, MutableTransformable {
         MutableRectangle(center, orientation, width, height)
 
     override fun equals(other: Any?): Boolean = other is Rectangle &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _width == other.width &&
-            _height == other.height
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _width == other.width &&
+        _height == other.height
 
     /** Indicates whether the other [MutableRectangle] is equal to this one. **/
     fun equals(other: MutableRectangle): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _width == other._width &&
-                _height == other._height
+            _orientation == other._orientation &&
+            _width == other._width &&
+            _height == other._height
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()

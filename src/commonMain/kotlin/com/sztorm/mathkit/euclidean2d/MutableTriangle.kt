@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.AngleF
@@ -206,12 +208,12 @@ class MutableTriangle : Triangle, MutableTransformable {
                 0.5f / (opAX * bYcYDiff + opAY * cXbXDiff + opBX * opCY - opBY * opCX)
             val xDet: Float =
                 opASquaredMagnitude * bYcYDiff +
-                        opBSquaredMagnitude * (opCY - opAY) +
-                        opCSquaredMagnitude * (opAY - opBY)
+                    opBSquaredMagnitude * (opCY - opAY) +
+                    opCSquaredMagnitude * (opAY - opBY)
             val yDet: Float =
                 opASquaredMagnitude * cXbXDiff +
-                        opBSquaredMagnitude * (opAX - opCX) +
-                        opCSquaredMagnitude * (opBX - opAX)
+                    opBSquaredMagnitude * (opAX - opCX) +
+                    opCSquaredMagnitude * (opBX - opAX)
             val ccX: Float = xDet * factor
             val ccY: Float = yDet * factor
 
@@ -234,12 +236,12 @@ class MutableTriangle : Triangle, MutableTransformable {
                 1f / (opAX * bYcYDiff + opAY * cXbXDiff + opBX * opCY - opBY * opCX)
             val xDet: Float =
                 opASquaredMagnitude * bYcYDiff +
-                        opBSquaredMagnitude * (opCY - opAY) +
-                        opCSquaredMagnitude * (opAY - opBY)
+                    opBSquaredMagnitude * (opCY - opAY) +
+                    opCSquaredMagnitude * (opAY - opBY)
             val yDet: Float =
                 opASquaredMagnitude * cXbXDiff +
-                        opBSquaredMagnitude * (opAX - opCX) +
-                        opCSquaredMagnitude * (opBX - opAX)
+                    opBSquaredMagnitude * (opAX - opCX) +
+                    opCSquaredMagnitude * (opBX - opAX)
             val ccX: Float = xDet * factor
             val ccY: Float = yDet * factor
 
@@ -1087,19 +1089,19 @@ class MutableTriangle : Triangle, MutableTransformable {
     )
 
     override fun equals(other: Any?): Boolean = other is Triangle &&
-            _centroid == other.centroid &&
-            _orientation == other.orientation &&
-            _originPointA == other.originPointA &&
-            _originPointB == other.originPointB &&
-            _originPointC == other.originPointC
+        _centroid == other.centroid &&
+        _orientation == other.orientation &&
+        _originPointA == other.originPointA &&
+        _originPointB == other.originPointB &&
+        _originPointC == other.originPointC
 
     /** Indicates whether the other [MutableTriangle] is equal to this one. **/
     fun equals(other: MutableTriangle): Boolean =
         _centroid == other._centroid &&
-                _orientation == other._orientation &&
-                _originPointA == other._originPointA &&
-                _originPointB == other._originPointB &&
-                _originPointC == other._originPointC
+            _orientation == other._orientation &&
+            _originPointA == other._originPointA &&
+            _originPointB == other._originPointB &&
+            _originPointC == other._originPointC
 
     override fun hashCode(): Int {
         var result: Int = _centroid.hashCode()

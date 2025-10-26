@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -171,7 +173,7 @@ interface Square : RectangleShape, RegularShape, Transformable {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
             val targetOrientation = (ComplexF(pointRotR, -pointRotI) * this.orientation *
-                    orientation).normalizedOrElse(ComplexF.ONE)
+                orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = oR * centerToPointDist + pX
             val targetCenterY: Float = oI * centerToPointDist + pY
 

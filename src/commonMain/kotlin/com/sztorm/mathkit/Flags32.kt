@@ -1,4 +1,4 @@
-@file:Suppress("OVERRIDE_BY_INLINE")
+@file:Suppress("NOTHING_TO_INLINE", "OVERRIDE_BY_INLINE")
 
 package com.sztorm.mathkit
 
@@ -20,6 +20,7 @@ value class Flags32(val intValue: Int) : Collection<Boolean> {
         get() = intValue.toUInt()
 
     /** Returns the number of flags, which is always 32. **/
+    @Suppress("SameReturnValue")
     override inline val size: Int
         get() = 32
 
@@ -28,6 +29,7 @@ value class Flags32(val intValue: Int) : Collection<Boolean> {
         get() = 31
 
     /** Returns a value indicating whether this collection is empty, which is always false. **/
+    @Suppress("SameReturnValue")
     override inline fun isEmpty() = false
 
     /**

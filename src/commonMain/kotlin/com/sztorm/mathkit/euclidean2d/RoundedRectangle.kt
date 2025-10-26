@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -336,7 +338,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
             val targetOrientation = (ComplexF(pointRotR, -pointRotI) * this.orientation *
-                    orientation).normalizedOrElse(ComplexF.ONE)
+                orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = oR * centerToPointDist + pX
             val targetCenterY: Float = oI * centerToPointDist + pY
 
@@ -462,7 +464,7 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
         val p1: ComplexF = orientation.conjugate *
-                ComplexF(point.x - center.x, point.y - center.y)
+            ComplexF(point.x - center.x, point.y - center.y)
         val (p1X: Float, p1Y: Float) = p1
         val p1XAbs: Float = p1X.absoluteValue
         val p1YAbs: Float = p1Y.absoluteValue
@@ -472,8 +474,8 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         val dy: Float = p1Y - cornerCenterY
         val distance: Float = sqrt(dx * dx + dy * dy)
         val isOutOfCorner: Boolean = (p1YAbs > halfHeightMinusRadius) and
-                (p1XAbs > halfWidthMinusRadius) and
-                (distance > cornerRadius)
+            (p1XAbs > halfWidthMinusRadius) and
+            (distance > cornerRadius)
 
         return when {
             isOutOfCorner -> {
@@ -639,10 +641,10 @@ interface RoundedRectangle : RoundedRectangleShape, Transformable {
         val distance: Float = sqrt(dx * dx + dy * dy)
 
         return (p1YAbs <= halfHeightMinusRadius) or
-                (p1XAbs <= halfWidthMinusRadius) or
-                (distance <= cornerRadius) and
-                (p1XAbs <= halfWidth) and
-                (p1YAbs <= halfHeight)
+            (p1XAbs <= halfWidthMinusRadius) or
+            (distance <= cornerRadius) and
+            (p1XAbs <= halfWidth) and
+            (p1YAbs <= halfHeight)
     }
 
     /** Creates an iterator over the points of this rounded rectangle. **/

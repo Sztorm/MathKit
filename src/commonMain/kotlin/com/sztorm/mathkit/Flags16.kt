@@ -1,4 +1,4 @@
-@file:Suppress("OVERRIDE_BY_INLINE")
+@file:Suppress("NOTHING_TO_INLINE", "OVERRIDE_BY_INLINE")
 
 package com.sztorm.mathkit
 
@@ -20,6 +20,7 @@ value class Flags16(val shortValue: Short) : Collection<Boolean> {
         get() = shortValue.toUShort()
 
     /** Returns the number of flags, which is always 16. **/
+    @Suppress("SameReturnValue")
     override inline val size: Int
         get() = 16
 
@@ -28,6 +29,7 @@ value class Flags16(val shortValue: Short) : Collection<Boolean> {
         get() = 15
 
     /** Returns a value indicating whether this collection is empty, which is always false. **/
+    @Suppress("SameReturnValue")
     override inline fun isEmpty() = false
 
     /**
@@ -73,7 +75,7 @@ value class Flags16(val shortValue: Short) : Collection<Boolean> {
      */
     inline fun setting(flags: Flags16, to: Boolean) = Flags16(
         ((shortValue.toInt() and flags.shortValue.toInt().inv()) or
-                (-(if (to) 1 else 0) and flags.shortValue.toInt())).toShort()
+            (-(if (to) 1 else 0) and flags.shortValue.toInt())).toShort()
     )
 
     /** Returns a value indicating whether this flags instance has all the specified [flags]. **/

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.*
@@ -311,7 +313,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
             val pointRotR: Float = cpDiffX / centerToPointDist
             val pointRotI: Float = cpDiffY / centerToPointDist
             val targetOrientation = (ComplexF(pointRotR, -pointRotI) * _orientation *
-                    orientation).normalizedOrElse(ComplexF.ONE)
+                orientation).normalizedOrElse(ComplexF.ONE)
             val targetCenterX: Float = oR * centerToPointDist + pX
             val targetCenterY: Float = oI * centerToPointDist + pY
 
@@ -1068,7 +1070,7 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val halfWidthMinusRadius: Float = halfWidth - cornerRadius
         val halfHeightMinusRadius: Float = halfHeight - cornerRadius
         val p1: ComplexF = rotation.conjugate *
-                ComplexF(point.x - center.x, point.y - center.y)
+            ComplexF(point.x - center.x, point.y - center.y)
         val (p1X: Float, p1Y: Float) = p1
         val p1XAbs: Float = p1X.absoluteValue
         val p1YAbs: Float = p1Y.absoluteValue
@@ -1078,8 +1080,8 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val dy: Float = p1Y - cornerCenterY
         val distance: Float = sqrt(dx * dx + dy * dy)
         val isOutOfCorner: Boolean = (p1YAbs > halfHeightMinusRadius) and
-                (p1XAbs > halfWidthMinusRadius) and
-                (distance > cornerRadius)
+            (p1XAbs > halfWidthMinusRadius) and
+            (distance > cornerRadius)
 
         return when {
             isOutOfCorner -> {
@@ -1241,10 +1243,10 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val distance: Float = sqrt(dx * dx + dy * dy)
 
         return (p1YAbs <= halfHeightMinusRadius) or
-                (p1XAbs <= halfWidthMinusRadius) or
-                (distance <= cornerRadius) and
-                (p1XAbs <= halfWidth) and
-                (p1YAbs <= halfHeight)
+            (p1XAbs <= halfWidthMinusRadius) or
+            (distance <= cornerRadius) and
+            (p1XAbs <= halfWidth) and
+            (p1YAbs <= halfHeight)
     }
 
     override fun pointIterator(): Vector2FIterator = PointIterator(this, index = 0)
@@ -1267,19 +1269,19 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
     ) = MutableRoundedRectangle(center, orientation, width, height, cornerRadius)
 
     override fun equals(other: Any?): Boolean = other is RoundedRectangle &&
-            _center == other.center &&
-            _orientation == other.orientation &&
-            _width == other.width &&
-            _height == other.height &&
-            _cornerRadius == other.cornerRadius
+        _center == other.center &&
+        _orientation == other.orientation &&
+        _width == other.width &&
+        _height == other.height &&
+        _cornerRadius == other.cornerRadius
 
     /** Indicates whether the other [MutableRoundedRectangle] is equal to this one. **/
     fun equals(other: MutableRoundedRectangle): Boolean =
         _center == other._center &&
-                _orientation == other._orientation &&
-                _width == other._width &&
-                _height == other._height &&
-                _cornerRadius == other._cornerRadius
+            _orientation == other._orientation &&
+            _width == other._width &&
+            _height == other._height &&
+            _cornerRadius == other._cornerRadius
 
     override fun hashCode(): Int {
         val centerHash: Int = _center.hashCode()
@@ -1289,10 +1291,10 @@ class MutableRoundedRectangle : RoundedRectangle, MutableTransformable {
         val cornerRadiusHash: Int = _cornerRadius.hashCode()
 
         return centerHash * 923521 +
-                orientationHash * 29791 +
-                widthHash * 961 +
-                heightHash * 31 +
-                cornerRadiusHash
+            orientationHash * 29791 +
+            widthHash * 961 +
+            heightHash * 31 +
+            cornerRadiusHash
     }
 
     override fun toString() =

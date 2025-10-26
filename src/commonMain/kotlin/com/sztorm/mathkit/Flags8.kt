@@ -1,4 +1,4 @@
-@file:Suppress("OVERRIDE_BY_INLINE")
+@file:Suppress("NOTHING_TO_INLINE", "OVERRIDE_BY_INLINE")
 
 package com.sztorm.mathkit
 
@@ -20,6 +20,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
         get() = byteValue.toUByte()
 
     /** Returns the number of flags, which is always 8. **/
+    @Suppress("SameReturnValue")
     override inline val size: Int
         get() = 8
 
@@ -28,6 +29,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
         get() = 7
 
     /** Returns a value indicating whether this collection is empty, which is always false. **/
+    @Suppress("SameReturnValue")
     override inline fun isEmpty() = false
 
     /**
@@ -73,7 +75,7 @@ value class Flags8(val byteValue: Byte) : Collection<Boolean> {
      */
     inline fun setting(flags: Flags8, to: Boolean) = Flags8(
         ((byteValue.toInt() and flags.byteValue.toInt().inv()) or
-                (-(if (to) 1 else 0) and flags.byteValue.toInt())).toByte()
+            (-(if (to) 1 else 0) and flags.byteValue.toInt())).toByte()
     )
 
     /** Returns a value indicating whether this flags instance has all the specified [flags]. **/

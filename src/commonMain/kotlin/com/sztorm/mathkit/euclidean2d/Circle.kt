@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit.euclidean2d
 
 import com.sztorm.mathkit.AngleF
@@ -210,7 +212,7 @@ interface Circle : CircleShape, Transformable {
         val radius: Float = radius
 
         return (distance >= (annulus.innerRadius - radius)) and
-                (distance <= (annulus.outerRadius + radius))
+            (distance <= (annulus.outerRadius + radius))
     }
 
     /** Returns `true` if this circle intersects the given [circle]. **/

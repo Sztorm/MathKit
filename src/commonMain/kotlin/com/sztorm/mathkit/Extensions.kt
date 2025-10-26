@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit
 
 import kotlin.math.absoluteValue
@@ -9,7 +11,7 @@ import kotlin.math.max
  */
 inline fun Float.isApproximately(other: Float, epsilon: Float = 0.00001f) =
     (this - other).absoluteValue <=
-            max(epsilon, epsilon * max(this.absoluteValue, other.absoluteValue))
+        max(epsilon, epsilon * max(this.absoluteValue, other.absoluteValue))
 
 /**
  * Returns a value indicating whether this value is approximately the [other] value given the
@@ -17,7 +19,7 @@ inline fun Float.isApproximately(other: Float, epsilon: Float = 0.00001f) =
  */
 inline fun Double.isApproximately(other: Double, epsilon: Double = 0.0000000001) =
     (this - other).absoluteValue <=
-            max(epsilon, epsilon * max(this.absoluteValue, other.absoluteValue))
+        max(epsilon, epsilon * max(this.absoluteValue, other.absoluteValue))
 
 /**
  * Returns a linearly interpolated value between [a] and [b].
@@ -26,7 +28,7 @@ inline fun Double.isApproximately(other: Double, epsilon: Double = 0.0000000001)
  * @param [b] the destination value.
  * @param [t] the interpolator value with an expected range of `[0, 1]`.
  */
-@Suppress("SpellCheckingInspection")
+@Suppress("SpellCheckingInspection", "RedundantSuppression")
 inline fun Float.Companion.lerp(a: Float, b: Float, t: Float) = a + (b - a) * t
 
 /**
@@ -36,7 +38,7 @@ inline fun Float.Companion.lerp(a: Float, b: Float, t: Float) = a + (b - a) * t
  * @param [b] the destination value.
  * @param [t] the interpolator value with an expected range of `[0, 1]`.
  */
-@Suppress("SpellCheckingInspection")
+@Suppress("SpellCheckingInspection", "RedundantSuppression")
 inline fun Double.Companion.lerp(a: Double, b: Double, t: Double) = a + (b - a) * t
 
 /**
@@ -47,7 +49,7 @@ inline fun Double.Companion.lerp(a: Double, b: Double, t: Double) = a + (b - a) 
  * @param [b] the destination value.
  * @param [t] the interpolated value.
  */
-@Suppress("SpellCheckingInspection")
+@Suppress("SpellCheckingInspection", "RedundantSuppression")
 inline fun Float.Companion.inverseLerp(a: Float, b: Float, t: Float) = (t - a) / (b - a)
 
 /**
@@ -58,5 +60,5 @@ inline fun Float.Companion.inverseLerp(a: Float, b: Float, t: Float) = (t - a) /
  * @param [b] the destination value.
  * @param [t] the interpolated value.
  */
-@Suppress("SpellCheckingInspection")
+@Suppress("SpellCheckingInspection", "RedundantSuppression")
 inline fun Double.Companion.inverseLerp(a: Double, b: Double, t: Double) = (t - a) / (b - a)

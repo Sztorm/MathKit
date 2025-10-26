@@ -1,5 +1,8 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.sztorm.mathkit
 
+import com.sztorm.mathkit.Vector2F.Companion.ZERO
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
@@ -34,7 +37,7 @@ value class Vector2F internal constructor(internal val data: Long) {
     /** Constructs a new vector with given [x] and [y] components. **/
     constructor(x: Float, y: Float) : this(
         (x.toRawBits().toLong() and 0xFFFFFFFFL) or
-                (y.toRawBits().toLong() shl Float.SIZE_BITS)
+            (y.toRawBits().toLong() shl Float.SIZE_BITS)
     )
 
     /** First component of the vector. **/
@@ -402,7 +405,7 @@ value class Vector2F internal constructor(internal val data: Long) {
          * @param [t] the interpolator value with an expected range of `[0, 1]`.
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection")
+        @Suppress("SpellCheckingInspection", "RedundantSuppression")
         inline fun lerp(a: Vector2F, b: Vector2F, t: Float) =
             Vector2F(Float.lerp(a.x, b.x, t), Float.lerp(a.y, b.y, t))
 
@@ -414,7 +417,7 @@ value class Vector2F internal constructor(internal val data: Long) {
          * @param [t] the interpolator vector with expected ranges of (`[0, 1]`, `[0, 1]`).
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection")
+        @Suppress("SpellCheckingInspection", "RedundantSuppression")
         inline fun lerp(a: Vector2F, b: Vector2F, t: Vector2F) =
             Vector2F(Float.lerp(a.x, b.x, t.x), Float.lerp(a.y, b.y, t.y))
 
@@ -427,7 +430,7 @@ value class Vector2F internal constructor(internal val data: Long) {
          * @param [t] the interpolated vector.
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection")
+        @Suppress("SpellCheckingInspection", "RedundantSuppression")
         inline fun inverseLerp(a: Vector2F, b: Vector2F, t: Vector2F) =
             Vector2F(Float.inverseLerp(a.x, b.x, t.x), Float.inverseLerp(a.y, b.y, t.y))
 

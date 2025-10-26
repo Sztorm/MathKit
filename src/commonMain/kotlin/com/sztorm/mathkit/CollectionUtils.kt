@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package com.sztorm.mathkit
 
@@ -28,22 +28,5 @@ internal inline fun checkRangeIndexes(fromIndex: Int, toIndex: Int, size: Int) {
     }
     if (fromIndex > toIndex) {
         throw IllegalArgumentException("fromIndex: $fromIndex > toIndex: $toIndex")
-    }
-}
-
-/**
- * Checks bounds [startIndex] inclusive, [endIndex] exclusive.
- *
- * @exception IndexOutOfBoundsException if [startIndex] < 0 or [endIndex] > [size].
- * @exception IllegalArgumentException if [startIndex] > [endIndex].
- */
-internal inline fun checkBoundsIndexes(startIndex: Int, endIndex: Int, size: Int) {
-    if (startIndex < 0 || endIndex > size) {
-        throw IndexOutOfBoundsException(
-            "startIndex: $startIndex, endIndex: $endIndex, size: $size"
-        )
-    }
-    if (startIndex > endIndex) {
-        throw IllegalArgumentException("startIndex: $startIndex > endIndex: $endIndex")
     }
 }

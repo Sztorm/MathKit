@@ -1,11 +1,4 @@
-@file:Suppress(
-    "ConvertTwoComparisonsToRangeCheck",
-    "OVERRIDE_BY_INLINE",
-    "ReplaceRangeToWithUntil",
-    "ReplaceSizeCheckWithIsNotEmpty",
-    "ReplaceSizeZeroCheckWithIsEmpty",
-    "UseWithIndex",
-)
+@file:Suppress("NOTHING_TO_INLINE", "OVERRIDE_BY_INLINE")
 
 package com.sztorm.mathkit
 
@@ -132,7 +125,7 @@ value class Vector2FArray private constructor(private val data: LongArray) : Col
         return false
     }
 
-    /** 
+    /**
      * Returns a [Vector2FList] that wraps this array. Changes in the original array are reflected
      * in the returned list.
      */
@@ -416,16 +409,18 @@ value class Vector2FArray private constructor(private val data: LongArray) : Col
      * Returns an element at the given [index] or the result of calling the [defaultValue]
      * function if the [index] is out of bounds of this array.
      */
+    @Suppress("ConvertTwoComparisonsToRangeCheck")
     inline fun getOrElse(index: Int, defaultValue: (Int) -> Vector2F): Vector2F =
-        if (index >= 0 && index <= lastIndex) this[index]
+        if (index >= 0 && index < size) this[index]
         else defaultValue(index)
 
     /**
      * Returns an element at the given [index] or `null` if the [index] is out of bounds of this
      * array.
      */
+    @Suppress("ConvertTwoComparisonsToRangeCheck")
     inline fun getOrNull(index: Int): Vector2F? =
-        if (index >= 0 && index <= lastIndex) this[index]
+        if (index >= 0 && index < size) this[index]
         else null
 
     /** Returns first index of [element], or -1 if the array does not contain element. **/
@@ -1079,7 +1074,7 @@ value class Vector2FArray private constructor(private val data: LongArray) : Col
         private fun create(size: Int, init: (Int) -> Vector2F): LongArray {
             val data = LongArray(size)
 
-            for (i in 0..size - 1) {
+            for (i in 0..<size) {
                 data[i] = init(i).data
             }
             return data
