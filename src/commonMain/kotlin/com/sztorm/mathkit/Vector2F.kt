@@ -2,29 +2,9 @@
 
 package com.sztorm.mathkit
 
-import com.sztorm.mathkit.Vector2F.Companion.ZERO
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmStatic
 import kotlin.math.*
-
-/**
- * Multiplies this scalar by the [other] vector.
- *
- * The result [magnitude][Vector2F.magnitude] is this * [other].[magnitude][Vector2F.magnitude].
- */
-inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
-
-/**
- * Divides this scalar by the [other] vector.
- *
- * The result [magnitude][Vector2F.magnitude] is this / [other].[magnitude][Vector2F.magnitude].
- */
-inline operator fun Float.div(other: Vector2F): Vector2F {
-    val (x: Float, y: Float) = other
-    val factor: Float = this / (x * x + y * y)
-
-    return Vector2F(x * factor, y * factor)
-}
 
 /**
  * Represents a vector of two single-precision 32-bit IEEE 754 floating point numbers.
@@ -405,9 +385,9 @@ value class Vector2F internal constructor(internal val data: Long) {
          * @param [t] the interpolator value with an expected range of `[0, 1]`.
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection", "RedundantSuppression")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         inline fun lerp(a: Vector2F, b: Vector2F, t: Float) =
-            Vector2F(Float.lerp(a.x, b.x, t), Float.lerp(a.y, b.y, t))
+            Vector2F(lerp(a.x, b.x, t), lerp(a.y, b.y, t))
 
         /**
          * Returns a component-wise linearly interpolated vector between [a] and [b] vectors.
@@ -417,9 +397,9 @@ value class Vector2F internal constructor(internal val data: Long) {
          * @param [t] the interpolator vector with expected ranges of (`[0, 1]`, `[0, 1]`).
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection", "RedundantSuppression")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         inline fun lerp(a: Vector2F, b: Vector2F, t: Vector2F) =
-            Vector2F(Float.lerp(a.x, b.x, t.x), Float.lerp(a.y, b.y, t.y))
+            Vector2F(lerp(a.x, b.x, t.x), lerp(a.y, b.y, t.y))
 
         /**
          * Returns an interpolator value of the linearly interpolated vector [t] between [a] and
@@ -430,9 +410,9 @@ value class Vector2F internal constructor(internal val data: Long) {
          * @param [t] the interpolated vector.
          */
         @JvmStatic
-        @Suppress("SpellCheckingInspection", "RedundantSuppression")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         inline fun inverseLerp(a: Vector2F, b: Vector2F, t: Vector2F) =
-            Vector2F(Float.inverseLerp(a.x, b.x, t.x), Float.inverseLerp(a.y, b.y, t.y))
+            Vector2F(inverseLerp(a.x, b.x, t.x), inverseLerp(a.y, b.y, t.y))
 
         /** Returns a vector that is made from the largest components of two vectors. **/
         @JvmStatic
@@ -466,3 +446,59 @@ value class Vector2F internal constructor(internal val data: Long) {
     }
 }
 
+/**
+ * Multiplies this scalar by the [other] vector.
+ *
+ * The result [magnitude][Vector2F.magnitude] is this * [other].[magnitude][Vector2F.magnitude].
+ */
+inline operator fun Float.times(other: Vector2F) = Vector2F(this * other.x, this * other.y)
+
+/**
+ * Divides this scalar by the [other] vector.
+ *
+ * The result [magnitude][Vector2F.magnitude] is this / [other].[magnitude][Vector2F.magnitude].
+ */
+inline operator fun Float.div(other: Vector2F): Vector2F {
+    val (x: Float, y: Float) = other
+    val factor: Float = this / (x * x + y * y)
+
+    return Vector2F(x * factor, y * factor)
+}
+
+/**
+ * Returns a linearly interpolated vector between [a] and [b] vectors.
+ *
+ * @param [a] the source vector.
+ * @param [b] the destination vector.
+ * @param [t] the interpolator value with an expected range of `[0, 1]`.
+ */
+@Suppress("RedundantSuppression", "SpellCheckingInspection")
+inline fun lerp(a: Vector2F, b: Vector2F, t: Float): Vector2F = Vector2F.lerp(a, b, t)
+
+/**
+ * Returns a component-wise linearly interpolated vector between [a] and [b] vectors.
+ *
+ * @param [a] the source vector.
+ * @param [b] the destination vector.
+ * @param [t] the interpolator vector with expected ranges of (`[0, 1]`, `[0, 1]`).
+ */
+@Suppress("RedundantSuppression", "SpellCheckingInspection")
+inline fun lerp(a: Vector2F, b: Vector2F, t: Vector2F): Vector2F = Vector2F.lerp(a, b, t)
+
+/**
+ * Returns an interpolator value of the linearly interpolated vector [t] between [a] and
+ * [b] vectors.
+ *
+ * @param [a] the source vector.
+ * @param [b] the destination vector.
+ * @param [t] the interpolated vector.
+ */
+@Suppress("RedundantSuppression", "SpellCheckingInspection")
+inline fun inverseLerp(a: Vector2F, b: Vector2F, t: Vector2F): Vector2F =
+    Vector2F.inverseLerp(a, b, t)
+
+/** Returns a vector that is made from the largest components of two vectors. **/
+inline fun max(a: Vector2F, b: Vector2F): Vector2F = Vector2F.max(a, b)
+
+/** Returns a vector that is made from the smallest components of two vectors. **/
+inline fun min(a: Vector2F, b: Vector2F): Vector2F = Vector2F.min(a, b)

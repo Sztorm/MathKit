@@ -272,14 +272,17 @@ class Vector2FTests {
         Vector2F.NEGATIVE_INFINITY, Vector2F(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY)
     )
 
-    @Suppress("SpellCheckingInspection")
+    @Suppress("RedundantSuppression", "SpellCheckingInspection")
     @ParameterizedTest
     @MethodSource("lerpArgs")
     fun lerpReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, t: Float, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, Vector2F.lerp(a.value, b.value, t))
+    ) {
+        assertApproximation(expected.value, lerp(a.value, b.value, t))
+        assertApproximation(expected.value, Vector2F.lerp(a.value, b.value, t))
+    }
 
-    @Suppress("SpellCheckingInspection")
+    @Suppress("RedundantSuppression", "SpellCheckingInspection")
     @ParameterizedTest
     @MethodSource("lerpVectorInterpolatorArgs")
     fun lerpReturnsCorrectValue(
@@ -287,9 +290,16 @@ class Vector2FTests {
         b: Wrapper<Vector2F>,
         t: Wrapper<Vector2F>,
         expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, Vector2F.lerp(a.value, b.value, t.value))
+    ) {
+        assertApproximation(
+            expected.value, lerp(a.value, b.value, t.value)
+        )
+        assertApproximation(
+            expected.value, Vector2F.lerp(a.value, b.value, t.value)
+        )
+    }
 
-    @Suppress("SpellCheckingInspection")
+    @Suppress("RedundantSuppression", "SpellCheckingInspection")
     @ParameterizedTest
     @MethodSource("inverseLerpArgs")
     fun inverseLerpInReturnsCorrectValue(
@@ -297,19 +307,32 @@ class Vector2FTests {
         b: Wrapper<Vector2F>,
         t: Wrapper<Vector2F>,
         expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, Vector2F.inverseLerp(a.value, b.value, t.value))
+    ) {
+        assertApproximation(
+            expected.value, inverseLerp(a.value, b.value, t.value)
+        )
+        assertApproximation(
+            expected.value, Vector2F.inverseLerp(a.value, b.value, t.value)
+        )
+    }
 
     @ParameterizedTest
     @MethodSource("maxArgs")
     fun maxReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, Vector2F.max(a.value, b.value))
+    ) {
+        assertApproximation(expected.value, max(a.value, b.value))
+        assertApproximation(expected.value, Vector2F.max(a.value, b.value))
+    }
 
     @ParameterizedTest
     @MethodSource("minArgs")
     fun minReturnsCorrectValue(
         a: Wrapper<Vector2F>, b: Wrapper<Vector2F>, expected: Wrapper<Vector2F>
-    ) = assertApproximation(expected.value, Vector2F.min(a.value, b.value))
+    ) {
+        assertApproximation(expected.value, min(a.value, b.value))
+        assertApproximation(expected.value, Vector2F.min(a.value, b.value))
+    }
 
     @ParameterizedTest
     @MethodSource("closestPointOnLineSegmentArgs")
@@ -1013,7 +1036,7 @@ class Vector2FTests {
             ),
         )
 
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         @JvmStatic
         fun lerpArgs(): List<Arguments> = listOf(
             Arguments.of(
@@ -1030,7 +1053,7 @@ class Vector2FTests {
             ),
         )
 
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         @JvmStatic
         fun lerpVectorInterpolatorArgs(): List<Arguments> = listOf(
             Arguments.of(
@@ -1047,7 +1070,7 @@ class Vector2FTests {
             ),
         )
 
-        @Suppress("SpellCheckingInspection")
+        @Suppress("RedundantSuppression", "SpellCheckingInspection")
         @JvmStatic
         fun inverseLerpArgs(): List<Arguments> = listOf(
             Arguments.of(
