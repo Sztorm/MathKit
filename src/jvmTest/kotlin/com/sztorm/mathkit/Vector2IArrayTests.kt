@@ -849,6 +849,22 @@ class Vector2IArrayTests {
         iterable: Iterable<T>, selector: (T) -> Vector2I, expected: Wrapper<Vector2I>
     ) = assertEquals(expected.value, iterable.sumOf(selector))
 
+    @Test
+    fun vector2IArrayOfReturnsCorrectValue() =
+        assertContentEquals(Vector2IArray(0), vector2IArrayOf())
+
+    @ParameterizedTest
+    @MethodSource("vector2IArrayOfVector2IArgs")
+    fun vector2IArrayOfVector2IReturnsCorrectValue(
+        element: Wrapper<Vector2I>, expected: Wrapper<Vector2IArray>
+    ) = assertContentEquals(expected.value, vector2IArrayOf(element.value))
+
+    @ParameterizedTest
+    @MethodSource("vector2IArrayOfTypedArrayArgs")
+    fun vector2IArrayOfTypedArrayReturnsCorrectValue(
+        elements: Array<Vector2I>, expected: Wrapper<Vector2IArray>
+    ) = assertContentEquals(expected.value, vector2IArrayOf(*elements))
+
     companion object {
         @JvmStatic
         fun arrays(): List<Arguments> = listOf(
@@ -857,7 +873,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(-3, 5), Vector2I(-1, 7)).toVector2IArray()
+                    vector2IArrayOf(Vector2I(-3, 5), Vector2I(-1, 7))
                 )
             ),
             Arguments.of(
@@ -874,7 +890,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1)).toVector2IArray()
+                    vector2IArrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1))
                 ),
                 { v: Vector2I -> v == Vector2I.ZERO },
                 false
@@ -898,7 +914,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1)).toVector2IArray()
+                    vector2IArrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1))
                 ),
                 { v: Vector2I -> v == Vector2I(2, 1) },
                 true
@@ -921,12 +937,11 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun containsAllArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 0),
                 Vector2I(-5, 8),
                 Vector2I(2, -9),
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array), array.toList(), true
@@ -956,13 +971,13 @@ class Vector2IArrayTests {
                 Wrapper(Vector2IArray(5) { Vector2I.ZERO }),
                 3, 1, 3,
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(0, 0),
                         Vector2I(0, 0),
                         Vector2I(0, 0),
                         Vector2I(1, 0),
                         Vector2I(2, 0),
-                    ).toVector2IArray()
+                    )
                 )
             ),
             Arguments.of(
@@ -1033,13 +1048,13 @@ class Vector2IArrayTests {
                 Wrapper(Vector2IArray(4) { Vector2I(it, 0) }),
                 5,
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(0, 0),
                         Vector2I(1, 0),
                         Vector2I(2, 0),
                         Vector2I(3, 0),
                         Vector2I(0, 0),
-                    ).toVector2IArray()
+                    )
                 )
             ),
         )
@@ -1055,7 +1070,7 @@ class Vector2IArrayTests {
             Arguments.of(
                 Wrapper(Vector2IArray(4) { Vector2I(it, 0) }),
                 1, 3,
-                Wrapper(arrayOf(Vector2I(1, 0), Vector2I(2, 0)).toVector2IArray())
+                Wrapper(vector2IArrayOf(Vector2I(1, 0), Vector2I(2, 0)))
             ),
         )
 
@@ -1096,7 +1111,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1)).toVector2IArray()
+                    vector2IArrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1))
                 ),
                 { v: Vector2I -> v == Vector2I.ZERO },
                 2
@@ -1112,15 +1127,13 @@ class Vector2IArrayTests {
         fun distinctArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(1, 2), Vector2I(1, 2), Vector2I(3, 4))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(1, 2), Vector2I(1, 2), Vector2I(3, 4))
                 ),
                 listOf(Vector2I(1, 2), Vector2I(3, 4))
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(3, 4), Vector2I(1, 2), Vector2I(3, 4))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(3, 4), Vector2I(1, 2), Vector2I(3, 4))
                 ),
                 listOf(Vector2I(3, 4), Vector2I(1, 2))
             ),
@@ -1131,16 +1144,14 @@ class Vector2IArrayTests {
         fun distinctByArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(1, 2), Vector2I(2, 1), Vector2I(3, 4))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(1, 2), Vector2I(2, 1), Vector2I(3, 4))
                 ),
                 { v: Vector2I -> Vector2I(min(v.x, v.y), max(v.x, v.y)) },
                 listOf(Vector2I(1, 2), Vector2I(3, 4))
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(3, 4), Vector2I(1, 2), Vector2I(4, 3))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(3, 4), Vector2I(1, 2), Vector2I(4, 3))
                 ),
                 { v: Vector2I -> Vector2I(min(v.x, v.y), max(v.x, v.y)) },
                 listOf(Vector2I(3, 4), Vector2I(1, 2))
@@ -1260,12 +1271,12 @@ class Vector2IArrayTests {
                 Wrapper(Vector2I(1, 2)),
                 1, 3,
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I.ZERO,
                         Vector2I(1, 2),
                         Vector2I(1, 2),
                         Vector2I.ZERO
-                    ).toVector2IArray()
+                    )
                 )
             ),
             Arguments.of(
@@ -1313,7 +1324,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun firstArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(4, 5))
             ),
             Arguments.of(
@@ -1325,7 +1336,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun firstPredicateArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 { v: Vector2I -> v == Vector2I(1, 2) },
                 Wrapper(Vector2I(1, 2))
             ),
@@ -1339,7 +1350,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun firstPredicateThrowsExceptionArgs() = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 { v: Vector2I -> v == Vector2I(4, 2) }),
             Arguments.of(
                 Wrapper(Vector2IArray(2) { Vector2I(it, 0) }),
@@ -1350,7 +1361,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun firstOrNullArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(4, 5))
             ),
             Arguments.of(
@@ -1363,7 +1374,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun firstOrNullPredicateArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 { v: Vector2I -> v == Vector2I(1, 2) },
                 Wrapper(Vector2I(1, 2))
             ),
@@ -1386,12 +1397,11 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun getOrElseArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 0),
                 Vector2I(-5, 8),
                 Vector2I(3, 4),
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array),
@@ -1416,12 +1426,11 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun getOrNullArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 0),
                 Vector2I(-5, 8),
                 Vector2I(3, 4),
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(Wrapper(array), 0, Wrapper(Vector2I(1, 0))),
                 Arguments.of(Wrapper(array), -1, Wrapper<Vector2I?>(null)),
@@ -1432,17 +1441,17 @@ class Vector2IArrayTests {
         @JvmStatic
         fun indexOfArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(1, 2)),
                 1
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(4, 5)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(4, 5))),
                 Wrapper(Vector2I(4, 5)),
                 0
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(7, 4)),
                 -1
             ),
@@ -1457,8 +1466,7 @@ class Vector2IArrayTests {
         fun indexOfFirstArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(4, 5), Vector2I(1, 2), Vector2I(1, 2))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2), Vector2I(1, 2))
                 ),
                 { v: Vector2I -> v == Vector2I(1, 2) },
                 1
@@ -1479,8 +1487,7 @@ class Vector2IArrayTests {
         fun indexOfLastArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(4, 5), Vector2I(1, 2), Vector2I(1, 2))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2), Vector2I(1, 2))
                 ),
                 { v: Vector2I -> v == Vector2I(1, 2) },
                 2
@@ -1512,7 +1519,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun lastArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
@@ -1524,7 +1531,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun lastPredicateArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 { v: Vector2I -> v == Vector2I(1, 2) },
                 Wrapper(Vector2I(1, 2))
             ),
@@ -1538,7 +1545,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun lastPredicateThrowsExceptionArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 { v: Vector2I -> v == Vector2I(4, 2) }),
             Arguments.of(
                 Wrapper(Vector2IArray(2) { Vector2I(it, 0) }),
@@ -1549,17 +1556,17 @@ class Vector2IArrayTests {
         @JvmStatic
         fun lastIndexOfArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(1, 2)),
                 1
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(4, 5)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(4, 5))),
                 Wrapper(Vector2I(4, 5)),
                 1
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(7, 4)),
                 -1
             ),
@@ -1573,7 +1580,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun lastOrNullArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
@@ -1586,7 +1593,7 @@ class Vector2IArrayTests {
         @JvmStatic
         fun lastOrNullPredicateArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(4, 5), Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(4, 5), Vector2I(1, 2))),
                 { v: Vector2I -> v == Vector2I(1, 2) },
                 Wrapper(Vector2I(1, 2))
             ),
@@ -1619,7 +1626,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1)).toVector2IArray()
+                    vector2IArrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I(2, 1))
                 ),
                 { v: Vector2I -> v == Vector2I(2, 1) },
                 false
@@ -1672,19 +1679,19 @@ class Vector2IArrayTests {
             Arguments.of(Wrapper(Vector2IArray(0)), Wrapper(Vector2IArray(0))),
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 2), Vector2I(3, 4), Vector2I(5, 6)
-                    ).toVector2IArray()
+                    )
                 ),
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(5, 6), Vector2I(3, 4), Vector2I(1, 2)
-                    ).toVector2IArray()
+                    )
                 )
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 2), Vector2I(3, 4)).toVector2IArray()),
-                Wrapper(arrayOf(Vector2I(3, 4), Vector2I(1, 2)).toVector2IArray())
+                Wrapper(vector2IArrayOf(Vector2I(1, 2), Vector2I(3, 4))),
+                Wrapper(vector2IArrayOf(Vector2I(3, 4), Vector2I(1, 2)))
             ),
         )
 
@@ -1693,21 +1700,21 @@ class Vector2IArrayTests {
             Arguments.of(Wrapper(Vector2IArray(0)), 0, 0, Wrapper(Vector2IArray(0))),
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 2), Vector2I(3, 4), Vector2I(5, 6)
-                    ).toVector2IArray()
+                    )
                 ),
                 1, 3,
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 2), Vector2I(5, 6), Vector2I(3, 4)
-                    ).toVector2IArray()
+                    )
                 )
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 2), Vector2I(3, 4)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 2), Vector2I(3, 4))),
                 0, 2,
-                Wrapper(arrayOf(Vector2I(3, 4), Vector2I(1, 2)).toVector2IArray())
+                Wrapper(vector2IArrayOf(Vector2I(3, 4), Vector2I(1, 2)))
             ),
         )
 
@@ -1735,14 +1742,14 @@ class Vector2IArrayTests {
             Arguments.of(Wrapper(Vector2IArray(0)), emptyList<Vector2I>()),
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 2), Vector2I(3, 4), Vector2I(5, 6)
-                    ).toVector2IArray()
+                    )
                 ),
                 listOf(Vector2I(5, 6), Vector2I(3, 4), Vector2I(1, 2))
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 2), Vector2I(3, 4)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 2), Vector2I(3, 4))),
                 listOf(Vector2I(3, 4), Vector2I(1, 2))
             ),
         )
@@ -1775,11 +1782,11 @@ class Vector2IArrayTests {
         @JvmStatic
         fun singleArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 2))),
                 Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I.ZERO).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I.ZERO)),
                 Wrapper(Vector2I(0, 0))
             ),
         )
@@ -1826,11 +1833,11 @@ class Vector2IArrayTests {
         @JvmStatic
         fun singleOrNullArgs(): List<Arguments> = listOf(
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 2)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 2))),
                 Wrapper(Vector2I(1, 2))
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I.ZERO).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I.ZERO)),
                 Wrapper(Vector2I(0, 0))
             ),
             Arguments.of(
@@ -1948,16 +1955,16 @@ class Vector2IArrayTests {
                     Wrapper(array),
                     listOf(0, 1, 2),
                     Wrapper(
-                        arrayOf(
+                        vector2IArrayOf(
                             Vector2I(0, 0), Vector2I(1, 0), Vector2I(2, 0)
-                        ).toVector2IArray()
+                        )
                     ),
                 ),
                 Arguments.of(
                     Wrapper(array),
                     listOf(0, 2),
                     Wrapper(
-                        arrayOf(Vector2I(0, 0), Vector2I(2, 0)).toVector2IArray()
+                        vector2IArrayOf(Vector2I(0, 0), Vector2I(2, 0))
                     ),
                 ),
                 Arguments.of(
@@ -1991,16 +1998,16 @@ class Vector2IArrayTests {
                     Wrapper(array),
                     0..2,
                     Wrapper(
-                        arrayOf(
+                        vector2IArrayOf(
                             Vector2I(0, 0), Vector2I(1, 0), Vector2I(2, 0)
-                        ).toVector2IArray()
+                        )
                     ),
                 ),
                 Arguments.of(
                     Wrapper(array),
                     1..2,
                     Wrapper(
-                        arrayOf(Vector2I(1, 0), Vector2I(2, 0)).toVector2IArray()
+                        vector2IArrayOf(Vector2I(1, 0), Vector2I(2, 0))
                     ),
                 ),
                 Arguments.of(
@@ -2029,9 +2036,9 @@ class Vector2IArrayTests {
         fun sortedByArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(4, 2), Vector2I(7, 3), Vector2I(3, 1),
-                    ).toVector2IArray()
+                    )
                 ),
                 { v: Vector2I -> v.x },
                 listOf(Vector2I(3, 1), Vector2I(4, 2), Vector2I(7, 3))
@@ -2047,9 +2054,9 @@ class Vector2IArrayTests {
         fun sortedByDescendingArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(4, 2), Vector2I(7, 3), Vector2I(3, 1),
-                    ).toVector2IArray()
+                    )
                 ),
                 { v: Vector2I -> v.y },
                 listOf(Vector2I(7, 3), Vector2I(4, 2), Vector2I(3, 1))
@@ -2071,9 +2078,9 @@ class Vector2IArrayTests {
             return listOf(
                 Arguments.of(
                     Wrapper(
-                        arrayOf(
+                        vector2IArrayOf(
                             Vector2I(4, 3), Vector2I(4, 2), Vector2I(3, 1),
-                        ).toVector2IArray()
+                        )
                     ),
                     comparator,
                     listOf(Vector2I(3, 1), Vector2I(4, 2), Vector2I(4, 3))
@@ -2091,11 +2098,11 @@ class Vector2IArrayTests {
             Arguments.of(Wrapper(Vector2IArray(0)), Wrapper(Vector2I(0, 0))),
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 2),
                         Vector2I(-2, -1),
                         Vector2I(10, 10)
-                    ).toVector2IArray()
+                    )
                 ),
                 Wrapper(Vector2I(9, 11))
             ),
@@ -2103,9 +2110,9 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfDoubleArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
-            ).toVector2IArray()
+            )
 
             return listOf(
                 Arguments.of(
@@ -2121,10 +2128,9 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfIntArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array), { v: Vector2I -> v.x + v.y }, 20
@@ -2139,10 +2145,9 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfUIntArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(3, 2), Vector2I(2, 1), Vector2I(10, 10)
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array), { v: Vector2I -> v.x.toUInt() + v.y.toUInt() },
@@ -2157,10 +2162,9 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfLongArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array), { v: Vector2I -> v.x.toLong() + v.y.toLong() }, 20L
@@ -2175,10 +2179,9 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfULongArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(3, 2), Vector2I(2, 1), Vector2I(10, 10)
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array),
@@ -2195,10 +2198,9 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun sumOfVector2IArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(
                     Wrapper(array), { v: Vector2I -> v }, Wrapper(Vector2I(9, 11))
@@ -2302,8 +2304,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(0, 1), Vector2I(2, 3), Vector2I(4, 5))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(0, 1), Vector2I(2, 3), Vector2I(4, 5))
                 ),
                 mutableListOf<Vector2I>(),
                 mutableListOf(
@@ -2312,8 +2313,7 @@ class Vector2IArrayTests {
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(Vector2I(0, 1), Vector2I(2, 3), Vector2I(4, 5))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(0, 1), Vector2I(2, 3), Vector2I(4, 5))
                 ),
                 mutableListOf(Vector2I(1, 1), Vector2I(2, 2)),
                 mutableListOf(
@@ -2339,21 +2339,21 @@ class Vector2IArrayTests {
         fun toStringArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 0),
                         Vector2I(-5, 8),
                         Vector2I(2, -9),
                         Vector2I(3, 4)
-                    ).toVector2IArray(),
+                    ),
                 ),
                 "[${Vector2I(1, 0)}, ${Vector2I(-5, 8)}, " +
-                        "${Vector2I(2, -9)}, ${Vector2I(3, 4)}]"
+                    "${Vector2I(2, -9)}, ${Vector2I(3, 4)}]"
             ),
             Arguments.of(
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 2), Vector2I(-2, -1), Vector2I(10, 10)
-                    ).toVector2IArray()
+                    )
                 ),
                 "[${Vector2I(1, 2)}, ${Vector2I(-2, -1)}, ${Vector2I(10, 10)}]"
             ),
@@ -2362,13 +2362,12 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun containsArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 0),
                 Vector2I(-5, 8),
                 Vector2I(2, -9),
                 Vector2I(3, 4)
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(Wrapper(array), Wrapper(Vector2I(0, 0)), false),
                 Arguments.of(Wrapper(array), Wrapper(Vector2I(3, 4)), true),
@@ -2377,13 +2376,12 @@ class Vector2IArrayTests {
 
         @JvmStatic
         fun getArgs(): List<Arguments> {
-            val array = arrayOf(
+            val array = vector2IArrayOf(
                 Vector2I(1, 0),
                 Vector2I(-5, 8),
                 Vector2I(2, -9),
                 Vector2I(3, 4),
-            ).toVector2IArray()
-
+            )
             return listOf(
                 Arguments.of(Wrapper(array), 0, Wrapper(Vector2I(1, 0))),
                 Arguments.of(Wrapper(array), 3, Wrapper(Vector2I(3, 4))),
@@ -2395,18 +2393,18 @@ class Vector2IArrayTests {
             Arguments.of(
                 Wrapper(Vector2IArray(0)),
                 listOf(Vector2I(1, 0)),
-                Wrapper(arrayOf(Vector2I(1, 0)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 0))),
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 0), Vector2I(2, 0)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 0), Vector2I(2, 0))),
                 listOf(Vector2I(3, 0), Vector2I(4, 0)),
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 0),
                         Vector2I(2, 0),
                         Vector2I(3, 0),
                         Vector2I(4, 0)
-                    ).toVector2IArray()
+                    )
                 ),
             ),
         )
@@ -2416,14 +2414,13 @@ class Vector2IArrayTests {
             Arguments.of(
                 Wrapper(Vector2IArray(0)),
                 Wrapper(Vector2I(1, 0)),
-                Wrapper(arrayOf(Vector2I(1, 0)).toVector2IArray())
+                Wrapper(vector2IArrayOf(Vector2I(1, 0)))
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 0), Vector2I(2, 0)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 0), Vector2I(2, 0))),
                 Wrapper(Vector2I(3, 0)),
                 Wrapper(
-                    arrayOf(Vector2I(1, 0), Vector2I(2, 0), Vector2I(3, 0))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(1, 0), Vector2I(2, 0), Vector2I(3, 0))
                 ),
             ),
         )
@@ -2432,19 +2429,19 @@ class Vector2IArrayTests {
         fun arrayPlusArrayArgs(): List<Arguments> = listOf(
             Arguments.of(
                 Wrapper(Vector2IArray(0)),
-                Wrapper(arrayOf(Vector2I(1, 0)).toVector2IArray()),
-                Wrapper(arrayOf(Vector2I(1, 0)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 0))),
+                Wrapper(vector2IArrayOf(Vector2I(1, 0))),
             ),
             Arguments.of(
-                Wrapper(arrayOf(Vector2I(1, 0), Vector2I(2, 0)).toVector2IArray()),
-                Wrapper(arrayOf(Vector2I(3, 0), Vector2I(4, 0)).toVector2IArray()),
+                Wrapper(vector2IArrayOf(Vector2I(1, 0), Vector2I(2, 0))),
+                Wrapper(vector2IArrayOf(Vector2I(3, 0), Vector2I(4, 0))),
                 Wrapper(
-                    arrayOf(
+                    vector2IArrayOf(
                         Vector2I(1, 0),
                         Vector2I(2, 0),
                         Vector2I(3, 0),
                         Vector2I(4, 0)
-                    ).toVector2IArray()
+                    )
                 ),
             ),
         )
@@ -2456,8 +2453,7 @@ class Vector2IArrayTests {
                 0,
                 Wrapper(Vector2I(1, 0)),
                 Wrapper(
-                    arrayOf(Vector2I(1, 0), Vector2I.ZERO, Vector2I.ZERO, Vector2I.ZERO)
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I(1, 0), Vector2I.ZERO, Vector2I.ZERO, Vector2I.ZERO)
                 ),
             ),
             Arguments.of(
@@ -2465,8 +2461,7 @@ class Vector2IArrayTests {
                 3,
                 Wrapper(Vector2I(3, 4)),
                 Wrapper(
-                    arrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I.ZERO, Vector2I(3, 4))
-                        .toVector2IArray()
+                    vector2IArrayOf(Vector2I.ZERO, Vector2I.ZERO, Vector2I.ZERO, Vector2I(3, 4))
                 )
             ),
         )
@@ -2545,6 +2540,51 @@ class Vector2IArrayTests {
                 ),
                 { v: Vector2I -> Vector2I(v.x.absoluteValue, v.y.absoluteValue) },
                 Wrapper(Vector2I(13, 13))
+            ),
+        )
+
+        @JvmStatic
+        fun vector2IArrayOfVector2IArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                Wrapper(Vector2I(3, 4)),
+                Wrapper(arrayOf(Vector2I(3, 4)).toVector2IArray())
+            ),
+            Arguments.of(
+                Wrapper(Vector2I(-2, -1)),
+                Wrapper(arrayOf(Vector2I(-2, -1)).toVector2IArray())
+            ),
+        )
+
+        @JvmStatic
+        fun vector2IArrayOfTypedArrayArgs(): List<Arguments> = listOf(
+            Arguments.of(
+                emptyArray<Vector2I>(),
+                Wrapper(emptyArray<Vector2I>().toVector2IArray())
+            ),
+            Arguments.of(
+                arrayOf(Vector2I(1, 2)),
+                Wrapper(arrayOf(Vector2I(1, 2)).toVector2IArray())
+            ),
+            Arguments.of(
+                arrayOf(Vector2I(1, 2), Vector2I(-2, -1)),
+                Wrapper(
+                    arrayOf(Vector2I(1, 2), Vector2I(-2, -1))
+                        .toVector2IArray()
+                )
+            ),
+            Arguments.of(
+                arrayOf(
+                    Vector2I(1, 2),
+                    Vector2I(-2, -1),
+                    Vector2I(10, -10)
+                ),
+                Wrapper(
+                    arrayOf(
+                        Vector2I(1, 2),
+                        Vector2I(-2, -1),
+                        Vector2I(10, -10)
+                    ).toVector2IArray()
+                )
             ),
         )
     }
