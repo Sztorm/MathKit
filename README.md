@@ -19,7 +19,7 @@ Almost every public method in the library is unit tested, with wide usage of par
 that test edge cases of complex methods and functions. Currently, the number of tests exceeds
 12,000.
 
-### [Documentation](https://sztorm.github.io/KotlinLowAllocMath)
+### [Documentation](https://sztorm.github.io/MathKit)
 
 ## Installation
 
