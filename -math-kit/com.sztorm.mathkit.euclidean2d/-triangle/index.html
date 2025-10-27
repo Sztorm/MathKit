@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Triangle</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    MathKit
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+2.0.0        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":/commonMain"
+                                       data-filter=":/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    MathKit
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="MathKit::com.sztorm.mathkit.euclidean2d/Triangle///PointingToDeclaration//1558683979">
+  <div class="breadcrumbs"><a href="../../../index.html">MathKit</a><span class="delimiter">/</span><a href="../index.html">com.sztorm.mathkit.euclidean2d</a><span class="delimiter">/</span><span class="current">Triangle</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Triangle</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">Triangle</a> : <a href="../-triangle-shape/index.html">TriangleShape</a>, <a href="../-transformable/index.html">Transformable</a></div><p class="paragraph">Represents a transformable triangle in a two-dimensional Euclidean space.</p><p class="paragraph">Implementations that use default-implemented members of this interface must make sure that the properties <a href="centroid.html">centroid</a>, <a href="../-transformable/orientation.html">orientation</a>, <a href="origin-point-a.html">originPointA</a>, <a href="origin-point-b.html">originPointB</a>, <a href="origin-point-c.html">originPointC</a> and the <a href="copy.html">copy</a> method are independent of other members and the computational complexity of these members is trivial.</p><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-triangle/index.html">MutableTriangle</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="114346220%2FProperties%2F1558683979" anchor-label="area" id="114346220%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="area.html"><span><span>area</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="114346220%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="area.html">area</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Returns the area of this shape.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-740104935%2FProperties%2F1558683979" anchor-label="centroid" id="-740104935%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="centroid.html"><span><span>centroid</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-740104935%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="centroid.html">centroid</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the centroid of this triangle. Centroid is the intersection point of the triangle's medians. Centroid is the triangle's center of mass.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="131827285%2FProperties%2F1558683979" anchor-label="circumcenter" id="131827285%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="circumcenter.html"><span><span>circumcenter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="131827285%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="circumcenter.html">circumcenter</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the circumcenter of this triangle. Circumcenter is the intersection point of the perpendicular bisectors of the triangle's sides. Circumcenter is the center of the triangle's circumscribed circle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-470237601%2FProperties%2F1558683979" anchor-label="incenter" id="-470237601%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="incenter.html"><span><span>incenter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-470237601%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="incenter.html">incenter</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the incenter of this triangle. Incenter is the intersection point of the triangle's angle bisectors. Incenter is the center of the triangle's inscribed circle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1978550265%2FProperties%2F1558683979" anchor-label="orientation" id="1978550265%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/orientation.html"><span><span>orientation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1978550265%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-transformable/orientation.html">orientation</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></div><div class="brief "><p class="paragraph">Returns the orientation of this object in reference to the origin of <a href="../../com.sztorm.mathkit/-complex-f/-companion/-o-n-e.html">ComplexF.ONE</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="168785218%2FProperties%2F1558683979" anchor-label="originPointA" id="168785218%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="origin-point-a.html"><span>origin</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>A</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="168785218%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="origin-point-a.html">originPointA</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the point <i>A</i> in reference to the triangle's <a href="centroid.html">centroid</a> and <a href="../-transformable/orientation.html">orientation</a> of <a href="../../com.sztorm.mathkit/-complex-f/-companion/-o-n-e.html">ComplexF.ONE</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="199805025%2FProperties%2F1558683979" anchor-label="originPointB" id="199805025%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="origin-point-b.html"><span>origin</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>B</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="199805025%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="origin-point-b.html">originPointB</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the point <i>B</i> in reference to the triangle's <a href="centroid.html">centroid</a> and <a href="../-transformable/orientation.html">orientation</a> of <a href="../../com.sztorm.mathkit/-complex-f/-companion/-o-n-e.html">ComplexF.ONE</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="230824832%2FProperties%2F1558683979" anchor-label="originPointC" id="230824832%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="origin-point-c.html"><span>origin</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>C</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="230824832%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="origin-point-c.html">originPointC</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the point <i>C</i> in reference to the triangle's <a href="centroid.html">centroid</a> and <a href="../-transformable/orientation.html">orientation</a> of <a href="../../com.sztorm.mathkit/-complex-f/-companion/-o-n-e.html">ComplexF.ONE</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1750543948%2FProperties%2F1558683979" anchor-label="orthocenter" id="-1750543948%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="orthocenter.html"><span><span>orthocenter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1750543948%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="orthocenter.html">orthocenter</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the orthocenter of this triangle. Orthocenter is the intersection point of the triangle's altitudes.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1260848804%2FProperties%2F1558683979" anchor-label="perimeter" id="1260848804%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="perimeter.html"><span><span>perimeter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1260848804%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="perimeter.html">perimeter</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Returns the perimeter of this shape.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="897619528%2FProperties%2F1558683979" anchor-label="pointA" id="897619528%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="point-a.html"><span>point</span><wbr></wbr><span><span>A</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="897619528%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="point-a.html">pointA</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the point <i>A</i> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="928639335%2FProperties%2F1558683979" anchor-label="pointB" id="928639335%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="point-b.html"><span>point</span><wbr></wbr><span><span>B</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="928639335%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="point-b.html">pointB</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the point <i>B</i> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="959659142%2FProperties%2F1558683979" anchor-label="pointC" id="959659142%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="point-c.html"><span>point</span><wbr></wbr><span><span>C</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="959659142%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">val </span><a href="point-c.html">pointC</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the point <i>C</i> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="49789392%2FProperties%2F1558683979" anchor-label="position" id="49789392%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="position.html"><span><span>position</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="49789392%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="position.html">position</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the position of this object in reference to the origin of <a href="../../com.sztorm.mathkit/-vector2-f/-companion/-z-e-r-o.html">Vector2F.ZERO</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-520768869%2FProperties%2F1558683979" anchor-label="sideLengthAB" id="-520768869%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="side-length-a-b.html"><span>side</span><wbr></wbr><span>Length</span><wbr></wbr><span><span>AB</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-520768869%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="side-length-a-b.html">sideLengthAB</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Returns the side length between points <i>A</i> and <i>B</i> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-489749062%2FProperties%2F1558683979" anchor-label="sideLengthAC" id="-489749062%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="side-length-a-c.html"><span>side</span><wbr></wbr><span>Length</span><wbr></wbr><span><span>AC</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-489749062%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="side-length-a-c.html">sideLengthAC</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Returns the side length between points <i>A</i> and <i>C</i> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="471864955%2FProperties%2F1558683979" anchor-label="sideLengthBC" id="471864955%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="side-length-b-c.html"><span>side</span><wbr></wbr><span>Length</span><wbr></wbr><span><span>BC</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="471864955%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="side-length-b-c.html">sideLengthBC</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Returns the side length between points <i>B</i> and <i>C</i> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1686346784%2FFunctions%2F1558683979" anchor-label="closestPointTo" id="-1686346784%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="closest-point-to.html"><span>closest</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1686346784%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="closest-point-to.html"><span class="token function">closestPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the closest point on this triangle to the given <a href="closest-point-to.html">point</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="429203333%2FFunctions%2F1558683979" anchor-label="component1" id="429203333%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="component1.html"><span><span>component1</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="429203333%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="component1.html"><span class="token function">component1</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the <a href="centroid.html">centroid</a> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="460223140%2FFunctions%2F1558683979" anchor-label="component2" id="460223140%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="component2.html"><span><span>component2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="460223140%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="component2.html"><span class="token function">component2</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></div><div class="brief "><p class="paragraph">Returns the <a href="../-transformable/orientation.html">orientation</a> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="491242947%2FFunctions%2F1558683979" anchor-label="component3" id="491242947%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="component3.html"><span><span>component3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="491242947%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="component3.html"><span class="token function">component3</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the <a href="origin-point-a.html">originPointA</a> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="522262754%2FFunctions%2F1558683979" anchor-label="component4" id="522262754%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="component4.html"><span><span>component4</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="522262754%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="component4.html"><span class="token function">component4</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the <a href="origin-point-b.html">originPointB</a> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="553282561%2FFunctions%2F1558683979" anchor-label="component5" id="553282561%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="component5.html"><span><span>component5</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="553282561%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="component5.html"><span class="token function">component5</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the <a href="origin-point-c.html">originPointC</a> of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1699240173%2FFunctions%2F1558683979" anchor-label="contains" id="1699240173%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="contains.html"><span><span>contains</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1699240173%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="contains.html"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Returns <code class="lang-kotlin">true</code> if this triangle contains the given <a href="contains.html">point</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1504649532%2FFunctions%2F1558683979" anchor-label="copy" id="-1504649532%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="copy.html"><span><span>copy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1504649532%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="copy.html"><span class="token function">copy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">centroid<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token operator"> = </span>this.centroid<span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a><span class="token operator"> = </span>this.orientation<span class="token punctuation">, </span></span><span class="parameter ">originPointA<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token operator"> = </span>this.originPointA<span class="token punctuation">, </span></span><span class="parameter ">originPointB<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token operator"> = </span>this.originPointB<span class="token punctuation">, </span></span><span class="parameter ">originPointC<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token operator"> = </span>this.originPointC</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this instance with specified properties changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="159127546%2FFunctions%2F1558683979" anchor-label="dilatedBy" id="159127546%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dilated-by.html"><span>dilated</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="159127546%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="dilated-by.html"><span class="token function">dilatedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">factor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is dilated around the <a href="../-transformable/dilated-by.html">point</a> by a <a href="../-transformable/dilated-by.html">factor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="918047598%2FFunctions%2F1558683979" anchor-label="interpolated" id="918047598%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="interpolated.html"><span><span>interpolated</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="918047598%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="interpolated.html"><span class="token function">interpolated</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">to<span class="token operator">: </span><a href="index.html">Triangle</a><span class="token punctuation">, </span></span><span class="parameter ">by<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this triangle interpolated <a href="interpolated.html">to</a> other triangle <a href="interpolated.html">by</a> a factor.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="464047453%2FFunctions%2F1558683979" anchor-label="intersects" id="464047453%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="intersects.html"><span><span>intersects</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="464047453%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="intersects.html"><span class="token function">intersects</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">ray<span class="token operator">: </span><a href="../-ray/index.html">Ray</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Returns <code class="lang-kotlin">true</code> if this triangle intersects the given <a href="intersects.html">ray</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-237998480%2FFunctions%2F1558683979" anchor-label="movedBy" id="-237998480%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="moved-by.html"><span>moved</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-237998480%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="moved-by.html"><span class="token function">movedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved by a <a href="../-transformable/moved-by.html">displacement</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1131701908%2FFunctions%2F1558683979" anchor-label="movedTo" id="1131701908%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="moved-to.html"><span>moved</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1131701908%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="moved-to.html"><span class="token function">movedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved to the <a href="../-transformable/moved-to.html">position</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-811633271%2FFunctions%2F1558683979" anchor-label="originPointIterator" id="-811633271%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="origin-point-iterator.html"><span>origin</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>Iterator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-811633271%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="origin-point-iterator.html"><span class="token function">originPointIterator</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f-iterator/index.html">Vector2FIterator</a></div><div class="brief "><p class="paragraph">Creates an iterator over the origin points of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1994505789%2FFunctions%2F1558683979" anchor-label="pointIterator" id="-1994505789%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="point-iterator.html"><span>point</span><wbr></wbr><span><span>Iterator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1994505789%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">fun </span><a href="point-iterator.html"><span class="token function">pointIterator</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f-iterator/index.html">Vector2FIterator</a></div><div class="brief "><p class="paragraph">Creates an iterator over the points of this triangle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="971896551%2FFunctions%2F1558683979" anchor-label="rotatedAroundPointBy" id="971896551%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotated-around-point-by.html"><span>rotated</span><wbr></wbr><span>Around</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="971896551%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-around-point-by.html"><span class="token function">rotatedAroundPointBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-around-point-by.html"><span class="token function">rotatedAroundPointBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated around the <a href="../-transformable/rotated-around-point-by.html">point</a> by a <a href="../-transformable/rotated-around-point-by.html">rotation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1125504303%2FFunctions%2F1558683979" anchor-label="rotatedAroundPointTo" id="1125504303%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotated-around-point-to.html"><span>rotated</span><wbr></wbr><span>Around</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1125504303%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-around-point-to.html"><span class="token function">rotatedAroundPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-around-point-to.html"><span class="token function">rotatedAroundPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated around the <a href="../-transformable/rotated-around-point-to.html">point</a> to the <a href="../-transformable/rotated-around-point-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="189671849%2FFunctions%2F1558683979" anchor-label="rotatedBy" id="189671849%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotated-by.html"><span>rotated</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="189671849%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-by.html"><span class="token function">rotatedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-by.html"><span class="token function">rotatedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated by a <a href="../-transformable/rotated-by.html">rotation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1575374889%2FFunctions%2F1558683979" anchor-label="rotatedTo" id="1575374889%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotated-to.html"><span>rotated</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1575374889%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-to.html"><span class="token function">rotatedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="rotated-to.html"><span class="token function">rotatedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated to the <a href="../-transformable/rotated-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-91908295%2FFunctions%2F1558683979" anchor-label="scaledBy" id="-91908295%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="scaled-by.html"><span>scaled</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-91908295%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="scaled-by.html"><span class="token function">scaledBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">factor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is scaled by a <a href="../-transformable/scaled-by.html">factor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-9455418%2FFunctions%2F1558683979" anchor-label="transformedBy" id="-9455418%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transformed-by.html"><span>transformed</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-9455418%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved by a <a href="../-transformable/transformed-by.html">displacement</a> and rotated by a <a href="../-transformable/transformed-by.html">rotation</a>.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a><span class="token punctuation">, </span></span><span class="parameter ">scaleFactor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a><span class="token punctuation">, </span></span><span class="parameter ">scaleFactor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved by a <a href="../-transformable/transformed-by.html">displacement</a>, rotated by a <a href="../-transformable/transformed-by.html">rotation</a>, and scaled by a <a href="../-transformable/transformed-by.html">scaleFactor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="190787177%2FFunctions%2F1558683979" anchor-label="transformedTo" id="190787177%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transformed-to.html"><span>transformed</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="190787177%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="transformed-to.html"><span class="token function">transformedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="transformed-to.html"><span class="token function">transformedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Triangle</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved to the <a href="../-transformable/transformed-to.html">position</a> and rotated to the <a href="../-transformable/transformed-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2025 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

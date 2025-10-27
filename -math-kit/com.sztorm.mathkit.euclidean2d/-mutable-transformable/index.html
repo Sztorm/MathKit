@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>MutableTransformable</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    MathKit
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+2.0.0        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":/commonMain"
+                                       data-filter=":/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    MathKit
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="MathKit::com.sztorm.mathkit.euclidean2d/MutableTransformable///PointingToDeclaration//1558683979">
+  <div class="breadcrumbs"><a href="../../../index.html">MathKit</a><span class="delimiter">/</span><a href="../index.html">com.sztorm.mathkit.euclidean2d</a><span class="delimiter">/</span><span class="current">MutableTransformable</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Mutable</span><wbr></wbr><span><span>Transformable</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">MutableTransformable</a> : <a href="../-transformable/index.html">Transformable</a></div><p class="paragraph">Represents a mutable transformable object in a two-dimensional Euclidean space.</p><p class="paragraph">Direct implementations of this interface must consider that new interface members may be added in the next versions of the library. Implementations that are safe to use from a compatibility perspective are those that are defined in the library, like <a href="../-mutable-square/index.html">MutableSquare</a>.</p><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-annulus/index.html">MutableAnnulus</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-circle/index.html">MutableCircle</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-line-segment/index.html">MutableLineSegment</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-ray/index.html">MutableRay</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-rectangle/index.html">MutableRectangle</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-regular-polygon/index.html">MutableRegularPolygon</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-regular-triangle/index.html">MutableRegularTriangle</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-rounded-rectangle/index.html">MutableRoundedRectangle</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-square/index.html">MutableSquare</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../-mutable-triangle/index.html">MutableTriangle</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="1978550265%2FProperties%2F1558683979" anchor-label="orientation" id="1978550265%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/orientation.html"><span><span>orientation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1978550265%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-transformable/orientation.html">orientation</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></div><div class="brief "><p class="paragraph">Returns the orientation of this object in reference to the origin of <a href="../../com.sztorm.mathkit/-complex-f/-companion/-o-n-e.html">ComplexF.ONE</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1309546968%2FProperties%2F1558683979" anchor-label="position" id="-1309546968%2FProperties%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/position.html"><span><span>position</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1309546968%2FProperties%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../-transformable/position.html">position</a><span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></div><div class="brief "><p class="paragraph">Returns the position of this object in reference to the origin of <a href="../../com.sztorm.mathkit/-vector2-f/-companion/-z-e-r-o.html">Vector2F.ZERO</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1515775336%2FFunctions%2F1558683979" anchor-label="dilateBy" id="-1515775336%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dilate-by.html"><span>dilate</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1515775336%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="dilate-by.html"><span class="token function">dilateBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">factor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Dilates this object around the <a href="dilate-by.html">point</a> by a <a href="dilate-by.html">factor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-340939102%2FFunctions%2F1558683979" anchor-label="dilatedBy" id="-340939102%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/dilated-by.html"><span>dilated</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-340939102%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/dilated-by.html"><span class="token function">dilatedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">factor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is dilated around the <a href="../-transformable/dilated-by.html">point</a> by a <a href="../-transformable/dilated-by.html">factor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="869838750%2FFunctions%2F1558683979" anchor-label="moveBy" id="869838750%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="move-by.html"><span>move</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="869838750%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="move-by.html"><span class="token function">moveBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Moves this object by a <a href="move-by.html">displacement</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="520707272%2FFunctions%2F1558683979" anchor-label="movedBy" id="520707272%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/moved-by.html"><span>moved</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="520707272%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/moved-by.html"><span class="token function">movedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved by a <a href="../-transformable/moved-by.html">displacement</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1890407660%2FFunctions%2F1558683979" anchor-label="movedTo" id="1890407660%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/moved-to.html"><span>moved</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1890407660%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/moved-to.html"><span class="token function">movedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved to the <a href="../-transformable/moved-to.html">position</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2055428158%2FFunctions%2F1558683979" anchor-label="moveTo" id="-2055428158%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="move-to.html"><span>move</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2055428158%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="move-to.html"><span class="token function">moveTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Moves this object to the <a href="move-to.html">position</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1808540233%2FFunctions%2F1558683979" anchor-label="rotateAroundPointBy" id="1808540233%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotate-around-point-by.html"><span>rotate</span><wbr></wbr><span>Around</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1808540233%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-around-point-by.html"><span class="token function">rotateAroundPointBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-around-point-by.html"><span class="token function">rotateAroundPointBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Rotates this object around the <a href="rotate-around-point-by.html">point</a> by a <a href="rotate-around-point-by.html">rotation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2133509687%2FFunctions%2F1558683979" anchor-label="rotateAroundPointTo" id="-2133509687%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotate-around-point-to.html"><span>rotate</span><wbr></wbr><span>Around</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2133509687%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-around-point-to.html"><span class="token function">rotateAroundPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-around-point-to.html"><span class="token function">rotateAroundPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Rotates this object around the <a href="rotate-around-point-to.html">point</a> to the <a href="rotate-around-point-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1287992535%2FFunctions%2F1558683979" anchor-label="rotateBy" id="-1287992535%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotate-by.html"><span>rotate</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1287992535%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-by.html"><span class="token function">rotateBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-by.html"><span class="token function">rotateBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Rotates this object by a <a href="rotate-by.html">rotation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1650915785%2FFunctions%2F1558683979" anchor-label="rotatedAroundPointBy" id="1650915785%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/rotated-around-point-by.html"><span>rotated</span><wbr></wbr><span>Around</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1650915785%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-around-point-by.html"><span class="token function">rotatedAroundPointBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-around-point-by.html"><span class="token function">rotatedAroundPointBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated around the <a href="../-transformable/rotated-around-point-by.html">point</a> by a <a href="../-transformable/rotated-around-point-by.html">rotation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1092598199%2FFunctions%2F1558683979" anchor-label="rotatedAroundPointTo" id="-1092598199%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/rotated-around-point-to.html"><span>rotated</span><wbr></wbr><span>Around</span><wbr></wbr><span>Point</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1092598199%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-around-point-to.html"><span class="token function">rotatedAroundPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-around-point-to.html"><span class="token function">rotatedAroundPointTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">point<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated around the <a href="../-transformable/rotated-around-point-to.html">point</a> to the <a href="../-transformable/rotated-around-point-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-852932523%2FFunctions%2F1558683979" anchor-label="rotatedBy" id="-852932523%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/rotated-by.html"><span>rotated</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-852932523%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-by.html"><span class="token function">rotatedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-by.html"><span class="token function">rotatedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated by a <a href="../-transformable/rotated-by.html">rotation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1304188003%2FFunctions%2F1558683979" anchor-label="rotatedTo" id="-1304188003%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/rotated-to.html"><span>rotated</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1304188003%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-to.html"><span class="token function">rotatedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/rotated-to.html"><span class="token function">rotatedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is rotated to the <a href="../-transformable/rotated-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1392067441%2FFunctions%2F1558683979" anchor-label="rotateTo" id="1392067441%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rotate-to.html"><span>rotate</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1392067441%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-to.html"><span class="token function">rotateTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="rotate-to.html"><span class="token function">rotateTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Rotates this object to the <a href="rotate-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="850674393%2FFunctions%2F1558683979" anchor-label="scaleBy" id="850674393%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="scale-by.html"><span>scale</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="850674393%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="scale-by.html"><span class="token function">scaleBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">factor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Scales this object by a <a href="scale-by.html">factor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2069364847%2FFunctions%2F1558683979" anchor-label="scaledBy" id="-2069364847%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/scaled-by.html"><span>scaled</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2069364847%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/scaled-by.html"><span class="token function">scaledBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">factor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is scaled by a <a href="../-transformable/scaled-by.html">factor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-780608634%2FFunctions%2F1558683979" anchor-label="transformBy" id="-780608634%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transform-by.html"><span>transform</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-780608634%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="transform-by.html"><span class="token function">transformBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="transform-by.html"><span class="token function">transformBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Transforms this object by moving by a <a href="transform-by.html">displacement</a> and rotating by a <a href="transform-by.html">rotation</a>.</p></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="transform-by.html"><span class="token function">transformBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a><span class="token punctuation">, </span></span><span class="parameter ">scaleFactor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="transform-by.html"><span class="token function">transformBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a><span class="token punctuation">, </span></span><span class="parameter ">scaleFactor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Transforms this object by moving by a <a href="transform-by.html">displacement</a>, rotating by a <a href="transform-by.html">rotation</a>, and scaling by a <a href="transform-by.html">scaleFactor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1323953452%2FFunctions%2F1558683979" anchor-label="transformedBy" id="1323953452%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/transformed-by.html"><span>transformed</span><wbr></wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1323953452%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved by a <a href="../-transformable/transformed-by.html">displacement</a> and rotated by a <a href="../-transformable/transformed-by.html">rotation</a>.</p></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a><span class="token punctuation">, </span></span><span class="parameter ">scaleFactor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/transformed-by.html"><span class="token function">transformedBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">displacement<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">rotation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a><span class="token punctuation">, </span></span><span class="parameter ">scaleFactor<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved by a <a href="../-transformable/transformed-by.html">displacement</a>, rotated by a <a href="../-transformable/transformed-by.html">rotation</a>, and scaled by a <a href="../-transformable/transformed-by.html">scaleFactor</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-865754319%2FFunctions%2F1558683979" anchor-label="transformedTo" id="-865754319%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-transformable/transformed-to.html"><span>transformed</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-865754319%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/transformed-to.html"><span class="token function">transformedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../-transformable/transformed-to.html"><span class="token function">transformedTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-transformable/index.html">Transformable</a></div><div class="brief "><p class="paragraph">Returns a copy of this object that is moved to the <a href="../-transformable/transformed-to.html">position</a> and rotated to the <a href="../-transformable/transformed-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-209010615%2FFunctions%2F1558683979" anchor-label="transformTo" id="-209010615%2FFunctions%2F1558683979" data-filterable-set=":/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/commonMain" data-filterable-set=":/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="transform-to.html"><span>transform</span><wbr></wbr><span><span>To</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-209010615%2FFunctions%2F1558683979"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="transform-to.html"><span class="token function">transformTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-angle-f/index.html">AngleF</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="transform-to.html"><span class="token function">transformTo</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-vector2-f/index.html">Vector2F</a><span class="token punctuation">, </span></span><span class="parameter ">orientation<span class="token operator">: </span><a href="../../com.sztorm.mathkit/-complex-f/index.html">ComplexF</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Transforms this object by moving to the <a href="transform-to.html">position</a> and rotating to the <a href="transform-to.html">orientation</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2025 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
