@@ -79,4 +79,4 @@ tasks.register("generateBadges") {
 }
 
 // Build docs
-//./gradlew dokkaHtml
+//./gradlew dokkaGenerateHtml
