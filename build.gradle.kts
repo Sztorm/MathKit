@@ -13,6 +13,7 @@ repositories {
 }
 
 kotlin {
+    withSourcesJar(publish = true)
     jvmToolchain(17)
     jvm {
         testRuns["test"].executionTask.configure {
