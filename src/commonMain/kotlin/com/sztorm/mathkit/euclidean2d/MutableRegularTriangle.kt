@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE", "PropertyName")
+@file:Suppress("NOTHING_TO_INLINE", "OVERRIDE_BY_INLINE", "PropertyName")
 
 package com.sztorm.mathkit.euclidean2d
 
